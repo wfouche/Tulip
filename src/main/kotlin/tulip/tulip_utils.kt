@@ -1,0 +1,153 @@
+/*-------------------------------------------------------------------------*/
+
+package tulip
+
+/*-------------------------------------------------------------------------*/
+
+import java.util.concurrent.TimeUnit
+import java.lang.System
+import java.util.concurrent.ThreadLocalRandom
+
+/*-------------------------------------------------------------------------*/
+
+//
+// Use this function to calculate elapsed time in milliseconds.
+//
+fun timeMillis(): Long {
+    return TimeUnit.NANOSECONDS.toMillis(timeNanos())
+}
+
+//
+// Use this function to calculate elapsed time in microseconds.
+//
+fun timeMicros(): Long {
+    return TimeUnit.NANOSECONDS.toMicros(timeNanos())
+}
+
+//
+// Use this function to calculate elapsed time in nanoseconds.
+//
+fun timeNanos(): Long {
+    return System.nanoTime()
+}
+
+/*-------------------------------------------------------------------------*/
+
+inline fun elapsedTimeMillis(block: () -> Unit): Long {
+    val start = timeMillis()
+    block()
+    return timeMillis() - start
+}
+
+inline fun elapsedTimeMicros(block: () -> Unit): Long {
+    val start = timeMicros()
+    block()
+    return timeMicros() - start
+}
+
+inline fun elapsedTimeNanos(block: () -> Unit): Long {
+    val start = timeNanos()
+    block()
+    return timeNanos() - start
+}
+
+/*-------------------------------------------------------------------------*/
+
+private fun measureTimeAccuracy(time: () -> Long): Long {
+    val a = LongArray(1000)
+    var z: Long
+    var y: Long
+
+    // warm-up
+    repeat(10_000_000) {
+        time()
+    }
+
+    // timing
+    repeat(a.size) {
+        y = time()
+        z = y
+        while (z == y) {
+            y = time()
+        }
+        a[it] = y - z
+    }
+
+    // sort in increasing order.
+    a.sort()
+
+    // return smallest element.
+    return a[0]
+}
+
+/*-------------------------------------------------------------------------*/
+
+fun accuracyTimeMillis(): Long {
+    return measureTimeAccuracy(::timeMillis)
+}
+
+fun accuracyTimeMicros(): Long {
+    return measureTimeAccuracy(::timeMicros)
+}
+
+fun accuracyTimeNanos(): Long {
+    return measureTimeAccuracy(::timeNanos)
+}
+
+fun accuracySystemCurrentTimeMillis(): Long {
+    fun System_currentTimeMillis(): Long {
+        return System.currentTimeMillis()
+    }
+    return measureTimeAccuracy(::System_currentTimeMillis)
+}
+
+fun accuracySystemNanoTime(): Long {
+    fun System_nanoTime(): Long {
+        return System.nanoTime()
+    }
+    return measureTimeAccuracy(::System_nanoTime)
+}
+
+/*-------------------------------------------------------------------------*/
+
+//
+// Delay function to workaround Thread.sleep issue on Windows.
+// Only ever delay for a value that is a multiple of 10 milliseconds (ms).
+//
+fun delay(delayMillis: Long) {
+    // round delay to the nearest value of 10.
+    // 11 -> 10, ..., 14 -> 10,  15 -> 20, etc.
+    Thread.sleep(roundXN(delayMillis, 10))
+}
+
+/*-------------------------------------------------------------------------*/
+
+// Burn CPU cycles for 'delay' milliseconds
+fun delayMillis(delay: Long) {
+    val end = timeMicros() + delay * 1000
+    while (timeMicros() < end) {
+        // pass
+    }
+}
+
+// Burn CPU cycles for 'delay' microseconds
+fun delayMicros(delay: Long) {
+    val end = timeNanos() + delay * 1000
+    while (timeNanos() < end) {
+        // pass
+    }
+}
+
+/*-------------------------------------------------------------------------*/
+
+fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
+    val delay = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
+    delayMillis(delay)
+}
+
+fun delayMicrosRandom(delayFrom: Long, delayTo: Long) {
+    val delay = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
+    delayMicros(delay)
+}
+
+/*-------------------------------------------------------------------------*/
