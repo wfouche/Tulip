@@ -180,11 +180,11 @@ fun llq(x: Long): Long {
 
 class RateGovernor(val timeMillis_start: Long, val averageRate: Double) {
 
-    private var iterationCount: Long = 0
+    private var count: Long = 0
 
     fun pace() {
-        iterationCount += 1
-        var deltaMs: Long = (timeMillis_start + ((iterationCount * 1000) / averageRate) - timeMillis()).toLong()
+        count += 1
+        var deltaMs: Long = (timeMillis_start + ((count * 1000) / averageRate) - timeMillis()).toLong()
         deltaMs = roundXN(deltaMs, 10)
         if (deltaMs < 0) {
             return
@@ -249,7 +249,7 @@ object Console : Thread() {
 
     init {
         isDaemon = true
-        //setPriority(Thread.MAX_PRIORITY)
+        //priority = Thread.MAX_PRIORITY
         start()
     }
 
