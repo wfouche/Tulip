@@ -113,10 +113,10 @@ open class User(val userId: Int) {
 // 100,000 user objects.
 //
 
-const val MAX_NUM_USERS = 100_000
+//const val MAX_NUM_USERS = 100_000
 
-var userObjects = arrayOfNulls<User>(MAX_NUM_USERS)
-var userActions = arrayOfNulls<Iterator<Int>>(MAX_NUM_USERS)
+val userObjects = arrayOfNulls<User>(NUM_USERS)
+val userActions = arrayOfNulls<Iterator<Int>>(NUM_USERS)
 
 var mainTestCase = TestCase(actions = listOf(Action(0)))
 
@@ -219,7 +219,7 @@ class UserThread(val threadId: Int) : Thread() {
             // Locate the user object to which the task should be applied.
             // Dynamically create a new user object, if required.
             //
-            var u: User? = userObjects[task.userId]
+            var u = userObjects[task.userId]
             if (u == null) {
                 u = newUser(task.userId)
                 userObjects[task.userId] = u
@@ -306,7 +306,6 @@ object DataCollector : Thread() {
         val latencyMap = mutableMapOf<Long, Long>()
         var latencyMap_min: Long = Long.MAX_VALUE
         var latencyMap_max: Long = Long.MIN_VALUE
-
 
         fun saveStats(num_actions: Int, duration_millis: Int, printMap: Boolean) {
             val duration_seconds: Double = duration_millis.toDouble() / 1000.0
