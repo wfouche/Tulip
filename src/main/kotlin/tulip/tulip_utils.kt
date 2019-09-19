@@ -64,8 +64,8 @@ private fun measureTimeAccuracy(time: () -> Long): Long {
     }
 
     // timing
+    y = time()
     repeat(a.size) {
-        y = time()
         z = y
         while (z == y) {
             y = time()

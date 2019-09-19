@@ -551,7 +551,7 @@ fun runTest(test: TestCase) {
     //
     val NUM_ACTIVE_USERS: Int = if (test.numActiveUsers == 0) 10 * NUM_THREADS else test.numActiveUsers
 
-    var rspQueue = Queue<Int>(NUM_ACTIVE_USERS)
+    val rspQueue = Queue<Int>(NUM_ACTIVE_USERS)
 
     fun initRspQueue() {
         repeat(NUM_ACTIVE_USERS) {
