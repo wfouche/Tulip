@@ -503,9 +503,9 @@ fun runTest(test: TestCase) {
     mainTestCase = test
 
     Console.put("")
-    Console.put("===================================")
-    Console.put("= ${test.name}")
-    Console.put("===================================")
+    Console.put("======================================================================")
+    Console.put("= ${test.name} - ${java.time.LocalDateTime.now()}")
+    Console.put("======================================================================")
 
     val rnd = ThreadLocalRandom.current()
 
