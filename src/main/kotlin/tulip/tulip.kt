@@ -304,8 +304,9 @@ object DataCollector : Thread() {
         // key = response time in microseconds (NOT milliseconds).
         // value = the number of times a given (key) response time occurred.
         val latencyMap = mutableMapOf<Long, Long>()
-        var latencyMap_min: Long = Long.MAX_VALUE
-        var latencyMap_max: Long = Long.MIN_VALUE
+        var latencyMap_min_rt: Long = Long.MAX_VALUE
+        var latencyMap_max_rt: Long = Long.MIN_VALUE
+        var latencyMap_max_ts = ""
 
         fun saveStats(num_actions: Int, duration_millis: Int, printMap: Boolean) {
             val duration_seconds: Double = duration_millis.toDouble() / 1000.0
@@ -373,10 +374,10 @@ object DataCollector : Thread() {
             }
 
             // min rt
-            val min_rt = latencyMap_min / 1000.0
+            val min_rt = latencyMap_min_rt / 1000.0
 
             // max rt
-            val max_rt = latencyMap_max / 1000.0
+            val max_rt = latencyMap_max_rt / 1000.0
 
             Console.put("")
             if (printMap) {
@@ -397,7 +398,7 @@ object DataCollector : Thread() {
             }
 
             Console.put("  minimum response time (millis) = ${min_rt}")
-            Console.put("  maximum response time (millis) = ${max_rt}")
+            Console.put("  maximum response time (millis) = ${max_rt} at ${latencyMap_max_ts}")
 
             handshakeQueue.put(0)
         }
@@ -451,19 +452,21 @@ object DataCollector : Thread() {
                 //
                 latencyMap.merge(key, 1, { a, b -> a + b })
 
-                if (durationMicros < latencyMap_min) {
-                    latencyMap_min = durationMicros
+                if (durationMicros < latencyMap_min_rt) {
+                    latencyMap_min_rt = durationMicros
                 }
-                if (durationMicros > latencyMap_max) {
-                    latencyMap_max = durationMicros
+                if (durationMicros > latencyMap_max_rt) {
+                    latencyMap_max_rt = durationMicros
+                    latencyMap_max_ts = java.time.LocalDateTime.now().toString()
                 }
             }
             if (shouldPrintStats) {
                 saveStats(num_actions, duration_millis, print_map)
             }
             latencyMap.clear()
-            latencyMap_min = Long.MAX_VALUE
-            latencyMap_max = Long.MIN_VALUE
+            latencyMap_min_rt = Long.MAX_VALUE
+            latencyMap_max_rt = Long.MIN_VALUE
+            latencyMap_max_ts = ""
         }
     }
 }
