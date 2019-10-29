@@ -123,10 +123,9 @@ var mainTestCase = TestCase(actions = listOf(Action(0)))
 /*-------------------------------------------------------------------------*/
 
 //
-// Array of Worker thread objects of a concrete type. Currently supporting up to
-// 1000 worker threads.
+// Array of Worker thread objects of a concrete type.
 //
-var userThreads = arrayOfNulls<UserThread>(1000)
+var userThreads = arrayOfNulls<UserThread>(NUM_THREADS)
 
 /*-------------------------------------------------------------------------*/
 
