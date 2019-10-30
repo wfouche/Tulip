@@ -17,55 +17,55 @@ import java.util.Locale
 /*-------------------------------------------------------------------------*/
 
 data class Action(
-    //
-    // Numeric action ID.
-    //
-    val actionId: Int,
+        //
+        // Numeric action ID.
+        //
+        val actionId: Int,
 
-    //
-    // Number of occurrences of this action relative to other actions.
-    // Set weight to 0 (or use default value) when a workflow should be specified.
-    val weight: Int = 0
+        //
+        // Number of occurrences of this action relative to other actions.
+        // Set weight to 0 (or use default value) when a workflow should be specified.
+        val weight: Int = 0
 )
 
 /*-------------------------------------------------------------------------*/
 
 data class TestCase(
-    //
-    // Name of the benchmark test.
-    //
-    val name: String = "",
+        //
+        // Name of the benchmark test.
+        //
+        val name: String = "",
 
-    // Warm-up period in minutes.
-    // The results from this period are discarded.
-    val initDurationMinutes: Int = 0,
+        // Warm-up period in minutes.
+        // The results from this period are discarded.
+        val initDurationMinutes: Int = 0,
 
-    // Main duration in minutes.
-    // The results from this period are reported.
-    val mainDurationMinutes: Int = 0,
+        // Main duration in minutes.
+        // The results from this period are reported.
+        val mainDurationMinutes: Int = 0,
 
-    // List of actions to be performed.
-    // If the weights of all the actions are zero (0), then treat the action list
-    // as a workflow to be executed per user object.
-    val actions: List<Action>,
+        // List of actions to be performed.
+        // If the weights of all the actions are zero (0), then treat the action list
+        // as a workflow to be executed per user object.
+        val actions: List<Action>,
 
-    // https://en.wikipedia.org/wiki/Queueing_theory
-    //
-    // The average arrival rate (arrivals per second) to be maintained.
-    //
-    val arrivalRate: Double = 0.0,
+        // https://en.wikipedia.org/wiki/Queueing_theory
+        //
+        // The average arrival rate (arrivals per second) to be maintained.
+        //
+        val arrivalRate: Double = 0.0,
 
-    // https://en.wikipedia.org/wiki/Little%27s_Law
-    //
-    // This value represents the "L" in Little's Law (equation)
-    //
-    val numActiveUsers: Int = 0,
+        // https://en.wikipedia.org/wiki/Little%27s_Law
+        //
+        // This value represents the "L" in Little's Law (equation)
+        //
+        val numActiveUsers: Int = 0,
 
-    // Repeat a benchmark test this number of times
-    val repeatCount: Int = 1,
+        // Repeat a benchmark test this number of times
+        val repeatCount: Int = 1,
 
-    // List of percentile values to report on.
-    val percentiles: List<Double> = listOf(90.0, 95.0, 99.0)
+        // List of percentile values to report on.
+        val percentiles: List<Double> = listOf(90.0, 95.0, 99.0)
 )
 
 /*-------------------------------------------------------------------------*/
@@ -78,16 +78,16 @@ open class User(val userId: Int) {
     var tranId: Int = 0
 
     private val map = arrayOf(
-        ::initialize,
-        ::action1,
-        ::action2,
-        ::action3,
-        ::action4,
-        ::action5,
-        ::action6,
-        ::action7,
-        ::action8,
-        ::terminate
+            ::initialize,
+            ::action1,
+            ::action2,
+            ::action3,
+            ::action4,
+            ::action5,
+            ::action6,
+            ::action7,
+            ::action8,
+            ::terminate
     )
 
     open fun initialize(): Boolean = false
@@ -136,24 +136,24 @@ var userThreads = arrayOfNulls<UserThread>(NUM_THREADS)
 //
 data class Task(
 
-    // The user ID of the user object to which an operation should be applied.
-    val userId: Int,
+        // The user ID of the user object to which an operation should be applied.
+        val userId: Int,
 
-    // Total number of user objects.
-    val numUsers: Int,
+        // Total number of user objects.
+        val numUsers: Int,
 
-    // Total number of work threads servicing user objects.
-    val numThreads: Int,
+        // Total number of work threads servicing user objects.
+        val numThreads: Int,
 
-    // Numeric id of the action (operation) to be invoked on a user object.
-    val actionId: Int,
+        // Numeric id of the action (operation) to be invoked on a user object.
+        val actionId: Int,
 
-    // Duration (elapsed time) in microseconds.
-    var durationMicros: Long = 0,
+        // Duration (elapsed time) in microseconds.
+        var durationMicros: Long = 0,
 
-    var success: Boolean = false,
+        var success: Boolean = false,
 
-    var rspQueue: Queue<Int>? = null
+        var rspQueue: Queue<Int>? = null
 )
 
 /*-------------------------------------------------------------------------*/
@@ -479,7 +479,7 @@ fun assignTask(task: Task) {
     var w = userThreads[threadId]
     if (w == null) {
         w = UserThread(threadId).apply {
-            setDaemon(true)
+            isDaemon = true
             start()
         }
         userThreads[threadId] = w
