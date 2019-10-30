@@ -115,8 +115,6 @@ open class User(val userId: Int) {
 // 100,000 user objects.
 //
 
-//const val MAX_NUM_USERS = 100_000
-
 val userObjects = arrayOfNulls<User>(NUM_USERS)
 val userActions = arrayOfNulls<Iterator<Int>>(NUM_USERS)
 
