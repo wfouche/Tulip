@@ -12,6 +12,8 @@ import java.util.concurrent.ThreadLocalRandom
 
 import kotlin.sequences.iterator
 
+import java.util.Locale
+
 /*-------------------------------------------------------------------------*/
 
 data class Action(
@@ -386,18 +388,18 @@ object DataCollector : Thread() {
 
             Console.put("  duration of benchmark (in seconds) = ${duration_seconds}")
             Console.put("  number of actions completed = ${num_actions}")
-            Console.put("  average number of actions completed per second = ${aps}")
-            Console.put("  average response time (time to complete an action) (millis) = ${art}")
-            Console.put("  standard deviation (response time) (millis) = ${sdev}")
+            Console.put("  average number of actions completed per second = ${"%.3f".format(Locale.US, aps)}")
+            Console.put("  average response time (time to complete an action) (millis) = ${"%.3f".format(Locale.US, art)}")
+            Console.put("  standard deviation (response time) (millis) = ${"%.3f".format(Locale.US, sdev)}")
 
             val percentiles = mainTestCase.percentiles
             for (kk in percentiles) {
                 val px = percentile(kk, min_rt, max_rt)
-                Console.put("  ${kk}th percentile (response time) (millis) = ${px}")
+                Console.put("  ${kk}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
             }
 
-            Console.put("  minimum response time (millis) = ${min_rt}")
-            Console.put("  maximum response time (millis) = ${max_rt} at ${latencyMap_max_ts}")
+            Console.put("  minimum response time (millis) = ${"%.3f".format(Locale.US, min_rt)}")
+            Console.put("  maximum response time (millis) = ${"%.3f".format(Locale.US, max_rt)} at ${latencyMap_max_ts}")
 
             handshakeQueue.put(0)
         }
