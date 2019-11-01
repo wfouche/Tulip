@@ -70,7 +70,7 @@ fun initTestSuite() {
             // Limit the number of active user objects, A value of
             // zero sets the number of active users to unlimited.
             // L value from Little's Law.
-            userProfile = listOf(NUM_THREADS),
+            userProfile = listOf(NUM_THREADS, 1, 0),
 
             // Actions to be performed on the user objects during this test.
             // 100 actions in total with a 50%/50% split between

@@ -500,12 +500,12 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTest(test: TestCase, activeUsers: Int) {
+fun runTest(test: TestCase, userProfileIndex: Int, activeUsers: Int) {
     mainTestCase = test
 
     Console.put("")
     Console.put("======================================================================")
-    Console.put("= ${test.name} - ${java.time.LocalDateTime.now()}")
+    Console.put("= [${userProfileIndex}][${activeUsers}] ${test.name} - ${java.time.LocalDateTime.now()}")
     Console.put("======================================================================")
 
     val rnd = ThreadLocalRandom.current()
@@ -653,7 +653,9 @@ fun runTest(test: TestCase, activeUsers: Int) {
             Console.put("num_actions = ${num_actions}, num_success = ${num_success}, num_failed = ${num_actions - num_success}")
             DataCollector.printStats(num_actions, duration_millis, false)
         }
-        assignTasks(test.initDurationMinutes, "Warm-up")
+        if (userProfileIndex == 0) {
+            assignTasks(test.initDurationMinutes, "Warm-up")
+        }
         for (runId in 0 until test.repeatCount) {
             assignTasks(test.mainDurationMinutes, "Main", runId)
         }
@@ -680,8 +682,10 @@ fun runTulip() {
     initTestSuite()
     for (testCase in testSuite) {
         delay(5000)
+        var userProfileIndex = 0
         for (activeUsers in testCase.userProfile) {
-            runTest(testCase, activeUsers)
+            runTest(testCase, userProfileIndex, activeUsers)
+            userProfileIndex += 1
         }
     }
     delay(5000)
