@@ -500,12 +500,12 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTest(test: TestCase, userProfileIndex: Int, activeUsers: Int) {
+fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
     mainTestCase = test
 
     Console.put("")
     Console.put("======================================================================")
-    Console.put("= [${userProfileIndex}][${activeUsers}] ${test.name} - ${java.time.LocalDateTime.now()}")
+    Console.put("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${test.name} - ${java.time.LocalDateTime.now()}")
     Console.put("======================================================================")
 
     val rnd = ThreadLocalRandom.current()
@@ -678,10 +678,10 @@ fun initTulip() {
 fun runTulip() {
     initTulip()
     initTestSuite()
-    for (testCase in testSuite) {
-        testCase.userProfile.forEachIndexed { index, value ->
+    testSuite.forEachIndexed { indexTestCase, testCase ->
+        testCase.userProfile.forEachIndexed { indexUserProfile, activeUsers ->
             delay(5000)
-            runTest(testCase, index, value)
+            runTest(testCase, indexTestCase, indexUserProfile, activeUsers)
         }
     }
 }
