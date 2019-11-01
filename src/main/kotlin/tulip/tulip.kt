@@ -384,10 +384,10 @@ object DataCollector : Thread() {
                 Console.put("")
             }
 
-            Console.put("  duration of benchmark (in seconds) = ${duration_seconds}")
-            Console.put("  number of actions completed = ${num_actions}")
             Console.put("  average number of actions completed per second = ${"%.3f".format(Locale.US, aps)}")
             Console.put("  average response time (time to complete an action) (millis) = ${"%.3f".format(Locale.US, art)}")
+            Console.put("  duration of benchmark (in seconds) = ${duration_seconds}")
+            Console.put("  number of actions completed = ${num_actions}")
             Console.put("  standard deviation (response time) (millis) = ${"%.3f".format(Locale.US, sdev)}")
 
             val percentiles = mainTestCase.percentiles
