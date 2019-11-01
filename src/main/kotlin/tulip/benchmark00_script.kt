@@ -20,7 +20,7 @@ fun initTestSuite() {
         TestCase(
             name = "Test1 (Initialize)",
             arrivalRate = 5.0,
-            numActiveUsers = 1,
+            userProfile = listOf(1),
             actions = listOf(Action(0), Action(7))
         )
     )
@@ -43,7 +43,7 @@ fun initTestSuite() {
             // Limit the number of active user objects, A value of
             // zero sets the number of active users to unlimited.
             // L value from Little's Law.
-            numActiveUsers = NUM_THREADS * 10,
+            userProfile = listOf(NUM_THREADS * 10),
 
             // Actions to be performed on the user objects during this test.
             actions = listOf(Action(8)),
@@ -70,7 +70,7 @@ fun initTestSuite() {
             // Limit the number of active user objects, A value of
             // zero sets the number of active users to unlimited.
             // L value from Little's Law.
-            numActiveUsers = NUM_THREADS,
+            userProfile = listOf(NUM_THREADS),
 
             // Actions to be performed on the user objects during this test.
             // 100 actions in total with a 50%/50% split between
@@ -98,7 +98,7 @@ fun initTestSuite() {
 
             // Limit the number of active user objects, A value of
             // zero sets the number of active users to unlimited.
-            numActiveUsers = NUM_THREADS,
+            userProfile = listOf(NUM_THREADS),
 
             // Actions to be performed on the user objects during this test.
             // 100 actions in total with a 50%/50% split between
@@ -113,7 +113,7 @@ fun initTestSuite() {
         TestCase(
             name = "Test5 (Terminate)",
             arrivalRate = 5.0,
-            numActiveUsers = 1,
+            userProfile = listOf(1),
             actions = listOf(Action(9))
         )
     )

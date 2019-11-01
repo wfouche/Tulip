@@ -59,7 +59,7 @@ data class TestCase(
         //
         // This value represents the "L" in Little's Law (equation)
         //
-        val numActiveUsers: Int = 0,
+        val userProfile: List<Int> = listOf(0),
 
         // Repeat a benchmark test this number of times
         val repeatCount: Int = 1,
@@ -500,7 +500,7 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTest(test: TestCase) {
+fun runTest(test: TestCase, activeUsers: Int) {
     mainTestCase = test
 
     Console.put("")
@@ -550,7 +550,7 @@ fun runTest(test: TestCase) {
     //
     // Create a queue containing a total of NUM_ACTIVE_USERS tokens.
     //
-    val NUM_ACTIVE_USERS: Int = if (test.numActiveUsers == 0) 10 * NUM_THREADS else test.numActiveUsers
+    val NUM_ACTIVE_USERS: Int = if (activeUsers == 0) 10 * NUM_THREADS else activeUsers
 
     val rspQueue = Queue<Int>(NUM_ACTIVE_USERS)
 
@@ -626,7 +626,7 @@ fun runTest(test: TestCase) {
 
             var num_actions: Int = 0
             var num_success: Int = 0
-            var duration_millis: Int
+
             while (timeMillis() < timeMillis_end) {
                 // Pick a random user object to assign a task to.
                 //val uid = rnd.nextInt(NUM_USERS)  // 0 until NUM_USERS
@@ -648,7 +648,7 @@ fun runTest(test: TestCase) {
                 num_actions += 1
             }
             num_success += drainRspQueue()
-            duration_millis = (timeMillis() - timeMillis_start).toInt()
+            val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
             Console.put("${name} run ${runId}: end   (${java.time.LocalDateTime.now()})")
             Console.put("num_actions = ${num_actions}, num_success = ${num_success}, num_failed = ${num_actions - num_success}")
             DataCollector.printStats(num_actions, duration_millis, false)
@@ -680,7 +680,9 @@ fun runTulip() {
     initTestSuite()
     for (testCase in testSuite) {
         delay(5000)
-        runTest(testCase)
+        for (activeUsers in testCase.userProfile) {
+            runTest(testCase, activeUsers)
+        }
     }
     delay(5000)
 }
