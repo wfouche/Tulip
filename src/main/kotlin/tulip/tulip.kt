@@ -653,9 +653,7 @@ fun runTest(test: TestCase, userProfileIndex: Int, activeUsers: Int) {
             Console.put("num_actions = ${num_actions}, num_success = ${num_success}, num_failed = ${num_actions - num_success}")
             DataCollector.printStats(num_actions, duration_millis, false)
         }
-        if (userProfileIndex == 0) {
-            assignTasks(test.initDurationMinutes, "Warm-up")
-        }
+        assignTasks(test.initDurationMinutes, "Warm-up")
         for (runId in 0 until test.repeatCount) {
             assignTasks(test.mainDurationMinutes, "Main", runId)
         }
@@ -681,14 +679,11 @@ fun runTulip() {
     initTulip()
     initTestSuite()
     for (testCase in testSuite) {
-        delay(5000)
-        var userProfileIndex = 0
-        for (activeUsers in testCase.userProfile) {
-            runTest(testCase, userProfileIndex, activeUsers)
-            userProfileIndex += 1
+        testCase.userProfile.forEachIndexed { index, value ->
+            delay(5000)
+            runTest(testCase, index, value)
         }
     }
-    delay(5000)
 }
 
 /*-------------------------------------------------------------------------*/
