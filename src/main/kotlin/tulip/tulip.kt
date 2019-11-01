@@ -385,7 +385,7 @@ object DataCollector : Thread() {
             }
 
             Console.put("  average number of actions completed per second = ${"%.3f".format(Locale.US, aps)}")
-            Console.put("  average response time (time to complete an action) (millis) = ${"%.3f".format(Locale.US, art)}")
+            Console.put("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, art)}")
             Console.put("  duration of benchmark (in seconds) = ${duration_seconds}")
             Console.put("  number of actions completed = ${num_actions}")
             Console.put("  standard deviation (response time) (millis) = ${"%.3f".format(Locale.US, sdev)}")
