@@ -4,9 +4,11 @@ package tulip
 
 /*-------------------------------------------------------------------------*/
 
-import java.util.concurrent.TimeUnit
-import java.lang.System
+import java.lang.management.ManagementFactory
 import java.util.concurrent.ThreadLocalRandom
+import java.util.concurrent.TimeUnit
+import javax.management.Attribute
+import javax.management.ObjectName
 
 /*-------------------------------------------------------------------------*/
 
@@ -151,3 +153,35 @@ fun delayMicrosRandom(delayFrom: Long, delayTo: Long) {
 }
 
 /*-------------------------------------------------------------------------*/
+
+fun getProcessCpuLoad(): Double {
+
+    val mbs = ManagementFactory.getPlatformMBeanServer()
+    val name = ObjectName.getInstance("java.lang:type=OperatingSystem")
+    val list = mbs.getAttributes(name, arrayOf("ProcessCpuLoad"))
+
+    if (list.isEmpty()) return java.lang.Double.NaN
+
+    val att = list[0] as Attribute
+    val value = att.getValue() as Double
+
+    // usually takes a couple of seconds before we get real values
+    return if (value == -1.0) java.lang.Double.NaN else (value * 1000).toInt() / 10.0
+    // returns a percentage value with 1 decimal point precision
+}
+
+fun getSystemCpuLoad(): Double {
+
+    val mbs = ManagementFactory.getPlatformMBeanServer()
+    val name = ObjectName.getInstance("java.lang:type=OperatingSystem")
+    val list = mbs.getAttributes(name, arrayOf("SystemCpuLoad"))
+
+    if (list.isEmpty()) return java.lang.Double.NaN
+
+    val att = list[0] as Attribute
+    val value = att.getValue() as Double
+
+    // usually takes a couple of seconds before we get real values
+    return if (value == -1.0) java.lang.Double.NaN else (value * 1000).toInt() / 10.0
+    // returns a percentage value with 1 decimal point precision
+}
