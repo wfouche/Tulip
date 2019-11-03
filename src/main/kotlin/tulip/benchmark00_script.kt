@@ -18,7 +18,7 @@ fun initTestSuite() {
     // Test 1.
     testSuite.add(
         TestCase(
-            name = "Test1 (Initialize)",
+            name = "Test0 (Initialize)",
             arrivalRate = 5.0,
             userProfile = listOf(1),
             actions = listOf(Action(0), Action(7))
@@ -29,9 +29,10 @@ fun initTestSuite() {
     testSuite.add(
         TestCase(
             // The name of this test.
-            name = "Test2 (Throughput Test a)",
+            name = "Test1 (Throughput Test - Max)",
 
             // Duration in minutes
+            warmDurationMinutes = 1,
             initDurationMinutes = 1,
             mainDurationMinutes = 1,
 
@@ -43,7 +44,7 @@ fun initTestSuite() {
             // Limit the number of active user objects, A value of
             // zero sets the number of active users to unlimited.
             // L value from Little's Law.
-            userProfile = listOf(NUM_THREADS * 10),
+            userProfile = listOf(0, 20, 10),
 
             // Actions to be performed on the user objects during this test.
             actions = listOf(Action(8)),
@@ -56,7 +57,7 @@ fun initTestSuite() {
     testSuite.add(
         TestCase(
             // The name of this test.
-            name = "Test3 (Throughput Test b)",
+            name = "Test2 (Throughput Test - Fixed)",
 
             // Duration in minutes
             initDurationMinutes = 1,
@@ -70,7 +71,7 @@ fun initTestSuite() {
             // Limit the number of active user objects, A value of
             // zero sets the number of active users to unlimited.
             // L value from Little's Law.
-            userProfile = listOf(NUM_THREADS, 1, 0),
+            userProfile = listOf(0),
 
             // Actions to be performed on the user objects during this test.
             // 100 actions in total with a 50%/50% split between
@@ -86,7 +87,7 @@ fun initTestSuite() {
     testSuite.add(
         TestCase(
             // The name of this test.
-            name = "Test4 (Workflow Test)",
+            name = "Test3 (Workflow Test)",
 
             // Duration in minutes
             initDurationMinutes = 0,
@@ -111,7 +112,7 @@ fun initTestSuite() {
     // Test 5.
     testSuite.add(
         TestCase(
-            name = "Test5 (Terminate)",
+            name = "Test4 (Terminate)",
             arrivalRate = 5.0,
             userProfile = listOf(1),
             actions = listOf(Action(9))

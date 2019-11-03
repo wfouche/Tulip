@@ -621,7 +621,7 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         var timeMillis_start: Long
         var timeMillis_end: Long = timeMillis()
 
-        fun assignTasks(durationMinutes: Int, name: String, runId: Int = 0) {
+        fun assignTasks(durationMinutes: Int, name: String, runId:Int, arrivalRate: Double = -1.0) {
             if (durationMinutes == 0) {
                 return
             }
@@ -635,7 +635,15 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
             timeMillis_end = timeMillis_start + durationMinutes * 60 * 1000
 
             var rateGoverner: RateGovernor? = null
-            if (test.arrivalRate > 0.0) rateGoverner = RateGovernor(timeMillis_start, test.arrivalRate)
+            if (arrivalRate > -1.0) {
+                // Warm-up duration at max speed, ungoverned.
+            }
+            else {
+                // Ramp-up or Main duration.
+                if (test.arrivalRate > 0.0) {
+                    rateGoverner = RateGovernor(timeMillis_start, test.arrivalRate)
+                }
+            }
 
             var num_actions: Int = 0
             var num_success: Int = 0
@@ -666,7 +674,10 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
             Console.put("num_actions = ${num_actions}, num_success = ${num_success}, num_failed = ${num_actions - num_success}")
             DataCollector.printStats(num_actions, duration_millis, false)
         }
-        assignTasks(test.initDurationMinutes, "Warm-up")
+        if (indexUserProfile == 0) {
+            assignTasks(test.warmDurationMinutes, "Warm-up", 0, 0.0)
+        }
+        assignTasks(test.initDurationMinutes, "Ramp-up", 0)
         for (runId in 0 until test.repeatCount) {
             assignTasks(test.mainDurationMinutes, "Main", runId)
         }
