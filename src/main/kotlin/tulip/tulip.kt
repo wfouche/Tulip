@@ -48,7 +48,7 @@ data class TestCase(
         //
         // Ramp-up executed once per every iteration of TestCase.
         //
-        val initDurationMinutes: Int = 0,
+        val rampDurationMinutes: Int = 0,
 
         // Main duration in minutes.
         // The results from this period are reported.
@@ -553,7 +553,7 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         actionList.shuffle(rnd)
     }
     repeat(NUM_USERS) {
-        if ((test.initDurationMinutes == 0) && (test.mainDurationMinutes == 0)) {
+        if ((test.rampDurationMinutes == 0) && (test.mainDurationMinutes == 0)) {
             userActions[it] = null
         } else {
             userActions[it] = createActionsGenerator(actionList)
@@ -582,7 +582,7 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         return num_success
     }
 
-    if ((test.initDurationMinutes == 0) && (test.mainDurationMinutes == 0)) {
+    if ((test.rampDurationMinutes == 0) && (test.mainDurationMinutes == 0)) {
         DataCollector.clearStats()
 
         // Special bootstrap test case to initialize terminals, and other objects.
@@ -677,7 +677,7 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         if (indexUserProfile == 0) {
             assignTasks(test.warmDurationMinutes, "Warm-up", 0, 0.0)
         }
-        assignTasks(test.initDurationMinutes, "Ramp-up", 0)
+        assignTasks(test.rampDurationMinutes, "Ramp-up", 0)
         for (runId in 0 until test.repeatCount) {
             assignTasks(test.mainDurationMinutes, "Main", runId)
         }
