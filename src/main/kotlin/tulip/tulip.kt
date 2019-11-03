@@ -38,10 +38,23 @@ data class TestCase(
 
         // Warm-up period in minutes.
         // The results from this period are discarded.
+        //
+        // Warm-up only executed once per TestCase.
+        //
+        val warmDurationMinutes: Int = 0,
+
+        // Ramp-up period in minutes.
+        // The results from this period are discarded.
+        //
+        // Ramp-up executed once per every iteration of TestCase.
+        //
         val initDurationMinutes: Int = 0,
 
         // Main duration in minutes.
         // The results from this period are reported.
+        //
+        // Main executed once per every iteration of TestCase.
+        //
         val mainDurationMinutes: Int = 0,
 
         // List of actions to be performed.
