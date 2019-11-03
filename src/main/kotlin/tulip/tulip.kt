@@ -438,8 +438,11 @@ object DataCollector : Thread() {
 
             Console.put("  average number of actions completed per second = ${"%.3f".format(Locale.US, aps)}")
             Console.put("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, art)}")
+            Console.put("")
             Console.put("  duration of benchmark (in seconds) = ${duration_seconds}")
             Console.put("  number of actions completed = ${num_actions}")
+
+            Console.put("")
             Console.put("  standard deviation (response time) (millis) = ${"%.3f".format(Locale.US, sdev)}")
 
             val percentiles = mainTestCase.percentiles
@@ -448,6 +451,7 @@ object DataCollector : Thread() {
                 Console.put("  ${kk}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
             }
 
+            Console.put("")
             Console.put("  minimum response time (millis) = ${"%.3f".format(Locale.US, min_rt)}")
             Console.put("  maximum response time (millis) = ${"%.3f".format(Locale.US, max_rt)} at ${latencyMap_max_ts}")
 
@@ -459,7 +463,7 @@ object DataCollector : Thread() {
                 cpu_load += CpuLoadMetrics.systemCpuStats.take()
                 i += 1.0
             }
-            Console.put("  average cpu load (system)  = ${"%.3f".format(Locale.US, cpu_load / i)}")
+            Console.put("  average cpu load (system)  = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
 
             cpu_load = 0.0
             i = 0.0
@@ -468,7 +472,7 @@ object DataCollector : Thread() {
                 cpu_load += CpuLoadMetrics.processCpuStats.take()
                 i += 1.0
             }
-            Console.put("  average cpu load (process) = ${"%.3f".format(Locale.US,cpu_load / i)}")
+            Console.put("  average cpu load (process) = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
 
             handshakeQueue.put(0)
         }
@@ -729,7 +733,12 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
             num_success += drainRspQueue()
             val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
             Console.put("${name} run ${runId}: end   (${java.time.LocalDateTime.now()})")
-            Console.put("num_actions = ${num_actions}, num_success = ${num_success}, num_failed = ${num_actions - num_success}")
+
+            Console.put("")
+            Console.put("  num_actions = ${num_actions}")
+            Console.put("  num_success = ${num_success}")
+            Console.put("  num_failed  = ${num_actions - num_success}")
+
             DataCollector.printStats(num_actions, duration_millis, false)
         }
         if (indexUserProfile == 0) {
@@ -754,10 +763,10 @@ fun initTulip() {
         System.exit(0)
     }
     while (getProcessCpuLoad() == java.lang.Double.NaN) {
-        delay(1000)
+        delay(250)
     }
     while (getSystemCpuLoad() == java.lang.Double.NaN) {
-        delay(1000)
+        delay(250)
     }
     CpuLoadMetrics.start()
 }
