@@ -281,6 +281,45 @@ object Console : Thread() {
 
 /*-------------------------------------------------------------------------*/
 
+object CpuLoadMetrics : Thread() {
+
+    init {
+        isDaemon = true
+        //start()
+    }
+
+    val systemCpuStats = Queue<Double>(1000)
+    val processCpuStats = Queue<Double>(1000)
+
+    override fun run() {
+        var timeMillis_next: Long = timeMillis()
+        var i = 0
+        var total_cpu_system: Double = 0.0
+        var total_cpu_process: Double = 0.0
+        while (true) {
+            timeMillis_next += 1000
+            while (timeMillis() < timeMillis_next) {
+                delay(250)
+            }
+            total_cpu_system += getSystemCpuLoad()
+            total_cpu_process += getProcessCpuLoad()
+            i += 1
+            if (i % 10 == 0) {
+                val avg_cpu_system = total_cpu_system / 10.0
+                val avg_cpu_process = total_cpu_process / 10.0
+                systemCpuStats.put(avg_cpu_system)
+                processCpuStats.put(avg_cpu_process)
+                //println("${i}, ${avg_cpu_system}, ${avg_cpu_process}")
+                total_cpu_system = 0.0
+                total_cpu_process = 0.0
+                i = 0
+            }
+        }
+    }
+}
+
+/*-------------------------------------------------------------------------*/
+
 object DataCollector : Thread() {
 
     init {
@@ -411,6 +450,25 @@ object DataCollector : Thread() {
 
             Console.put("  minimum response time (millis) = ${"%.3f".format(Locale.US, min_rt)}")
             Console.put("  maximum response time (millis) = ${"%.3f".format(Locale.US, max_rt)} at ${latencyMap_max_ts}")
+
+            Console.put("")
+            var cpu_load: Double = 0.0
+            var i = 0.0
+            while (!CpuLoadMetrics.systemCpuStats.isEmpty())
+            {
+                cpu_load += CpuLoadMetrics.systemCpuStats.take()
+                i += 1.0
+            }
+            Console.put("  average cpu load (system)  = ${"%.3f".format(Locale.US, cpu_load / i)}")
+
+            cpu_load = 0.0
+            i = 0.0
+            while (!CpuLoadMetrics.processCpuStats.isEmpty())
+            {
+                cpu_load += CpuLoadMetrics.processCpuStats.take()
+                i += 1.0
+            }
+            Console.put("  average cpu load (process) = ${"%.3f".format(Locale.US,cpu_load / i)}")
 
             handshakeQueue.put(0)
         }
@@ -695,6 +753,13 @@ fun initTulip() {
         println("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
         System.exit(0)
     }
+    while (getProcessCpuLoad() == java.lang.Double.NaN) {
+        delay(1000)
+    }
+    while (getSystemCpuLoad() == java.lang.Double.NaN) {
+        delay(1000)
+    }
+    CpuLoadMetrics.start()
 }
 
 /*-------------------------------------------------------------------------*/
