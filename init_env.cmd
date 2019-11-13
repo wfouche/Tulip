@@ -1,0 +1,1 @@
+set JAVA_HOME="c:\Java\jdk-11.0.5+10"
