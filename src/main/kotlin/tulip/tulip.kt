@@ -774,6 +774,7 @@ fun initTulip() {
 /*-------------------------------------------------------------------------*/
 
 fun runTulip() {
+    println("Tulip (${java.lang.System.getProperty("java.vendor")}, ${java.lang.System.getProperty("java.runtime.version")})\n")
     initTulip()
     initTestSuite()
     testSuite.forEachIndexed { indexTestCase, testCase ->
