@@ -17,68 +17,68 @@ import java.util.Locale
 /*-------------------------------------------------------------------------*/
 
 data class Action(
-        //
-        // Numeric action ID.
-        //
-        val actionId: Int,
+    //
+    // Numeric action ID.
+    //
+    val actionId: Int,
 
-        //
-        // Number of occurrences of this action relative to other actions.
-        // Set weight to 0 (or use default value) when a workflow should be specified.
-        val weight: Int = 0
+    //
+    // Number of occurrences of this action relative to other actions.
+    // Set weight to 0 (or use default value) when a workflow should be specified.
+    val weight: Int = 0
 )
 
 /*-------------------------------------------------------------------------*/
 
 data class TestCase(
-        //
-        // Name of the benchmark test.
-        //
-        val name: String = "",
+    //
+    // Name of the benchmark test.
+    //
+    val name: String = "",
 
-        // Warm-up period in minutes.
-        // The results from this period are discarded.
-        //
-        // Warm-up only executed once per TestCase.
-        //
-        val warmDurationMinutes: Int = 0,
+    // Warm-up period in minutes.
+    // The results from this period are discarded.
+    //
+    // Warm-up only executed once per TestCase.
+    //
+    val warmDurationMinutes: Int = 0,
 
-        // Ramp-up period in minutes.
-        // The results from this period are discarded.
-        //
-        // Ramp-up executed once per every iteration of TestCase.
-        //
-        val rampDurationMinutes: Int = 0,
+    // Ramp-up period in minutes.
+    // The results from this period are discarded.
+    //
+    // Ramp-up executed once per every iteration of TestCase.
+    //
+    val rampDurationMinutes: Int = 0,
 
-        // Main duration in minutes.
-        // The results from this period are reported.
-        //
-        // Main executed once per every iteration of TestCase.
-        //
-        val mainDurationMinutes: Int = 0,
+    // Main duration in minutes.
+    // The results from this period are reported.
+    //
+    // Main executed once per every iteration of TestCase.
+    //
+    val mainDurationMinutes: Int = 0,
 
-        // List of actions to be performed.
-        // If the weights of all the actions are zero (0), then treat the action list
-        // as a workflow to be executed per user object.
-        val actions: List<Action>,
+    // List of actions to be performed.
+    // If the weights of all the actions are zero (0), then treat the action list
+    // as a workflow to be executed per user object.
+    val actions: List<Action>,
 
-        // https://en.wikipedia.org/wiki/Queueing_theory
-        //
-        // The average arrival rate (arrivals per second) to be maintained.
-        //
-        val arrivalRate: Double = 0.0,
+    // https://en.wikipedia.org/wiki/Queueing_theory
+    //
+    // The average arrival rate (arrivals per second) to be maintained.
+    //
+    val arrivalRate: Double = 0.0,
 
-        // https://en.wikipedia.org/wiki/Little%27s_Law
-        //
-        // This value represents the "L" in Little's Law (equation)
-        //
-        val userProfile: List<Int> = listOf(0),
+    // https://en.wikipedia.org/wiki/Little%27s_Law
+    //
+    // This value represents the "L" in Little's Law (equation)
+    //
+    val userProfile: List<Int> = listOf(0),
 
-        // Repeat a benchmark test this number of times
-        val repeatCount: Int = 1,
+    // Repeat a benchmark test this number of times
+    val repeatCount: Int = 1,
 
-        // List of percentile values to report on.
-        val percentiles: List<Double> = listOf(90.0, 95.0, 99.0)
+    // List of percentile values to report on.
+    val percentiles: List<Double> = listOf(90.0, 95.0, 99.0)
 )
 
 /*-------------------------------------------------------------------------*/
@@ -88,19 +88,19 @@ data class TestCase(
 //
 open class User(val userId: Int) {
 
-    var tranId: Int = 0
+    //var tranId: Int = 0
 
     private val map = arrayOf(
-            ::initialize,
-            ::action1,
-            ::action2,
-            ::action3,
-            ::action4,
-            ::action5,
-            ::action6,
-            ::action7,
-            ::action8,
-            ::terminate
+        ::initialize,
+        ::action1,
+        ::action2,
+        ::action3,
+        ::action4,
+        ::action5,
+        ::action6,
+        ::action7,
+        ::action8,
+        ::terminate
     )
 
     open fun initialize(): Boolean = false
@@ -115,7 +115,7 @@ open class User(val userId: Int) {
     open fun terminate(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
-        tranId += 1
+        //tranId += 1
         return map[actionId].invoke().or(false)
     }
 
@@ -265,17 +265,22 @@ object Console : Thread() {
         start()
     }
 
-    private var q = Queue<String>(10)
+    private var q = Queue<MutableList<String>>(10)
 
     override fun run() {
         while (true) {
-            val s: String = q.take()
-            println(s)
+            val list: MutableList<String> = q.take()
+            for (s in list) println(s)
         }
     }
 
     fun put(s: String) {
-        q.put(s)
+        val list = listOf(s)
+        put(list.toMutableList())
+    }
+
+    fun put(list: MutableList<String>) {
+        q.put(list)
     }
 }
 
@@ -430,32 +435,32 @@ object DataCollector : Thread() {
             // max rt
             val max_rt = latencyMap_max_rt / 1000.0
 
-            Console.put("")
+            val output = mutableListOf("")
             if (printMap) {
-                Console.put("latencyMap = " + latencyMap.toString())
-                Console.put("")
+                output.add("latencyMap = " + latencyMap.toString())
+                output.add("")
             }
 
-            Console.put("  average number of actions completed per second = ${"%.3f".format(Locale.US, aps)}")
-            Console.put("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, art)}")
-            Console.put("")
-            Console.put("  duration of benchmark (in seconds) = ${duration_seconds}")
-            Console.put("  number of actions completed = ${num_actions}")
+            output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, aps)}")
+            output.add("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, art)}")
+            output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, sdev)}")
+            output.add("")
+            output.add("  duration of benchmark (in seconds) = ${duration_seconds}")
+            output.add("  number of actions completed = ${num_actions}")
 
-            Console.put("")
-            Console.put("  standard deviation (response time) (millis) = ${"%.3f".format(Locale.US, sdev)}")
+            output.add("")
 
             val percentiles = mainTestCase.percentiles
             for (kk in percentiles) {
                 val px = percentile(kk, min_rt, max_rt)
-                Console.put("  ${kk}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
+                output.add("  ${kk}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
             }
 
-            Console.put("")
-            Console.put("  minimum response time (millis) = ${"%.3f".format(Locale.US, min_rt)}")
-            Console.put("  maximum response time (millis) = ${"%.3f".format(Locale.US, max_rt)} at ${latencyMap_max_ts}")
+            output.add("")
+            output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, min_rt)}")
+            output.add("  maximum response time (millis) = ${"%.3f".format(Locale.US, max_rt)} at ${latencyMap_max_ts}")
 
-            Console.put("")
+            output.add("")
             var cpu_load: Double = 0.0
             var i = 0.0
             while (!CpuLoadMetrics.systemCpuStats.isEmpty())
@@ -463,7 +468,7 @@ object DataCollector : Thread() {
                 cpu_load += CpuLoadMetrics.systemCpuStats.take()
                 i += 1.0
             }
-            Console.put("  average cpu load (system)  = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
+            output.add("  average cpu load (system)  = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
 
             cpu_load = 0.0
             i = 0.0
@@ -472,7 +477,9 @@ object DataCollector : Thread() {
                 cpu_load += CpuLoadMetrics.processCpuStats.take()
                 i += 1.0
             }
-            Console.put("  average cpu load (process) = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
+            output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
+
+            Console.put(output)
 
             handshakeQueue.put(0)
         }
@@ -578,10 +585,11 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
     mainTestCase = test
 
-    Console.put("")
-    Console.put("======================================================================")
-    Console.put("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${test.name} - ${java.time.LocalDateTime.now()}")
-    Console.put("======================================================================")
+    val output = mutableListOf("")
+    output.add("======================================================================")
+    output.add("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${test.name} - ${java.time.LocalDateTime.now()}")
+    output.add("======================================================================")
+    Console.put(output)
 
     val rnd = ThreadLocalRandom.current()
 
