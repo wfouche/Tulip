@@ -7,7 +7,7 @@
 plugins {
 
     // Add support for AsciidoctorJ
-    id("org.asciidoctor.convert") version "2.3.0"
+    id("org.asciidoctor.convert") version "2.4.0"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.3.60"
