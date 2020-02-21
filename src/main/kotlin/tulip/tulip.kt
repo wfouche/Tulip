@@ -463,21 +463,21 @@ object DataCollector : Thread() {
             output.add("")
             var cpu_load: Double = 0.0
             var i = 0.0
-            while (!CpuLoadMetrics.systemCpuStats.isEmpty())
-            {
-                cpu_load += CpuLoadMetrics.systemCpuStats.take()
-                i += 1.0
-            }
-            output.add("  average cpu load (system)  = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
-
-            cpu_load = 0.0
-            i = 0.0
             while (!CpuLoadMetrics.processCpuStats.isEmpty())
             {
                 cpu_load += CpuLoadMetrics.processCpuStats.take()
                 i += 1.0
             }
             output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
+
+            cpu_load = 0.0
+            i = 0.0
+            while (!CpuLoadMetrics.systemCpuStats.isEmpty())
+            {
+                cpu_load += CpuLoadMetrics.systemCpuStats.take()
+                i += 1.0
+            }
+            output.add("  average cpu load (system)  = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
 
             Console.put(output)
 
