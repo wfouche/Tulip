@@ -157,11 +157,10 @@ fun delayMicrosRandom(delayFrom: Long, delayTo: Long) {
 
 /*-------------------------------------------------------------------------*/
 
-fun getProcessCpuLoad(): Double {
-
+fun getLoadValue(counter: String): Double {
     val mbs = ManagementFactory.getPlatformMBeanServer()
     val name = ObjectName.getInstance("java.lang:type=OperatingSystem")
-    val list = mbs.getAttributes(name, arrayOf("ProcessCpuLoad"))
+    val list = mbs.getAttributes(name, arrayOf(counter.toString()))
 
     if (list.isEmpty()) return java.lang.Double.NaN
 
@@ -173,20 +172,12 @@ fun getProcessCpuLoad(): Double {
     // returns a percentage value with 1 decimal point precision
 }
 
+fun getProcessCpuLoad(): Double {
+    return getLoadValue("ProcessCpuLoad")
+}
+
 fun getSystemCpuLoad(): Double {
-
-    val mbs = ManagementFactory.getPlatformMBeanServer()
-    val name = ObjectName.getInstance("java.lang:type=OperatingSystem")
-    val list = mbs.getAttributes(name, arrayOf("SystemCpuLoad"))
-
-    if (list.isEmpty()) return java.lang.Double.NaN
-
-    val att = list[0] as Attribute
-    val value = att.getValue() as Double
-
-    // usually takes a couple of seconds before we get real values
-    return if (value == -1.0) java.lang.Double.NaN else (value * 1000).toInt() / 10.0
-    // returns a percentage value with 1 decimal point precision
+    return getLoadValue("SystemCpuLoad")
 }
 
 /*-------------------------------------------------------------------------*/
