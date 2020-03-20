@@ -13,7 +13,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun initialize(): Boolean {
+    override fun init(): Boolean {
         val actionId = 0
         Console.put("  ${userId} -> ${actionId}")
         return true
@@ -21,7 +21,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action1(): Boolean {
+    override fun action01(): Boolean {
         // 6 ms delay (average)
         delayMillisRandom(1, 11)
         return true
@@ -29,7 +29,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action2(): Boolean {
+    override fun action02(): Boolean {
         // 14 ms delay (average)
         delayMillisRandom(1, 27)
         return true
@@ -37,7 +37,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action3(): Boolean {  /*
+    override fun action03(): Boolean {  /*
         val response = try {
             URL("https://jsonplaceholder.typicode.com/photos/${userId+1}")
             .openStream()
@@ -52,7 +52,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action4(): Boolean {
+    override fun action04(): Boolean {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 4
@@ -62,7 +62,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action5(): Boolean {
+    override fun action05(): Boolean {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 5
@@ -72,7 +72,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action6(): Boolean {
+    override fun action06(): Boolean {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 6
@@ -82,7 +82,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action7(): Boolean {
+    override fun action07(): Boolean {
         val actionId = 7
         Console.put("  ${userId} -> ${actionId}")
         return true
@@ -90,14 +90,14 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action8(): Boolean {
+    override fun action08(): Boolean {
         //val actionId = 8
         return true
     }
 
     // ----------------------------------------------------------------- //
 
-    override fun terminate(): Boolean {
+    override fun done(): Boolean {
         Console.put("  Terminate: UserId = $userId")
         delay(100)
         return true
