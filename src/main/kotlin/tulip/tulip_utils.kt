@@ -34,21 +34,21 @@ fun llq(x: Long): Long {
 /*-------------------------------------------------------------------------*/
 
 //
-// Use this function to calculate elapsed time in milliseconds.
+// Use this function to get a millisecond accurate timestamp.
 //
 fun timeMillis(): Long {
     return TimeUnit.NANOSECONDS.toMillis(timeNanos())
 }
 
 //
-// Use this function to calculate elapsed time in microseconds.
+// Use this function to get a microsecond accurate timestamp.
 //
 fun timeMicros(): Long {
     return TimeUnit.NANOSECONDS.toMicros(timeNanos())
 }
 
 //
-// Use this function to calculate elapsed time in nanoseconds.
+// Use this function to get a nanosecond accurate timestamp.
 //
 fun timeNanos(): Long {
     return System.nanoTime()
@@ -56,18 +56,27 @@ fun timeNanos(): Long {
 
 /*-------------------------------------------------------------------------*/
 
+//
+// Use this function to calculate elapsed time in milliseconds.
+//
 inline fun elapsedTimeMillis(block: () -> Unit): Long {
     val start = timeMillis()
     block()
     return timeMillis() - start
 }
 
+//
+// Use this function to calculate elapsed time in microseconds.
+//
 inline fun elapsedTimeMicros(block: () -> Unit): Long {
     val start = timeMicros()
     block()
     return timeMicros() - start
 }
 
+//
+// Use this function to calculate elapsed time in nanoseconds.
+//
 inline fun elapsedTimeNanos(block: () -> Unit): Long {
     val start = timeNanos()
     block()
@@ -76,6 +85,10 @@ inline fun elapsedTimeNanos(block: () -> Unit): Long {
 
 /*-------------------------------------------------------------------------*/
 
+//
+// It is worth reading the article on Accuracy vs Precision
+// at https://en.wikipedia.org/wiki/Accuracy_and_precision
+//
 private fun measureTimeAccuracy(time: () -> Long): Long {
     val a = LongArray(1000)
     var z: Long
@@ -116,6 +129,8 @@ fun accuracyTimeMicros(): Long {
 fun accuracyTimeNanos(): Long {
     return measureTimeAccuracy(::timeNanos)
 }
+
+/*-------------------------------------------------------------------------*/
 
 fun accuracySystemCurrentTimeMillis(): Long {
     fun System_currentTimeMillis(): Long {
