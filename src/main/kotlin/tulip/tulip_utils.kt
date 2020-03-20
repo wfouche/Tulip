@@ -37,21 +37,21 @@ fun llq(x: Long): Long {
 /*-------------------------------------------------------------------------*/
 
 //
-// Use this function to get a millisecond accurate timestamp.
+// Use this monotonically increasing function to get a millisecond accurate timestamp.
 //
 fun timeMillis(): Long {
     return TimeUnit.NANOSECONDS.toMillis(timeNanos())
 }
 
 //
-// Use this function to get a microsecond accurate timestamp.
+// Use this monotonically increasing function to get a microsecond accurate timestamp.
 //
 fun timeMicros(): Long {
     return TimeUnit.NANOSECONDS.toMicros(timeNanos())
 }
 
 //
-// Use this function to get a nanosecond accurate timestamp.
+// Use this monotonically increasing function to get a nanosecond accurate timestamp.
 //
 fun timeNanos(): Long {
     return System.nanoTime()
