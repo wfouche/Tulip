@@ -16,6 +16,25 @@ import java.util.Locale
 
 /*-------------------------------------------------------------------------*/
 
+//
+// A reference to the current TestCase being executed.
+//
+var mainTestCase = TestCase(actions = listOf(Action(0)))
+
+//
+// Arrays of user objects and user actions.
+//
+
+val userObjects = arrayOfNulls<User>(NUM_USERS)
+val userActions = arrayOfNulls<Iterator<Int>>(NUM_USERS)
+
+//
+// Array of Worker thread objects of a concrete type.
+//
+var userThreads = arrayOfNulls<UserThread>(NUM_THREADS)
+
+/*-------------------------------------------------------------------------*/
+
 data class Action(
     //
     // Numeric action ID.
@@ -84,47 +103,28 @@ data class TestCase(
 /*-------------------------------------------------------------------------*/
 
 //
-// Array of user objects of a concrete type. Currently supporting up to
-// 100,000 user objects.
-//
-
-val userObjects = arrayOfNulls<User>(NUM_USERS)
-val userActions = arrayOfNulls<Iterator<Int>>(NUM_USERS)
-
-var mainTestCase = TestCase(actions = listOf(Action(0)))
-
-/*-------------------------------------------------------------------------*/
-
-//
-// Array of Worker thread objects of a concrete type.
-//
-var userThreads = arrayOfNulls<UserThread>(NUM_THREADS)
-
-/*-------------------------------------------------------------------------*/
-
-//
 // Task data class. Tasks are created be the main thread and send to User objects to perform known actions.
 //
 data class Task(
 
-        // The user ID of the user object to which an operation should be applied.
-        val userId: Int,
+    // The user ID of the user object to which an operation should be applied.
+    val userId: Int,
 
-        // Total number of user objects.
-        val numUsers: Int,
+    // Total number of user objects.
+    val numUsers: Int,
 
-        // Total number of work threads servicing user objects.
-        val numThreads: Int,
+    // Total number of work threads servicing user objects.
+    val numThreads: Int,
 
-        // Numeric id of the action (operation) to be invoked on a user object.
-        val actionId: Int,
+    // Numeric id of the action (operation) to be invoked on a user object.
+    val actionId: Int,
 
-        // Duration (elapsed time) in microseconds.
-        var durationMicros: Long = 0,
+    // Duration (elapsed time) in microseconds.
+    var durationMicros: Long = 0,
 
-        var success: Boolean = false,
+    var success: Boolean = false,
 
-        var rspQueue: Queue<Int>? = null
+    var rspQueue: Queue<Int>? = null
 )
 
 /*-------------------------------------------------------------------------*/
@@ -605,8 +605,8 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
 
         var num_actions: Int = 0
         var num_success: Int = 0
-        var duration_millis: Int
-        var timeMillis_start: Long = timeMillis()
+        val duration_millis: Int
+        val timeMillis_start: Long = timeMillis()
         for (aid in actionList) {
             for (uid in userList) {
                 // Limit the number of active users.
@@ -709,10 +709,10 @@ fun initTulip() {
         println("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
         System.exit(0)
     }
-    while (getProcessCpuLoad() == java.lang.Double.NaN) {
+    while (getProcessCpuLoad().isNaN()) {
         delay(250)
     }
-    while (getSystemCpuLoad() == java.lang.Double.NaN) {
+    while (getSystemCpuLoad().isNaN()) {
         delay(250)
     }
     CpuLoadMetrics.start()
