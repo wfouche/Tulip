@@ -12,6 +12,27 @@ import javax.management.ObjectName
 
 /*-------------------------------------------------------------------------*/
 
+// Round value x to the nearest multiple of n.
+fun roundXN(x: Long, n: Long): Long {
+    return if (x >= 0)
+        ((x + n / 2.0) / n).toLong() * n
+    else
+        ((x - n / 2.0) / n).toLong() * n
+}
+
+/*-------------------------------------------------------------------------*/
+
+// Log Linear Quantization function
+fun llq(x: Long): Long {
+    // Do not quantize the values from 0 to 9.
+    if (x < 10) return x
+    val a: Double = Math.floor(Math.log10(x.toDouble())) - 1.0
+    val n: Long = (Math.pow(10.0, a)).toLong() * 5
+    return roundXN(x, n)
+}
+
+/*-------------------------------------------------------------------------*/
+
 //
 // Use this function to calculate elapsed time in milliseconds.
 //
