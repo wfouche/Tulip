@@ -10,6 +10,9 @@ import java.util.concurrent.TimeUnit
 import javax.management.Attribute
 import javax.management.ObjectName
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+
 /*-------------------------------------------------------------------------*/
 
 // Round value x to the nearest multiple of n.

@@ -23,6 +23,9 @@ repositories {
 }
 
 dependencies {
+    // Include JAR files in libs folder
+    implementation(fileTree(mapOf("dir" to "libs", "include" to listOf("*.jar"))))
+
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
 
