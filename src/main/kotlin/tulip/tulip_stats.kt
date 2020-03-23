@@ -4,6 +4,13 @@ import java.util.*
 import java.util.concurrent.ArrayBlockingQueue as Queue
 import java.util.concurrent.LinkedBlockingQueue
 
+import com.google.gson.Gson
+import com.google.gson.GsonBuilder
+
+data class ActionStatsSummary(
+    val duration_seconds: Double = 0.0
+)
+
 class ActionStats {
 
     var updateDated: Boolean = false
@@ -131,7 +138,6 @@ class ActionStats {
         output.add("  average cpu load (system)  = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
 
         Console.put(output)
-
     }
 
     fun updateStats(task: Task) {
