@@ -30,10 +30,6 @@ var userThreads = arrayOfNulls<UserThread>(NUM_THREADS)
 
 /*-------------------------------------------------------------------------*/
 
-val userActionStats = arrayOfNulls<User>(NUM_ACTIONS)
-
-/*-------------------------------------------------------------------------*/
-
 data class Action(
     //
     // Numeric action ID.
@@ -184,7 +180,7 @@ class UserThread(val threadId: Int) : Thread() {
                 if (u.processAction(task.actionId)) task.status=1 else task.status=0
             }
 
-            task.rspQueue?.put(task)
+            task.rspQueue!!.put(task)
         }
     }
 }
@@ -194,8 +190,8 @@ class UserThread(val threadId: Int) : Thread() {
 object Console : Thread() {
 
     init {
-        isDaemon = true
         //priority = Thread.MAX_PRIORITY
+        isDaemon = true
         start()
     }
 
