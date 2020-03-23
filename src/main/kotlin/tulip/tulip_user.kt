@@ -4,6 +4,9 @@ package tulip
 
 /*-------------------------------------------------------------------------*/
 
+
+val NUM_ACTIONS = 100
+
 //
 // Open base class for a Virtual User.
 //
@@ -109,7 +112,6 @@ open class User(val userId: Int) {
         ::action96,
         ::action97,
         ::action98,
-        ::action99,
         ::done
     )
 
@@ -212,7 +214,6 @@ open class User(val userId: Int) {
     open fun action96(): Boolean = false
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
-    open fun action99(): Boolean = false
     open fun done(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {

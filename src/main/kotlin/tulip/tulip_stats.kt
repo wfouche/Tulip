@@ -4,10 +4,9 @@ import java.util.*
 import java.util.concurrent.ArrayBlockingQueue as Queue
 import java.util.concurrent.LinkedBlockingQueue
 
-object DataCollector {
+class ActionStats {
 
-    init {
-    }
+    var updateDated: Boolean = false
 
     val latencyMap = mutableMapOf<Long, Long>()
     var latencyMap_min_rt: Long = Long.MAX_VALUE
@@ -16,10 +15,7 @@ object DataCollector {
 
     var num_actions: Int = 0
 
-    // Queue used to block the main thread on while the DataCollector thread
-    // prints the results of a TestCase to the console.
-
-    fun printStats(num_actions: Int, duration_millis: Int, printMap: Boolean = false) {
+    fun printStats(num_actions: Int, duration_millis: Int, printMap: Boolean = false, test: TestCase) {
         val duration_seconds: Double = duration_millis.toDouble() / 1000.0
 
         // actions per second (aps)
@@ -105,7 +101,7 @@ object DataCollector {
 
         output.add("")
 
-        val percentiles = mainTestCase.percentiles
+        val percentiles = test.percentiles
         for (kk in percentiles) {
             val px = percentile(kk, min_rt, max_rt)
             output.add("  ${kk}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
@@ -139,10 +135,11 @@ object DataCollector {
     }
 
     fun updateStats(task: Task) {
+        updateDated = true
+
         // frequency map: count the number of times a given (key) response time occurred.
         // key = response time in microseconds (NOT milliseconds).
         // value = the number of times a given (key) response time occurred.
-
 
         val durationMicros = task.durationMicros
         val key = llq(durationMicros)
@@ -177,12 +174,34 @@ object DataCollector {
     }
 
     fun clearStats() {
+        updateDated = false
+
         latencyMap.clear()
         latencyMap_min_rt = Long.MAX_VALUE
         latencyMap_max_rt = Long.MIN_VALUE
         latencyMap_max_ts = ""
 
         num_actions = 0
+    }
+}
+
+object DataCollector {
+    val actionStats = Array(NUM_ACTIONS+1) {ActionStats()}
+
+    fun printStats(num_actions: Int, duration_millis: Int, printMap: Boolean = false, test: TestCase) {
+        actionStats[NUM_ACTIONS].printStats(num_actions, duration_millis, printMap, test)
+    }
+
+    fun updateStats(task: Task) {
+        assert(task.actionId < NUM_ACTIONS)
+        actionStats[NUM_ACTIONS].updateStats(task)
+        actionStats[task.actionId].updateStats(task)
+    }
+
+    fun clearStats() {
+        actionStats.forEach {
+            it.clearStats()
+        }
     }
 }
 

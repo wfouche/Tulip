@@ -17,11 +17,6 @@ import java.util.Locale
 /*-------------------------------------------------------------------------*/
 
 //
-// A reference to the current TestCase being executed.
-//
-var mainTestCase = TestCase(actions = listOf(Action(0)))
-
-//
 // Arrays of user objects and user actions.
 //
 
@@ -32,6 +27,10 @@ val userActions = arrayOfNulls<Iterator<Int>>(NUM_USERS)
 // Array of Worker thread objects of a concrete type.
 //
 var userThreads = arrayOfNulls<UserThread>(NUM_THREADS)
+
+/*-------------------------------------------------------------------------*/
+
+val userActionStats = arrayOfNulls<User>(NUM_ACTIONS)
 
 /*-------------------------------------------------------------------------*/
 
@@ -289,8 +288,6 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 /*-------------------------------------------------------------------------*/
 
 fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
-    mainTestCase = test
-
     val output = mutableListOf("")
     output.add("======================================================================")
     output.add("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${test.name} - ${java.time.LocalDateTime.now()}")
@@ -400,7 +397,7 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         }
         num_success += drainRspQueue()
         duration_millis = (timeMillis() - timeMillis_start).toInt()
-        DataCollector.printStats(num_actions, duration_millis, true)
+        DataCollector.printStats(num_actions, duration_millis, true, test)
     } else {
         // Normal test case.
         var timeMillis_start: Long
@@ -468,7 +465,7 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
             Console.put("  num_success = ${num_success}")
             Console.put("  num_failed  = ${num_actions - num_success}")
 
-            DataCollector.printStats(num_actions, duration_millis, false)
+            DataCollector.printStats(num_actions, duration_millis, false, test)
         }
         if (indexUserProfile == 0) {
             assignTasks(test.warmDurationMinutes, "Warm-up", 0, 0.0)
