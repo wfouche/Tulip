@@ -108,23 +108,23 @@ data class TestCase(
 data class Task(
 
     // The user ID of the user object to which an operation should be applied.
-    val userId: Int,
+    var userId: Int = -1,
 
     // Total number of user objects.
-    val numUsers: Int,
+    var numUsers: Int = -1,
 
     // Total number of work threads servicing user objects.
-    val numThreads: Int,
+    var numThreads: Int = -1,
 
     // Numeric id of the action (operation) to be invoked on a user object.
-    val actionId: Int,
+    var actionId: Int = -1,
 
     // Duration (elapsed time) in microseconds.
     var durationMicros: Long = 0,
 
-    var success: Boolean = false,
+    var rspQueue: Queue<Task>? = null,
 
-    var rspQueue: Queue<Int>? = null
+    var status: Int = -1
 )
 
 /*-------------------------------------------------------------------------*/
@@ -182,14 +182,10 @@ class UserThread(val threadId: Int) : Thread() {
             // Also calculate the elapsed time in microseconds.
             //
             task.durationMicros = elapsedTimeMicros {
-                task.success = u.processAction(task.actionId)
+                if (u.processAction(task.actionId)) task.status=1 else task.status=0
             }
 
-            //
-            // Forward response time data for this Action ID to the DataCollector
-            // thread to keep track of response times.
-            //
-            DataCollector.put(task)
+            task.rspQueue?.put(task)
         }
     }
 }
@@ -345,19 +341,22 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
     //
     val NUM_ACTIVE_USERS: Int = if (activeUsers == 0) 10 * NUM_THREADS else activeUsers
 
-    val rspQueue = Queue<Int>(NUM_ACTIVE_USERS)
+    val rspQueue = Queue<Task>(NUM_ACTIVE_USERS)
 
     fun initRspQueue() {
         repeat(NUM_ACTIVE_USERS) {
-            rspQueue.put(-1)
+            rspQueue.put(Task())
         }
     }
 
     fun drainRspQueue(): Int {
         var num_success: Int = 0
         repeat(NUM_ACTIVE_USERS) {
-            val rc: Int = rspQueue.take()
-            num_success += if (rc < 0) 0 else rc
+            val task: Task = rspQueue.take()
+            num_success += if (task.status < 0) 0 else {
+                DataCollector.updateStats(task)
+                task.status
+            }
         }
         return num_success
     }
@@ -381,11 +380,17 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         for (aid in actionList) {
             for (uid in userList) {
                 // Limit the number of active users.
-                val rc: Int = rspQueue.take()
-                num_success += if (rc < 0) 0 else rc
+                val task: Task = rspQueue.take()
+                num_success += if (task.status < 0) 0 else {
+                    DataCollector.updateStats(task)
+                    task.status
+                }
 
                 // Assign the task to the user object.
-                assignTask(Task(userId = uid, numUsers = NUM_USERS, numThreads = NUM_THREADS, actionId = aid, rspQueue = rspQueue))
+                task.apply {
+                    userId = uid; numUsers = NUM_USERS; numThreads = NUM_THREADS; actionId = aid; this.rspQueue = rspQueue
+                }
+                assignTask(task)
 
                 // Limit the throughput rate , if required.
                 rateGoverner?.pace()
@@ -437,11 +442,17 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
                 val aid: Int = userActions[uid]!!.next()
 
                 // Limit the number of active users.
-                val rc: Int = rspQueue.take()
-                num_success += if (rc < 0) 0 else rc
+                val task: Task = rspQueue.take()
+                num_success += if (task.status < 0) 0 else {
+                    DataCollector.updateStats(task)
+                    task.status
+                }
 
                 // Assign the task to the user object.
-                assignTask(Task(userId = uid, numUsers = NUM_USERS, numThreads = NUM_THREADS, actionId = aid, rspQueue = rspQueue))
+                task.apply {
+                    userId = uid; numUsers = NUM_USERS; numThreads = NUM_THREADS; actionId = aid; this.rspQueue = rspQueue
+                }
+                assignTask(task)
 
                 // Limit the throughput rate , if required.
                 rateGoverner?.pace()
