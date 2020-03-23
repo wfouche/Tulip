@@ -193,7 +193,7 @@ object DataCollector {
     }
 
     fun updateStats(task: Task) {
-        assert(task.actionId < NUM_ACTIONS)
+        require(task.actionId < NUM_ACTIONS)
         actionStats[NUM_ACTIONS].updateStats(task)
         actionStats[task.actionId].updateStats(task)
     }

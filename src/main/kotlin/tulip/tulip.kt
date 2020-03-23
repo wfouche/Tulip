@@ -283,10 +283,10 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
+fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
     val output = mutableListOf("")
     output.add("======================================================================")
-    output.add("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${test.name} - ${java.time.LocalDateTime.now()}")
+    output.add("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${testCase.name} - ${java.time.LocalDateTime.now()}")
     output.add("======================================================================")
     Console.put(output)
 
@@ -305,16 +305,16 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
     val actionList = mutableListOf<Int>()
     var wSum: Int = 0
     var aCount: Int = 0
-    for (action: Action in test.actions) {
+    for (action: Action in testCase.actions) {
         wSum += action.weight
         aCount += 1
     }
     if (wSum == 0) {
-        for (action in test.actions) {
+        for (action in testCase.actions) {
             actionList.add(action.actionId)
         }
     } else {
-        for (action in test.actions) {
+        for (action in testCase.actions) {
             repeat(action.weight) {
                 actionList.add(action.actionId)
             }
@@ -322,7 +322,7 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         actionList.shuffle(rnd)
     }
     repeat(NUM_USERS) {
-        if ((test.rampDurationMinutes == 0) && (test.mainDurationMinutes == 0)) {
+        if ((testCase.rampDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
             userActions[it] = null
         } else {
             userActions[it] = createActionsGenerator(actionList)
@@ -354,14 +354,14 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         return num_success
     }
 
-    if ((test.rampDurationMinutes == 0) && (test.mainDurationMinutes == 0)) {
+    if ((testCase.rampDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
         DataCollector.clearStats()
 
         // Special bootstrap test case to initialize terminals, and other objects.
         // Typically only found at the start and end of a test suite.
         var rateGoverner: RateGovernor? = null
-        if (test.arrivalRate > 0.0) {
-            rateGoverner = RateGovernor(timeMillis(), test.arrivalRate)
+        if (testCase.arrivalRate > 0.0) {
+            rateGoverner = RateGovernor(timeMillis(), testCase.arrivalRate)
         }
 
         initRspQueue()
@@ -393,7 +393,7 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
         }
         num_success += drainRspQueue()
         duration_millis = (timeMillis() - timeMillis_start).toInt()
-        DataCollector.printStats(num_actions, duration_millis, true, test)
+        DataCollector.printStats(num_actions, duration_millis, true, testCase)
     } else {
         // Normal test case.
         var timeMillis_start: Long
@@ -418,8 +418,8 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
             }
             else {
                 // Ramp-up or Main duration.
-                if (test.arrivalRate > 0.0) {
-                    rateGoverner = RateGovernor(timeMillis_start, test.arrivalRate)
+                if (testCase.arrivalRate > 0.0) {
+                    rateGoverner = RateGovernor(timeMillis_start, testCase.arrivalRate)
                 }
             }
 
@@ -461,14 +461,14 @@ fun runTest(test: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUse
             Console.put("  num_success = ${num_success}")
             Console.put("  num_failed  = ${num_actions - num_success}")
 
-            DataCollector.printStats(num_actions, duration_millis, false, test)
+            DataCollector.printStats(num_actions, duration_millis, false, testCase)
         }
         if (indexUserProfile == 0) {
-            assignTasks(test.warmDurationMinutes, "Warm-up", 0, 0.0)
+            assignTasks(testCase.warmDurationMinutes, "Warm-up", 0, 0.0)
         }
-        assignTasks(test.rampDurationMinutes, "Ramp-up", 0)
-        for (runId in 0 until test.repeatCount) {
-            assignTasks(test.mainDurationMinutes, "Main", runId)
+        assignTasks(testCase.rampDurationMinutes, "Ramp-up", 0)
+        for (runId in 0 until testCase.repeatCount) {
+            assignTasks(testCase.mainDurationMinutes, "Main", runId)
         }
     }
 }
