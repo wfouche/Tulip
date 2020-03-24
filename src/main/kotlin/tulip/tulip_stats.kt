@@ -15,8 +15,8 @@ data class ActionSummary(
     var min_rt: Double = 0.0,
     var max_rt: Double = 0.0,
 
-    var percentiles: List<Double> = emptyList(),
-    var percentilesValues: List<Double> = mutableListOf<Double>()
+    var pk: List<Double> = emptyList(),
+    var pv: List<Double> = mutableListOf<Double>()
 
 )
 
@@ -127,15 +127,16 @@ class ActionStats {
 
         output.add("")
 
-        r.percentiles = test.percentiles
-        r.percentilesValues = mutableListOf<Double>().apply {
-            r.percentiles.forEach {
-                this.add(percentile(it, r.min_rt, r.max_rt))
+        r.pk = test.percentiles
+        r.pv = mutableListOf<Double>().apply {
+            r.pk.forEach {
+                val px = percentile(it, r.min_rt, r.max_rt)
+                this.add(px)
             }
         }
 
-        r.percentiles.forEachIndexed { index, percentile ->
-            val px = r.percentilesValues.elementAt(index)
+        r.pk.forEachIndexed { index, percentile ->
+            val px = r.pv.elementAt(index)
             output.add("  ${percentile}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
         }
 
