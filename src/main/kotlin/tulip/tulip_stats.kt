@@ -7,8 +7,17 @@ import java.util.concurrent.LinkedBlockingQueue
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
-data class ActionStatsSummary(
-    val duration_seconds: Double = 0.0
+data class ActionSummary(
+    var duration_seconds: Double = 0.0,
+    var aps: Double = 0.0,
+    var art: Double = 0.0,
+    var sdev: Double = 0.0,
+    var min_rt: Double = 0.0,
+    var max_rt: Double = 0.0,
+
+    var percentiles: List<Double> = emptyList(),
+    var percentilesValues: List<Double> = mutableListOf<Double>()
+
 )
 
 class ActionStats {
@@ -21,18 +30,24 @@ class ActionStats {
     var num_actions: Int = 0
     var num_success: Int = 0
 
+    val r = ActionSummary()
+
+    fun createSummary() {
+
+
+    }
     fun printStats(duration_millis: Int, printMap: Boolean = false, test: TestCase) {
-        val duration_seconds: Double = duration_millis.toDouble() / 1000.0
+        r.duration_seconds = duration_millis.toDouble() / 1000.0
 
         // actions per second (aps)
-        val aps: Double = num_actions / duration_seconds
+        r.aps = num_actions / r.duration_seconds
 
         // average response time (art) in milliseconds
-        val art: Double = latencyMap.map { it.value * it.key }.sum() / 1000.0 / num_actions
+        r.art = latencyMap.map { it.value * it.key }.sum() / 1000.0 / num_actions
 
         // standard deviation
         // HOWTO: https://www.statcan.gc.ca/edu/power-pouvoir/ch12/5214891-eng.htm#a2
-        val sdev: Double = Math.sqrt(latencyMap.map { it.value * Math.pow((it.key / 1000.0 - art), 2.0) }.sum() / num_actions)
+        r.sdev = Math.sqrt(latencyMap.map { it.value * Math.pow((it.key / 1000.0 - r.art), 2.0) }.sum() / num_actions)
 
         // 95th percentile value
         // HOWTO 1: https://www.youtube.com/watch?v=9QhU2grGU_E
@@ -87,10 +102,10 @@ class ActionStats {
         }
 
         // min rt
-        val min_rt = latencyMap_min_rt / 1000.0
+        r.min_rt = latencyMap_min_rt / 1000.0
 
         // max rt
-        val max_rt = latencyMap_max_rt / 1000.0
+        r.max_rt = latencyMap_max_rt / 1000.0
 
         val output = mutableListOf("")
 
@@ -103,24 +118,30 @@ class ActionStats {
         output.add("  num_failed  = ${num_actions - num_success}")
         output.add("")
 
-        output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, aps)}")
-        output.add("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, art)}")
-        output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, sdev)}")
+        output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
+        output.add("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, r.art)}")
+        output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)}")
         output.add("")
-        output.add("  duration of benchmark (in seconds) = ${duration_seconds}")
+        output.add("  duration of benchmark (in seconds) = ${r.duration_seconds}")
         output.add("  number of actions completed = ${num_actions}")
 
         output.add("")
 
-        val percentiles = test.percentiles
-        for (kk in percentiles) {
-            val px = percentile(kk, min_rt, max_rt)
-            output.add("  ${kk}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
+        r.percentiles = test.percentiles
+        r.percentilesValues = mutableListOf<Double>().apply {
+            r.percentiles.forEach {
+                this.add(percentile(it, r.min_rt, r.max_rt))
+            }
+        }
+
+        r.percentiles.forEachIndexed { index, percentile ->
+            val px = r.percentilesValues.elementAt(index)
+            output.add("  ${percentile}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
         }
 
         output.add("")
-        output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, min_rt)}")
-        output.add("  maximum response time (millis) = ${"%.3f".format(Locale.US, max_rt)} at ${latencyMap_max_ts}")
+        output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.min_rt)}")
+        output.add("  maximum response time (millis) = ${"%.3f".format(Locale.US, r.max_rt)} at ${latencyMap_max_ts}")
 
         output.add("")
         var cpu_load: Double = 0.0
