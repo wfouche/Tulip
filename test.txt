@@ -1,0 +1,42 @@
+Test0:
+
+   User0:
+
+      Warm0
+	  Init0
+      Main0
+
+		  Main run 2: begin (2019-11-01T18:01:04.231936300)
+		  Main run 2: end   (2019-11-01T18:02:04.218614500)
+		
+		  num_actions = 4823, num_success = 4823, num_failed = 0
+
+		  average number of actions completed per second = 80.359
+		  average duration/response time in milliseconds = 12.109
+		  duration of benchmark (in seconds) = 60.018
+		  number of actions completed = 4823
+		  standard deviation (response time) (millis) = 7.965
+		  90.0th percentile (response time) (millis) = 24.249
+		  95.0th percentile (response time) (millis) = 25.952
+		  99.0th percentile (response time) (millis) = 27.314
+		  minimum response time (millis) = 1.000
+		  maximum response time (millis) = 57.814 at 2019-11-01T18:01:36.796185500	  
+
+	  Init1
+	  Main1
+	  Init2
+	  Main2
+	  Init3
+	  Main3
+
+   User1:
+
+	  Init0
+	  Main0
+	  Init1
+	  Main1
+	  Init2
+	  Main2
+	  Init3
+	  Main3
+   
