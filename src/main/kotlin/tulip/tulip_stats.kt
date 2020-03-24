@@ -13,8 +13,6 @@ data class ActionStatsSummary(
 
 class ActionStats {
 
-    var updateDated: Boolean = false
-
     val latencyMap = mutableMapOf<Long, Long>()
     var latencyMap_min_rt: Long = Long.MAX_VALUE
     var latencyMap_max_rt: Long = Long.MIN_VALUE
@@ -147,8 +145,6 @@ class ActionStats {
     }
 
     fun updateStats(task: Task) {
-        updateDated = true
-
         // frequency map: count the number of times a given (key) response time occurred.
         // key = response time in microseconds (NOT milliseconds).
         // value = the number of times a given (key) response time occurred.
@@ -190,8 +186,6 @@ class ActionStats {
     }
 
     fun clearStats() {
-        updateDated = false
-
         latencyMap.clear()
         latencyMap_min_rt = Long.MAX_VALUE
         latencyMap_max_rt = Long.MIN_VALUE
