@@ -14,15 +14,15 @@ open class User(val userId: Int) {
 
     private val map = arrayOf(
         ::init,
-        ::action01,
-        ::action02,
-        ::action03,
-        ::action04,
-        ::action05,
-        ::action06,
-        ::action07,
-        ::action08,
-        ::action09,
+        ::action1,
+        ::action2,
+        ::action3,
+        ::action4,
+        ::action5,
+        ::action6,
+        ::action7,
+        ::action8,
+        ::action9,
         ::action10,
         ::action11,
         ::action12,
@@ -116,15 +116,15 @@ open class User(val userId: Int) {
     )
 
     open fun init(): Boolean = false
-    open fun action01(): Boolean = false
-    open fun action02(): Boolean = false
-    open fun action03(): Boolean = false
-    open fun action04(): Boolean = false
-    open fun action05(): Boolean = false
-    open fun action06(): Boolean = false
-    open fun action07(): Boolean = false
-    open fun action08(): Boolean = false
-    open fun action09(): Boolean = false
+    open fun action1(): Boolean = false
+    open fun action2(): Boolean = false
+    open fun action3(): Boolean = false
+    open fun action4(): Boolean = false
+    open fun action5(): Boolean = false
+    open fun action6(): Boolean = false
+    open fun action7(): Boolean = false
+    open fun action8(): Boolean = false
+    open fun action9(): Boolean = false
     open fun action10(): Boolean = false
     open fun action11(): Boolean = false
     open fun action12(): Boolean = false

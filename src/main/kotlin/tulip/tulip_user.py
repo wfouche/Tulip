@@ -19,7 +19,7 @@ open class User(val userId: Int) {
         ::init,""")
         
 for i in range(NUM_ACTIONS-2):
-    print("        ::action%02d,"%(i+1))
+    print("        ::action%d,"%(i+1))
     
 print("""        ::done
     )
@@ -27,7 +27,7 @@ print("""        ::done
     open fun init(): Boolean = false""")
 
 for i in range(NUM_ACTIONS-2):
-    print("    open fun action%02d(): Boolean = false"%(i+1))
+    print("    open fun action%d(): Boolean = false"%(i+1))
 
 print("""    open fun done(): Boolean = false
 

@@ -21,7 +21,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action01(): Boolean {
+    override fun action1(): Boolean {
         // 6 ms delay (average)
         delayMillisRandom(1, 11)
         return true
@@ -29,7 +29,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action02(): Boolean {
+    override fun action2(): Boolean {
         // 14 ms delay (average)
         delayMillisRandom(1, 27)
         return true
@@ -37,7 +37,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action03(): Boolean {  /*
+    override fun action3(): Boolean {  /*
         val response = try {
             URL("https://jsonplaceholder.typicode.com/photos/${userId+1}")
             .openStream()
@@ -52,7 +52,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action04(): Boolean {
+    override fun action4(): Boolean {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 4
@@ -62,7 +62,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action05(): Boolean {
+    override fun action5(): Boolean {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 5
@@ -72,7 +72,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action06(): Boolean {
+    override fun action6(): Boolean {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 6
@@ -82,7 +82,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action07(): Boolean {
+    override fun action7(): Boolean {
         val actionId = 7
         Console.put("  ${userId} -> ${actionId}")
         return true
@@ -90,7 +90,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action08(): Boolean {
+    override fun action8(): Boolean {
         //val actionId = 8
         return true
     }
