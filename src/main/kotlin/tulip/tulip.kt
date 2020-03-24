@@ -92,7 +92,7 @@ data class TestCase(
     val repeatCount: Int = 1,
 
     // List of percentile values to report on.
-    val percentiles: List<Double> = listOf(90.0, 95.0, 99.0)
+    val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0)
 )
 
 /*-------------------------------------------------------------------------*/
