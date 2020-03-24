@@ -30,13 +30,9 @@ class ActionStats {
     var num_actions: Int = 0
     var num_success: Int = 0
 
-    val r = ActionSummary()
+    private val r = ActionSummary()
 
-    fun createSummary() {
-
-
-    }
-    fun printStats(duration_millis: Int, printMap: Boolean = false, test: TestCase) {
+    fun createSummary(duration_millis: Int, test: TestCase) {
         r.duration_seconds = duration_millis.toDouble() / 1000.0
 
         // actions per second (aps)
@@ -107,6 +103,20 @@ class ActionStats {
         // max rt
         r.max_rt = latencyMap_max_rt / 1000.0
 
+        // percentiles
+        r.pk = test.percentiles
+        r.pv = mutableListOf<Double>().apply {
+            r.pk.forEach {
+                val px = percentile(it, r.min_rt, r.max_rt)
+                this.add(px)
+            }
+        }
+    }
+
+    fun printStats(duration_millis: Int, printMap: Boolean = false, test: TestCase) {
+
+        createSummary(duration_millis, test)
+
         val output = mutableListOf("")
 
         if (printMap) {
@@ -126,14 +136,6 @@ class ActionStats {
         output.add("  number of actions completed = ${num_actions}")
 
         output.add("")
-
-        r.pk = test.percentiles
-        r.pv = mutableListOf<Double>().apply {
-            r.pk.forEach {
-                val px = percentile(it, r.min_rt, r.max_rt)
-                this.add(px)
-            }
-        }
 
         r.pk.forEachIndexed { index, percentile ->
             val px = r.pv.elementAt(index)
