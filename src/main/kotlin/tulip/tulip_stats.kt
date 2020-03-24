@@ -21,8 +21,9 @@ class ActionStats {
     var latencyMap_max_ts = ""
 
     var num_actions: Int = 0
+    var num_success: Int = 0
 
-    fun printStats(num_actions: Int, duration_millis: Int, printMap: Boolean = false, test: TestCase) {
+    fun printStats(duration_millis: Int, printMap: Boolean = false, test: TestCase) {
         val duration_seconds: Double = duration_millis.toDouble() / 1000.0
 
         // actions per second (aps)
@@ -94,10 +95,15 @@ class ActionStats {
         val max_rt = latencyMap_max_rt / 1000.0
 
         val output = mutableListOf("")
+
         if (printMap) {
             output.add("latencyMap = " + latencyMap.toString())
             output.add("")
         }
+        output.add("  num_actions = ${num_actions}")
+        output.add("  num_success = ${num_success}")
+        output.add("  num_failed  = ${num_actions - num_success}")
+        output.add("")
 
         output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, aps)}")
         output.add("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, art)}")
@@ -177,6 +183,10 @@ class ActionStats {
             latencyMap_max_rt = durationMicros
             latencyMap_max_ts = java.time.LocalDateTime.now().toString()
         }
+        num_actions += 1
+        if (task.status == 1) {
+            num_success += 1
+        }
     }
 
     fun clearStats() {
@@ -188,18 +198,23 @@ class ActionStats {
         latencyMap_max_ts = ""
 
         num_actions = 0
+        num_success = 0
     }
 }
 
 object DataCollector {
     val actionStats = Array(NUM_ACTIONS+1) {ActionStats()}
 
-    fun printStats(num_actions: Int, duration_millis: Int, printMap: Boolean = false, test: TestCase) {
-        actionStats[NUM_ACTIONS].printStats(num_actions, duration_millis, printMap, test)
+    fun printStats(duration_millis: Int, printMap: Boolean = false, test: TestCase) {
+        actionStats[NUM_ACTIONS].printStats(duration_millis, printMap, test)
     }
 
     fun updateStats(task: Task) {
         require(task.actionId < NUM_ACTIONS)
+        if (task.actionId < 0) {
+            // Unused task drained from the rsp queue.
+            return
+        }
         actionStats[NUM_ACTIONS].updateStats(task)
         actionStats[task.actionId].updateStats(task)
     }

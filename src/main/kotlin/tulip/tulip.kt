@@ -342,16 +342,11 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         }
     }
 
-    fun drainRspQueue(): Int {
-        var num_success: Int = 0
+    fun drainRspQueue() {
         repeat(NUM_ACTIVE_USERS) {
             val task: Task = rspQueue.take()
-            num_success += if (task.status < 0) 0 else {
-                DataCollector.updateStats(task)
-                task.status
-            }
+            DataCollector.updateStats(task)
         }
-        return num_success
     }
 
     if ((testCase.rampDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
@@ -366,18 +361,13 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
         initRspQueue()
 
-        var num_actions: Int = 0
-        var num_success: Int = 0
         val duration_millis: Int
         val timeMillis_start: Long = timeMillis()
         for (aid in actionList) {
             for (uid in userList) {
                 // Limit the number of active users.
                 val task: Task = rspQueue.take()
-                num_success += if (task.status < 0) 0 else {
-                    DataCollector.updateStats(task)
-                    task.status
-                }
+                DataCollector.updateStats(task)
 
                 // Assign the task to the user object.
                 task.apply {
@@ -387,13 +377,11 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
                 // Limit the throughput rate , if required.
                 rateGoverner?.pace()
-
-                num_actions += 1
             }
         }
-        num_success += drainRspQueue()
+        drainRspQueue()
         duration_millis = (timeMillis() - timeMillis_start).toInt()
-        DataCollector.printStats(num_actions, duration_millis, true, testCase)
+        DataCollector.printStats(duration_millis, true, testCase)
     } else {
         // Normal test case.
         var timeMillis_start: Long
@@ -423,9 +411,6 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
                 }
             }
 
-            var num_actions: Int = 0
-            var num_success: Int = 0
-
             while (timeMillis() < timeMillis_end) {
                 // Pick a random user object to assign a task to.
                 //val uid = rnd.nextInt(NUM_USERS)  // 0 until NUM_USERS
@@ -436,10 +421,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
                 // Limit the number of active users.
                 val task: Task = rspQueue.take()
-                num_success += if (task.status < 0) 0 else {
-                    DataCollector.updateStats(task)
-                    task.status
-                }
+                DataCollector.updateStats(task)
 
                 // Assign the task to the user object.
                 task.apply {
@@ -449,19 +431,12 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
                 // Limit the throughput rate , if required.
                 rateGoverner?.pace()
-
-                num_actions += 1
             }
-            num_success += drainRspQueue()
+            drainRspQueue()
             val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
             Console.put("${name} run ${runId}: end   (${java.time.LocalDateTime.now()})")
 
-            Console.put("")
-            Console.put("  num_actions = ${num_actions}")
-            Console.put("  num_success = ${num_success}")
-            Console.put("  num_failed  = ${num_actions - num_success}")
-
-            DataCollector.printStats(num_actions, duration_millis, false, testCase)
+            DataCollector.printStats(duration_millis, false, testCase)
         }
         if (indexUserProfile == 0) {
             assignTasks(testCase.warmDurationMinutes, "Warm-up", 0, 0.0)
