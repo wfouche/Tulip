@@ -32,7 +32,7 @@ class ActionStats {
 
     private val r = ActionSummary()
 
-    fun createSummary(duration_millis: Int, test: TestCase) {
+    fun createSummary(duration_millis: Int, testCase: TestCase) {
         r.duration_seconds = duration_millis.toDouble() / 1000.0
 
         // actions per second (aps)
@@ -104,7 +104,7 @@ class ActionStats {
         r.max_rt = latencyMap_max_rt / 1000.0
 
         // percentiles
-        r.pk = test.percentiles
+        r.pk = testCase.percentiles
         r.pv = mutableListOf<Double>().apply {
             r.pk.forEach {
                 val px = percentile(it, r.min_rt, r.max_rt)
@@ -113,9 +113,7 @@ class ActionStats {
         }
     }
 
-    fun printStats(duration_millis: Int, printMap: Boolean = false, test: TestCase) {
-
-        createSummary(duration_millis, test)
+    fun printStats(printMap: Boolean = false) {
 
         val output = mutableListOf("")
 
@@ -223,8 +221,9 @@ class ActionStats {
 object DataCollector {
     val actionStats = Array(NUM_ACTIONS+1) {ActionStats()}
 
-    fun printStats(duration_millis: Int, printMap: Boolean = false, test: TestCase) {
-        actionStats[NUM_ACTIONS].printStats(duration_millis, printMap, test)
+    fun printStats(duration_millis: Int, printMap: Boolean = false, testCase: TestCase) {
+        actionStats[NUM_ACTIONS].createSummary(duration_millis, testCase)
+        actionStats[NUM_ACTIONS].printStats(printMap)
     }
 
     fun updateStats(task: Task) {
