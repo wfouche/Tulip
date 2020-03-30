@@ -8,16 +8,25 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 
 data class ActionSummary(
+    var action_id: Int = 0,
+    var num_actions: Int = 0,
+    var num_success: Int = 0,
+
+    var latencyMap: MutableMap<Long,Long> = mutableMapOf<Long, Long>(),
+    var latencyMap_min_rt: Long = Long.MAX_VALUE,
+    var latencyMap_max_rt: Long = Long.MIN_VALUE,
+    var latencyMap_max_ts: String = "",
+
     var duration_seconds: Double = 0.0,
+
     var aps: Double = 0.0,
     var art: Double = 0.0,
     var sdev: Double = 0.0,
     var min_rt: Double = 0.0,
     var max_rt: Double = 0.0,
 
-    var pk: List<Double> = emptyList(),
+    var pk: List<Double> = mutableListOf<Double>(),
     var pv: List<Double> = mutableListOf<Double>()
-
 )
 
 class ActionStats {
@@ -32,7 +41,11 @@ class ActionStats {
 
     private val r = ActionSummary()
 
-    fun createSummary(duration_millis: Int, testCase: TestCase) {
+    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase) {
+        r.action_id = action_id
+        r.num_actions = num_actions
+        r.num_success = num_success
+
         r.duration_seconds = duration_millis.toDouble() / 1000.0
 
         // actions per second (aps)
@@ -111,6 +124,11 @@ class ActionStats {
                 this.add(px)
             }
         }
+
+        r.latencyMap = latencyMap
+        r.latencyMap_min_rt = latencyMap_min_rt
+        r.latencyMap_max_rt = latencyMap_max_rt
+        r.latencyMap_max_ts = latencyMap_max_ts
     }
 
     fun printStats(printMap: Boolean = false) {
@@ -118,12 +136,12 @@ class ActionStats {
         val output = mutableListOf("")
 
         if (printMap) {
-            output.add("latencyMap = " + latencyMap.toString())
+            output.add("latencyMap = " + r.latencyMap.toString())
             output.add("")
         }
-        output.add("  num_actions = ${num_actions}")
-        output.add("  num_success = ${num_success}")
-        output.add("  num_failed  = ${num_actions - num_success}")
+        output.add("  num_actions = ${r.num_actions}")
+        output.add("  num_success = ${r.num_success}")
+        output.add("  num_failed  = ${r.num_actions - r.num_success}")
         output.add("")
 
         output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
@@ -131,7 +149,7 @@ class ActionStats {
         output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)}")
         output.add("")
         output.add("  duration of benchmark (in seconds) = ${r.duration_seconds}")
-        output.add("  number of actions completed = ${num_actions}")
+        output.add("  number of actions completed = ${r.num_actions}")
 
         output.add("")
 
@@ -221,8 +239,11 @@ class ActionStats {
 object DataCollector {
     val actionStats = Array(NUM_ACTIONS+1) {ActionStats()}
 
-    fun printStats(duration_millis: Int, printMap: Boolean = false, testCase: TestCase) {
-        actionStats[NUM_ACTIONS].createSummary(duration_millis, testCase)
+    fun createSummary(duration_millis: Int, testCase: TestCase) {
+        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase)
+    }
+
+    fun printStats(printMap: Boolean = false) {
         actionStats[NUM_ACTIONS].printStats(printMap)
     }
 

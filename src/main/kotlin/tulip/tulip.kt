@@ -381,7 +381,8 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         }
         drainRspQueue()
         duration_millis = (timeMillis() - timeMillis_start).toInt()
-        DataCollector.printStats(duration_millis, true, testCase)
+        DataCollector.createSummary(duration_millis, testCase)
+        DataCollector.printStats(false)
     } else {
         // Normal test case.
         var timeMillis_start: Long
@@ -436,12 +437,16 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
             val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
             Console.put("${name} run ${runId}: end   (${java.time.LocalDateTime.now()})")
 
-            DataCollector.printStats(duration_millis, false, testCase)
+            DataCollector.createSummary(duration_millis, testCase)
+            DataCollector.printStats(false)
         }
+
         if (indexUserProfile == 0) {
             assignTasks(testCase.warmDurationMinutes, "Warm-up", 0, 0.0)
         }
+
         assignTasks(testCase.rampDurationMinutes, "Ramp-up", 0)
+
         for (runId in 0 until testCase.repeatCount) {
             assignTasks(testCase.mainDurationMinutes, "Main", runId)
         }
