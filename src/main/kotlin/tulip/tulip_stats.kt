@@ -13,6 +13,18 @@ import java.io.FileWriter
 
 data class ActionSummary(
     var action_id: Int = 0,
+
+    var test_begin: String = "",
+    var test_end: String = "",
+    var test_name: String = "",
+    var test_phase: String = "",
+
+    var indexTestCase: Int = 0,
+    var indexUserProfile: Int = 0,
+    var activeUsers: Int = 0,
+    var max_num_users: Int = 0,
+    var max_num_threads: Int = 0,
+
     var num_actions: Int = 0,
     var num_success: Int = 0,
 
@@ -46,8 +58,21 @@ class ActionStats {
 
     val r = ActionSummary()
 
-    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase) {
+    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String) {
         r.action_id = action_id
+
+        r.test_name = testCase.name
+        r.test_begin = ts_begin
+        r.test_end = ts_end
+        r.test_phase = test_phase
+
+        r.indexTestCase = indexTestCase
+        r.indexUserProfile = indexUserProfile
+        r.activeUsers = activeUsers
+
+        r.max_num_users = NUM_USERS
+        r.max_num_threads = NUM_THREADS
+
         r.num_actions = num_actions
         r.num_success = num_success
 
@@ -278,12 +303,12 @@ class ActionStats {
 object DataCollector {
     val actionStats = Array(NUM_ACTIONS+1) {ActionStats()}
 
-    fun createSummary(duration_millis: Int, testCase: TestCase) {
-        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase)
+    fun createSummary(duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String) {
+        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase)
         actionStats.forEachIndexed { index, data ->
             if (data.num_actions > 0) {
                 if (index != NUM_ACTIONS) {
-                    data.createSummary(index, duration_millis, testCase)
+                    data.createSummary(index, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase)
                 }
             }
         }
@@ -303,7 +328,19 @@ object DataCollector {
     fun saveStatsJson(filename: String) {
         if (filename != "") {
             var json = "{ \"duration\": ${actionStats[NUM_ACTIONS].r.duration_seconds}, "
-            json  += actionStats[NUM_ACTIONS].saveStatsJson()
+
+            json += "\"test_begin\": \"${actionStats[NUM_ACTIONS].r.test_begin}\", "
+            json += "\"test_end\": \"${actionStats[NUM_ACTIONS].r.test_end}\", "
+            json += "\"test_name\": \"${actionStats[NUM_ACTIONS].r.test_name}\", "
+            json += "\"test_phase\": \"${actionStats[NUM_ACTIONS].r.test_phase}\", "
+
+            json += "\"idx_test_case\": ${actionStats[NUM_ACTIONS].r.indexTestCase}, "
+            json += "\"idx_user_profile\": ${actionStats[NUM_ACTIONS].r.indexUserProfile}, "
+            json += "\"num_active_users\": ${actionStats[NUM_ACTIONS].r.activeUsers}, "
+            json += "\"max_num_users\": ${actionStats[NUM_ACTIONS].r.max_num_users}, "
+            json += "\"max_num_threads\": ${actionStats[NUM_ACTIONS].r.max_num_threads}, "
+
+            json += actionStats[NUM_ACTIONS].saveStatsJson()
 
             json += ", \"user_actions\": {"
 

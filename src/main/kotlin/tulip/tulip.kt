@@ -287,9 +287,10 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 /*-------------------------------------------------------------------------*/
 
 fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
+    val ts_begin = java.time.LocalDateTime.now().toString()
     val output = mutableListOf("")
     output.add("======================================================================")
-    output.add("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${testCase.name} - ${java.time.LocalDateTime.now()}")
+    output.add("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${testCase.name} - ${ts_begin}")
     output.add("======================================================================")
     Console.put(output)
 
@@ -384,7 +385,9 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         }
         drainRspQueue()
         duration_millis = (timeMillis() - timeMillis_start).toInt()
-        DataCollector.createSummary(duration_millis, testCase)
+        val ts_end = java.time.LocalDateTime.now().toString()
+
+        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, "Main")
         DataCollector.printStats(false)
         DataCollector.saveStatsJson(testCase.filename)
     } else {
@@ -392,7 +395,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         var timeMillis_start: Long
         var timeMillis_end: Long = timeMillis()
 
-        fun assignTasks(durationMinutes: Int, name: String, runId:Int, arrivalRate: Double = -1.0) {
+        fun assignTasks(durationMinutes: Int, test_phase: String, runId:Int, arrivalRate: Double = -1.0) {
             if (durationMinutes == 0) {
                 return
             }
@@ -400,7 +403,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
             DataCollector.clearStats()
             val ts1 = java.time.LocalDateTime.now()
-            Console.put("\n${name} run ${runId}: begin (${ts1})")
+            Console.put("\n${test_phase} run ${runId}: begin (${ts1})")
 
             timeMillis_start = timeMillis_end
             timeMillis_end = timeMillis_start + durationMinutes * 60 * 1000
@@ -439,9 +442,11 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
             }
             drainRspQueue()
             val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
-            Console.put("${name} run ${runId}: end   (${java.time.LocalDateTime.now()})")
+            Console.put("${test_phase} run ${runId}: end   (${java.time.LocalDateTime.now()})")
 
-            DataCollector.createSummary(duration_millis, testCase)
+            val ts_end = java.time.LocalDateTime.now().toString()
+
+            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase)
             DataCollector.printStats(false)
             DataCollector.saveStatsJson(testCase.filename)
         }
