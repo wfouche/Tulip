@@ -1,0 +1,3 @@
+{'duration': 60.0, 'num_actions': 38069262, 'num_success': 38069262, 'num_failed': 0, 'avg_tps': 634487.7, 'avg_rt': 7.09357854113379E-5, 'sdev_rt': 3.450342195749197E-4, 'min_rt': 0.0, 'max_rt': 0.734, 'max_rt_ts': '2020-03-30T11:31:19.428035500'}
+{'duration': 60.0, 'num_actions': 35471314, 'num_success': 35471314, 'num_failed': 0, 'avg_tps': 591188.5666666667, 'avg_rt': 7.285515275808502E-5, 'sdev_rt': 2.977024275981862E-4, 'min_rt': 0.0, 'max_rt': 0.252, 'max_rt_ts': '2020-03-30T11:32:44.340940300'}
+{'duration': 60.0, 'num_actions': 35690878, 'num_success': 35690878, 'num_failed': 0, 'avg_tps': 594847.9666666667, 'avg_rt': 7.218583975434844E-5, 'sdev_rt': 2.954918335646849E-4, 'min_rt': 0.0, 'max_rt': 0.334, 'max_rt_ts': '2020-03-30T11:32:50.318371800'}
