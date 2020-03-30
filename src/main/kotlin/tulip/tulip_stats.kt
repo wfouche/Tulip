@@ -6,6 +6,10 @@ import java.util.concurrent.LinkedBlockingQueue
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import java.io.BufferedWriter
+
+import java.io.File
+import java.io.FileWriter
 
 data class ActionSummary(
     var action_id: Int = 0,
@@ -184,6 +188,17 @@ class ActionStats {
         Console.put(output)
     }
 
+    fun saveStatsJson(filename: String) {
+        val results = "{'num_actions': ${num_actions}, 'num_success': ${num_success}, 'num_failed': ${num_actions - num_success}, 'avg_tps': ${r.aps}, 'avg_rt': ${r.art}, 'sdev_rt': ${r.sdev}, 'min_rt': ${r.min_rt}, 'max_rt': ${r.max_rt}}"
+        val fw = FileWriter(filename, true)
+        val bw = BufferedWriter(fw).apply {
+            write(results)
+            newLine()
+        }
+        bw.close()
+        fw.close()
+    }
+
     fun updateStats(task: Task) {
         // frequency map: count the number of times a given (key) response time occurred.
         // key = response time in microseconds (NOT milliseconds).
@@ -245,6 +260,12 @@ object DataCollector {
 
     fun printStats(printMap: Boolean = false) {
         actionStats[NUM_ACTIONS].printStats(printMap)
+    }
+
+    fun saveStatsJson(filename: String) {
+        if (filename != "") {
+            actionStats[NUM_ACTIONS].saveStatsJson(filename)
+        }
     }
 
     fun updateStats(task: Task) {

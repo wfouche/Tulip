@@ -92,7 +92,10 @@ data class TestCase(
     val repeatCount: Int = 1,
 
     // List of percentile values to report on.
-    val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0)
+    val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0),
+
+    // Json results filename.
+    val filename: String = ""
 )
 
 /*-------------------------------------------------------------------------*/
@@ -383,6 +386,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         duration_millis = (timeMillis() - timeMillis_start).toInt()
         DataCollector.createSummary(duration_millis, testCase)
         DataCollector.printStats(false)
+        DataCollector.saveStatsJson(testCase.filename)
     } else {
         // Normal test case.
         var timeMillis_start: Long
@@ -439,6 +443,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
             DataCollector.createSummary(duration_millis, testCase)
             DataCollector.printStats(false)
+            DataCollector.saveStatsJson(testCase.filename)
         }
 
         if (indexUserProfile == 0) {

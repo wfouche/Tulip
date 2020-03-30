@@ -7,6 +7,8 @@ package tulip
 val NUM_USERS = 40
 val NUM_THREADS = 4
 
+val JSON_FILENAME="json_results.txt"
+
 /*-------------------------------------------------------------------------*/
 
 var testSuite = mutableListOf<TestCase>()
@@ -49,7 +51,9 @@ fun initTestSuite() {
             // Actions to be performed on the user objects during this test.
             actions = listOf(Action(8)),
 
-            repeatCount = 3
+            repeatCount = 3,
+
+            filename = JSON_FILENAME
         )
     )
 
