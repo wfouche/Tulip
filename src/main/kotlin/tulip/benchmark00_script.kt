@@ -23,7 +23,8 @@ fun initTestSuite() {
             name = "Test0 (Initialize)",
             arrivalRate = 5.0,
             userProfile = listOf(1),
-            actions = listOf(Action(0), Action(7))
+            actions = listOf(Action(0), Action(7)),
+            filename = JSON_FILENAME
         )
     )
 
@@ -83,7 +84,9 @@ fun initTestSuite() {
             // 6*1.0/4.0 + 14*3.0/4.0 = 12.0 ms (expected global average response time)
             actions = listOf(Action(1, 25), Action(2, 75)),
 
-            repeatCount = 3
+            repeatCount = 3,
+
+            filename = JSON_FILENAME
         )
     )
 
@@ -109,7 +112,9 @@ fun initTestSuite() {
             // 100 actions in total with a 50%/50% split between
             // action 0 and action 1
             // 6*1.0/4.0 + 14*3.0/4.0 = 12.0 ms (expected global average response time)
-            actions = listOf(Action(4), Action(5), Action(6))
+            actions = listOf(Action(4), Action(5), Action(6)),
+
+            filename = JSON_FILENAME
         )
     )
 
@@ -119,7 +124,8 @@ fun initTestSuite() {
             name = "Test4 (Terminate)",
             arrivalRate = 5.0,
             userProfile = listOf(1),
-            actions = listOf(Action(9))
+            actions = listOf(Action(9)),
+            filename = JSON_FILENAME
         )
     )
 }

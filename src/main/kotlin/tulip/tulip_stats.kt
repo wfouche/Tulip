@@ -44,7 +44,7 @@ class ActionStats {
     var num_actions: Int = 0
     var num_success: Int = 0
 
-    private val r = ActionSummary()
+    val r = ActionSummary()
 
     fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase) {
         r.action_id = action_id
@@ -168,6 +168,9 @@ class ActionStats {
             output.add("latencyMap = " + r.latencyMap.toString())
             output.add("")
         }
+        if (action_id != NUM_ACTIONS) {
+            output.add("  action_id = ${r.action_id}")
+        }
         output.add("  num_actions = ${r.num_actions}")
         output.add("  num_success = ${r.num_success}")
         output.add("  num_failed  = ${r.num_actions - r.num_success}")
@@ -200,9 +203,9 @@ class ActionStats {
         Console.put(output)
     }
 
-    fun saveStatsJson(filename: String) {
+    fun saveStatsJson(): String {
         var results = ""
-        results += "{\"duration\": ${r.duration_seconds}, \"num_actions\": ${num_actions}, \"num_success\": ${num_success}, \"num_failed\": ${num_actions - num_success}"
+        results += "\"num_actions\": ${num_actions}, \"num_success\": ${num_success}, \"num_failed\": ${num_actions - num_success}"
         results += ", \"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.min_rt}, \"max_rt\": ${r.max_rt}, \"max_rt_ts\": \"${r.max_rt_ts}\""
 
@@ -217,14 +220,7 @@ class ActionStats {
         results += t
         results += "}"
 
-        results += "}"
-        val fw = FileWriter(filename, true)
-        val bw = BufferedWriter(fw).apply {
-            write(results)
-            newLine()
-        }
-        bw.close()
-        fw.close()
+        return results
     }
 
     fun updateStats(task: Task) {
@@ -284,15 +280,56 @@ object DataCollector {
 
     fun createSummary(duration_millis: Int, testCase: TestCase) {
         actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase)
+        actionStats.forEachIndexed { index, data ->
+            if (data.num_actions > 0) {
+                if (index != NUM_ACTIONS) {
+                    data.createSummary(index, duration_millis, testCase)
+                }
+            }
+        }
     }
 
     fun printStats(printMap: Boolean = false) {
         actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS, printMap)
+        actionStats.forEachIndexed { index, data ->
+            if (data.num_actions > 0) {
+                if (index != NUM_ACTIONS) {
+                    //data.printStats(index, false)
+                }
+            }
+        }
     }
 
     fun saveStatsJson(filename: String) {
         if (filename != "") {
-            actionStats[NUM_ACTIONS].saveStatsJson(filename)
+            var json = "{ \"duration\": ${actionStats[NUM_ACTIONS].r.duration_seconds}, "
+            json  += actionStats[NUM_ACTIONS].saveStatsJson()
+
+            json += ", \"user_actions\": {"
+
+            var t = ""
+            actionStats.forEachIndexed { index, data ->
+                if (data.num_actions > 0) {
+                    if (index != NUM_ACTIONS) {
+                        if (t != "") {
+                            t += ","
+                        }
+                        t += "\"${index}\": {" + data.saveStatsJson() + "}"
+                    }
+                }
+            }
+            json += t
+            json += "}"
+
+            json += "}"
+
+            val fw = FileWriter(filename, true)
+            val bw = BufferedWriter(fw).apply {
+                write(json)
+                newLine()
+            }
+            bw.close()
+            fw.close()
         }
     }
 
