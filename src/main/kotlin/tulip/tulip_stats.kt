@@ -28,7 +28,10 @@ data class ActionSummary(
     var max_rt_ts: String = "",
 
     var pk: List<Double> = mutableListOf<Double>(),
-    var pv: List<Double> = mutableListOf<Double>()
+    var pv: List<Double> = mutableListOf<Double>(),
+
+    var avg_cpu_system: Double = 0.0,
+    var avg_cpu_process: Double = 0.0
 )
 
 class ActionStats {
@@ -131,9 +134,33 @@ class ActionStats {
         }
 
         r.latencyMap = latencyMap
+
+        // Summarize CPU usage for global stats only.
+        if (action_id == NUM_ACTIONS) {
+            // average process CPU load.
+            var cpu_load: Double = 0.0
+            var i: Double = 0.0
+            while (!CpuLoadMetrics.processCpuStats.isEmpty())
+            {
+                cpu_load += CpuLoadMetrics.processCpuStats.take()
+                i += 1.0
+            }
+            r.avg_cpu_process = if (i == 0.0) 0.0 else cpu_load / i
+
+            // average system CPU load.
+            cpu_load = 0.0
+            i = 0.0
+            while (!CpuLoadMetrics.systemCpuStats.isEmpty())
+            {
+                cpu_load += CpuLoadMetrics.systemCpuStats.take()
+                i += 1.0
+            }
+            r.avg_cpu_system = if (i == 0.0) 0.0 else cpu_load / i
+        }
+
     }
 
-    fun printStats(printMap: Boolean = false) {
+    fun printStats(action_id: Int, printMap: Boolean = false) {
 
         val output = mutableListOf("")
 
@@ -164,24 +191,11 @@ class ActionStats {
         output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.min_rt)}")
         output.add("  maximum response time (millis) = ${"%.3f".format(Locale.US, r.max_rt)} at ${latencyMap_max_rt_ts}")
 
-        output.add("")
-        var cpu_load: Double = 0.0
-        var i = 0.0
-        while (!CpuLoadMetrics.processCpuStats.isEmpty())
-        {
-            cpu_load += CpuLoadMetrics.processCpuStats.take()
-            i += 1.0
+        if (action_id == NUM_ACTIONS) {
+            output.add("")
+            output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avg_cpu_process)}")
+            output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avg_cpu_system)}")
         }
-        output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
-
-        cpu_load = 0.0
-        i = 0.0
-        while (!CpuLoadMetrics.systemCpuStats.isEmpty())
-        {
-            cpu_load += CpuLoadMetrics.systemCpuStats.take()
-            i += 1.0
-        }
-        output.add("  average cpu load (system)  = ${"%.3f".format(Locale.US, if (i == 0.0) 0.0 else cpu_load / i)}")
 
         Console.put(output)
     }
@@ -189,6 +203,7 @@ class ActionStats {
     fun saveStatsJson(filename: String) {
         var results = ""
         results += "{\"duration\": ${r.duration_seconds}, \"num_actions\": ${num_actions}, \"num_success\": ${num_success}, \"num_failed\": ${num_actions - num_success}"
+        results += ", \"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.min_rt}, \"max_rt\": ${r.max_rt}, \"max_rt_ts\": \"${r.max_rt_ts}\""
 
         results += ", \"percentiles_rt\": {"
@@ -272,7 +287,7 @@ object DataCollector {
     }
 
     fun printStats(printMap: Boolean = false) {
-        actionStats[NUM_ACTIONS].printStats(printMap)
+        actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS, printMap)
     }
 
     fun saveStatsJson(filename: String) {
