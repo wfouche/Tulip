@@ -17,9 +17,6 @@ data class ActionSummary(
     var num_success: Int = 0,
 
     var latencyMap: MutableMap<Long,Long> = mutableMapOf<Long, Long>(),
-    var latencyMap_min_rt: Long = Long.MAX_VALUE,
-    var latencyMap_max_rt: Long = Long.MIN_VALUE,
-    var latencyMap_max_ts: String = "",
 
     var duration_seconds: Double = 0.0,
 
@@ -28,6 +25,7 @@ data class ActionSummary(
     var sdev: Double = 0.0,
     var min_rt: Double = 0.0,
     var max_rt: Double = 0.0,
+    var max_rt_ts: String = "",
 
     var pk: List<Double> = mutableListOf<Double>(),
     var pv: List<Double> = mutableListOf<Double>()
@@ -38,7 +36,7 @@ class ActionStats {
     val latencyMap = mutableMapOf<Long, Long>()
     var latencyMap_min_rt: Long = Long.MAX_VALUE
     var latencyMap_max_rt: Long = Long.MIN_VALUE
-    var latencyMap_max_ts = ""
+    var latencyMap_max_rt_ts = ""
 
     var num_actions: Int = 0
     var num_success: Int = 0
@@ -120,6 +118,9 @@ class ActionStats {
         // max rt
         r.max_rt = latencyMap_max_rt / 1000.0
 
+        // max rt timestamp
+        r.max_rt_ts = latencyMap_max_rt_ts
+
         // percentiles
         r.pk = testCase.percentiles
         r.pv = mutableListOf<Double>().apply {
@@ -130,9 +131,6 @@ class ActionStats {
         }
 
         r.latencyMap = latencyMap
-        r.latencyMap_min_rt = latencyMap_min_rt
-        r.latencyMap_max_rt = latencyMap_max_rt
-        r.latencyMap_max_ts = latencyMap_max_ts
     }
 
     fun printStats(printMap: Boolean = false) {
@@ -164,7 +162,7 @@ class ActionStats {
 
         output.add("")
         output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.min_rt)}")
-        output.add("  maximum response time (millis) = ${"%.3f".format(Locale.US, r.max_rt)} at ${latencyMap_max_ts}")
+        output.add("  maximum response time (millis) = ${"%.3f".format(Locale.US, r.max_rt)} at ${latencyMap_max_rt_ts}")
 
         output.add("")
         var cpu_load: Double = 0.0
@@ -189,7 +187,7 @@ class ActionStats {
     }
 
     fun saveStatsJson(filename: String) {
-        val results = "{'duration': ${r.duration_seconds}, 'num_actions': ${num_actions}, 'num_success': ${num_success}, 'num_failed': ${num_actions - num_success}, 'avg_tps': ${r.aps}, 'avg_rt': ${r.art}, 'sdev_rt': ${r.sdev}, 'min_rt': ${r.min_rt}, 'max_rt': ${r.max_rt}}"
+        val results = "{'duration': ${r.duration_seconds}, 'num_actions': ${num_actions}, 'num_success': ${num_success}, 'num_failed': ${num_actions - num_success}, 'avg_tps': ${r.aps}, 'avg_rt': ${r.art}, 'sdev_rt': ${r.sdev}, 'min_rt': ${r.min_rt}, 'max_rt': ${r.max_rt}, 'max_rt_ts': '${r.max_rt_ts}'}"
         val fw = FileWriter(filename, true)
         val bw = BufferedWriter(fw).apply {
             write(results)
@@ -232,7 +230,7 @@ class ActionStats {
         }
         if (durationMicros > latencyMap_max_rt) {
             latencyMap_max_rt = durationMicros
-            latencyMap_max_ts = java.time.LocalDateTime.now().toString()
+            latencyMap_max_rt_ts = java.time.LocalDateTime.now().toString()
         }
         num_actions += 1
         if (task.status == 1) {
@@ -244,7 +242,7 @@ class ActionStats {
         latencyMap.clear()
         latencyMap_min_rt = Long.MAX_VALUE
         latencyMap_max_rt = Long.MIN_VALUE
-        latencyMap_max_ts = ""
+        latencyMap_max_rt_ts = ""
 
         num_actions = 0
         num_success = 0
