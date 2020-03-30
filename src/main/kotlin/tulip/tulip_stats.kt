@@ -187,7 +187,22 @@ class ActionStats {
     }
 
     fun saveStatsJson(filename: String) {
-        val results = "{'duration': ${r.duration_seconds}, 'num_actions': ${num_actions}, 'num_success': ${num_success}, 'num_failed': ${num_actions - num_success}, 'avg_tps': ${r.aps}, 'avg_rt': ${r.art}, 'sdev_rt': ${r.sdev}, 'min_rt': ${r.min_rt}, 'max_rt': ${r.max_rt}, 'max_rt_ts': '${r.max_rt_ts}'}"
+        var results = ""
+        results += "{\"duration\": ${r.duration_seconds}, \"num_actions\": ${num_actions}, \"num_success\": ${num_success}, \"num_failed\": ${num_actions - num_success}"
+        results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.min_rt}, \"max_rt\": ${r.max_rt}, \"max_rt_ts\": \"${r.max_rt_ts}\""
+
+        results += ", \"percentiles_rt\": {"
+        var t = ""
+        r.pk.forEachIndexed { index, _ ->
+            val k = r.pk[index].toString()
+            val v = r.pv[index]
+            if (t != "") t += ", "
+            t += "\"${k}\": ${v}"
+        }
+        results += t
+        results += "}"
+
+        results += "}"
         val fw = FileWriter(filename, true)
         val bw = BufferedWriter(fw).apply {
             write(results)
