@@ -1,2 +1,0 @@
-{'duration': 60.0, 'num_actions': 37733773, 'num_success': 37733773, 'num_failed': 0, 'avg_tps': 628896.2166666667, 'avg_rt': 7.085326452777464E-5, 'sdev_rt': 3.071448219371095E-4, 'min_rt': 0.0, 'max_rt': 0.311}
-{'duration': 60.0, 'num_actions': 34830622, 'num_success': 34830622, 'num_failed': 0, 'avg_tps': 580510.3666666667, 'avg_rt': 7.068777008920484E-5, 'sdev_rt': 6.279814999431983E-4, 'min_rt': 0.0, 'max_rt': 2.792}

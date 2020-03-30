@@ -189,7 +189,7 @@ class ActionStats {
     }
 
     fun saveStatsJson(filename: String) {
-        val results = "{'num_actions': ${num_actions}, 'num_success': ${num_success}, 'num_failed': ${num_actions - num_success}, 'avg_tps': ${r.aps}, 'avg_rt': ${r.art}, 'sdev_rt': ${r.sdev}, 'min_rt': ${r.min_rt}, 'max_rt': ${r.max_rt}}"
+        val results = "{'duration': ${r.duration_seconds}, 'num_actions': ${num_actions}, 'num_success': ${num_success}, 'num_failed': ${num_actions - num_success}, 'avg_tps': ${r.aps}, 'avg_rt': ${r.art}, 'sdev_rt': ${r.sdev}, 'min_rt': ${r.min_rt}, 'max_rt': ${r.max_rt}}"
         val fw = FileWriter(filename, true)
         val bw = BufferedWriter(fw).apply {
             write(results)
