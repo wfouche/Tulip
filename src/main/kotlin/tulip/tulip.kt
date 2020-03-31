@@ -388,7 +388,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         val ts_end = java.time.LocalDateTime.now().toString()
 
         DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, "Main", 0)
-        DataCollector.printStats(false)
+        DataCollector.printStats(true)
         DataCollector.saveStatsJson(testCase.filename)
     } else {
         // Normal test case.
