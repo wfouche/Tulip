@@ -14,7 +14,7 @@ import java.io.FileWriter
 data class ActionSummary(
     var action_id: Int = 0,
 
-    var member_id: Int = 0,
+    var row_id: Int = 0,
 
     var test_begin: String = "",
     var test_end: String = "",
@@ -63,7 +63,7 @@ class ActionStats {
     fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int) {
         r.action_id = action_id
 
-        r.member_id = runId
+        r.row_id = runId
 
         r.test_name = testCase.name
         r.test_begin = ts_begin
@@ -332,22 +332,21 @@ object DataCollector {
         if (filename != "") {
             val r = actionStats[NUM_ACTIONS].r
 
-            var json = "{ \"duration\": ${r.duration_seconds}, "
+            var json = "{\"duration\": ${r.duration_seconds}, "
 
-            json += "\"member_id\": ${r.member_id}, "
-            json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
+            json += "\"test_id\": ${r.indexTestCase}, "
+            json += "\"test_phase\": \"${r.test_phase}\", "
+            json += "\"row_id\": ${r.row_id}, "
 
+            json += "\"num_users_active\": ${if (r.activeUsers == 0) r.max_num_users else r.activeUsers}, "
+            json += "\"num_users\": ${r.max_num_users}, "
+            json += "\"num_threads\": ${r.max_num_threads}, "
 
+            json += "\"test_name\": \"${r.test_name}\", "
             json += "\"test_begin\": \"${r.test_begin}\", "
             json += "\"test_end\": \"${r.test_end}\", "
-            json += "\"test_name\": \"${r.test_name}\", "
-            json += "\"test_phase\": \"${r.test_phase}\", "
 
-            json += "\"idx_test_case\": ${r.indexTestCase}, "
-            json += "\"idx_user_profile\": ${r.indexUserProfile}, "
-            json += "\"num_active_users\": ${r.activeUsers}, "
-            json += "\"max_num_users\": ${r.max_num_users}, "
-            json += "\"max_num_threads\": ${r.max_num_threads}, "
+            json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
 
             json += actionStats[NUM_ACTIONS].saveStatsJson()
 
