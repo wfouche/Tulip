@@ -387,7 +387,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         duration_millis = (timeMillis() - timeMillis_start).toInt()
         val ts_end = java.time.LocalDateTime.now().toString()
 
-        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, "Main")
+        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, "Main", 0)
         DataCollector.printStats(false)
         DataCollector.saveStatsJson(testCase.filename)
     } else {
@@ -446,7 +446,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
             val ts_end = java.time.LocalDateTime.now().toString()
 
-            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase)
+            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId)
             DataCollector.printStats(false)
             DataCollector.saveStatsJson(testCase.filename)
         }

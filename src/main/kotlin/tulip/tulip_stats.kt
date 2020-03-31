@@ -14,6 +14,8 @@ import java.io.FileWriter
 data class ActionSummary(
     var action_id: Int = 0,
 
+    var member_id: Int = 0,
+
     var test_begin: String = "",
     var test_end: String = "",
     var test_name: String = "",
@@ -58,8 +60,10 @@ class ActionStats {
 
     val r = ActionSummary()
 
-    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String) {
+    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int) {
         r.action_id = action_id
+
+        r.member_id = runId
 
         r.test_name = testCase.name
         r.test_begin = ts_begin
@@ -231,7 +235,6 @@ class ActionStats {
     fun saveStatsJson(): String {
         var results = ""
         results += "\"num_actions\": ${num_actions}, \"num_success\": ${num_success}, \"num_failed\": ${num_actions - num_success}"
-        results += ", \"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.min_rt}, \"max_rt\": ${r.max_rt}, \"max_rt_ts\": \"${r.max_rt_ts}\""
 
         results += ", \"percentiles_rt\": {"
@@ -303,12 +306,12 @@ class ActionStats {
 object DataCollector {
     val actionStats = Array(NUM_ACTIONS+1) {ActionStats()}
 
-    fun createSummary(duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String) {
-        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase)
+    fun createSummary(duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int) {
+        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId)
         actionStats.forEachIndexed { index, data ->
             if (data.num_actions > 0) {
                 if (index != NUM_ACTIONS) {
-                    data.createSummary(index, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase)
+                    data.createSummary(index, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, -1)
                 }
             }
         }
@@ -327,18 +330,24 @@ object DataCollector {
 
     fun saveStatsJson(filename: String) {
         if (filename != "") {
-            var json = "{ \"duration\": ${actionStats[NUM_ACTIONS].r.duration_seconds}, "
+            val r = actionStats[NUM_ACTIONS].r
 
-            json += "\"test_begin\": \"${actionStats[NUM_ACTIONS].r.test_begin}\", "
-            json += "\"test_end\": \"${actionStats[NUM_ACTIONS].r.test_end}\", "
-            json += "\"test_name\": \"${actionStats[NUM_ACTIONS].r.test_name}\", "
-            json += "\"test_phase\": \"${actionStats[NUM_ACTIONS].r.test_phase}\", "
+            var json = "{ \"duration\": ${r.duration_seconds}, "
 
-            json += "\"idx_test_case\": ${actionStats[NUM_ACTIONS].r.indexTestCase}, "
-            json += "\"idx_user_profile\": ${actionStats[NUM_ACTIONS].r.indexUserProfile}, "
-            json += "\"num_active_users\": ${actionStats[NUM_ACTIONS].r.activeUsers}, "
-            json += "\"max_num_users\": ${actionStats[NUM_ACTIONS].r.max_num_users}, "
-            json += "\"max_num_threads\": ${actionStats[NUM_ACTIONS].r.max_num_threads}, "
+            json += "\"member_id\": ${r.member_id}, "
+            json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
+
+
+            json += "\"test_begin\": \"${r.test_begin}\", "
+            json += "\"test_end\": \"${r.test_end}\", "
+            json += "\"test_name\": \"${r.test_name}\", "
+            json += "\"test_phase\": \"${r.test_phase}\", "
+
+            json += "\"idx_test_case\": ${r.indexTestCase}, "
+            json += "\"idx_user_profile\": ${r.indexUserProfile}, "
+            json += "\"num_active_users\": ${r.activeUsers}, "
+            json += "\"max_num_users\": ${r.max_num_users}, "
+            json += "\"max_num_threads\": ${r.max_num_threads}, "
 
             json += actionStats[NUM_ACTIONS].saveStatsJson()
 
