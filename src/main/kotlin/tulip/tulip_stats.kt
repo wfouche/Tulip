@@ -21,7 +21,7 @@ data class ActionSummary(
     var test_name: String = "",
     var test_phase: String = "",
 
-    var indexTestCase: Int = 0,
+    var test_id: Int = 0,
     var indexUserProfile: Int = 0,
     var activeUsers: Int = 0,
     var max_num_users: Int = 0,
@@ -70,7 +70,7 @@ class ActionStats {
         r.test_end = ts_end
         r.test_phase = test_phase
 
-        r.indexTestCase = indexTestCase
+        r.test_id = indexTestCase
         r.indexUserProfile = indexUserProfile
         r.activeUsers = activeUsers
 
@@ -334,7 +334,7 @@ object DataCollector {
 
             var json = "{\"duration\": ${r.duration_seconds}, "
 
-            json += "\"test_id\": ${r.indexTestCase}, "
+            json += "\"test_id\": ${r.test_id}, "
             json += "\"test_phase\": \"${r.test_phase}\", "
             json += "\"row_id\": ${r.row_id}, "
 
