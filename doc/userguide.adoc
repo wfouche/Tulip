@@ -1,0 +1,90 @@
+= Tulip
+
+== Introduction
+
+TBD - the documentation journey has just started.
+
+
+[appendix]
+
+== Sample JSON Report
+
+The performance results of each benchmark step that is executed during the running of a benchmark suite of tests, is saved as a single line of JSON text in an output file. 
+Below we pretty print one such line of JSON text. The first section of information is a summary of how well the system under test (SUT) performed. 
+The user_actions section  reports performance information for the individual operations (actions) that were executed. 
+For example, globally we can see that 80 actions in total were executed (num_actions=80).
+However, looking at the breakdown of this information per user_action we see that
+action "0" was executed 40 times and action "7" was also executed 40 times.
+
+.print(json.dumps(json.loads(s),indent=2))
+[source,json]
+----
+{
+  "duration": 16.005,
+  "test_id": 0,
+  "test_phase": "Main",
+  "row_id": 0,
+  "num_users_active": 1,
+  "num_users": 40,
+  "num_threads": 4,
+  "test_name": "Test0 (Initialize)",
+  "test_begin": "2020-03-31T15:14:46.162186600",
+  "test_end": "2020-03-31T15:15:02.178890700",
+  "avg_cpu_process": 1.155,
+  "avg_cpu_system": 26.130000000000003,
+  "num_actions": 80,     // <.>
+  "num_success": 80,
+  "num_failed": 0,
+  "avg_tps": 4.99843798812871,
+  "avg_rt": 0.09275,
+  "sdev_rt": 0.2718293352454808,
+  "min_rt": 0.032,
+  "max_rt": 2.545,
+  "max_rt_ts": "2020-03-31T15:14:46.375441900",
+  "percentiles_rt": {
+    "50.0": 0.055857142857142855,
+    "90.0": 0.09433333333333332,
+    "95.0": 0.111,
+    "99.0": 2.3498000000000014
+  },
+  "user_actions": {
+    "0": {
+      "num_actions": 40,  // <.>
+      "num_success": 40,
+      "num_failed": 0,
+      "avg_tps": 2.499218994064355,
+      "avg_rt": 0.120875,
+      "sdev_rt": 0.38152963105766763,
+      "min_rt": 0.032,
+      "max_rt": 2.545,
+      "max_rt_ts": "2020-03-31T15:14:46.375441900",
+      "percentiles_rt": {
+        "50.0": 0.056,
+        "90.0": 0.095,
+        "95.0": 0.111,
+        "99.0": 2.545
+      }
+    },
+    "7": {
+      "num_actions": 40,  // <.>
+      "num_success": 40,
+      "num_failed": 0,
+      "avg_tps": 2.499218994064355,
+      "avg_rt": 0.064625,
+      "sdev_rt": 0.02520881542238746,
+      "min_rt": 0.034,
+      "max_rt": 0.126,
+      "max_rt_ts": "2020-03-31T15:15:00.572516100",
+      "percentiles_rt": {
+        "50.0": 0.05566666666666666,
+        "90.0": 0.092,
+        "95.0": 0.111,
+        "99.0": 0.126
+      }
+    }
+  }
+}
+----
+. num_actions (globally) = 80
+. num_action (action_id=0) = 40
+. num_action (action_id=7) = 40
