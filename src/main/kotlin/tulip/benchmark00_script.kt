@@ -124,7 +124,7 @@ fun initTestSuite() {
             name = "Test4 (Terminate)",
             arrivalRate = 5.0,
             userProfile = listOf(1),
-            actions = listOf(Action(9)),
+            actions = listOf(Action(NUM_ACTIONS-1)),
             filename = JSON_FILENAME
         )
     )
