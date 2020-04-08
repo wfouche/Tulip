@@ -306,6 +306,13 @@ class ActionStats {
 object DataCollector {
     val actionStats = Array(NUM_ACTIONS+1) {ActionStats()}
 
+    // val a = arrayOf<Array<ActionStats>>()
+    // init {
+    //     for (i in 0..3) {
+    //         a += actionStats
+    //     }
+    // }
+
     fun createSummary(duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int) {
         actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId)
         actionStats.forEachIndexed { index, data ->
