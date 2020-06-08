@@ -448,7 +448,9 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
             DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId)
             DataCollector.printStats(false)
-            DataCollector.saveStatsJson(testCase.filename)
+            if (test_phase == "Main") {
+                DataCollector.saveStatsJson(testCase.filename)
+            }
         }
 
         if (indexUserProfile == 0) {
