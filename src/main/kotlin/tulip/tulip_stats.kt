@@ -342,7 +342,6 @@ object DataCollector {
             var json = "{\"duration\": ${r.duration_seconds}, "
 
             json += "\"test_id\": ${r.test_id}, "
-            json += "\"test_phase\": \"${r.test_phase}\", "
             json += "\"row_id\": ${r.row_id}, "
 
             json += "\"num_users_active\": ${if (r.activeUsers == 0) r.max_num_users else r.activeUsers}, "
