@@ -36,7 +36,7 @@ fun initTestSuite() {
 
             // Duration in minutes
             warmDurationMinutes = 1,
-            rampDurationMinutes = 1,
+            initDurationMinutes = 1,
             mainDurationMinutes = 1,
 
             // Limit throughput 100.0 actions per second (on average).
@@ -65,7 +65,7 @@ fun initTestSuite() {
             name = "Test2 (Throughput Test - Fixed)",
 
             // Duration in minutes
-            rampDurationMinutes = 1,
+            initDurationMinutes = 1,
             mainDurationMinutes = 1,
 
             // Limit throughput 100.0 actions per second (on average).
@@ -97,7 +97,7 @@ fun initTestSuite() {
             name = "Test3 (Workflow Test)",
 
             // Duration in minutes
-            rampDurationMinutes = 0,
+            initDurationMinutes = 0,
             mainDurationMinutes = 1,
 
             // Limit throughput 60.0 actions per second (on average).

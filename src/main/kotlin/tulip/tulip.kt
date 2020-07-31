@@ -57,17 +57,17 @@ data class TestCase(
     //
     val warmDurationMinutes: Int = 0,
 
-    // Ramp-up period in minutes.
+    // Init period in minutes.
     // The results from this period are discarded.
     //
-    // Ramp-up executed once per every iteration of TestCase.
+    // Init phase executed once per TestCase.
     //
-    val rampDurationMinutes: Int = 0,
+    val initDurationMinutes: Int = 0,
 
     // Main duration in minutes.
     // The results from this period are reported.
     //
-    // Main executed once per every iteration of TestCase.
+    // Main phase executed 'repeatCount' every iteration of TestCase.
     //
     val mainDurationMinutes: Int = 0,
 
@@ -232,8 +232,8 @@ object CpuLoadMetrics : Thread() {
     override fun run() {
         var timeMillis_next: Long = timeMillis()
         var i = 0
-        var total_cpu_system: Double = 0.0
-        var total_cpu_process: Double = 0.0
+        var total_cpu_system = 0.0
+        var total_cpu_process = 0.0
         while (true) {
             timeMillis_next += 1000
             while (timeMillis() < timeMillis_next) {
@@ -307,8 +307,8 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
     // If all the weights sum to zero, we should
     // treat the list of actions as a workflow.
     val actionList = mutableListOf<Int>()
-    var wSum: Int = 0
-    var aCount: Int = 0
+    var wSum = 0
+    var aCount = 0
     for (action: Action in testCase.actions) {
         wSum += action.weight
         aCount += 1
@@ -326,7 +326,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         actionList.shuffle(rnd)
     }
     repeat(NUM_USERS) {
-        if ((testCase.rampDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
+        if ((testCase.initDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
             userActions[it] = null
         } else {
             userActions[it] = createActionsGenerator(actionList)
@@ -353,7 +353,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         }
     }
 
-    if ((testCase.rampDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
+    if ((testCase.initDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
         DataCollector.clearStats()
 
         // Special bootstrap test case to initialize terminals, and other objects.
@@ -457,7 +457,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
             assignTasks(testCase.warmDurationMinutes, "Warm-up", 0, 0.0)
         }
 
-        assignTasks(testCase.rampDurationMinutes, "Ramp-up", 0)
+        assignTasks(testCase.initDurationMinutes, "Ramp-up", 0)
 
         for (runId in 0 until testCase.repeatCount) {
             assignTasks(testCase.mainDurationMinutes, "Main", runId)
@@ -488,7 +488,7 @@ fun initTulip() {
 /*-------------------------------------------------------------------------*/
 
 fun runTulip() {
-    println("Tulip (${java.lang.System.getProperty("java.vendor")}, ${java.lang.System.getProperty("java.runtime.version")})\n")
+    println("Tulip (${System.getProperty("java.vendor")}, ${System.getProperty("java.runtime.version")})\n")
     initTulip()
     initTestSuite()
     testSuite.forEachIndexed { indexTestCase, testCase ->
