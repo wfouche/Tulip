@@ -50,19 +50,19 @@ data class TestCase(
     //
     val name: String = "",
 
+    // Start-up period in minutes.
+    // The results from this period are discarded.
+    //
+    // Start-up only executed once per TestCase.
+    //
+    val startupDurationMinutes: Int = 0,
+
     // Warm-up period in minutes.
     // The results from this period are discarded.
     //
-    // Warm-up only executed once per TestCase.
+    // Warm-up phase executed once per TestCase.
     //
-    val warmDurationMinutes: Int = 0,
-
-    // Init period in minutes.
-    // The results from this period are discarded.
-    //
-    // Init phase executed once per TestCase.
-    //
-    val initDurationMinutes: Int = 0,
+    val warmupDurationMinutes: Int = 0,
 
     // Main duration in minutes.
     // The results from this period are reported.
@@ -326,7 +326,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         actionList.shuffle(rnd)
     }
     repeat(NUM_USERS) {
-        if ((testCase.initDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
+        if ((testCase.warmupDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
             userActions[it] = null
         } else {
             userActions[it] = createActionsGenerator(actionList)
@@ -353,7 +353,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         }
     }
 
-    if ((testCase.initDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
+    if ((testCase.warmupDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
         DataCollector.clearStats()
 
         // Special bootstrap test case to initialize terminals, and other objects.
@@ -454,10 +454,10 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         }
 
         if (indexUserProfile == 0) {
-            assignTasks(testCase.warmDurationMinutes, "Warm-up", 0, 0.0)
+            assignTasks(testCase.startupDurationMinutes, "Start-up", 0, 0.0)
         }
 
-        assignTasks(testCase.initDurationMinutes, "Ramp-up", 0)
+        assignTasks(testCase.warmupDurationMinutes, "Ramp-up", 0)
 
         for (runId in 0 until testCase.repeatCount) {
             assignTasks(testCase.mainDurationMinutes, "Main", runId)
