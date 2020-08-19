@@ -15,7 +15,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     override fun init(): Boolean {
         val actionId = 0
-        Console.put("  ${userId} -> ${actionId}")
+        Console.put("  $userId -> $actionId")
         return true
     }
 
@@ -56,7 +56,7 @@ class UserHttp(userId: Int) : User(userId) {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 4
-        Console.put("  ${userId} -> ${actionId}")
+        Console.put("  $userId -> $actionId")
         return true
     }
 
@@ -66,7 +66,7 @@ class UserHttp(userId: Int) : User(userId) {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 5
-        Console.put("  ${userId} -> ${actionId}")
+        Console.put("  $userId -> $actionId")
         return true
     }
 
@@ -76,7 +76,7 @@ class UserHttp(userId: Int) : User(userId) {
         // 14 ms delay (average)
         //delayMillisRandom(1, 27)
         val actionId = 6
-        Console.put("  ${userId} -> ${actionId}")
+        Console.put("  $userId -> $actionId")
         return true
     }
 
@@ -84,7 +84,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     override fun action7(): Boolean {
         val actionId = 7
-        Console.put("  ${userId} -> ${actionId}")
+        Console.put("  $userId -> $actionId")
         return true
     }
 
