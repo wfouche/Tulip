@@ -5,14 +5,14 @@ package tulip
 /*-------------------------------------------------------------------------*/
 
 import java.util.concurrent.ArrayBlockingQueue  as Queue
-import java.util.concurrent.LinkedBlockingQueue
+//import java.util.concurrent.LinkedBlockingQueue
 
 import java.lang.Thread
 import java.util.concurrent.ThreadLocalRandom
 
 import kotlin.sequences.iterator
 
-import java.util.Locale
+//import java.util.Locale
 
 /*-------------------------------------------------------------------------*/
 
@@ -150,7 +150,7 @@ class RateGovernor(val timeMillis_start: Long, val averageRate: Double) {
 
 /*-------------------------------------------------------------------------*/
 
-class UserThread(val threadId: Int) : Thread() {
+class UserThread : Thread() {
 
     //
     // Task Queue - input queue with tasks for this thread to complete.
@@ -262,7 +262,7 @@ fun assignTask(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
     var w = userThreads[threadId]
     if (w == null) {
-        w = UserThread(threadId).apply {
+        w = UserThread().apply {
             isDaemon = true
             start()
         }
