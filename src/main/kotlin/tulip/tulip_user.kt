@@ -217,7 +217,12 @@ open class User(val userId: Int) {
     open fun done(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
-        return map[actionId].invoke()
+        try {
+            return map[actionId].invoke()
+        }
+        catch (e: Exception) {
+            return false
+        }
     }
 
 }
