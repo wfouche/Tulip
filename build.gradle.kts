@@ -41,5 +41,5 @@ dependencies {
 
 application {
     // Define the main class for the application
-    mainClassName = "tulip.LoadTest1"
+    getMainClass().set("tulip.LoadTest1")
 }
