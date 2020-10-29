@@ -150,10 +150,10 @@ class RateGovernor(val timeMillis_start: Long, val averageRate: Double) {
 
 /*-------------------------------------------------------------------------*/
 
-class UserThread : Thread() {
+class UserThread (threadId: Int): Thread() {
 
     init {
-        name = "user-thread"
+        name = "user-thread-$threadId"
     }
 
     //
@@ -268,7 +268,7 @@ fun assignTask(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
     var w = userThreads[threadId]
     if (w == null) {
-        w = UserThread().apply {
+        w = UserThread(threadId).apply {
             isDaemon = true
             start()
         }
