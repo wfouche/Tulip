@@ -152,6 +152,10 @@ class RateGovernor(val timeMillis_start: Long, val averageRate: Double) {
 
 class UserThread : Thread() {
 
+    init {
+        name = "user-thread"
+    }
+
     //
     // Task Queue - input queue with tasks for this thread to complete.
     //
@@ -195,6 +199,7 @@ object Console : Thread() {
     init {
         //priority = Thread.MAX_PRIORITY
         isDaemon = true
+        name = "console-thread"
         start()
     }
 
@@ -223,6 +228,7 @@ object CpuLoadMetrics : Thread() {
 
     init {
         isDaemon = true
+        name = "cpu-load-metrics"
         //start()
     }
 
