@@ -1,1 +1,1 @@
-set JAVA_HOME="c:\Java\openjdk8"
+set JAVA_HOME="C:\Java\jdk-11.0.9+11"
