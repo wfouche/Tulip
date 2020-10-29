@@ -40,6 +40,9 @@ dependencies {
 }
 
 application {
+    // Default JVM settings
+    applicationDefaultJvmArgs = listOf("-Xmx2048m")
+
     // Define the main class for the application
-    getMainClass().set("tulip.LoadTest1")
+    mainClass.set("tulip.LoadTest1")
 }
