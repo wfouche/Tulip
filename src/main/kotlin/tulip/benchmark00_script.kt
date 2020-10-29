@@ -4,7 +4,7 @@ package tulip
 
 /*-------------------------------------------------------------------------*/
 
-val NUM_USERS = 40
+val NUM_USERS = 4
 val NUM_THREADS = 4
 
 val JSON_FILENAME="json_results.txt"
@@ -21,7 +21,7 @@ fun initTestSuite() {
     testSuite.add(
         TestCase(
             name = "Test0 (Initialize)",
-            arrivalRate = 5.0,
+            arrivalRate = 0.0,
             userProfile = listOf(1),
             actions = listOf(Action(0), Action(7)),
             filename = JSON_FILENAME
@@ -37,7 +37,7 @@ fun initTestSuite() {
             // Duration in minutes
             startupDurationMinutes = 1,
             warmupDurationMinutes = 1,
-            mainDurationMinutes = 1,
+            mainDurationMinutes = 5,
 
             // Limit throughput 100.0 actions per second (on average).
             // A value of zero indicates that the arrival rate is uncapped.
@@ -47,7 +47,7 @@ fun initTestSuite() {
             // Limit the number of active user objects, A value of
             // zero sets the number of active users to unlimited.
             // L value from Little's Law.
-            userProfile = listOf(0, 20, 10),
+            userProfile = listOf(0,2,1),
 
             // Actions to be performed on the user objects during this test.
             actions = listOf(Action(8)),
