@@ -4,8 +4,7 @@ package tulip
 
 /*-------------------------------------------------------------------------*/
 
-
-val NUM_ACTIONS = 100
+const val NUM_ACTIONS = 100
 
 //
 // Open base class for a Virtual User.
@@ -217,11 +216,10 @@ open class User(val userId: Int) {
     open fun done(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
-        try {
-            return map[actionId].invoke()
-        }
-        catch (e: Exception) {
-            return false
+        return try {
+            map[actionId].invoke()
+        } catch (e: Exception) {
+            false
         }
     }
 

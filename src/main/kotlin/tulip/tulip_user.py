@@ -7,7 +7,7 @@ package tulip
 /*-------------------------------------------------------------------------*/
 """)
 
-print("val NUM_ACTIONS = %d"%(NUM_ACTIONS))
+print("const val NUM_ACTIONS = %d"%(NUM_ACTIONS))
 
 print("""
 //
@@ -32,10 +32,10 @@ for i in range(NUM_ACTIONS-2):
 print("""    open fun done(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
-        try {
-            return map[actionId].invoke()
+        return try {
+            map[actionId].invoke()
         } catch (e: Exception) {
-            return false
+            false
         }
     }
 
