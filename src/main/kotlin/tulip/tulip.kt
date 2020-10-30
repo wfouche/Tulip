@@ -360,23 +360,26 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
     }
 
     if ((testCase.warmupDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
+
         DataCollector.clearStats()
+
+        initRspQueue()
+
+        val timeMillis_start: Long = timeMillis()
 
         // Special bootstrap test case to initialize terminals, and other objects.
         // Typically only found at the start and end of a test suite.
         var rateGoverner: RateGovernor? = null
         if (testCase.arrivalRate > 0.0) {
-            rateGoverner = RateGovernor(timeMillis(), testCase.arrivalRate)
+            rateGoverner = RateGovernor(timeMillis_start, testCase.arrivalRate)
         }
 
-        initRspQueue()
-
-        val duration_millis: Int
-        val timeMillis_start: Long = timeMillis()
         for (aid in actionList) {
             for (uid in userList) {
                 // Limit the number of active users.
                 val task: Task = rspQueue.take()
+
+                // ...
                 DataCollector.updateStats(task)
 
                 // Assign the task to the user object.
@@ -390,7 +393,8 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
             }
         }
         drainRspQueue()
-        duration_millis = (timeMillis() - timeMillis_start).toInt()
+        val timeMillis_end: Long = timeMillis()
+        val duration_millis: Int = (timeMillis_end - timeMillis_start).toInt()
         val ts_end = java.time.LocalDateTime.now().toString()
 
         DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, "Main", 0)
@@ -435,6 +439,8 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
                 // Limit the number of active users.
                 val task: Task = rspQueue.take()
+
+                // ...
                 DataCollector.updateStats(task)
 
                 // Assign the task to the user object.
@@ -448,9 +454,9 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
             }
             drainRspQueue()
             val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
-            Console.put("${test_phase} run ${runId}: end   (${java.time.LocalDateTime.now()})")
-
             val ts_end = java.time.LocalDateTime.now().toString()
+
+            Console.put("${test_phase} run ${runId}: end   (${ts_end})")
 
             DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId)
             DataCollector.printStats(false)
@@ -459,12 +465,19 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
             }
         }
 
+        // Start-up
+        //
+        // Since we could have 1 or more population set sizes, only perform the start-up phase
+        // on the first set, i.e. with index 0.
+        //
         if (indexUserProfile == 0) {
             assignTasks(testCase.startupDurationMinutes, "Start-up", 0, 0.0)
         }
 
+        // Ramp-up
         assignTasks(testCase.warmupDurationMinutes, "Ramp-up", 0)
 
+        // Main run(s)
         for (runId in 0 until testCase.repeatCount) {
             assignTasks(testCase.mainDurationMinutes, "Main", runId)
         }
