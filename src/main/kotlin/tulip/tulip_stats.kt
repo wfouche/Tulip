@@ -339,7 +339,14 @@ object DataCollector {
         if (filename != "") {
             val r = actionStats[NUM_ACTIONS].r
 
-            var json = "{\"duration\": ${r.duration_seconds}, "
+            var json = "{"
+
+            json += "\"java\": { "
+            json += "\"java.vendor\": \"${System.getProperty("java.vendor")}\", "
+            json += "\"java.runtime.version\": \"${System.getProperty("java.runtime.version")}\""
+            json += "}, "
+
+            json += "\"duration\": ${r.duration_seconds}, "
 
             json += "\"test_id\": ${r.test_id}, "
             json += "\"row_id\": ${r.row_id}, "
