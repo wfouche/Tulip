@@ -537,7 +537,7 @@ fun initTulip(c: RuntimeConfig) {
 /*-------------------------------------------------------------------------*/
 
 fun runTulip(c: RuntimeConfig) {
-    println("Tulip (${System.getProperty("java.vendor")}, ${System.getProperty("java.runtime.version")})\n")
+    println("Tulip (${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin ${KotlinVersion.CURRENT})\n")
     initTulip(c)
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
         testCase.userProfile.forEachIndexed { indexUserProfile, activeUsers ->
