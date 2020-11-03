@@ -41,7 +41,12 @@ dependencies {
 
 application {
     // Default JVM settings
-    applicationDefaultJvmArgs = listOf("-Xmx2048m")
+
+	// G1GC (default), Java 11
+    applicationDefaultJvmArgs = listOf("-server", "-Xmx2048m", "-XX:+ParallelRefProcEnabled") 
+	
+	// Java 8
+	//, "-XX:+UseParallelGC")
 
     // Define the main class for the application
     mainClass.set("LoadTest1")
