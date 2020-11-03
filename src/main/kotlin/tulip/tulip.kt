@@ -12,7 +12,14 @@ import java.util.concurrent.ThreadLocalRandom
 
 import kotlin.sequences.iterator
 
-//import java.util.Locale
+/*-------------------------------------------------------------------------*/
+
+data class RuntimeConfig(
+    val NUM_USERS: Int = 0,
+    val NUM_THREADS: Int = 0,
+    val testSuite: MutableList<TestCase>,
+    val newUser: ((Int) -> User)? = null
+)
 
 /*-------------------------------------------------------------------------*/
 
@@ -20,13 +27,34 @@ import kotlin.sequences.iterator
 // Arrays of user objects and user actions.
 //
 
-val userObjects = arrayOfNulls<User>(NUM_USERS)
-val userActions = arrayOfNulls<Iterator<Int>>(NUM_USERS)
+private var MAX_NUM_USERS = 0
+private var MAX_NUM_THREADS = 0
+
+private var userObjects: Array<User?>? = null // arrayOfNulls<User>(NUM_USERS)
+private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
 
 //
 // Array of Worker thread objects of a concrete type.
 //
-var userThreads = arrayOfNulls<UserThread>(NUM_THREADS)
+private var userThreads: Array<UserThread?>? = null //arrayOfNulls<UserThread>(NUM_THREADS)
+
+// ...
+private var testSuite: MutableList<TestCase>? = null
+
+private var newUser: ((Int) -> User)? = null
+
+/*-------------------------------------------------------------------------*/
+
+fun initRuntime(c: RuntimeConfig) {
+    MAX_NUM_USERS = c.NUM_USERS
+    MAX_NUM_THREADS = c.NUM_THREADS
+    testSuite = c.testSuite
+    newUser = c.newUser
+
+    userObjects = arrayOfNulls<User>(MAX_NUM_USERS)
+    userActions = arrayOfNulls<Iterator<Int>>(MAX_NUM_USERS)
+    userThreads = arrayOfNulls<UserThread>(MAX_NUM_THREADS)
+}
 
 /*-------------------------------------------------------------------------*/
 
@@ -172,10 +200,10 @@ class UserThread (threadId: Int): Thread() {
             // Locate the user object to which the task should be applied.
             // Dynamically create a new user object, if required.
             //
-            var u = userObjects[task.userId]
+            var u = userObjects!![task.userId]
             if (u == null) {
-                u = newUser(task.userId)
-                userObjects[task.userId] = u
+                u = newUser!!(task.userId)
+                userObjects!![task.userId] = u
             }
 
             //
@@ -266,13 +294,13 @@ object CpuLoadMetrics : Thread() {
 
 fun assignTask(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
-    var w = userThreads[threadId]
+    var w = userThreads!!.get(threadId)
     if (w == null) {
         w = UserThread(threadId).apply {
             isDaemon = true
             start()
         }
-        userThreads[threadId] = w
+        userThreads!!.set(threadId, w)
     }
     w.tq.put(task)
 }
@@ -304,7 +332,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
     // create a list of randomized user IDs
     val userList = mutableListOf<Int>()
-    repeat(NUM_USERS) {
+    repeat(MAX_NUM_USERS) {
         userList.add(it)
     }
     userList.shuffle()
@@ -331,18 +359,18 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         }
         actionList.shuffle(rnd)
     }
-    repeat(NUM_USERS) {
+    repeat(MAX_NUM_USERS) {
         if ((testCase.warmupDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
-            userActions[it] = null
+            userActions!![it] = null
         } else {
-            userActions[it] = createActionsGenerator(actionList)
+            userActions!![it] = createActionsGenerator(actionList)
         }
     }
 
     //
     // Create a queue containing a total of NUM_ACTIVE_USERS tokens.
     //
-    val NUM_ACTIVE_USERS: Int = if (activeUsers == 0) 10 * NUM_THREADS else activeUsers
+    val NUM_ACTIVE_USERS: Int = if (activeUsers == 0) 10 * MAX_NUM_THREADS else activeUsers
 
     val rspQueue = Queue<Task>(NUM_ACTIVE_USERS)
 
@@ -384,7 +412,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
                 // Assign the task to the user object.
                 task.apply {
-                    userId = uid; numUsers = NUM_USERS; numThreads = NUM_THREADS; actionId = aid; this.rspQueue = rspQueue
+                    userId = uid; numUsers = MAX_NUM_USERS; numThreads = MAX_NUM_THREADS; actionId = aid; this.rspQueue = rspQueue
                 }
                 assignTask(task)
 
@@ -397,7 +425,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
         val duration_millis: Int = (timeMillis_end - timeMillis_start).toInt()
         val ts_end = java.time.LocalDateTime.now().toString()
 
-        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, "Main", 0)
+        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, "Main", 0, MAX_NUM_USERS, MAX_NUM_THREADS)
         DataCollector.printStats(true)
         DataCollector.saveStatsJson(testCase.filename)
     } else {
@@ -435,7 +463,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
                 val uid = userList.random()
 
                 // Pick the next task for the user object to execute.
-                val aid: Int = userActions[uid]!!.next()
+                val aid: Int = userActions!![uid]!!.next()
 
                 // Limit the number of active users.
                 val task: Task = rspQueue.take()
@@ -445,7 +473,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
                 // Assign the task to the user object.
                 task.apply {
-                    userId = uid; numUsers = NUM_USERS; numThreads = NUM_THREADS; actionId = aid; this.rspQueue = rspQueue
+                    userId = uid; numUsers = MAX_NUM_USERS; numThreads = MAX_NUM_THREADS; actionId = aid; this.rspQueue = rspQueue
                 }
                 assignTask(task)
 
@@ -458,7 +486,7 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
             Console.put("${test_phase} run ${runId}: end   (${ts_end})")
 
-            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId)
+            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId, MAX_NUM_USERS, MAX_NUM_THREADS)
             DataCollector.printStats(false)
             if (test_phase == "Main") {
                 DataCollector.saveStatsJson(testCase.filename)
@@ -486,11 +514,13 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
 /*-------------------------------------------------------------------------*/
 
-fun initTulip() {
-    println("NUM_USERS = ${NUM_USERS}")
-    println("NUM_THREADS = ${NUM_THREADS}")
-    println("NUM_USERS_PER_THREAD = ${NUM_USERS / NUM_THREADS}")
-    if ((NUM_USERS / NUM_THREADS) * NUM_THREADS != NUM_USERS) {
+fun initTulip(c: RuntimeConfig) {
+    initRuntime((c))
+
+    println("NUM_USERS = ${MAX_NUM_USERS}")
+    println("NUM_THREADS = ${MAX_NUM_THREADS}")
+    println("NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
+    if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {
         println("")
         println("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
         System.exit(0)
@@ -506,11 +536,10 @@ fun initTulip() {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTulip() {
+fun runTulip(c: RuntimeConfig) {
     println("Tulip (${System.getProperty("java.vendor")}, ${System.getProperty("java.runtime.version")})\n")
-    initTulip()
-    initTestSuite()
-    testSuite.forEachIndexed { indexTestCase, testCase ->
+    initTulip(c)
+    testSuite!!.forEachIndexed { indexTestCase, testCase ->
         testCase.userProfile.forEachIndexed { indexUserProfile, activeUsers ->
             delay(5000)
             runTest(testCase, indexTestCase, indexUserProfile, activeUsers)

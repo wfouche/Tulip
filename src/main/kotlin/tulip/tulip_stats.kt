@@ -60,7 +60,7 @@ class ActionStats {
 
     val r = ActionSummary()
 
-    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int) {
+    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
         r.action_id = action_id
 
         r.row_id = runId
@@ -74,8 +74,8 @@ class ActionStats {
         r.indexUserProfile = indexUserProfile
         r.activeUsers = activeUsers
 
-        r.max_num_users = NUM_USERS
-        r.max_num_threads = NUM_THREADS
+        r.max_num_users = MAX_NUM_USERS
+        r.max_num_threads = MAX_NUM_THREADS
 
         r.num_actions = num_actions
         r.num_success = num_success
@@ -313,12 +313,12 @@ object DataCollector {
     //     }
     // }
 
-    fun createSummary(duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int) {
-        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId)
+    fun createSummary(duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
+        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId, MAX_NUM_USERS, MAX_NUM_THREADS)
         actionStats.forEachIndexed { index, data ->
             if (data.num_actions > 0) {
                 if (index != NUM_ACTIONS) {
-                    data.createSummary(index, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, -1)
+                    data.createSummary(index, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, -1, MAX_NUM_USERS, MAX_NUM_THREADS)
                 }
             }
         }

@@ -44,5 +44,5 @@ application {
     applicationDefaultJvmArgs = listOf("-Xmx2048m")
 
     // Define the main class for the application
-    mainClass.set("tulip.LoadTest1")
+    mainClass.set("LoadTest1")
 }

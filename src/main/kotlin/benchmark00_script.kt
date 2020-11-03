@@ -1,6 +1,9 @@
 /*-------------------------------------------------------------------------*/
 
-package tulip
+import tulip.Action
+import tulip.NUM_ACTIONS
+import tulip.TestCase
+import tulip.User
 
 /*-------------------------------------------------------------------------*/
 
@@ -11,14 +14,14 @@ val JSON_FILENAME="json_results.txt"
 
 /*-------------------------------------------------------------------------*/
 
-var testSuite = mutableListOf<TestCase>()
+var tests = mutableListOf<TestCase>()
 
 /*-------------------------------------------------------------------------*/
 
 fun initTestSuite() {
 
     // Test 1.
-    testSuite.add(
+    tests.add(
         TestCase(
             name = "Test0 (Initialize)",
             arrivalRate = 0.0,
@@ -29,7 +32,7 @@ fun initTestSuite() {
     )
 
     // Test 2.
-    testSuite.add(
+    tests.add(
         TestCase(
             // The name of this test.
             name = "Test1 (Throughput Test - Max)",
@@ -59,7 +62,7 @@ fun initTestSuite() {
     )
 
     // Test 3.
-    testSuite.add(
+    tests.add(
         TestCase(
             // The name of this test.
             name = "Test2 (Throughput Test - Fixed)",
@@ -91,7 +94,7 @@ fun initTestSuite() {
     )
 
     // Test 4.
-    testSuite.add(
+    tests.add(
         TestCase(
             // The name of this test.
             name = "Test3 (Workflow Test)",
@@ -119,12 +122,12 @@ fun initTestSuite() {
     )
 
     // Test 5.
-    testSuite.add(
+    tests.add(
         TestCase(
             name = "Test4 (Terminate)",
             arrivalRate = 5.0,
             userProfile = listOf(1),
-            actions = listOf(Action(NUM_ACTIONS-1)),
+            actions = listOf(Action(NUM_ACTIONS -1)),
             filename = JSON_FILENAME
         )
     )

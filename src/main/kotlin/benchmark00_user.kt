@@ -1,11 +1,11 @@
 /*-------------------------------------------------------------------------*/
 
-package tulip
+import tulip.Console
+import tulip.User
+import tulip.delay
+import tulip.delayMillisRandom
 
 /*-------------------------------------------------------------------------*/
-
-import java.io.IOException
-import java.net.URL
 
 /*-------------------------------------------------------------------------*/
 
