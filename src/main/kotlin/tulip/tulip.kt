@@ -592,3 +592,9 @@ fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, func: (In
 }
 
 /*-------------------------------------------------------------------------*/
+
+// TODO: add scenario name to the JSON output file.
+
+// TODO: use values in arrivalRates map to change the arrivalRate for individual tests.
+
+/*-------------------------------------------------------------------------*/
