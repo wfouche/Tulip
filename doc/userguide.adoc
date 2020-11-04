@@ -4,6 +4,7 @@
 
 TBD - the documentation journey has just started.
 
+// latexmath:[C = \alpha + \beta Y^{\gamma} + \epsilon]
 
 [appendix]
 
