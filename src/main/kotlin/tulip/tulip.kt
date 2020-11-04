@@ -15,9 +15,10 @@ import kotlin.sequences.iterator
 /*-------------------------------------------------------------------------*/
 
 data class RuntimeConfig(
+    val name: String = "",
     val NUM_USERS: Int = 0,
     val NUM_THREADS: Int = 0,
-    val testSuite: MutableList<TestCase>,
+    val testSuite: MutableList<TestProfile>,
     val newUser: ((Int) -> User)? = null
 )
 
@@ -39,7 +40,7 @@ private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<
 private var userThreads: Array<UserThread?>? = null //arrayOfNulls<UserThread>(NUM_THREADS)
 
 // ...
-private var testSuite: MutableList<TestCase>? = null
+private var testSuite: MutableList<TestProfile>? = null
 
 private var newUser: ((Int) -> User)? = null
 
@@ -54,6 +55,13 @@ fun initRuntime(c: RuntimeConfig) {
     userObjects = arrayOfNulls<User>(MAX_NUM_USERS)
     userActions = arrayOfNulls<Iterator<Int>>(MAX_NUM_USERS)
     userThreads = arrayOfNulls<UserThread>(MAX_NUM_THREADS)
+}
+
+fun stopRuntime() {
+    for (th in userThreads!!) {
+        th!!.tq.put(Task(status=999))
+    }
+    delay(5000)
 }
 
 /*-------------------------------------------------------------------------*/
@@ -72,7 +80,14 @@ data class Action(
 
 /*-------------------------------------------------------------------------*/
 
-data class TestCase(
+data class RuntimeContext(
+    val name: String = "",
+    val numUsers: Int = 0,
+    val numThreads: Int = 0,
+    val arrivalRates: Map<String,Double> = mapOf("c3pdbXAzNzCzMpjXb^nK8?7V&v2q4W!f" to 0.0)
+)
+
+data class TestProfile(
     //
     // Name of the benchmark test.
     //
@@ -188,34 +203,43 @@ class UserThread (threadId: Int): Thread() {
     // Task Queue - input queue with tasks for this thread to complete.
     //
     var tq = Queue<Task>(10)
+    var running = true
 
     override fun run() {
-        while (true) {
+        while (running) {
             //
             // Wait for a new task to be assigned to this thread.
             //
             val task: Task = tq.take()
 
-            //
-            // Locate the user object to which the task should be applied.
-            // Dynamically create a new user object, if required.
-            //
-            var u = userObjects!![task.userId]
-            if (u == null) {
-                u = newUser!!(task.userId)
-                userObjects!![task.userId] = u
+            /// ....
+            if (task.status == 999) {
+                running = false
+                //Console.put("Thread ${name} is stopping.")
             }
+            else {
 
-            //
-            // Apply the task to the user object. The return value is either
-            // True or False indicating that the task succeeded or failed.
-            // Also calculate the elapsed time in microseconds.
-            //
-            task.durationMicros = elapsedTimeMicros {
-                if (u.processAction(task.actionId)) task.status=1 else task.status=0
+                //
+                // Locate the user object to which the task should be applied.
+                // Dynamically create a new user object, if required.
+                //
+                var u = userObjects!![task.userId]
+                if (u == null) {
+                    u = newUser!!(task.userId)
+                    userObjects!![task.userId] = u
+                }
+
+                //
+                // Apply the task to the user object. The return value is either
+                // True or False indicating that the task succeeded or failed.
+                // Also calculate the elapsed time in microseconds.
+                //
+                task.durationMicros = elapsedTimeMicros {
+                    if (u.processAction(task.actionId)) task.status = 1 else task.status = 0
+                }
+
+                task.rspQueue!!.put(task)
             }
-
-            task.rspQueue!!.put(task)
         }
     }
 }
@@ -257,13 +281,20 @@ object CpuLoadMetrics : Thread() {
     init {
         isDaemon = true
         name = "cpu-load-metrics"
-        //start()
+        start()
     }
 
     val systemCpuStats = Queue<Double>(1000)
     val processCpuStats = Queue<Double>(1000)
 
     override fun run() {
+        while (getProcessCpuLoad().isNaN()) {
+            delay(250)
+        }
+        while (getSystemCpuLoad().isNaN()) {
+            delay(250)
+        }
+
         var timeMillis_next: Long = timeMillis()
         var i = 0
         var total_cpu_system = 0.0
@@ -320,7 +351,7 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
+fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
     val ts_begin = java.time.LocalDateTime.now().toString()
     val output = mutableListOf("")
     output.add("======================================================================")
@@ -514,9 +545,19 @@ fun runTest(testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activ
 
 /*-------------------------------------------------------------------------*/
 
-fun initTulip(c: RuntimeConfig) {
-    initRuntime((c))
+fun initTulip() {
+    println("Tulip (${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin ${KotlinVersion.CURRENT})")
+}
 
+/*-------------------------------------------------------------------------*/
+
+fun runTulip(c: RuntimeConfig) {
+    println("")
+    initRuntime((c))
+    println("======================================================================")
+    println("Scenario: ${c.name}")
+    println("======================================================================")
+    println("")
     println("NUM_USERS = ${MAX_NUM_USERS}")
     println("NUM_THREADS = ${MAX_NUM_THREADS}")
     println("NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
@@ -525,26 +566,13 @@ fun initTulip(c: RuntimeConfig) {
         println("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
         System.exit(0)
     }
-    while (getProcessCpuLoad().isNaN()) {
-        delay(250)
-    }
-    while (getSystemCpuLoad().isNaN()) {
-        delay(250)
-    }
-    CpuLoadMetrics.start()
-}
-
-/*-------------------------------------------------------------------------*/
-
-fun runTulip(c: RuntimeConfig) {
-    println("Tulip (${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin ${KotlinVersion.CURRENT})\n")
-    initTulip(c)
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
         testCase.userProfile.forEachIndexed { indexUserProfile, activeUsers ->
             delay(5000)
             runTest(testCase, indexTestCase, indexUserProfile, activeUsers)
         }
     }
+    stopRuntime()
 }
 
 /*-------------------------------------------------------------------------*/

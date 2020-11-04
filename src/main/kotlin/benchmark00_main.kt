@@ -6,18 +6,23 @@
 
 import tulip.RuntimeConfig
 import tulip.runTulip
+import tulip.initTulip
 
 /*-------------------------------------------------------------------------*/
 
 fun main() {
     initTestSuite()
-    val config = RuntimeConfig(
-            NUM_USERS = NUM_USERS,
-            NUM_THREADS = NUM_THREADS,
-            testSuite = tests,
-            newUser = ::newUser
-    )
-    runTulip(config)
+    initTulip()
+    for (tc in contexts) {
+        val config = RuntimeConfig(
+                name = tc.name,
+                NUM_USERS = tc.numUsers,
+                NUM_THREADS = tc.numThreads,
+                testSuite = tests,
+                newUser = ::newUser
+        )
+        runTulip(config)
+    }
 }
 
 /*-------------------------------------------------------------------------*/

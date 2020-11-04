@@ -60,7 +60,7 @@ class ActionStats {
 
     val r = ActionSummary()
 
-    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
+    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
         r.action_id = action_id
 
         r.row_id = runId
@@ -313,7 +313,7 @@ object DataCollector {
     //     }
     // }
 
-    fun createSummary(duration_millis: Int, testCase: TestCase, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
+    fun createSummary(duration_millis: Int, testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
         actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId, MAX_NUM_USERS, MAX_NUM_THREADS)
         actionStats.forEachIndexed { index, data ->
             if (data.num_actions > 0) {

@@ -2,19 +2,23 @@
 
 import tulip.Action
 import tulip.NUM_ACTIONS
-import tulip.TestCase
+import tulip.RuntimeContext
+import tulip.TestProfile
 import tulip.User
 
 /*-------------------------------------------------------------------------*/
 
-val NUM_USERS = 4
-val NUM_THREADS = 4
+val JSON_FILENAME = "json_results.txt"
 
-val JSON_FILENAME="json_results.txt"
+var contexts = listOf(
+        // Context 1
+        RuntimeContext("Scenario-1",4,4, mapOf("TEST1" to 10.0, "TEST2" to 25.0)),
 
-/*-------------------------------------------------------------------------*/
+        // Context 2
+        RuntimeContext("Scenario-2",8,8, mapOf("TEST1" to 20.0, "TEST2" to 50.0))
+)
 
-var tests = mutableListOf<TestCase>()
+var tests = mutableListOf<TestProfile>()
 
 /*-------------------------------------------------------------------------*/
 
@@ -22,7 +26,7 @@ fun initTestSuite() {
 
     // Test 1.
     tests.add(
-        TestCase(
+            TestProfile(
             name = "Test0 (Initialize)",
             arrivalRate = 0.0,
             userProfile = listOf(1),
@@ -32,8 +36,8 @@ fun initTestSuite() {
     )
 
     // Test 2.
-    tests.add(
-        TestCase(
+    if (false) tests.add(
+            TestProfile(
             // The name of this test.
             name = "Test1 (Throughput Test - Max)",
 
@@ -55,15 +59,15 @@ fun initTestSuite() {
             // Actions to be performed on the user objects during this test.
             actions = listOf(Action(8)),
 
-            repeatCount = 3,
+            repeatCount = 1,
 
             filename = JSON_FILENAME
         )
     )
 
     // Test 3.
-    tests.add(
-        TestCase(
+    if (false) tests.add(
+            TestProfile(
             // The name of this test.
             name = "Test2 (Throughput Test - Fixed)",
 
@@ -94,8 +98,8 @@ fun initTestSuite() {
     )
 
     // Test 4.
-    tests.add(
-        TestCase(
+    if (false) tests.add(
+            TestProfile(
             // The name of this test.
             name = "Test3 (Workflow Test)",
 
@@ -109,7 +113,7 @@ fun initTestSuite() {
 
             // Limit the number of active user objects, A value of
             // zero sets the number of active users to unlimited.
-            userProfile = listOf(NUM_THREADS),
+            userProfile = listOf(0),
 
             // Actions to be performed on the user objects during this test.
             // 100 actions in total with a 50%/50% split between
@@ -123,7 +127,7 @@ fun initTestSuite() {
 
     // Test 5.
     tests.add(
-        TestCase(
+            TestProfile(
             name = "Test4 (Terminate)",
             arrivalRate = 5.0,
             userProfile = listOf(1),
