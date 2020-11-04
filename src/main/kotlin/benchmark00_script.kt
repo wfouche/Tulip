@@ -10,7 +10,7 @@ import tulip.User
 
 val JSON_FILENAME = "json_results.txt"
 
-var contexts = listOf(
+var contexts: List<RuntimeContext> = listOf(
         // Context 1
         RuntimeContext("Scenario-1",4,4, mapOf("TEST1" to 10.0, "TEST2" to 25.0)),
 
@@ -18,7 +18,7 @@ var contexts = listOf(
         RuntimeContext("Scenario-2",8,8, mapOf("TEST1" to 20.0, "TEST2" to 50.0))
 )
 
-var tests = mutableListOf<TestProfile>()
+var tests: MutableList<TestProfile> = mutableListOf<TestProfile>()
 
 /*-------------------------------------------------------------------------*/
 

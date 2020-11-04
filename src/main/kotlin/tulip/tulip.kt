@@ -576,3 +576,19 @@ fun runTulip(c: RuntimeConfig) {
 }
 
 /*-------------------------------------------------------------------------*/
+
+fun runTests(contexts: List<RuntimeContext>, tests: MutableList<TestProfile>, func: (Int) -> User) {
+    initTulip()
+    for (tc in contexts) {
+        val config = RuntimeConfig(
+                name = tc.name,
+                NUM_USERS = tc.numUsers,
+                NUM_THREADS = tc.numThreads,
+                testSuite = tests,
+                newUser = func
+        )
+        runTulip(config)
+    }
+}
+
+/*-------------------------------------------------------------------------*/
