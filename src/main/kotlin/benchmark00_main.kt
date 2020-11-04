@@ -9,7 +9,6 @@ import tulip.runTests
 /*-------------------------------------------------------------------------*/
 
 fun main() {
-    initTestSuite()
     runTests(contexts, tests, ::newUser)
 }
 

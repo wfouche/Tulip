@@ -18,56 +18,44 @@ var contexts: List<RuntimeContext> = listOf(
         RuntimeContext("Scenario-2",8,8, mapOf("TEST1" to 20.0, "TEST2" to 50.0))
 )
 
-var tests: MutableList<TestProfile> = mutableListOf<TestProfile>()
+val tests: List<TestProfile> = listOf (
 
-/*-------------------------------------------------------------------------*/
+    TestProfile(
+        name = "Test0 (Initialize)",
+        arrivalRate = 0.0,
+        userProfile = listOf(1),
+        actions = listOf(Action(0), Action(7)),
+        filename = JSON_FILENAME
+    ),
 
-fun initTestSuite() {
+    TestProfile(
+        // The name of this test.
+        name = "Test1 (Throughput Test - Max)",
 
-    // Test 1.
-    tests.add(
-            TestProfile(
-            name = "Test0 (Initialize)",
-            arrivalRate = 0.0,
-            userProfile = listOf(1),
-            actions = listOf(Action(0), Action(7)),
-            filename = JSON_FILENAME
-        )
-    )
+        // Duration in minutes
+        startupDurationMinutes = 1,
+        warmupDurationMinutes = 1,
+        mainDurationMinutes = 5,
 
-    // Test 2.
-    if (false) tests.add(
-            TestProfile(
-            // The name of this test.
-            name = "Test1 (Throughput Test - Max)",
+        // Limit throughput 100.0 actions per second (on average).
+        // A value of zero indicates that the arrival rate is uncapped.
+        // λ value from Little's Law
+        arrivalRate = 0.0,
 
-            // Duration in minutes
-            startupDurationMinutes = 1,
-            warmupDurationMinutes = 1,
-            mainDurationMinutes = 5,
+        // Limit the number of active user objects, A value of
+        // zero sets the number of active users to unlimited.
+        // L value from Little's Law.
+        userProfile = listOf(0,2,1),
 
-            // Limit throughput 100.0 actions per second (on average).
-            // A value of zero indicates that the arrival rate is uncapped.
-            // λ value from Little's Law
-            arrivalRate = 0.0,
+        // Actions to be performed on the user objects during this test.
+        actions = listOf(Action(8)),
 
-            // Limit the number of active user objects, A value of
-            // zero sets the number of active users to unlimited.
-            // L value from Little's Law.
-            userProfile = listOf(0,2,1),
+        repeatCount = 1,
 
-            // Actions to be performed on the user objects during this test.
-            actions = listOf(Action(8)),
+        filename = JSON_FILENAME
+    ),
 
-            repeatCount = 1,
-
-            filename = JSON_FILENAME
-        )
-    )
-
-    // Test 3.
-    if (false) tests.add(
-            TestProfile(
+    TestProfile(
             // The name of this test.
             name = "Test2 (Throughput Test - Fixed)",
 
@@ -94,48 +82,16 @@ fun initTestSuite() {
             repeatCount = 3,
 
             filename = JSON_FILENAME
-        )
-    )
+    ),
 
-    // Test 4.
-    if (false) tests.add(
-            TestProfile(
-            // The name of this test.
-            name = "Test3 (Workflow Test)",
-
-            // Duration in minutes
-            warmupDurationMinutes = 0,
-            mainDurationMinutes = 1,
-
-            // Limit throughput 60.0 actions per second (on average).
-            // A value of zero indicates that the arrival rate is uncapped.
-            arrivalRate = 0.25,
-
-            // Limit the number of active user objects, A value of
-            // zero sets the number of active users to unlimited.
-            userProfile = listOf(0),
-
-            // Actions to be performed on the user objects during this test.
-            // 100 actions in total with a 50%/50% split between
-            // action 0 and action 1
-            // 6*1.0/4.0 + 14*3.0/4.0 = 12.0 ms (expected global average response time)
-            actions = listOf(Action(4), Action(5), Action(6)),
-
-            filename = JSON_FILENAME
-        )
-    )
-
-    // Test 5.
-    tests.add(
-            TestProfile(
+    TestProfile(
             name = "Test4 (Terminate)",
             arrivalRate = 5.0,
             userProfile = listOf(1),
             actions = listOf(Action(NUM_ACTIONS -1)),
             filename = JSON_FILENAME
-        )
     )
-}
+)
 
 /*-------------------------------------------------------------------------*/
 

@@ -18,7 +18,7 @@ data class RuntimeConfig(
     val name: String = "",
     val NUM_USERS: Int = 0,
     val NUM_THREADS: Int = 0,
-    val testSuite: MutableList<TestProfile>,
+    val testSuite: List<TestProfile>,
     val newUser: ((Int) -> User)? = null
 )
 
@@ -40,7 +40,7 @@ private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<
 private var userThreads: Array<UserThread?>? = null //arrayOfNulls<UserThread>(NUM_THREADS)
 
 // ...
-private var testSuite: MutableList<TestProfile>? = null
+private var testSuite: List<TestProfile>? = null
 
 private var newUser: ((Int) -> User)? = null
 
@@ -577,7 +577,7 @@ fun runTulip(c: RuntimeConfig) {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTests(contexts: List<RuntimeContext>, tests: MutableList<TestProfile>, func: (Int) -> User) {
+fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, func: (Int) -> User) {
     initTulip()
     for (tc in contexts) {
         val config = RuntimeConfig(
