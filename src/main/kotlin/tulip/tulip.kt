@@ -84,7 +84,7 @@ data class RuntimeContext(
     val name: String = "",
     val numUsers: Int = 0,
     val numThreads: Int = 0,
-    val newTPS: ((RuntimeContext, Int) -> Double)? = null
+    val getTest: ((RuntimeContext, Int, TestProfile) -> TestProfile)? = null
 )
 
 data class TestProfile(

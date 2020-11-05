@@ -14,22 +14,23 @@ fun getUser(userId: Int): User {
 
 /*-------------------------------------------------------------------------*/
 
-fun getArrivalRate(c: RuntimeContext, testId: Int): Double {
-    return when {
+fun getTest(c: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
+    val tps =  when {
         c.numUsers == 4 && c.numThreads == 4 -> 100.0
         c.numUsers == 8 && c.numThreads == 4 -> 200.0
         else -> 0.0
     }
+    return test.copy(arrivalRate = tps)
 }
 
 /*-------------------------------------------------------------------------*/
 
 var contexts: List<RuntimeContext> = listOf(
         // Context 1
-        RuntimeContext("Scenario-1", 4, 4, ::getArrivalRate),
+        RuntimeContext("Scenario-1", 4, 4, ::getTest),
 
         // Context 2
-        RuntimeContext("Scenario-2", 8, 8, ::getArrivalRate)
+        RuntimeContext("Scenario-2", 8, 8, ::getTest)
 )
 
 /*-------------------------------------------------------------------------*/
