@@ -84,7 +84,7 @@ data class RuntimeContext(
     val name: String = "",
     val numUsers: Int = 0,
     val numThreads: Int = 0,
-    val getTest: ((RuntimeContext, Int, TestProfile) -> TestProfile)? = null
+    val getTest: ((RuntimeContext, Int, TestProfile) -> TestProfile)
 )
 
 data class TestProfile(
@@ -551,7 +551,7 @@ fun initTulip() {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTulip(c: RuntimeConfig) {
+fun runTulip(c: RuntimeConfig, tc: RuntimeContext) {
     println("")
     initRuntime((c))
     println("======================================================================")
@@ -567,9 +567,10 @@ fun runTulip(c: RuntimeConfig) {
         System.exit(0)
     }
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
-        testCase.userProfile.forEachIndexed { indexUserProfile, activeUsers ->
+        val x: TestProfile = tc.getTest(tc, indexTestCase, testCase)
+        x.userProfile.forEachIndexed { indexUserProfile, activeUsers ->
             delay(5000)
-            runTest(testCase, indexTestCase, indexUserProfile, activeUsers)
+            runTest(x, indexTestCase, indexUserProfile, activeUsers)
         }
     }
     stopRuntime()
@@ -587,14 +588,12 @@ fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, func: (In
                 testSuite = tests,
                 newUser = func
         )
-        runTulip(config)
+        runTulip(config, tc)
     }
 }
 
 /*-------------------------------------------------------------------------*/
 
 // TODO: add scenario name to the JSON output file.
-
-// TODO: use values in arrivalRates map to change the arrivalRate for individual tests.
 
 /*-------------------------------------------------------------------------*/

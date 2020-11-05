@@ -14,13 +14,15 @@ fun getUser(userId: Int): User {
 
 /*-------------------------------------------------------------------------*/
 
-fun getTest(c: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
-    val tps =  when {
-        c.numUsers == 4 && c.numThreads == 4 -> 100.0
-        c.numUsers == 8 && c.numThreads == 4 -> 200.0
-        else -> 0.0
-    }
-    return test.copy(arrivalRate = tps)
+fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
+    //val tps =  when {
+    //    c.numUsers == 4 && c.numThreads == 4 -> 100.0
+    //    c.numUsers == 8 && c.numThreads == 4 -> 200.0
+    //    else -> 0.0
+    //}
+    //return test.copy(arrivalRate = tps)
+    //println("getTest: ${context.name}, ${testId}, ${test.filename}")
+    return test
 }
 
 /*-------------------------------------------------------------------------*/
@@ -35,7 +37,7 @@ var contexts: List<RuntimeContext> = listOf(
 
 /*-------------------------------------------------------------------------*/
 
-val JSON_FILENAME = "json_results.txt"
+const val JSON_FILENAME = "json_results.txt"
 
 /*-------------------------------------------------------------------------*/
 
