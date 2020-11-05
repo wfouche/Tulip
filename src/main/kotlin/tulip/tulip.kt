@@ -84,7 +84,7 @@ data class RuntimeContext(
     val name: String = "",
     val numUsers: Int = 0,
     val numThreads: Int = 0,
-    val arrivalRates: Map<String,Double> = mapOf("c3pdbXAzNzCzMpjXb^nK8?7V&v2q4W!f" to 0.0)
+    val newTPS: ((RuntimeContext, Int) -> Double)? = null
 )
 
 data class TestProfile(

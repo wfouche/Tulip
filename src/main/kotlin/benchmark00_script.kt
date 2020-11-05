@@ -8,18 +8,28 @@ import tulip.User
 
 /*-------------------------------------------------------------------------*/
 
-fun newUser(userId: Int): User {
+fun getUser(userId: Int): User {
     return UserHttp(userId)
+}
+
+/*-------------------------------------------------------------------------*/
+
+fun getArrivalRate(c: RuntimeContext, testId: Int): Double {
+    return when {
+        c.numUsers == 4 && c.numThreads == 4 -> 100.0
+        c.numUsers == 8 && c.numThreads == 4 -> 200.0
+        else -> 0.0
+    }
 }
 
 /*-------------------------------------------------------------------------*/
 
 var contexts: List<RuntimeContext> = listOf(
         // Context 1
-        RuntimeContext("Scenario-1", 4, 4, mapOf("TEST1" to 10.0, "TEST2" to 25.0)),
+        RuntimeContext("Scenario-1", 4, 4, ::getArrivalRate),
 
         // Context 2
-        RuntimeContext("Scenario-2", 8, 8, mapOf("TEST1" to 20.0, "TEST2" to 50.0))
+        RuntimeContext("Scenario-2", 8, 8, ::getArrivalRate)
 )
 
 /*-------------------------------------------------------------------------*/
@@ -30,6 +40,7 @@ val JSON_FILENAME = "json_results.txt"
 
 val tests: List<TestProfile> = listOf(
 
+        // 0
         TestProfile(
                 name = "Test0 (Initialize)",
                 arrivalRate = 0.0,
@@ -38,6 +49,7 @@ val tests: List<TestProfile> = listOf(
                 filename = JSON_FILENAME
         ),
 
+        // 1
         TestProfile(
                 // The name of this test.
                 name = "Test1 (Throughput Test - Max)",
@@ -65,6 +77,7 @@ val tests: List<TestProfile> = listOf(
                 filename = JSON_FILENAME
         ),
 
+        // 2
         TestProfile(
                 // The name of this test.
                 name = "Test2 (Throughput Test - Fixed)",
@@ -94,6 +107,7 @@ val tests: List<TestProfile> = listOf(
                 filename = JSON_FILENAME
         ),
 
+        // 3
         TestProfile(
                 name = "Test4 (Terminate)",
                 arrivalRate = 5.0,
