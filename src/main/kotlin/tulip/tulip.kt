@@ -28,6 +28,8 @@ data class RuntimeConfig(
 // Arrays of user objects and user actions.
 //
 
+var TULIP_SCENARIO_NAME: String = ""
+
 private var MAX_NUM_USERS = 0
 private var MAX_NUM_THREADS = 0
 
@@ -47,6 +49,8 @@ private var newUser: ((Int) -> User)? = null
 /*-------------------------------------------------------------------------*/
 
 fun initRuntime(c: RuntimeConfig) {
+    TULIP_SCENARIO_NAME = c.name
+
     MAX_NUM_USERS = c.NUM_USERS
     MAX_NUM_THREADS = c.NUM_THREADS
     testSuite = c.testSuite
@@ -553,7 +557,7 @@ fun initTulip() {
 
 fun runTulip(c: RuntimeConfig, tc: RuntimeContext) {
     println("")
-    initRuntime((c))
+    initRuntime(c)
     println("======================================================================")
     println("Scenario: ${c.name}")
     println("======================================================================")
@@ -594,6 +598,8 @@ fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, func: (In
 
 /*-------------------------------------------------------------------------*/
 
-// TODO: add scenario name to the JSON output file.
+// Add to do items here:
+
+// TODO: ...
 
 /*-------------------------------------------------------------------------*/

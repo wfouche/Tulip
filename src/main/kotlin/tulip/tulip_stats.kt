@@ -341,23 +341,24 @@ object DataCollector {
 
             var json = "{"
 
+            json += "\"scenario_name\": ${TULIP_SCENARIO_NAME}, "
+            json += "\"num_users\": ${r.max_num_users}, "
+            json += "\"num_threads\": ${r.max_num_threads}, "
+            json += "\"num_users_active\": ${if (r.activeUsers == 0) r.max_num_users else r.activeUsers}, "
+
+            json += "\"test_name\": \"${r.test_name}\", "
+            json += "\"test_id\": ${r.test_id}, "
+            json += "\"row_id\": ${r.row_id}, "
+
+            json += "\"test_begin\": \"${r.test_begin}\", "
+            json += "\"test_end\": \"${r.test_end}\", "
+
             json += "\"java\": { "
             json += "\"java.vendor\": \"${System.getProperty("java.vendor")}\", "
             json += "\"java.runtime.version\": \"${System.getProperty("java.runtime.version")}\""
             json += "}, "
 
             json += "\"duration\": ${r.duration_seconds}, "
-
-            json += "\"test_id\": ${r.test_id}, "
-            json += "\"row_id\": ${r.row_id}, "
-
-            json += "\"num_users_active\": ${if (r.activeUsers == 0) r.max_num_users else r.activeUsers}, "
-            json += "\"num_users\": ${r.max_num_users}, "
-            json += "\"num_threads\": ${r.max_num_threads}, "
-
-            json += "\"test_name\": \"${r.test_name}\", "
-            json += "\"test_begin\": \"${r.test_begin}\", "
-            json += "\"test_end\": \"${r.test_end}\", "
 
             json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
 
