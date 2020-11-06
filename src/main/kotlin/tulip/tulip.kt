@@ -16,6 +16,7 @@ import kotlin.sequences.iterator
 
 data class RuntimeConfig(
     val name: String = "",
+    val id: Int,
     val NUM_USERS: Int = 0,
     val NUM_THREADS: Int = 0,
     val testSuite: List<TestProfile>,
@@ -29,6 +30,7 @@ data class RuntimeConfig(
 //
 
 var TULIP_SCENARIO_NAME: String = ""
+var TULIP_SCENARIO_ID: Int = 0
 
 private var MAX_NUM_USERS = 0
 private var MAX_NUM_THREADS = 0
@@ -50,6 +52,7 @@ private var newUser: ((Int) -> User)? = null
 
 fun initRuntime(c: RuntimeConfig) {
     TULIP_SCENARIO_NAME = c.name
+    TULIP_SCENARIO_ID = c.id
 
     MAX_NUM_USERS = c.NUM_USERS
     MAX_NUM_THREADS = c.NUM_THREADS
@@ -584,15 +587,18 @@ fun runTulip(c: RuntimeConfig, tc: RuntimeContext) {
 
 fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, func: (Int) -> User) {
     initTulip()
+    var tc_id = 0
     for (tc in contexts) {
         val config = RuntimeConfig(
                 name = tc.name,
+                id = tc_id,
                 NUM_USERS = tc.numUsers,
                 NUM_THREADS = tc.numThreads,
                 testSuite = tests,
                 newUser = func
         )
         runTulip(config, tc)
+        tc_id += 1
     }
 }
 

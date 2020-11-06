@@ -342,6 +342,7 @@ object DataCollector {
             var json = "{"
 
             json += "\"scenario_name\": ${TULIP_SCENARIO_NAME}, "
+            json += "\"scenario_id\": ${TULIP_SCENARIO_ID}, "
             json += "\"num_users\": ${r.max_num_users}, "
             json += "\"num_threads\": ${r.max_num_threads}, "
             json += "\"num_users_active\": ${if (r.activeUsers == 0) r.max_num_users else r.activeUsers}, "
