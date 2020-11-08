@@ -587,18 +587,16 @@ fun runTulip(c: RuntimeConfig, tc: RuntimeContext) {
 
 fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, func: (Int) -> User) {
     initTulip()
-    var tc_id = 0
-    for (tc in contexts) {
-        val config = RuntimeConfig(
-                name = tc.name,
-                id = tc_id,
-                NUM_USERS = tc.numUsers,
-                NUM_THREADS = tc.numThreads,
+    contexts.forEachIndexed { index, runtimeContext ->
+        val runtimeConfig = RuntimeConfig(
+                name = runtimeContext.name,
+                id = index,
+                NUM_USERS = runtimeContext.numUsers,
+                NUM_THREADS = runtimeContext.numThreads,
                 testSuite = tests,
                 newUser = func
         )
-        runTulip(config, tc)
-        tc_id += 1
+        runTulip(runtimeConfig, runtimeContext)
     }
 }
 
