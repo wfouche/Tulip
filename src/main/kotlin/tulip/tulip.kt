@@ -53,11 +53,16 @@ fun initRuntime(contextId: Int, context: RuntimeContext, tests: List<TestProfile
     userThreads = arrayOfNulls<UserThread>(MAX_NUM_THREADS)
 }
 
-fun stopRuntime() {
-    for (userThread in userThreads!!) {
+fun doneRuntime() {
+    // Terminate all user threads.
+    userThreads!!.forEach { userThread ->
         userThread!!.tq.put(Task(status=999))
     }
-    delay(5000)
+
+    // Wait for all user threads to exit.
+    while (userThreads!!.map {if (it == null) 0 else 1}.sum() > 0) {
+        delay(500)
+    }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -189,10 +194,11 @@ class RateGovernor(val timeMillis_start: Long, val averageRate: Double) {
 
 /*-------------------------------------------------------------------------*/
 
-class UserThread (threadId: Int): Thread() {
+class UserThread (private val threadId: Int): Thread() {
 
     init {
         name = "user-thread-$threadId"
+
     }
 
     //
@@ -210,8 +216,8 @@ class UserThread (threadId: Int): Thread() {
 
             /// ....
             if (task.status == 999) {
-                running = false
                 //Console.put("Thread ${name} is stopping.")
+                running = false
             }
             else {
 
@@ -237,6 +243,7 @@ class UserThread (threadId: Int): Thread() {
                 task.rspQueue!!.put(task)
             }
         }
+        userThreads!![threadId] = null
     }
 }
 
@@ -549,7 +556,9 @@ fun initTulip() {
 
 fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, Int, TestProfile) -> TestProfile) {
     println("")
+
     initRuntime(contextId, context, tests, getUser)
+
     println("======================================================================")
     println("Scenario: ${context.name}")
     println("======================================================================")
@@ -569,7 +578,8 @@ fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, 
             runTest(x, indexTestCase, indexUserProfile, activeUsers)
         }
     }
-    stopRuntime()
+
+    doneRuntime()
 }
 
 /*-------------------------------------------------------------------------*/
