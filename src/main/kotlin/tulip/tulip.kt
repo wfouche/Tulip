@@ -14,17 +14,6 @@ import kotlin.sequences.iterator
 
 /*-------------------------------------------------------------------------*/
 
-data class RuntimeConfig(
-    val name: String = "",
-    val id: Int,
-    val NUM_USERS: Int = 0,
-    val NUM_THREADS: Int = 0,
-    val testSuite: List<TestProfile>,
-    val newUser: ((Int) -> User)? = null
-)
-
-/*-------------------------------------------------------------------------*/
-
 //
 // Arrays of user objects and user actions.
 //
@@ -50,14 +39,14 @@ private var newUser: ((Int) -> User)? = null
 
 /*-------------------------------------------------------------------------*/
 
-fun initRuntime(c: RuntimeConfig) {
-    TULIP_SCENARIO_NAME = c.name
-    TULIP_SCENARIO_ID = c.id
+fun initRuntime(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, func: (Int) -> User) {
+    TULIP_SCENARIO_ID = contextId
+    TULIP_SCENARIO_NAME = context.name
 
-    MAX_NUM_USERS = c.NUM_USERS
-    MAX_NUM_THREADS = c.NUM_THREADS
-    testSuite = c.testSuite
-    newUser = c.newUser
+    MAX_NUM_USERS = context.numUsers
+    MAX_NUM_THREADS = context.numThreads
+    testSuite = tests
+    newUser = func
 
     userObjects = arrayOfNulls<User>(MAX_NUM_USERS)
     userActions = arrayOfNulls<Iterator<Int>>(MAX_NUM_USERS)
@@ -65,8 +54,8 @@ fun initRuntime(c: RuntimeConfig) {
 }
 
 fun stopRuntime() {
-    for (th in userThreads!!) {
-        th!!.tq.put(Task(status=999))
+    for (userThread in userThreads!!) {
+        userThread!!.tq.put(Task(status=999))
     }
     delay(5000)
 }
@@ -558,11 +547,11 @@ fun initTulip() {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTulip(c: RuntimeConfig, tc: RuntimeContext) {
+fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, Int, TestProfile) -> TestProfile) {
     println("")
-    initRuntime(c)
+    initRuntime(contextId, context, tests, getUser)
     println("======================================================================")
-    println("Scenario: ${c.name}")
+    println("Scenario: ${context.name}")
     println("======================================================================")
     println("")
     println("NUM_USERS = ${MAX_NUM_USERS}")
@@ -574,7 +563,7 @@ fun runTulip(c: RuntimeConfig, tc: RuntimeContext) {
         System.exit(0)
     }
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
-        val x: TestProfile = tc.getTest(tc, indexTestCase, testCase)
+        val x: TestProfile = getTest(context, indexTestCase, testCase)
         x.userProfile.forEachIndexed { indexUserProfile, activeUsers ->
             delay(5000)
             runTest(x, indexTestCase, indexUserProfile, activeUsers)
@@ -585,18 +574,10 @@ fun runTulip(c: RuntimeConfig, tc: RuntimeContext) {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, func: (Int) -> User) {
+fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, Int, TestProfile) -> TestProfile) {
     initTulip()
-    contexts.forEachIndexed { index, runtimeContext ->
-        val runtimeConfig = RuntimeConfig(
-                name = runtimeContext.name,
-                id = index,
-                NUM_USERS = runtimeContext.numUsers,
-                NUM_THREADS = runtimeContext.numThreads,
-                testSuite = tests,
-                newUser = func
-        )
-        runTulip(runtimeConfig, runtimeContext)
+    contexts.forEachIndexed { contextId, context ->
+        runTulip(contextId, context, tests, getUser, getTest)
     }
 }
 
