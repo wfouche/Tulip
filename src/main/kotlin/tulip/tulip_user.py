@@ -33,7 +33,7 @@ print("""    open fun done(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
         return try {
-            map[actionId].invoke()
+            map[actionId]()
         } catch (e: Exception) {
             false
         }
