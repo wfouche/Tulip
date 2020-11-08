@@ -39,7 +39,7 @@ private var newUser: ((Int) -> User)? = null
 
 /*-------------------------------------------------------------------------*/
 
-fun initRuntime(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, func: (Int) -> User) {
+fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, func: (Int) -> User) {
     TULIP_SCENARIO_ID = contextId
     TULIP_SCENARIO_NAME = context.name
 
@@ -53,7 +53,7 @@ fun initRuntime(contextId: Int, context: RuntimeContext, tests: List<TestProfile
     userThreads = arrayOfNulls<UserThread>(MAX_NUM_THREADS)
 }
 
-fun doneRuntime() {
+fun runtimeDone() {
     // Terminate all user threads.
     userThreads!!.forEach { userThread ->
         userThread!!.tq.put(Task(status=999))
@@ -557,7 +557,7 @@ fun initTulip() {
 fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, Int, TestProfile) -> TestProfile) {
     println("")
 
-    initRuntime(contextId, context, tests, getUser)
+    runtimeInit(contextId, context, tests, getUser)
 
     println("======================================================================")
     println("Scenario: ${context.name}")
@@ -579,7 +579,7 @@ fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, 
         }
     }
 
-    doneRuntime()
+    runtimeDone()
 }
 
 /*-------------------------------------------------------------------------*/
