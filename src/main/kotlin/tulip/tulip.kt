@@ -171,7 +171,7 @@ data class Task(
 
 /*-------------------------------------------------------------------------*/
 
-class RateGovernor(val timeMillis_start: Long, val averageRate: Double) {
+class RateGovernor(private val timeMillis_start: Long, private val averageRate: Double) {
 
     private var count: Long = 0
 
@@ -198,7 +198,6 @@ class UserThread (private val threadId: Int): Thread() {
 
     init {
         name = "user-thread-$threadId"
-
     }
 
     //
