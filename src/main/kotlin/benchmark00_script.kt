@@ -8,6 +8,10 @@ import tulip.User
 
 /*-------------------------------------------------------------------------*/
 
+const val JSON_FILENAME = "json_results.txt"
+
+/*-------------------------------------------------------------------------*/
+
 fun getUser(userId: Int): User {
     return UserHttp(userId)
 }
@@ -27,17 +31,13 @@ fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfil
 
 /*-------------------------------------------------------------------------*/
 
-var contexts: List<RuntimeContext> = listOf(
+val contexts: List<RuntimeContext> = listOf(
         // Context 1
         RuntimeContext("Scenario-1", 4, 4, ::getTest),
 
         // Context 2
         RuntimeContext("Scenario-2", 8, 8, ::getTest)
 )
-
-/*-------------------------------------------------------------------------*/
-
-const val JSON_FILENAME = "json_results.txt"
 
 /*-------------------------------------------------------------------------*/
 
