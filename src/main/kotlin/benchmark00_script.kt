@@ -18,20 +18,6 @@ fun getUser(userId: Int): User {
 
 /*-------------------------------------------------------------------------*/
 
-fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
-    val list: MutableList<Int> = mutableListOf()
-    test.queueLenghts.forEach { queueLength ->
-        list.add (when(queueLength) {
-            0 -> context.numThreads
-            -1 -> context.numThreads*10
-            else -> queueLength
-        })
-    }
-    return list
-}
-
-/*-------------------------------------------------------------------------*/
-
 fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
     //println("getTest: ${context.name}, ${testId}, ${test.filename}")
 
@@ -42,7 +28,7 @@ fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfil
     //}
 
     return test.copy(
-                // arrivalRate = tps,
+            // arrivalRate = tps,
             queueLenghts = getQueueLengths(context, test))
 }
 
@@ -87,7 +73,7 @@ val tests: List<TestProfile> = listOf(
                 // Limit the number of active user objects, A value of
                 // zero sets the number of active users to unlimited.
                 // L value from Little's Law.
-                queueLenghts = listOf(0, 2, 1),
+                queueLenghts = listOf(-1, 0, 2, 1),
 
                 // Actions to be performed on the user objects during this test.
                 actions = listOf(Action(8)),
@@ -122,7 +108,7 @@ val tests: List<TestProfile> = listOf(
                 // 6*1.0/4.0 + 14*3.0/4.0 = 12.0 ms (expected global average response time)
                 actions = listOf(Action(1, 25), Action(2, 75)),
 
-                repeatCount = 3,
+                repeatCount = 1,
 
                 filename = JSON_FILENAME
         ),
