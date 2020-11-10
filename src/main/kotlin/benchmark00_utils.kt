@@ -5,8 +5,6 @@ import tulip.TestProfile
 
 /*-------------------------------------------------------------------------*/
 
-/*-------------------------------------------------------------------------*/
-
 fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
     val list: MutableList<Int> = mutableListOf()
     test.queueLenghts.forEach { queueLength ->
