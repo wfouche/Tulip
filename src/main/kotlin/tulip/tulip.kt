@@ -21,8 +21,8 @@ import kotlin.sequences.iterator
 var TULIP_SCENARIO_NAME: String = ""
 var TULIP_SCENARIO_ID: Int = 0
 
-private var MAX_NUM_USERS = 0
-private var MAX_NUM_THREADS = 0
+var MAX_NUM_USERS = 0
+var MAX_NUM_THREADS = 0
 
 private var userObjects: Array<User?>? = null // arrayOfNulls<User>(NUM_USERS)
 private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
@@ -379,10 +379,8 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, qu
     // treat the list of actions as a workflow.
     val actionList = mutableListOf<Int>()
     var wSum = 0
-    var aCount = 0
     for (action: Action in testCase.actions) {
         wSum += action.weight
-        aCount += 1
     }
     if (wSum == 0) {
         for (action in testCase.actions) {
@@ -396,29 +394,27 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, qu
         }
         actionList.shuffle(rnd)
     }
-    repeat(MAX_NUM_USERS) {
+    repeat(MAX_NUM_USERS) { idx ->
         if ((testCase.warmupDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
-            userActions!![it] = null
+            userActions!![idx] = null
         } else {
-            userActions!![it] = createActionsGenerator(actionList)
+            userActions!![idx] = createActionsGenerator(actionList)
         }
     }
 
     //
-    // Create a queue containing a total of NUM_ACTIVE_USERS tokens.
+    // Create a queue containing a total of queueLength tokens.
     //
-    val NUM_ACTIVE_USERS: Int = queueLength
-
-    val rspQueue = Queue<Task>(NUM_ACTIVE_USERS)
+    val rspQueue = Queue<Task>(queueLength)
 
     fun initRspQueue() {
-        repeat(NUM_ACTIVE_USERS) {
+        repeat(queueLength) {
             rspQueue.put(Task())
         }
     }
 
     fun drainRspQueue() {
-        repeat(NUM_ACTIVE_USERS) {
+        repeat(queueLength) {
             val task: Task = rspQueue.take()
             DataCollector.updateStats(task)
         }
@@ -462,7 +458,7 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, qu
         val duration_millis: Int = (timeMillis_end - timeMillis_start).toInt()
         val ts_end = java.time.LocalDateTime.now().toString()
 
-        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, "Main", 0, MAX_NUM_USERS, MAX_NUM_THREADS)
+        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, "Main", 0)
         DataCollector.printStats(true)
         DataCollector.saveStatsJson(testCase.filename)
     } else {
@@ -523,7 +519,7 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, qu
 
             Console.put("${test_phase} run ${runId}: end   (${ts_end})")
 
-            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, test_phase, runId, MAX_NUM_USERS, MAX_NUM_THREADS)
+            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, test_phase, runId)
             DataCollector.printStats(false)
             if (test_phase == "Main") {
                 DataCollector.saveStatsJson(testCase.filename)
