@@ -116,6 +116,7 @@ data class TestProfile(
     // Main phase executed 'repeatCount' every iteration of TestCase.
     //
     val mainDurationMinutes: Int = 0,
+    val mainDurationRepeatCount: Int = 1,
 
     // List of actions to be performed.
     // If the weights of all the actions are zero (0), then treat the action list
@@ -136,8 +137,6 @@ data class TestProfile(
     //
     val queueLenghts: List<Int> = listOf(0),
 
-    // Repeat a benchmark test this number of times
-    val repeatCount: Int = 1,
 
     // List of percentile values to report on.
     val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0),
@@ -466,11 +465,14 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, qu
         var timeMillis_start: Long
         var timeMillis_end: Long = timeMillis()
 
-        fun assignTasks(durationMinutes: Int, test_phase: String, runId:Int, arrivalRate: Double = -1.0) {
+        fun assignTasks(durationMinutes: Int, test_phase: String, runId:Int, runIdMax: Int, arrivalRate: Double = -1.0) {
             if (durationMinutes == 0) {
                 return
             }
-            initRspQueue()
+            if (runId == 0) {
+                //Console.put("initRspQueue: runId == 0")
+                initRspQueue()
+            }
 
             DataCollector.clearStats()
             val ts1 = java.time.LocalDateTime.now()
@@ -513,7 +515,10 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, qu
                 // Limit the throughput rate , if required.
                 rateGoverner?.pace()
             }
-            drainRspQueue()
+            if (runId == runIdMax) {
+                //Console.put("drainRspQueue: runId == runIdMax")
+                drainRspQueue()
+            }
             val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
             val ts_end = java.time.LocalDateTime.now().toString()
 
@@ -532,15 +537,15 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, qu
         // on the first set, i.e. with index 0.
         //
         if (indexUserProfile == 0) {
-            assignTasks(testCase.startupDurationMinutes, "Start-up", 0, 0.0)
+            assignTasks(testCase.startupDurationMinutes, "Start-up", 0, 0, 0.0)
         }
 
         // Ramp-up
-        assignTasks(testCase.warmupDurationMinutes, "Ramp-up", 0)
+        assignTasks(testCase.warmupDurationMinutes, "Ramp-up", 0, 0)
 
         // Main run(s)
-        for (runId in 0 until testCase.repeatCount) {
-            assignTasks(testCase.mainDurationMinutes, "Main", runId)
+        for (runId in 0 until testCase.mainDurationRepeatCount) {
+            assignTasks(testCase.mainDurationMinutes, "Main", runId, testCase.mainDurationRepeatCount-1)
         }
     }
 }
@@ -589,13 +594,5 @@ fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: 
         runTulip(contextId, context, tests, getUser, getTest)
     }
 }
-
-/*-------------------------------------------------------------------------*/
-
-// Add to do items here:
-
-// TODO: ...
-
-// TODO: If repeatCount > 1, try and keep the action queue full in between repeats (do not drain it).
 
 /*-------------------------------------------------------------------------*/

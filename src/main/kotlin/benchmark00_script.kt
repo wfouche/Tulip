@@ -63,7 +63,8 @@ val tests: List<TestProfile> = listOf(
                 // Duration in minutes
                 startupDurationMinutes = 1,
                 warmupDurationMinutes = 1,
-                mainDurationMinutes = 5,
+                mainDurationMinutes = 1,
+                mainDurationRepeatCount = 3,
 
                 // Limit throughput 100.0 actions per second (on average).
                 // A value of zero indicates that the arrival rate is uncapped.
@@ -77,8 +78,6 @@ val tests: List<TestProfile> = listOf(
 
                 // Actions to be performed on the user objects during this test.
                 actions = listOf(Action(8)),
-
-                repeatCount = 1,
 
                 filename = JSON_FILENAME
         ),
@@ -107,8 +106,6 @@ val tests: List<TestProfile> = listOf(
                 // action 0 and action 1
                 // 6*1.0/4.0 + 14*3.0/4.0 = 12.0 ms (expected global average response time)
                 actions = listOf(Action(1, 25), Action(2, 75)),
-
-                repeatCount = 1,
 
                 filename = JSON_FILENAME
         ),
