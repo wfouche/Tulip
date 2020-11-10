@@ -355,11 +355,11 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
+fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
     val ts_begin = java.time.LocalDateTime.now().toString()
     val output = mutableListOf("")
     output.add("======================================================================")
-    output.add("= [${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - ${ts_begin}")
+    output.add("= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - ${ts_begin}")
     output.add("======================================================================")
     Console.put(output)
 
@@ -578,7 +578,7 @@ fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, 
         val x: TestProfile = getTest(context, indexTestCase, testCase)
         x.queueLenghts.forEachIndexed { indexUserProfile, queueLength ->
             delay(5000)
-            runTest(x, indexTestCase, indexUserProfile, queueLength)
+            runTest(x, contextId, indexTestCase, indexUserProfile, queueLength)
         }
     }
 
