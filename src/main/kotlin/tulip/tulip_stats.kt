@@ -23,7 +23,7 @@ data class ActionSummary(
 
     var test_id: Int = 0,
     var indexUserProfile: Int = 0,
-    var activeUsers: Int = 0,
+    var queueLength: Int = 0,
     var max_num_users: Int = 0,
     var max_num_threads: Int = 0,
 
@@ -60,7 +60,7 @@ class ActionStats {
 
     val r = ActionSummary()
 
-    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
+    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, queueLength: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
         r.action_id = action_id
 
         r.row_id = runId
@@ -72,7 +72,7 @@ class ActionStats {
 
         r.test_id = indexTestCase
         r.indexUserProfile = indexUserProfile
-        r.activeUsers = activeUsers
+        r.queueLength = queueLength
 
         r.max_num_users = MAX_NUM_USERS
         r.max_num_threads = MAX_NUM_THREADS
@@ -313,12 +313,12 @@ object DataCollector {
     //     }
     // }
 
-    fun createSummary(duration_millis: Int, testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
-        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId, MAX_NUM_USERS, MAX_NUM_THREADS)
+    fun createSummary(duration_millis: Int, testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, queueLength: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int, MAX_NUM_USERS: Int, MAX_NUM_THREADS: Int) {
+        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, test_phase, runId, MAX_NUM_USERS, MAX_NUM_THREADS)
         actionStats.forEachIndexed { index, data ->
             if (data.num_actions > 0) {
                 if (index != NUM_ACTIONS) {
-                    data.createSummary(index, duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, -1, MAX_NUM_USERS, MAX_NUM_THREADS)
+                    data.createSummary(index, duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, test_phase, -1, MAX_NUM_USERS, MAX_NUM_THREADS)
                 }
             }
         }
@@ -345,7 +345,7 @@ object DataCollector {
             json += "\"scenario_id\": ${TULIP_SCENARIO_ID}, "
             json += "\"num_users\": ${r.max_num_users}, "
             json += "\"num_threads\": ${r.max_num_threads}, "
-            json += "\"num_users_active\": ${if (r.activeUsers == 0) r.max_num_users else r.activeUsers}, "
+            json += "\"queue_length\": ${r.queueLength}, "
 
             json += "\"test_name\": \"${r.test_name}\", "
             json += "\"test_id\": ${r.test_id}, "

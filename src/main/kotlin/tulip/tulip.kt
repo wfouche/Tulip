@@ -67,6 +67,15 @@ fun runtimeDone() {
 
 /*-------------------------------------------------------------------------*/
 
+data class RuntimeContext(
+        val name: String = "",
+        val numUsers: Int = 0,
+        val numThreads: Int = 0,
+        val getTest: ((RuntimeContext, Int, TestProfile) -> TestProfile)
+)
+
+/*-------------------------------------------------------------------------*/
+
 data class Action(
     //
     // Numeric action ID.
@@ -80,13 +89,6 @@ data class Action(
 )
 
 /*-------------------------------------------------------------------------*/
-
-data class RuntimeContext(
-    val name: String = "",
-    val numUsers: Int = 0,
-    val numThreads: Int = 0,
-    val getTest: ((RuntimeContext, Int, TestProfile) -> TestProfile)
-)
 
 data class TestProfile(
     //
@@ -130,7 +132,7 @@ data class TestProfile(
     //
     // This value represents the "L" in Little's Law (equation)
     //
-    val userProfile: List<Int> = listOf(0),
+    val queueLenghts: List<Int> = listOf(0),
 
     // Repeat a benchmark test this number of times
     val repeatCount: Int = 1,
@@ -353,11 +355,11 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, activeUsers: Int) {
+fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
     val ts_begin = java.time.LocalDateTime.now().toString()
     val output = mutableListOf("")
     output.add("======================================================================")
-    output.add("= [${indexTestCase}][${indexUserProfile}][${activeUsers}] ${testCase.name} - ${ts_begin}")
+    output.add("= [${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - ${ts_begin}")
     output.add("======================================================================")
     Console.put(output)
 
@@ -403,7 +405,7 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, ac
     //
     // Create a queue containing a total of NUM_ACTIVE_USERS tokens.
     //
-    val NUM_ACTIVE_USERS: Int = if (activeUsers == 0) 10 * MAX_NUM_THREADS else activeUsers
+    val NUM_ACTIVE_USERS: Int = queueLength
 
     val rspQueue = Queue<Task>(NUM_ACTIVE_USERS)
 
@@ -458,7 +460,7 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, ac
         val duration_millis: Int = (timeMillis_end - timeMillis_start).toInt()
         val ts_end = java.time.LocalDateTime.now().toString()
 
-        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, "Main", 0, MAX_NUM_USERS, MAX_NUM_THREADS)
+        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, "Main", 0, MAX_NUM_USERS, MAX_NUM_THREADS)
         DataCollector.printStats(true)
         DataCollector.saveStatsJson(testCase.filename)
     } else {
@@ -519,7 +521,7 @@ fun runTest(testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, ac
 
             Console.put("${test_phase} run ${runId}: end   (${ts_end})")
 
-            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, activeUsers, ts_begin, ts_end, test_phase, runId, MAX_NUM_USERS, MAX_NUM_THREADS)
+            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, test_phase, runId, MAX_NUM_USERS, MAX_NUM_THREADS)
             DataCollector.printStats(false)
             if (test_phase == "Main") {
                 DataCollector.saveStatsJson(testCase.filename)
@@ -572,9 +574,9 @@ fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, 
     }
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
         val x: TestProfile = getTest(context, indexTestCase, testCase)
-        x.userProfile.forEachIndexed { indexUserProfile, activeUsers ->
+        x.queueLenghts.forEachIndexed { indexUserProfile, queueLength ->
             delay(5000)
-            runTest(x, indexTestCase, indexUserProfile, activeUsers)
+            runTest(x, indexTestCase, indexUserProfile, queueLength)
         }
     }
 
@@ -596,6 +598,6 @@ fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: 
 
 // TODO: ...
 
-// TODO: check if listOf(0,10,20) user population size specific still works as intended.
+// TODO: If repeatCount > 1, try and keep the action queue full in between repeats (do not drain it).
 
 /*-------------------------------------------------------------------------*/
