@@ -270,8 +270,7 @@ object Console : Thread() {
     }
 
     fun put(s: String) {
-        val list = listOf(s)
-        put(list.toMutableList())
+        put(mutableListOf(s))
     }
 
     fun put(list: MutableList<String>) {
