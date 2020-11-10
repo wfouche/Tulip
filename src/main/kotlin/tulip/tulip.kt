@@ -130,6 +130,8 @@ data class TestProfile(
 
     // https://en.wikipedia.org/wiki/Little%27s_Law
     //
+    // https://www.process.st/littles-law/
+    //
     // This value represents the "L" in Little's Law (equation)
     //
     val queueLenghts: List<Int> = listOf(0),
