@@ -14,6 +14,8 @@ fun main() {
 
 /*-------------------------------------------------------------------------*/
 
+// TODO: upgrade to Kotlin 1.4.20 from 1.4.20-RC
+
 // TODO: remove libs/okhttp, and add its as a Gradle dependency.
 
 // TODO: write an example REST call using okhttp.
