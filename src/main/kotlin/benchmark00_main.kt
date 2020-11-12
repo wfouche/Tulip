@@ -16,7 +16,7 @@ fun main() {
 
 // TODO: upgrade to Kotlin 1.4.20 from 1.4.20-RC
 
-// TODO: write an example REST call using okhttp3.
+// TODO: write an example REST call using okhttp3 - https://square.github.io/okhttp/recipes/
 
 // TODO: write documentation for Tulip.
 
