@@ -7,9 +7,20 @@ import tulip.delayMillisRandom
 
 /*-------------------------------------------------------------------------*/
 
+import okhttp3.OkHttpClient
+import okhttp3.Request
+import okio.IOException
+
 /*-------------------------------------------------------------------------*/
 
 class UserHttp(userId: Int) : User(userId) {
+
+    // ----------------------------------------------------------------- //
+
+    var httpClient = OkHttpClient()
+    val request = Request.Builder()
+            .url("http://jsonplaceholder.typicode.com/photos/${userId+1}")
+            .build()
 
     // ----------------------------------------------------------------- //
 
@@ -37,7 +48,20 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action3(): Boolean {  /*
+    override fun action3(): Boolean {
+        // https://square.github.io/okhttp/recipes/
+
+        httpClient.newCall(request).execute().use { response ->
+            return response.isSuccessful
+
+            //for ((name, value) in response.headers) {
+            //    println("$name: $value")
+            //}
+
+            //println(response.body!!.string())
+        }
+
+        /*
         val response = try {
             URL("https://jsonplaceholder.typicode.com/photos/${userId+1}")
             .openStream()
@@ -45,9 +69,9 @@ class UserHttp(userId: Int) : User(userId) {
             .use { it.readText() }
         } catch (e: IOException) {
             "Error with ${e.message}."
-        }  */
-        //println(response)
-        return true
+        }
+        println(response)
+        */
     }
 
     // ----------------------------------------------------------------- //
