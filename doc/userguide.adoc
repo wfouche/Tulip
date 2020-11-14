@@ -6,133 +6,149 @@
 
 == Introduction
 
-TBD - the documentation journey has just started.
-
 // latexmath:[C = \alpha + \beta Y^{\gamma} + \epsilon]
 
 [appendix]
 
-== Stacked Bar Chart
+== REST Service
 
-[mermaid,mermaid.png]
-----
-gantt
-    title A Gantt Diagram
-    dateFormat  YYYY-MM-DD
-    section Section
-    A task           :a1, 2014-01-01, 30d
-    Another task     :after a1, 20d
-    section Another
-    Task in sec      :2014-01-12, 12d
-    another task     :24d
-----
+// TODO: save the Kotlin code to files, and include them in the example section.
 
-[vegalite,vegalite.png]
+=== Kotlin Code
+.rest_utils.kt
+[source,kotlin]
 ----
-{
-  "$schema": "https://vega.github.io/schema/vega-lite/v4.json",
-  "description": "A simple bar chart with embedded data.",
-  "data": {
-    "values": [
-      {"a": "A", "b": 28}, {"a": "B", "b": 55}, {"a": "C", "b": 43},
-      {"a": "D", "b": 91}, {"a": "E", "b": 81}, {"a": "F", "b": 53},
-      {"a": "G", "b": 19}, {"a": "H", "b": 87}, {"a": "I", "b": 52}
-    ]
-  },
-  "mark": "bar",
-  "encoding": {
-    "x": {"field": "a", "type": "nominal", "axis": {"labelAngle": 0}},
-    "y": {"field": "b", "type": "quantitative"}
-  }
+import tulip.RuntimeContext
+import tulip.TestProfile
+
+fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
+    val list: MutableList<Int> = mutableListOf()
+    test.queueLenghts.forEach { queueLength ->
+        list.add (when(queueLength) {
+            0 -> context.numThreads
+            -1 -> context.numThreads*10
+            else -> queueLength
+        })
+    }
+    return list
 }
 ----
 
-[vega,vega.png]
+.rest_user.kt
+[source,kotlin]
 ----
-{
-  "$schema": "https://vega.github.io/schema/vega/v5.json",
-  "description": "A basic stacked bar chart example.",
-  "width": 500,
-  "height": 200,
-  "padding": 5,
+import tulip.Console
+import tulip.User
+import tulip.delay
+import tulip.delayMillisRandom
 
-  "data": [
-    {
-      "name": "table",
-      "values": [
-        {"x": 0, "y": 28, "c": 0}, {"x": 0, "y": 55, "c": 1},
-        {"x": 1, "y": 43, "c": 0}, {"x": 1, "y": 91, "c": 1},
-        {"x": 2, "y": 81, "c": 0}, {"x": 2, "y": 53, "c": 1},
-        {"x": 3, "y": 19, "c": 0}, {"x": 3, "y": 87, "c": 1},
-        {"x": 4, "y": 52, "c": 0}, {"x": 4, "y": 48, "c": 1},
-        {"x": 5, "y": 24, "c": 0}, {"x": 5, "y": 49, "c": 1},
-        {"x": 6, "y": 87, "c": 0}, {"x": 6, "y": 66, "c": 1},
-        {"x": 7, "y": 17, "c": 0}, {"x": 7, "y": 27, "c": 1},
-        {"x": 8, "y": 68, "c": 0}, {"x": 8, "y": 16, "c": 1},
-        {"x": 9, "y": 49, "c": 0}, {"x": 9, "y": 15, "c": 1}
-      ],
-      "transform": [
-        {
-          "type": "stack",
-          "groupby": ["x"],
-          "sort": {"field": "c"},
-          "field": "y"
+import okhttp3.OkHttpClient
+import okhttp3.Request
+
+class UserHttp(userId: Int) : User(userId) {
+
+    val httpClient = OkHttpClient()
+
+    val request = Request.Builder()
+            .url("http://jsonplaceholder.typicode.com/photos/${userId+1}")
+            .build()
+
+    override fun init(): Boolean {
+        Console.put("  $userId")
+        return true
+    }
+
+    override fun action1(): Boolean {
+        httpClient.newCall(request).execute().use { response ->
+            return response.isSuccessful
         }
-      ]
     }
-  ],
 
-  "scales": [
-    {
-      "name": "x",
-      "type": "band",
-      "range": "width",
-      "domain": {"data": "table", "field": "x"}
-    },
-    {
-      "name": "y",
-      "type": "linear",
-      "range": "height",
-      "nice": true, "zero": true,
-      "domain": {"data": "table", "field": "y1"}
-    },
-    {
-      "name": "color",
-      "type": "ordinal",
-      "range": "category",
-      "domain": {"data": "table", "field": "c"}
+    override fun done(): Boolean {
+        Console.put("  $userId")
+        return true
     }
-  ],
 
-  "axes": [
-    {"orient": "bottom", "scale": "x", "zindex": 1},
-    {"orient": "left", "scale": "y", "zindex": 1}
-  ],
-
-  "marks": [
-    {
-      "type": "rect",
-      "from": {"data": "table"},
-      "encode": {
-        "enter": {
-          "x": {"scale": "x", "field": "x"},
-          "width": {"scale": "x", "band": 1, "offset": -1},
-          "y": {"scale": "y", "field": "y0"},
-          "y2": {"scale": "y", "field": "y1"},
-          "fill": {"scale": "color", "field": "c"}
-        },
-        "update": {
-          "fillOpacity": {"value": 1}
-        },
-        "hover": {
-          "fillOpacity": {"value": 0.5}
-        }
-      }
-    }
-  ]
 }
 ----
 
+.rest_script.kt
+[source,kotlin]
+----
+import tulip.Action
+import tulip.NUM_ACTIONS
+import tulip.RuntimeContext
+import tulip.TestProfile
+import tulip.User
+
+const val JSON_FILENAME = "json_results.txt"
+
+fun getUser(userId: Int): User {
+    return UserHttp(userId)
+}
+
+fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
+    return test.copy(queueLenghts = getQueueLengths(context, test))
+}
+
+val contexts: List<RuntimeContext> = listOf(
+    // Context 1
+    RuntimeContext("Scenario-1", 4, 4, ::getTest),
+
+    // Context 2
+    RuntimeContext("Scenario-2", 8, 8, ::getTest)
+)
+
+val tests: List<TestProfile> = listOf(
+
+    // 0
+    TestProfile(
+        name = "Test0 (Initialize)",
+        arrivalRate = 0.0,
+        queueLenghts = listOf(1),
+        actions = listOf(Action(0)),
+        filename = JSON_FILENAME
+    ),
+
+    // 1
+    TestProfile(
+        name = "Test1 (Throughput Test - Max)",
+        startupDurationMinutes = 1,
+        warmupDurationMinutes = 1,
+        mainDurationMinutes = 5,
+        mainDurationRepeatCount = 3,
+        arrivalRate = 0.0,
+        queueLenghts = listOf(-1),
+        actions = listOf(Action(1)),
+        filename = JSON_FILENAME
+    ),
+
+    // 2
+    TestProfile(
+        name = "Test2 (Terminate)",
+        arrivalRate = 0.0,
+        queueLenghts = listOf(1),
+        actions = listOf(Action(NUM_ACTIONS - 1)),
+        filename = JSON_FILENAME
+    )
+)
+----
+
+.rest_main.kt
+[source,kotlin]
+----
+@file:JvmName("LoadTest1")
+
+import tulip.runTests
+
+fun main() {
+    runTests(contexts, tests, ::getUser, ::getTest)
+}
+----
+
+=== Benchmark Results
+
+[appendix]
 
 
 == Sample JSON Report
