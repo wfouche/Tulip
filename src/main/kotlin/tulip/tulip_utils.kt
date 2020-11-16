@@ -218,7 +218,7 @@ fun getSystemCpuLoad(): Double {
 
 /*-------------------------------------------------------------------------*/
 
-fun getDefaultQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
+fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
     val list: MutableList<Int> = mutableListOf()
     test.queueLenghts.forEach { queueLength ->
         list.add (when(queueLength) {
@@ -230,8 +230,8 @@ fun getDefaultQueueLengths(context: RuntimeContext, test: TestProfile): List<Int
     return list
 }
 
-fun getDefaultTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
-    return test.copy(queueLenghts = getDefaultQueueLengths(context, test))
+fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
+    return test.copy(queueLenghts = getQueueLengths(context, test))
 }
 
 /*-------------------------------------------------------------------------*/

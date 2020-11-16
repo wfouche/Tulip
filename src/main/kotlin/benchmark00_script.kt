@@ -6,7 +6,6 @@ import tulip.NUM_ACTIONS
 import tulip.RuntimeContext
 import tulip.TestProfile
 import tulip.User
-import tulip.getDefaultTest
 
 /*-------------------------------------------------------------------------*/
 
