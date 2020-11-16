@@ -60,18 +60,6 @@ class UserHttp(userId: Int) : User(userId) {
 
             //println(response.body!!.string())
         }
-
-        /*
-        val response = try {
-            URL("https://jsonplaceholder.typicode.com/photos/${userId+1}")
-            .openStream()
-            .bufferedReader()
-            .use { it.readText() }
-        } catch (e: IOException) {
-            "Error with ${e.message}."
-        }
-        println(response)
-        */
     }
 
     // ----------------------------------------------------------------- //
