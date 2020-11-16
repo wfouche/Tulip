@@ -1,4 +1,5 @@
 import tulip.Action
+import tulip.Duration
 import tulip.NUM_ACTIONS
 import tulip.RuntimeContext
 import tulip.TestProfile
@@ -32,10 +33,7 @@ val tests: List<TestProfile> = listOf(
         // 1
         TestProfile(
                 name = "Test1 (Throughput Test - Max)",
-                startupDurationMinutes = 1,
-                warmupDurationMinutes = 1,
-                mainDurationMinutes = 5,
-                mainDurationRepeatCount = 3,
+                duration = Duration(1,1,5,3)
                 arrivalRate = 0.0,
                 queueLenghts = listOf(-1),
                 actions = listOf(Action(1)),
