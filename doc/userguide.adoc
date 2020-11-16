@@ -12,10 +12,6 @@
 
 == REST Service
 
-// TODO: save the Kotlin code to files, and include them in the example section.
-
-// TODO: convert the benchmark example to use the Duration data class.
-
 === Kotlin Code
 
 .rest_user.kt
