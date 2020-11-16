@@ -14,6 +14,8 @@
 
 // TODO: save the Kotlin code to files, and include them in the example section.
 
+// TODO: convert the benchmark example to use the Duration data class.
+
 === Kotlin Code
 .rest_utils.kt
 [source,kotlin]
@@ -147,6 +149,10 @@ fun main() {
 ----
 
 === Benchmark Results
+
+// TODO: Display the results output file as formatted JSON.
+
+// TODO: Generate an Asciidoc table from the JSON output.
 
 [appendix]
 

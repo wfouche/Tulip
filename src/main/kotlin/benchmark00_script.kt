@@ -1,6 +1,7 @@
 /*-------------------------------------------------------------------------*/
 
 import tulip.Action
+import tulip.Duration
 import tulip.NUM_ACTIONS
 import tulip.RuntimeContext
 import tulip.TestProfile
@@ -61,10 +62,7 @@ val tests: List<TestProfile> = listOf(
                 name = "Test1 (Throughput Test - Max)",
 
                 // Duration in minutes
-                startupDurationMinutes = 1,
-                warmupDurationMinutes = 1,
-                mainDurationMinutes = 1,
-                mainDurationRepeatCount = 3,
+                duration = Duration(1,1,1,3),
 
                 // Limit throughput 100.0 actions per second (on average).
                 // A value of zero indicates that the arrival rate is uncapped.
@@ -88,8 +86,7 @@ val tests: List<TestProfile> = listOf(
                 name = "Test2 (Throughput Test - Fixed)",
 
                 // Duration in minutes
-                warmupDurationMinutes = 1,
-                mainDurationMinutes = 1,
+                duration = Duration(0,1,1),
 
                 // Limit throughput 100.0 actions per second (on average).
                 // A value of zero indicates that the arrival rate is uncapped.

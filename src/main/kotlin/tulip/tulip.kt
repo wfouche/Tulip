@@ -90,12 +90,7 @@ data class Action(
 
 /*-------------------------------------------------------------------------*/
 
-data class TestProfile(
-    //
-    // Name of the benchmark test.
-    //
-    val name: String = "",
-
+data class Duration (
     // Start-up period in minutes.
     // The results from this period are discarded.
     //
@@ -116,7 +111,17 @@ data class TestProfile(
     // Main phase executed 'repeatCount' every iteration of TestCase.
     //
     val mainDurationMinutes: Int = 0,
+
     val mainDurationRepeatCount: Int = 1,
+)
+
+data class TestProfile(
+    //
+    // Name of the benchmark test.
+    //
+    val name: String = "",
+
+    val duration: Duration = Duration(0,0,0,1),
 
     // List of actions to be performed.
     // If the weights of all the actions are zero (0), then treat the action list
@@ -393,7 +398,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         actionList.shuffle(rnd)
     }
     repeat(MAX_NUM_USERS) { idx ->
-        if ((testCase.warmupDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
+        if ((testCase.duration.warmupDurationMinutes == 0) && (testCase.duration.mainDurationMinutes == 0)) {
             userActions!![idx] = null
         } else {
             userActions!![idx] = createActionsGenerator(actionList)
@@ -418,7 +423,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         }
     }
 
-    if ((testCase.warmupDurationMinutes == 0) && (testCase.mainDurationMinutes == 0)) {
+    if ((testCase.duration.warmupDurationMinutes == 0) && (testCase.duration.mainDurationMinutes == 0)) {
 
         DataCollector.clearStats()
 
@@ -536,15 +541,15 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         // on the first set, i.e. with index 0.
         //
         if (indexUserProfile == 0) {
-            assignTasks(testCase.startupDurationMinutes, "Start-up", 0, 0, 0.0)
+            assignTasks(testCase.duration.startupDurationMinutes, "Start-up", 0, 0, 0.0)
         }
 
         // Ramp-up
-        assignTasks(testCase.warmupDurationMinutes, "Ramp-up", 0, 0)
+        assignTasks(testCase.duration.warmupDurationMinutes, "Ramp-up", 0, 0)
 
         // Main run(s)
-        for (runId in 0 until testCase.mainDurationRepeatCount) {
-            assignTasks(testCase.mainDurationMinutes, "Main", runId, testCase.mainDurationRepeatCount-1)
+        for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
+            assignTasks(testCase.duration.mainDurationMinutes, "Main", runId, testCase.duration.mainDurationRepeatCount-1)
         }
     }
 }
