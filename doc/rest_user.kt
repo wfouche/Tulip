@@ -1,7 +1,5 @@
 import tulip.Console
 import tulip.User
-import tulip.delay
-import tulip.delayMillisRandom
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
