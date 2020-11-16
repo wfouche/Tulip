@@ -10,6 +10,9 @@ import java.util.concurrent.TimeUnit
 import javax.management.Attribute
 import javax.management.ObjectName
 
+import tulip.RuntimeContext
+import tulip.TestProfile
+
 /*-------------------------------------------------------------------------*/
 
 // Round value x to the nearest multiple of n.
@@ -211,6 +214,24 @@ fun getProcessCpuLoad(): Double {
 
 fun getSystemCpuLoad(): Double {
     return getLoadValue("SystemCpuLoad")
+}
+
+/*-------------------------------------------------------------------------*/
+
+fun getDefaultQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
+    val list: MutableList<Int> = mutableListOf()
+    test.queueLenghts.forEach { queueLength ->
+        list.add (when(queueLength) {
+            0 -> context.numThreads
+            -1 -> context.numThreads*10
+            else -> queueLength
+        })
+    }
+    return list
+}
+
+fun getDefaultTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
+    return test.copy(queueLenghts = getDefaultQueueLengths(context, test))
 }
 
 /*-------------------------------------------------------------------------*/

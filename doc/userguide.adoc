@@ -89,10 +89,6 @@ fun getUser(userId: Int): User {
     return UserHttp(userId)
 }
 
-fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
-    return test.copy(queueLenghts = getQueueLengths(context, test))
-}
-
 val contexts: List<RuntimeContext> = listOf(
     // Context 1
     RuntimeContext("Scenario-1", 4, 4, ::getTest),

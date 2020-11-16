@@ -5,11 +5,12 @@
 /*-------------------------------------------------------------------------*/
 
 import tulip.runTests
+import tulip.getDefaultTest
 
 /*-------------------------------------------------------------------------*/
 
 fun main() {
-    runTests(contexts, tests, ::getUser, ::getTest)
+    runTests(contexts, tests, ::getUser, ::getDefaultTest)
 }
 
 /*-------------------------------------------------------------------------*/

@@ -6,6 +6,7 @@ import tulip.NUM_ACTIONS
 import tulip.RuntimeContext
 import tulip.TestProfile
 import tulip.User
+import tulip.getDefaultTest
 
 /*-------------------------------------------------------------------------*/
 
@@ -19,28 +20,12 @@ fun getUser(userId: Int): User {
 
 /*-------------------------------------------------------------------------*/
 
-fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
-    //println("getTest: ${context.name}, ${testId}, ${test.filename}")
-
-    //val tps =  when {
-    //    c.numUsers == 4 && c.numThreads == 4 -> 100.0
-    //    c.numUsers == 8 && c.numThreads == 4 -> 200.0
-    //    else -> 0.0
-    //}
-
-    return test.copy(
-            // arrivalRate = tps,
-            queueLenghts = getQueueLengths(context, test))
-}
-
-/*-------------------------------------------------------------------------*/
-
 val contexts: List<RuntimeContext> = listOf(
         // Context 1
-        RuntimeContext("Scenario-1", 4, 4, ::getTest),
+        RuntimeContext("Scenario-1", 4, 4),
 
         // Context 2
-        RuntimeContext("Scenario-2", 8, 8, ::getTest)
+        RuntimeContext("Scenario-2", 8, 8)
 )
 
 /*-------------------------------------------------------------------------*/
