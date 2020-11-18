@@ -1,3 +1,2 @@
 call init_env.cmd
-call clean.cmd
-gradlew.bat wrapper --gradle-version=6.7
+gradlew.bat wrapper --gradle-version=6.7.1
