@@ -115,6 +115,8 @@ data class Duration (
 )
 
 data class TestProfile(
+    val isEnabled: Boolean = true,
+
     //
     // Name of the benchmark test.
     //
@@ -579,10 +581,12 @@ fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, 
         System.exit(0)
     }
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
-        val x: TestProfile = getTest(context, indexTestCase, testCase)
-        x.queueLenghts.forEachIndexed { indexUserProfile, queueLength ->
-            delay(5000)
-            runTest(x, contextId, indexTestCase, indexUserProfile, queueLength)
+        if (testCase.isEnabled) {
+            val x: TestProfile = getTest(context, indexTestCase, testCase)
+            x.queueLenghts.forEachIndexed { indexUserProfile, queueLength ->
+                delay(5000)
+                runTest(x, contextId, indexTestCase, indexUserProfile, queueLength)
+            }
         }
     }
 
