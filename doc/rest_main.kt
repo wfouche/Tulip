@@ -1,8 +1,11 @@
 @file:JvmName("LoadTest1")
 
 import tulip.runTests
-import tulip.getTest
+
+fun getUser(userId: Int): User {
+    return UserHttp(userId)
+}
 
 fun main() {
-    runTests(contexts, tests, ::getUser, ::getTest)
+    runTests(contexts, tests, ::getUser)
 }
