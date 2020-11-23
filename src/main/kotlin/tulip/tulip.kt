@@ -595,6 +595,10 @@ fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, 
 
 /*-------------------------------------------------------------------------*/
 
+fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: (Int) -> User) {
+    runTests(contexts, tests, getUser, ::getTest)
+}
+
 fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, TestProfile) -> TestProfile) {
     initTulip()
     contexts.forEachIndexed { contextId, context ->
