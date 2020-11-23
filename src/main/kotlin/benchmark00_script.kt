@@ -13,12 +13,6 @@ const val JSON_FILENAME = "json_results.txt"
 
 /*-------------------------------------------------------------------------*/
 
-fun getUser(userId: Int): User {
-    return UserHttp(userId)
-}
-
-/*-------------------------------------------------------------------------*/
-
 val contexts: List<RuntimeContext> = listOf(
         // Context 1
         RuntimeContext("Scenario-1", 4, 4),
@@ -34,8 +28,6 @@ val tests: List<TestProfile> = listOf(
         // 0
         TestProfile(
                 name = "Test0 (Initialize)",
-                arrivalRate = 0.0,
-                queueLenghts = listOf(1),
                 actions = listOf(Action(0), Action(7)),
                 filename = JSON_FILENAME
         ),
@@ -46,7 +38,7 @@ val tests: List<TestProfile> = listOf(
                 name = "Test1 (Throughput Test - Max)",
 
                 // Duration in minutes
-                duration = Duration(1,1,1,3),
+                duration = Duration(1,1,1),
 
                 // Limit throughput 100.0 actions per second (on average).
                 // A value of zero indicates that the arrival rate is uncapped.
@@ -56,16 +48,16 @@ val tests: List<TestProfile> = listOf(
                 // Limit the number of active user objects, A value of
                 // zero sets the number of active users to unlimited.
                 // L value from Little's Law.
-                queueLenghts = listOf(-1, 0, 2, 1),
+                queueLenghts = listOf(0),
 
                 // Actions to be performed on the user objects during this test.
-                actions = listOf(Action(8)),
+                actions = listOf(Action(3)),
 
                 filename = JSON_FILENAME
         ),
 
         // 2
-        TestProfile(
+        TestProfile(false,
                 // The name of this test.
                 name = "Test2 (Throughput Test - Fixed)",
 
@@ -93,9 +85,7 @@ val tests: List<TestProfile> = listOf(
 
         // 3
         TestProfile(
-                name = "Test4 (Terminate)",
-                arrivalRate = 5.0,
-                queueLenghts = listOf(1),
+                name = "Test3 (Terminate)",
                 actions = listOf(Action(NUM_ACTIONS - 1)),
                 filename = JSON_FILENAME
         )

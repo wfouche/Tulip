@@ -230,7 +230,7 @@ fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
     return list
 }
 
-fun getTest(context: RuntimeContext, testId: Int, test: TestProfile): TestProfile {
+fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
     return test.copy(queueLenghts = getQueueLengths(context, test))
 }
 

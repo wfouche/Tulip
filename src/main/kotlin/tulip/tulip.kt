@@ -563,7 +563,7 @@ fun initTulip() {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, Int, TestProfile) -> TestProfile) {
+fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, TestProfile) -> TestProfile) {
     println("")
 
     runtimeInit(contextId, context, tests, getUser)
@@ -582,7 +582,7 @@ fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, 
     }
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
         if (testCase.isEnabled) {
-            val x: TestProfile = getTest(context, indexTestCase, testCase)
+            val x: TestProfile = getTest(context, testCase)
             x.queueLenghts.forEachIndexed { indexUserProfile, queueLength ->
                 delay(5000)
                 runTest(x, contextId, indexTestCase, indexUserProfile, queueLength)
@@ -595,7 +595,7 @@ fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, 
 
 /*-------------------------------------------------------------------------*/
 
-fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, Int, TestProfile) -> TestProfile) {
+fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, TestProfile) -> TestProfile) {
     initTulip()
     contexts.forEachIndexed { contextId, context ->
         runTulip(contextId, context, tests, getUser, getTest)
