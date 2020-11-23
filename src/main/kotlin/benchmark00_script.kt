@@ -48,10 +48,10 @@ val tests: List<TestProfile> = listOf(
                 // Limit the number of active user objects, A value of
                 // zero sets the number of active users to unlimited.
                 // L value from Little's Law.
-                queueLenghts = listOf(0),
+                queueLenghts = listOf(-1),
 
                 // Actions to be performed on the user objects during this test.
-                actions = listOf(Action(3)),
+                actions = listOf(Action(8)),
 
                 filename = JSON_FILENAME
         ),
