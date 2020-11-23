@@ -7,10 +7,6 @@ import tulip.User
 
 const val JSON_FILENAME = "json_results.txt"
 
-fun getUser(userId: Int): User {
-    return UserHttp(userId)
-}
-
 val contexts: List<RuntimeContext> = listOf(
         // Context 1
         RuntimeContext("Scenario-1", 4, 4),
