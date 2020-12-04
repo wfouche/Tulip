@@ -22,7 +22,7 @@ data class ActionSummary(
     var num_actions: Int = 0,
     var num_success: Int = 0,
 
-    var latencyMap: MutableMap<Long,Long> = mutableMapOf<Long, Long>(),
+    var latencyMap: MutableMap<Long, Long> = mutableMapOf<Long, Long>(),
 
     var duration_seconds: Double = 0.0,
 
@@ -52,7 +52,18 @@ class ActionStats {
 
     val r = ActionSummary()
 
-    fun createSummary(action_id: Int, duration_millis: Int, testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, queueLength: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int) {
+    fun createSummary(
+        action_id: Int,
+        duration_millis: Int,
+        testCase: TestProfile,
+        indexTestCase: Int,
+        indexUserProfile: Int,
+        queueLength: Int,
+        ts_begin: String,
+        ts_end: String,
+        test_phase: String,
+        runId: Int
+    ) {
         r.action_id = action_id
 
         r.row_id = runId
@@ -158,8 +169,7 @@ class ActionStats {
             // average process CPU load.
             var cpu_load: Double = 0.0
             var i: Double = 0.0
-            while (!CpuLoadMetrics.processCpuStats.isEmpty())
-            {
+            while (!CpuLoadMetrics.processCpuStats.isEmpty()) {
                 cpu_load += CpuLoadMetrics.processCpuStats.take()
                 i += 1.0
             }
@@ -168,8 +178,7 @@ class ActionStats {
             // average system CPU load.
             cpu_load = 0.0
             i = 0.0
-            while (!CpuLoadMetrics.systemCpuStats.isEmpty())
-            {
+            while (!CpuLoadMetrics.systemCpuStats.isEmpty()) {
                 cpu_load += CpuLoadMetrics.systemCpuStats.take()
                 i += 1.0
             }
@@ -210,7 +219,14 @@ class ActionStats {
 
         output.add("")
         output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.min_rt)}")
-        output.add("  maximum response time (millis) = ${"%.3f".format(Locale.US, r.max_rt)} at ${latencyMap_max_rt_ts}")
+        output.add(
+            "  maximum response time (millis) = ${
+                "%.3f".format(
+                    Locale.US,
+                    r.max_rt
+                )
+            } at ${latencyMap_max_rt_ts}"
+        )
 
         if (action_id == NUM_ACTIONS) {
             output.add("")
@@ -293,7 +309,7 @@ class ActionStats {
 }
 
 object DataCollector {
-    val actionStats = Array(NUM_ACTIONS+1) {ActionStats()}
+    val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
 
     // val a = arrayOf<Array<ActionStats>>()
     // init {
@@ -302,12 +318,44 @@ object DataCollector {
     //     }
     // }
 
-    fun createSummary(duration_millis: Int, testCase: TestProfile, indexTestCase: Int, indexUserProfile: Int, queueLength: Int, ts_begin: String, ts_end: String, test_phase: String, runId: Int) {
-        actionStats[NUM_ACTIONS].createSummary(NUM_ACTIONS, duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, test_phase, runId)
+    fun createSummary(
+        duration_millis: Int,
+        testCase: TestProfile,
+        indexTestCase: Int,
+        indexUserProfile: Int,
+        queueLength: Int,
+        ts_begin: String,
+        ts_end: String,
+        test_phase: String,
+        runId: Int
+    ) {
+        actionStats[NUM_ACTIONS].createSummary(
+            NUM_ACTIONS,
+            duration_millis,
+            testCase,
+            indexTestCase,
+            indexUserProfile,
+            queueLength,
+            ts_begin,
+            ts_end,
+            test_phase,
+            runId
+        )
         actionStats.forEachIndexed { index, data ->
             if (data.num_actions > 0) {
                 if (index != NUM_ACTIONS) {
-                    data.createSummary(index, duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, test_phase, -1)
+                    data.createSummary(
+                        index,
+                        duration_millis,
+                        testCase,
+                        indexTestCase,
+                        indexUserProfile,
+                        queueLength,
+                        ts_begin,
+                        ts_end,
+                        test_phase,
+                        -1
+                    )
                 }
             }
         }

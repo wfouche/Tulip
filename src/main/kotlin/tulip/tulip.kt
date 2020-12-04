@@ -56,11 +56,11 @@ fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile
 fun runtimeDone() {
     // Terminate all user threads.
     userThreads!!.forEach { userThread ->
-        userThread!!.tq.put(Task(status=999))
+        userThread!!.tq.put(Task(status = 999))
     }
 
     // Wait for all user threads to exit.
-    while (userThreads!!.map {if (it == null) 0 else 1}.sum() > 0) {
+    while (userThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
         delay(500)
     }
 }
@@ -68,9 +68,9 @@ fun runtimeDone() {
 /*-------------------------------------------------------------------------*/
 
 data class RuntimeContext(
-        val name: String = "",
-        val numUsers: Int = 0,
-        val numThreads: Int = 0
+    val name: String = "",
+    val numUsers: Int = 0,
+    val numThreads: Int = 0
 )
 
 /*-------------------------------------------------------------------------*/
@@ -89,7 +89,7 @@ data class Action(
 
 /*-------------------------------------------------------------------------*/
 
-data class Duration (
+data class Duration(
     // Start-up period in minutes.
     // The results from this period are discarded.
     //
@@ -122,7 +122,7 @@ data class TestProfile(
     //
     val name: String = "",
 
-    val duration: Duration = Duration(0,0,0,1),
+    val duration: Duration = Duration(0, 0, 0, 1),
 
     // List of actions to be performed.
     // If the weights of all the actions are zero (0), then treat the action list
@@ -203,7 +203,7 @@ class RateGovernor(private val timeMillis_start: Long, private val averageRate: 
 
 /*-------------------------------------------------------------------------*/
 
-class UserThread (private val threadId: Int): Thread() {
+class UserThread(private val threadId: Int) : Thread() {
 
     init {
         name = "user-thread-$threadId"
@@ -226,8 +226,7 @@ class UserThread (private val threadId: Int): Thread() {
             if (task.status == 999) {
                 //Console.put("Thread ${name} is stopping.")
                 running = false
-            }
-            else {
+            } else {
 
                 //
                 // Locate the user object to which the task should be applied.
@@ -449,7 +448,8 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
                 // Assign the task to the user object.
                 task.apply {
-                    userId = uid; numUsers = MAX_NUM_USERS; numThreads = MAX_NUM_THREADS; actionId = aid; this.rspQueue = rspQueue
+                    userId = uid; numUsers = MAX_NUM_USERS; numThreads = MAX_NUM_THREADS; actionId =
+                    aid; this.rspQueue = rspQueue
                 }
                 assignTask(task)
 
@@ -462,7 +462,17 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         val duration_millis: Int = (timeMillis_end - timeMillis_start).toInt()
         val ts_end = java.time.LocalDateTime.now().toString()
 
-        DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, "Main", 0)
+        DataCollector.createSummary(
+            duration_millis,
+            testCase,
+            indexTestCase,
+            indexUserProfile,
+            queueLength,
+            ts_begin,
+            ts_end,
+            "Main",
+            0
+        )
         DataCollector.printStats(true)
         DataCollector.saveStatsJson(testCase.filename)
     } else {
@@ -470,7 +480,13 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         var timeMillis_start: Long
         var timeMillis_end: Long = timeMillis()
 
-        fun assignTasks(durationMinutes: Int, test_phase: String, runId:Int, runIdMax: Int, arrivalRate: Double = -1.0) {
+        fun assignTasks(
+            durationMinutes: Int,
+            test_phase: String,
+            runId: Int,
+            runIdMax: Int,
+            arrivalRate: Double = -1.0
+        ) {
             if (durationMinutes == 0) {
                 return
             }
@@ -489,8 +505,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             var rateGoverner: RateGovernor? = null
             if (arrivalRate > -1.0) {
                 // Warm-up duration at max speed, ungoverned.
-            }
-            else {
+            } else {
                 // Ramp-up or Main duration.
                 if (testCase.arrivalRate > 0.0) {
                     rateGoverner = RateGovernor(timeMillis_start, testCase.arrivalRate)
@@ -513,7 +528,8 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
                 // Assign the task to the user object.
                 task.apply {
-                    userId = uid; numUsers = MAX_NUM_USERS; numThreads = MAX_NUM_THREADS; actionId = aid; this.rspQueue = rspQueue
+                    userId = uid; numUsers = MAX_NUM_USERS; numThreads = MAX_NUM_THREADS; actionId =
+                    aid; this.rspQueue = rspQueue
                 }
                 assignTask(task)
 
@@ -529,7 +545,17 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
             Console.put("${test_phase} run ${runId}: end   (${ts_end})")
 
-            DataCollector.createSummary(duration_millis, testCase, indexTestCase, indexUserProfile, queueLength, ts_begin, ts_end, test_phase, runId)
+            DataCollector.createSummary(
+                duration_millis,
+                testCase,
+                indexTestCase,
+                indexUserProfile,
+                queueLength,
+                ts_begin,
+                ts_end,
+                test_phase,
+                runId
+            )
             DataCollector.printStats(false)
             if (test_phase == "Main") {
                 DataCollector.saveStatsJson(testCase.filename)
@@ -550,7 +576,12 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
         // Main run(s)
         for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
-            assignTasks(testCase.duration.mainDurationMinutes, "Main", runId, testCase.duration.mainDurationRepeatCount-1)
+            assignTasks(
+                testCase.duration.mainDurationMinutes,
+                "Main",
+                runId,
+                testCase.duration.mainDurationRepeatCount - 1
+            )
         }
     }
 }
@@ -563,7 +594,13 @@ fun initTulip() {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTulip(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, TestProfile) -> TestProfile) {
+fun runTulip(
+    contextId: Int,
+    context: RuntimeContext,
+    tests: List<TestProfile>,
+    getUser: (Int) -> User,
+    getTest: (RuntimeContext, TestProfile) -> TestProfile
+) {
     println("")
 
     runtimeInit(contextId, context, tests, getUser)
@@ -599,7 +636,12 @@ fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: 
     runTests(contexts, tests, getUser, ::getTest)
 }
 
-fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: (Int) -> User, getTest: (RuntimeContext, TestProfile) -> TestProfile) {
+fun runTests(
+    contexts: List<RuntimeContext>,
+    tests: List<TestProfile>,
+    getUser: (Int) -> User,
+    getTest: (RuntimeContext, TestProfile) -> TestProfile
+) {
     initTulip()
     contexts.forEachIndexed { contextId, context ->
         runTulip(contextId, context, tests, getUser, getTest)
