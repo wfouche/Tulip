@@ -237,9 +237,16 @@ class ActionStats {
         Console.put(output)
     }
 
-    fun saveStatsJson(): String {
+    fun saveStatsJson(actionId: Int): String {
         var results = ""
-        results += "\"num_actions\": ${num_actions}, \"num_success\": ${num_success}, \"num_failed\": ${num_actions - num_success}"
+
+        // Skip actionId = -1
+        if (actionId >= 0) {
+            val name: String = if (actionNames.containsKey(actionId)) actionNames[actionId]!! else "action${actionId}"
+            results += "\"name\": \"${name}\""
+        }
+
+        results += ", \"num_actions\": ${num_actions}, \"num_success\": ${num_success}, \"num_failed\": ${num_actions - num_success}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.min_rt}, \"max_rt\": ${r.max_rt}, \"max_rt_ts\": \"${r.max_rt_ts}\""
 
         results += ", \"percentiles_rt\": {"
@@ -400,7 +407,7 @@ object DataCollector {
 
             json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
 
-            json += actionStats[NUM_ACTIONS].saveStatsJson()
+            json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
 
             json += ", \"user_actions\": {"
 
@@ -411,7 +418,7 @@ object DataCollector {
                         if (t != "") {
                             t += ","
                         }
-                        t += "\"${index}\": {" + data.saveStatsJson() + "}"
+                        t += "\"${index}\": {" + data.saveStatsJson(index) + "}"
                     }
                 }
             }

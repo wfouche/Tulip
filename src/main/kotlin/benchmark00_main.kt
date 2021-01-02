@@ -17,7 +17,7 @@ fun getUser(userId: Int): User {
 /*-------------------------------------------------------------------------*/
 
 fun main() {
-    runTests(contexts, tests, ::getUser)
+    runTests(contexts, tests, actionNames, ::getUser)
 }
 
 /*-------------------------------------------------------------------------*/

@@ -37,9 +37,11 @@ private var testSuite: List<TestProfile>? = null
 
 private var newUser: ((Int) -> User)? = null
 
+var actionNames: Map<Int, String> = emptyMap()
+
 /*-------------------------------------------------------------------------*/
 
-fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, func: (Int) -> User) {
+fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, func: (Int) -> User) {
     TULIP_SCENARIO_ID = contextId
     TULIP_SCENARIO_NAME = context.name
 
@@ -51,6 +53,7 @@ fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile
     userObjects = arrayOfNulls<User>(MAX_NUM_USERS)
     userActions = arrayOfNulls<Iterator<Int>>(MAX_NUM_USERS)
     userThreads = arrayOfNulls<UserThread>(MAX_NUM_THREADS)
+    actionNames = actionDesc
 }
 
 fun runtimeDone() {
@@ -598,12 +601,13 @@ fun runTulip(
     contextId: Int,
     context: RuntimeContext,
     tests: List<TestProfile>,
+    actionNames: Map<Int, String>,
     getUser: (Int) -> User,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
     println("")
 
-    runtimeInit(contextId, context, tests, getUser)
+    runtimeInit(contextId, context, tests, actionNames, getUser)
 
     println("======================================================================")
     println("Scenario: ${context.name}")
@@ -632,19 +636,20 @@ fun runTulip(
 
 /*-------------------------------------------------------------------------*/
 
-fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, getUser: (Int) -> User) {
-    runTests(contexts, tests, getUser, ::getTest)
+fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, actionNames: Map<Int, String>, getUser: (Int) -> User) {
+    runTests(contexts, tests, actionNames, getUser, ::getTest)
 }
 
 fun runTests(
     contexts: List<RuntimeContext>,
     tests: List<TestProfile>,
+    actionNames: Map<Int, String>,
     getUser: (Int) -> User,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
     initTulip()
     contexts.forEachIndexed { contextId, context ->
-        runTulip(contextId, context, tests, getUser, getTest)
+        runTulip(contextId, context, tests, actionNames, getUser, getTest)
     }
 }
 
