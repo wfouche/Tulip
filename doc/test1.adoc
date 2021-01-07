@@ -31,9 +31,8 @@ main_ts ==> (main.view)
 (singleton) ---> (model)
 ----
 
-== Test2
 
-[plantuml,arch2,svg]
+[c4plantuml,arch2,svg]
 ----
 @startuml
 !include C4_Context.puml
