@@ -123,3 +123,7 @@ action "0" was executed 40 times and action "7" was also executed 40 times.
 . num_actions (globally) = 80
 . num_action (action_id=0) = 40
 . num_action (action_id=7) = 40
+
+== Diagrams
+
+image::diagrams/Process-flow.drawio.svg[]
