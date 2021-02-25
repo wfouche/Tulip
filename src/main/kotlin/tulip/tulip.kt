@@ -118,7 +118,7 @@ data class Duration(
 )
 
 data class TestProfile(
-    val isEnabled: Boolean = true,
+    val enabled: Boolean = true,
 
     //
     // Name of the benchmark test.
