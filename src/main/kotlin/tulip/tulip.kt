@@ -622,7 +622,7 @@ fun runTulip(
         System.exit(0)
     }
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
-        if (testCase.isEnabled) {
+        if (testCase.enabled) {
             val x: TestProfile = getTest(context, testCase)
             x.queueLenghts.forEachIndexed { indexUserProfile, queueLength ->
                 delay(5000)
