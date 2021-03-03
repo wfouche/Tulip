@@ -388,7 +388,7 @@ object DataCollector {
             json += "\"scenario_name\": \"${TULIP_SCENARIO_NAME}\", "
             json += "\"scenario_id\": ${TULIP_SCENARIO_ID}, "
             json += "\"num_users\": ${MAX_NUM_USERS}, "
-            json += "\"num_threads\": ${MAX_NUM_USERS}, "
+            json += "\"num_threads\": ${MAX_NUM_THREADS}, "
             json += "\"queue_length\": ${r.queueLength}, "
 
             json += "\"test_name\": \"${r.test_name}\", "
