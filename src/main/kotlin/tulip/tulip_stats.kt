@@ -385,7 +385,7 @@ object DataCollector {
 
             var json = "{"
 
-            json += "\"scenario_name\": ${TULIP_SCENARIO_NAME}, "
+            json += "\"scenario_name\": \"${TULIP_SCENARIO_NAME}\", "
             json += "\"scenario_id\": ${TULIP_SCENARIO_ID}, "
             json += "\"num_users\": ${MAX_NUM_USERS}, "
             json += "\"num_threads\": ${MAX_NUM_USERS}, "
@@ -405,7 +405,7 @@ object DataCollector {
 
             json += "\"duration\": ${r.duration_seconds}, "
 
-            json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
+            json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}"
 
             json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
 
