@@ -44,7 +44,7 @@ application {
     // Default JVM settings
 
 	// G1GC (default), Java 11
-    applicationDefaultJvmArgs = listOf("-server", "-Xmx2048m", "-XX:+ParallelRefProcEnabled") 
+    applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-XX:+ParallelRefProcEnabled")
 	
 	// Java 8
 	//, "-XX:+UseParallelGC")
