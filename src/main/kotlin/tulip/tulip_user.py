@@ -35,6 +35,7 @@ print("""    open fun done(): Boolean = false
         return try {
             map[actionId]()
         } catch (e: Exception) {
+            Console.put("userId: ${userId}, actionId: ${actionId}, error: " + e.toString())
             false
         }
     }

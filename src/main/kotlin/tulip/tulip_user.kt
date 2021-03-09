@@ -219,6 +219,7 @@ open class User(val userId: Int) {
         return try {
             map[actionId]()
         } catch (e: Exception) {
+            Console.put("userId: ${userId}, actionId: ${actionId}, error: " + e.toString())
             false
         }
     }
