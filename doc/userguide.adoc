@@ -152,3 +152,11 @@ Rel(user, spa, "Uses", "https")
 Rel(spa, api, "Uses", "https")
 Rel_R(api, db, "Reads/Writes")
 ----
+
+== Mermaid
+
+[mermaid,file1,svg]
+....
+graph LR
+  block1-->block2-->block3
+....
