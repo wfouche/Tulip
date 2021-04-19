@@ -33,6 +33,9 @@ dependencies {
     //implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
 
+    // JSON Kotlin Parser.
+    implementation("com.beust:klaxon:5.5")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
