@@ -5,7 +5,7 @@ import fileinput
 
 s0 = """[width="100%",options="header"]
 |===
-|Row ID | Avg TPS | Actions Total | Actions Failed | Duration (secs) | Avg RT (ms) | p95 RT (ms) | Max RT (ms) | CPU
+|Action ID | Avg TPS | Actions Total | Actions Failed | Duration (secs) | Avg RT (ms) | p95 RT (ms) | Max RT (ms) | CPU
 """
 
 def ff(v):
@@ -22,7 +22,7 @@ for line in fileinput.input():
         print("." + x["scenario_name"] + " - " +  x["test_name"])
         print(s0)
 
-    print("|", x["row_id"])
+    print("|", x["test_end"].split("T")[0], x["test_end"].split("T")[1])
     print("|", ff(x["avg_tps"]))
     print("|", x["num_actions"])
     print("|", x["num_failed"])
@@ -35,5 +35,21 @@ for line in fileinput.input():
     print("")
 
     row_count += 1
+
+    r = x["user_actions"]
+    for k in r.keys():
+        if True:
+            b = r[k]
+            print("|", k)
+            print("|", ff(b["avg_tps"]))
+            print("|", b["num_actions"])
+            print("|", b["num_failed"])
+            print("|", x["duration"])
+            print("|", ff(b["avg_rt"]))
+            print("|", ff(b["percentiles_rt"]["95.0"]))
+            print("|", ff(b["max_rt"]))
+            print("|", ff(x["avg_cpu_system"]))
+
+            print("")
 
 print("|===")
