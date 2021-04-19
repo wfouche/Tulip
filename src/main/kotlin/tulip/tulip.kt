@@ -364,7 +364,7 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 /*-------------------------------------------------------------------------*/
 
 fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
-    val ts_begin = java.time.LocalDateTime.now().toString()
+    var ts_begin = java.time.LocalDateTime.now().toString()
     val output = mutableListOf("")
     output.add("======================================================================")
     output.add("= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - ${ts_begin}")
@@ -499,8 +499,8 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             }
 
             DataCollector.clearStats()
-            val ts1 = java.time.LocalDateTime.now()
-            Console.put("\n${test_phase} run ${runId}: begin (${ts1})")
+            ts_begin = java.time.LocalDateTime.now().toString()
+            Console.put("\n${test_phase} run ${runId}: begin (${ts_begin})")
 
             timeMillis_start = timeMillis_end
             timeMillis_end = timeMillis_start + durationMinutes * 60 * 1000
