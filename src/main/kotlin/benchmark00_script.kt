@@ -6,6 +6,7 @@ import tulip.NUM_ACTIONS
 import tulip.RuntimeContext
 import tulip.TestProfile
 import tulip.User
+import java.util.concurrent.TimeUnit
 
 /*-------------------------------------------------------------------------*/
 
@@ -27,6 +28,7 @@ val tests: List<TestProfile> = listOf(
 
     // 0
     TestProfile(
+        false,
         name = "Test0 (Initialize)",
         actions = listOf(Action(0), Action(7)),
         filename = JSON_FILENAME
@@ -34,6 +36,8 @@ val tests: List<TestProfile> = listOf(
 
     // 1
     TestProfile(
+        false,
+
         // The name of this test.
         name = "Test1 (Throughput Test - Max)",
 
@@ -58,12 +62,12 @@ val tests: List<TestProfile> = listOf(
 
     // 2
     TestProfile(
-        false,
+        true,
         // The name of this test.
         name = "Test2 (Throughput Test - Fixed)",
 
         // Duration in minutes
-        duration = Duration(0, 1, 1),
+        duration = Duration(15, 15, 60, 4, TimeUnit.SECONDS),
 
         // Limit throughput 100.0 actions per second (on average).
         // A value of zero indicates that the arrival rate is uncapped.
@@ -86,6 +90,7 @@ val tests: List<TestProfile> = listOf(
 
     // 3
     TestProfile(
+        false,
         name = "Test3 (Terminate)",
         actions = listOf(Action(NUM_ACTIONS - 1)),
         filename = JSON_FILENAME

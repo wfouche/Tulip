@@ -8,8 +8,7 @@ import java.util.concurrent.ArrayBlockingQueue  as Queue
 //import java.util.concurrent.LinkedBlockingQueue
 
 import java.lang.Thread
-import java.util.concurrent.ThreadLocalRandom
-
+import java.util.concurrent.*
 import kotlin.sequences.iterator
 
 /*-------------------------------------------------------------------------*/
@@ -93,28 +92,31 @@ data class Action(
 /*-------------------------------------------------------------------------*/
 
 data class Duration(
-    // Start-up period in minutes.
-    // The results from this period are discarded.
-    //
+
     // Start-up only executed once per TestCase.
     //
-    val startupDurationMinutes: Int = 0,
+    val startupDurationUnits: Long = 0,
 
-    // Warm-up period in minutes.
-    // The results from this period are discarded.
-    //
     // Warm-up phase executed once per TestCase.
     //
-    val warmupDurationMinutes: Int = 0,
+    val warmupDurationUnits: Long = 0,
 
     // Main duration in minutes.
     // The results from this period are reported.
     //
     // Main phase executed 'repeatCount' every iteration of TestCase.
     //
-    val mainDurationMinutes: Int = 0,
+    val mainDurationUnits: Long = 0,
 
     val mainDurationRepeatCount: Int = 1,
+
+    val timeUnit: TimeUnit = TimeUnit.MINUTES,
+
+    // ------------------------------
+
+    val startupDurationMillis: Long = timeUnit.toMillis(startupDurationUnits),
+    val warmupDurationMillis: Long = timeUnit.toMillis(warmupDurationUnits),
+    val mainDurationMillis: Long = timeUnit.toMillis(mainDurationUnits)
 )
 
 data class TestProfile(
@@ -148,7 +150,7 @@ data class TestProfile(
 
 
     // List of percentile values to report on.
-    val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0),
+    val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0, 99.9),
 
     // Json results filename.
     val filename: String = ""
@@ -401,7 +403,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         actionList.shuffle(rnd)
     }
     repeat(MAX_NUM_USERS) { idx ->
-        if ((testCase.duration.warmupDurationMinutes == 0) && (testCase.duration.mainDurationMinutes == 0)) {
+        if ((testCase.duration.warmupDurationUnits == 0L) && (testCase.duration.mainDurationUnits == 0L)) {
             userActions!![idx] = null
         } else {
             userActions!![idx] = createActionsGenerator(actionList)
@@ -426,7 +428,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         }
     }
 
-    if ((testCase.duration.warmupDurationMinutes == 0) && (testCase.duration.mainDurationMinutes == 0)) {
+    if ((testCase.duration.warmupDurationUnits == 0L) && (testCase.duration.mainDurationUnits == 0L)) {
 
         DataCollector.clearStats()
 
@@ -484,13 +486,13 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         var timeMillis_end: Long = timeMillis()
 
         fun assignTasks(
-            durationMinutes: Int,
+            durationMillis: Long,
             test_phase: String,
             runId: Int,
             runIdMax: Int,
             arrivalRate: Double = -1.0
         ) {
-            if (durationMinutes == 0) {
+            if (durationMillis == 0L) {
                 return
             }
             if (runId == 0) {
@@ -503,7 +505,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             Console.put("\n${test_phase} run ${runId}: begin (${ts_begin})")
 
             timeMillis_start = timeMillis_end
-            timeMillis_end = timeMillis_start + durationMinutes * 60 * 1000
+            timeMillis_end = timeMillis_start + durationMillis
 
             var rateGoverner: RateGovernor? = null
             if (arrivalRate > -1.0) {
@@ -571,16 +573,16 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         // on the first set, i.e. with index 0.
         //
         if (indexUserProfile == 0) {
-            assignTasks(testCase.duration.startupDurationMinutes, "Start-up", 0, 0, 0.0)
+            assignTasks(testCase.duration.startupDurationMillis, "Start-up", 0, 0, 0.0)
         }
 
         // Ramp-up
-        assignTasks(testCase.duration.warmupDurationMinutes, "Ramp-up", 0, 0)
+        assignTasks(testCase.duration.warmupDurationMillis, "Ramp-up", 0, 0)
 
         // Main run(s)
         for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
             assignTasks(
-                testCase.duration.mainDurationMinutes,
+                testCase.duration.mainDurationMillis,
                 "Main",
                 runId,
                 testCase.duration.mainDurationRepeatCount - 1

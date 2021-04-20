@@ -202,16 +202,12 @@ class ActionStats {
         output.add("  num_success = ${r.num_success}")
         output.add("  num_failed  = ${r.num_actions - r.num_success}")
         output.add("")
-
         output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
+        output.add("  duration of benchmark (in seconds)             = ${r.duration_seconds}")
+        output.add("")
         output.add("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, r.art)}")
         output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)}")
         output.add("")
-        output.add("  duration of benchmark (in seconds) = ${r.duration_seconds}")
-        output.add("  number of actions completed = ${r.num_actions}")
-
-        output.add("")
-
         r.pk.forEachIndexed { index, percentile ->
             val px = r.pv.elementAt(index)
             output.add("  ${percentile}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
