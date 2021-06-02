@@ -5,7 +5,6 @@ import tulip.Duration
 import tulip.NUM_ACTIONS
 import tulip.RuntimeContext
 import tulip.TestProfile
-import tulip.User
 import java.util.concurrent.TimeUnit
 
 /*-------------------------------------------------------------------------*/
