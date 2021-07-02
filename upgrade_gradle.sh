@@ -1,1 +1,1 @@
-./gradlew wrapper --gradle-version=7.0.2
+./gradlew wrapper --gradle-version=7.1.1

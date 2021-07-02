@@ -3,6 +3,7 @@
 :toclevels: 3
 :sectnumlevels: 3
 :sectnums:
+:stem: latexmath
 
 == Introduction
 
@@ -160,3 +161,15 @@ Rel_R(api, db, "Reads/Writes")
 graph LR
   block1-->block2-->block3
 ....
+
+== LaTeX
+
+stem:[C = \alpha + \beta Y^{\gamma} + \epsilon]
+
+stem:[E=mc^2]
+
+stem:[\sum_{n=1}^{\infty} 2^{-n} = 1]
+
+stem:[\prod_{i=a}^{b} f(i)]
+
+stem:[\lim_{x\to\infty} f(x)]
