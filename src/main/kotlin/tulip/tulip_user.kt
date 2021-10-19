@@ -12,7 +12,7 @@ const val NUM_ACTIONS = 100
 open class User(val userId: Int) {
 
     private val map = arrayOf(
-        ::init,
+        ::start,
         ::action1,
         ::action2,
         ::action3,
@@ -111,10 +111,10 @@ open class User(val userId: Int) {
         ::action96,
         ::action97,
         ::action98,
-        ::done
+        ::stop
     )
 
-    open fun init(): Boolean = false
+    open fun start(): Boolean = false
     open fun action1(): Boolean = false
     open fun action2(): Boolean = false
     open fun action3(): Boolean = false
@@ -213,7 +213,7 @@ open class User(val userId: Int) {
     open fun action96(): Boolean = false
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
-    open fun done(): Boolean = false
+    open fun stop(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
         return try {

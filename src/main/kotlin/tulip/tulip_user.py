@@ -16,20 +16,20 @@ print("""
 open class User(val userId: Int) {
 
     private val map = arrayOf(
-        ::init,""")
+        ::start,""")
         
 for i in range(NUM_ACTIONS-2):
     print("        ::action%d,"%(i+1))
     
-print("""        ::done
+print("""        ::stop
     )
 
-    open fun init(): Boolean = false""")
+    open fun start(): Boolean = false""")
 
 for i in range(NUM_ACTIONS-2):
     print("    open fun action%d(): Boolean = false"%(i+1))
 
-print("""    open fun done(): Boolean = false
+print("""    open fun stop(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
         return try {

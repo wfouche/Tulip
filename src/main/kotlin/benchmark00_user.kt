@@ -20,7 +20,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun init(): Boolean {
+    override fun start(): Boolean {
         val actionId = 0
         Console.put("  $userId -> $actionId")
         return true
@@ -105,7 +105,7 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun done(): Boolean {
+    override fun stop(): Boolean {
         Console.put("  Terminate: UserId = $userId")
         delay(100)
         return true
