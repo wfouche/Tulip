@@ -10,7 +10,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "3.3.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.6.0-RC"
+    id("org.jetbrains.kotlin.jvm") version "1.6.0-RC2"
 
     // Apply the application plugin to add support for building a CLI application.
     application
@@ -31,7 +31,7 @@ dependencies {
 
     // Use the Kotlin JDK 8 standard library.
     //implementation("org.jetbrains.kotlin:kotlin-stdlib-jdk8")
-    implementation("com.squareup.okhttp3:okhttp:4.9.1")
+    implementation("com.squareup.okhttp3:okhttp:4.9.2")
 
     // JSON Kotlin Parser.
     implementation("com.beust:klaxon:5.5")
