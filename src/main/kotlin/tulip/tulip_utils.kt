@@ -237,3 +237,14 @@ fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
 }
 
 /*-------------------------------------------------------------------------*/
+
+fun durationMillisToString(durationInMillis: Long): String {
+    val seconds = durationInMillis / 1000
+    val s = seconds % 60
+    val m = (seconds / 60) % 60
+    val h = (seconds / (60 * 60)) % 24
+    val q = durationInMillis % 1000
+    return String.format("%d:%02d:%02d.%03d",h,m,s,q)
+}
+
+/*-------------------------------------------------------------------------*/
