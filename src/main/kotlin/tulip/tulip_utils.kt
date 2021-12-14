@@ -53,7 +53,7 @@ fun timeMicros(): Long {
 //
 // Use this monotonically increasing function to get a nanosecond accurate timestamp.
 //
-fun timeNanos(): Long {
+inline fun timeNanos(): Long {
     return System.nanoTime()
 }
 
