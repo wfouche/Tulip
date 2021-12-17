@@ -1,2 +1,2 @@
 call init_env.cmd
-gradlew.bat wrapper --gradle-version=7.3.1
+gradlew.bat wrapper --gradle-version=7.3.2
