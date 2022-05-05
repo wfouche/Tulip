@@ -1,1 +1,7 @@
 = Tulip (The Ultimate Load Injection Program)
+:sectnums:
+
+== Kotlin Books
+
+* https://www.manning.com/books/kotlin-in-action[Kotlin in Action, 1st Edition]
+* https://typealias.com/start/[Kotlin: An Illustrated Guide]
