@@ -35,6 +35,9 @@ dependencies {
     // JSON Kotlin Parser.
     implementation("com.beust:klaxon:5.5")
 
+    // disruptor
+    implementation("com.conversantmedia:disruptor:1.2.21")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
