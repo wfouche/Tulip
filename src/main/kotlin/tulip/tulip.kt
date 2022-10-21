@@ -4,6 +4,10 @@ package tulip
 
 /*-------------------------------------------------------------------------*/
 
+import java.util.concurrent.LinkedBlockingQueue
+
+/*-------------------------------------------------------------------------*/
+
 //https://github.com/conversant/disruptor
 import com.conversantmedia.util.concurrent.DisruptorBlockingQueue as Queue
 //import java.util.concurrent.ArrayBlockingQueue  as Queue
@@ -180,7 +184,7 @@ data class Task(
     // Duration (elapsed time) in microseconds.
     var durationMicros: Long = 0,
 
-    var rspQueue: Queue<Task>? = null,
+    var rspQueue: LinkedBlockingQueue<Task>? = null,
 
     var status: Int = -1
 )
@@ -272,7 +276,7 @@ object Console : Thread() {
         start()
     }
 
-    private var q = Queue<MutableList<String>>(10)
+    private var q = LinkedBlockingQueue<MutableList<String>>(10)
 
     override fun run() {
         while (true) {
@@ -415,7 +419,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     //
     // Create a queue containing a total of queueLength tokens.
     //
-    val rspQueue = Queue<Task>(queueLength)
+    val rspQueue = LinkedBlockingQueue<Task>(queueLength)
 
     fun initRspQueue() {
         repeat(queueLength) {

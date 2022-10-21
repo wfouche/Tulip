@@ -35,8 +35,11 @@ dependencies {
     // JSON Kotlin Parser.
     implementation("com.beust:klaxon:5.5")
 
-    // disruptor
+    // Conversant disruptor - https://github.com/conversant/disruptor
     implementation("com.conversantmedia:disruptor:1.2.21")
+
+    // LMAX disruptor - https://github.com/LMAX-Exchange/disruptor
+    implementation("com.lmax:disruptor:4.0.0.RC1")
 
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
@@ -49,10 +52,10 @@ application {
     // Default JVM settings
 
 	// G1GC (default), Java 11
-    applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:+UseDynamicNumberOfGCThreads")
+    //applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:+UseDynamicNumberOfGCThreads")
 
     // applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseZGC", "-XX:+UseDynamicNumberOfGCThreads")
-    // applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseShenandoahGC")
+    applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseShenandoahGC")
 	
 	// Java 8
 	//, "-XX:+UseParallelGC")
