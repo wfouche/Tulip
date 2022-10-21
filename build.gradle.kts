@@ -51,14 +51,15 @@ dependencies {
 application {
     // Default JVM settings
 
-	// G1GC (default), Java 11
-    //applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:+UseDynamicNumberOfGCThreads")
+    // G1GC (default), Java 11
+    // applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:+UseDynamicNumberOfGCThreads")
 
     // applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseZGC", "-XX:+UseDynamicNumberOfGCThreads")
-    applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseShenandoahGC")
-	
-	// Java 8
-	//, "-XX:+UseParallelGC")
+    // applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseShenandoahGC")
+    applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseParallelGC")
+
+    // Java 8
+    //, "-XX:+UseParallelGC")
 
     // Define the main class for the application
     mainClass.set("LoadTest1")
