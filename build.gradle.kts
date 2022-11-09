@@ -10,7 +10,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "3.3.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.7.20"
+    id("org.jetbrains.kotlin.jvm") version "1.7.21"
 
     // Apply the application plugin to add support for building a CLI application.
     application
@@ -52,11 +52,11 @@ application {
     // Default JVM settings
 
     // G1GC (default), Java 11
-    // applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:+UseDynamicNumberOfGCThreads")
+    applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:+UseDynamicNumberOfGCThreads")
 
     // applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseZGC", "-XX:+UseDynamicNumberOfGCThreads")
     // applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseShenandoahGC")
-    applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseParallelGC")
+    // applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseParallelGC")
 
     // Java 8
     //, "-XX:+UseParallelGC")
