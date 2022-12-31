@@ -10,7 +10,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "3.3.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.8.0-RC"
+    id("org.jetbrains.kotlin.jvm") version "1.8.0"
 
     // Apply the application plugin to add support for building a CLI application.
     application
