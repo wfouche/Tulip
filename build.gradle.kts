@@ -4,6 +4,12 @@
  * This generated file contains a sample Kotlin application project to get you started.
  */
 
+java {
+    toolchain {
+        languageVersion.set(JavaLanguageVersion.of(17))
+    }
+}
+
 plugins {
 
     // Add support for AsciidoctorJ
@@ -33,7 +39,7 @@ dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
 
     // JSON Kotlin Parser.
-    implementation("com.beust:klaxon:5.5")
+    implementation("com.beust:klaxon:5.6")
 
     // Conversant disruptor - https://github.com/conversant/disruptor
     implementation("com.conversantmedia:disruptor:1.2.21")
