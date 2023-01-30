@@ -5,3 +5,8 @@
 
 * https://www.manning.com/books/kotlin-in-action[Kotlin in Action, 1st Edition]
 * https://typealias.com/start/[Kotlin: An Illustrated Guide]
+
+== Performance Engineering
+
+* "Stop Rate Limiting! Capacity Management Done Right" by Jon Moore
+** https://www.youtube.com/watch?v=m64SWl9bfvk
