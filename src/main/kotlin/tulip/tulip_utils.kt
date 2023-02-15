@@ -137,17 +137,17 @@ fun accuracyTimeNanos(): Long {
 /*-------------------------------------------------------------------------*/
 
 fun accuracySystemCurrentTimeMillis(): Long {
-    fun System_currentTimeMillis(): Long {
+    fun systemCurrentTimeMillis(): Long {
         return System.currentTimeMillis()
     }
-    return measureTimeAccuracy(::System_currentTimeMillis)
+    return measureTimeAccuracy(::systemCurrentTimeMillis)
 }
 
 fun accuracySystemNanoTime(): Long {
-    fun System_nanoTime(): Long {
+    fun systemNanoTime(): Long {
         return System.nanoTime()
     }
-    return measureTimeAccuracy(::System_nanoTime)
+    return measureTimeAccuracy(::systemNanoTime)
 }
 
 /*-------------------------------------------------------------------------*/
@@ -202,7 +202,7 @@ fun getLoadValue(counter: String): Double {
     if (list.isEmpty()) return java.lang.Double.NaN
 
     val att = list[0] as Attribute
-    val value = att.getValue() as Double
+    val value = att.value as Double
 
     // usually takes a couple of seconds before we get real values
     return if (value == -1.0) java.lang.Double.NaN else (value * 1000).toInt() / 10.0
