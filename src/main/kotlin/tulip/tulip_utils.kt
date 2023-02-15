@@ -10,8 +10,9 @@ import java.util.concurrent.TimeUnit
 import javax.management.Attribute
 import javax.management.ObjectName
 
-import tulip.RuntimeContext
-import tulip.TestProfile
+import kotlin.math.floor
+import kotlin.math.log10
+import kotlin.math.pow
 
 /*-------------------------------------------------------------------------*/
 
@@ -29,8 +30,8 @@ fun roundXN(x: Long, n: Long): Long {
 fun llq(x: Long): Long {
     // Do not quantize the values from 0 to 9.
     if (x < 10) return x
-    val a: Double = Math.floor(Math.log10(x.toDouble())) - 1.0
-    val n: Long = (Math.pow(10.0, a)).toLong() * 5
+    val a: Double = floor(log10(x.toDouble())) - 1.0
+    val n: Long = ((10.0).pow(a)).toLong() * 5
     return roundXN(x, n)
 }
 
@@ -196,7 +197,7 @@ fun delayMicrosRandom(delayFrom: Long, delayTo: Long) {
 fun getLoadValue(counter: String): Double {
     val mbs = ManagementFactory.getPlatformMBeanServer()
     val name = ObjectName.getInstance("java.lang:type=OperatingSystem")
-    val list = mbs.getAttributes(name, arrayOf(counter.toString()))
+    val list = mbs.getAttributes(name, arrayOf(counter))
 
     if (list.isEmpty()) return java.lang.Double.NaN
 
