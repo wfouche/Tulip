@@ -16,7 +16,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "3.3.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.8.10"
+    id("org.jetbrains.kotlin.jvm") version "1.8.20-RC2"
 
     // Apply the application plugin to add support for building a CLI application.
     application
@@ -34,6 +34,13 @@ dependencies {
 
     // Align versions of all Kotlin components
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
+    //implementation("org.jetbrains.kotlin:kotlin-stdlib")
+
+    implementation(platform("org.http4k:http4k-bom:4.39.0.0"))
+    //implementation("org.http4k:http4k-core")
+    implementation("org.http4k:http4k-client-apache")
+    implementation("org.http4k:http4k-server-undertow")
+    //implementation("org.http4k:http4k-serverless-lambda")
 
     // okhttp
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
@@ -53,6 +60,7 @@ dependencies {
     // Use the Kotlin JUnit integration.
     testImplementation("org.jetbrains.kotlin:kotlin-test-junit")
 }
+
 
 application {
     // Default JVM settings
