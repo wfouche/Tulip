@@ -12,9 +12,9 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    var httpClient = OkHttpClient()
+    private var httpClient = OkHttpClient()
 
-    val request = Request.Builder()
+    private val request = Request.Builder()
         .url("http://jsonplaceholder.typicode.com/photos/${userId + 1}")
         .build()
 
