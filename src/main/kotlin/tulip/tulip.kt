@@ -9,9 +9,9 @@ import java.util.concurrent.LinkedBlockingQueue
 /*-------------------------------------------------------------------------*/
 
 //https://github.com/conversant/disruptor
-import com.conversantmedia.util.concurrent.DisruptorBlockingQueue as Queue
+//import com.conversantmedia.util.concurrent.DisruptorBlockingQueue as Queue
 //import java.util.concurrent.ArrayBlockingQueue  as Queue
-//import java.util.concurrent.LinkedBlockingQueue as Queue
+import java.util.concurrent.LinkedBlockingQueue as Queue
 
 import java.lang.Thread
 import java.util.concurrent.*
