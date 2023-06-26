@@ -387,6 +387,10 @@ object DataCollector {
 
     fun saveStatsJson(filename: String) {
         if (filename != "") {
+            val fm = Runtime.getRuntime().freeMemory()
+            val tm = Runtime.getRuntime().totalMemory()
+            val mm = Runtime.getRuntime().maxMemory()
+
             val r = actionStats[NUM_ACTIONS].r
 
             var json = "{"
@@ -411,7 +415,12 @@ object DataCollector {
 
             json += "\"duration\": ${r.duration_seconds}, "
 
-            json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}"
+            json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
+
+            json += "\"jvm_memory_used\": ${tm-fm}, "
+            json += "\"jvm_memory_free\": ${fm}, "
+            json += "\"jvm_memory_total\": ${tm}, "
+            json += "\"jvm_memory_maximum\": ${mm}, "
 
             json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
 
