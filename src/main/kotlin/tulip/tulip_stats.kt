@@ -225,9 +225,19 @@ class ActionStats {
         )
 
         if (action_id == NUM_ACTIONS) {
+            val fm = Runtime.getRuntime().freeMemory()
+            val tm = Runtime.getRuntime().totalMemory()
+            val mm = Runtime.getRuntime().maxMemory()
+
             output.add("")
             output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avg_cpu_process)}")
             output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avg_cpu_system)}")
+
+            output.add("")
+            output.add("  JVM used memory    = ${"%,d".format(Locale.US, tm-fm)}")
+            output.add("  JVM free memory    = ${"%,d".format(Locale.US, fm)}")
+            output.add("  JVM total memory   = ${"%,d".format(Locale.US, tm)}")
+            output.add("  JVM maximum memory = ${"%,d".format(Locale.US, mm)}")
         }
 
         Console.put(output)
