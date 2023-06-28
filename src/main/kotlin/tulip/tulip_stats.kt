@@ -420,7 +420,7 @@ object DataCollector {
             json += "\"jvm_memory_used\": ${tm-fm}, "
             json += "\"jvm_memory_free\": ${fm}, "
             json += "\"jvm_memory_total\": ${tm}, "
-            json += "\"jvm_memory_maximum\": ${mm}, "
+            json += "\"jvm_memory_maximum\": ${mm}"
 
             json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
 
