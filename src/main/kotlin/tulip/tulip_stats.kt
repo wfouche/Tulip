@@ -103,8 +103,8 @@ class ActionStats {
         fun percentile(k: Double, min_value: Double = 0.0, max_value: Double = 0.0): Double {
             val P: Double = (k / 100.0) * num_actions
 
-            var CFb: Double = 0.0
-            var F: Double = 0.0
+            var CFb = 0.0
+            var F = 0.0
 
             val keys = latencyMap.keys.sorted()
             var tk: Long = 0
@@ -167,8 +167,8 @@ class ActionStats {
         // Summarize CPU usage for global stats only.
         if (action_id == NUM_ACTIONS) {
             // average process CPU load.
-            var cpu_load: Double = 0.0
-            var i: Double = 0.0
+            var cpu_load = 0.0
+            var i = 0.0
             while (!CpuLoadMetrics.processCpuStats.isEmpty()) {
                 cpu_load += CpuLoadMetrics.processCpuStats.take()
                 i += 1.0
@@ -374,12 +374,14 @@ object DataCollector {
         }
     }
 
-    fun printStats(printMap: Boolean = false) {
+    fun printStats(printMap: Boolean = false ,printDetails: Boolean = false) {
         actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS, printMap)
-        actionStats.forEachIndexed { index, data ->
-            if (data.num_actions > 0) {
-                if (index != NUM_ACTIONS) {
-                    //data.printStats(index, false)
+        if (printDetails) {
+            actionStats.forEachIndexed { index, data ->
+                if (data.num_actions > 0) {
+                    if (index != NUM_ACTIONS) {
+                        data.printStats(index, false)
+                    }
                 }
             }
         }
