@@ -234,10 +234,10 @@ class ActionStats {
             output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avg_cpu_system)}")
 
             output.add("")
-            output.add("  JVM memory used    = ${"%,d".format(Locale.US, tm-fm)}")
-            output.add("  JVM free memory    = ${"%,d".format(Locale.US, fm)}")
-            output.add("  JVM total memory   = ${"%,d".format(Locale.US, tm)}")
-            output.add("  JVM maximum memory = ${"%,d".format(Locale.US, mm)}")
+            output.add("  jvm memory used    = ${"%,d".format(Locale.US, tm-fm)}")
+            output.add("  jvm free memory    = ${"%,d".format(Locale.US, fm)}")
+            output.add("  jvm total memory   = ${"%,d".format(Locale.US, tm)}")
+            output.add("  jvm maximum memory = ${"%,d".format(Locale.US, mm)}")
         }
 
         Console.put(output)
