@@ -37,10 +37,10 @@ dependencies {
     //implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
     implementation(platform("org.http4k:http4k-bom:4.39.0.0"))
-    //implementation("org.http4k:http4k-core")
+    implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-client-apache")
     implementation("org.http4k:http4k-server-undertow")
-    //implementation("org.http4k:http4k-serverless-lambda")
+    implementation("org.http4k:http4k-serverless-lambda")
 
     // okhttp
     implementation("com.squareup.okhttp3:okhttp:4.10.0")
