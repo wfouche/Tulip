@@ -12,6 +12,9 @@ java {
 
 plugins {
 
+    // owasp
+    id("org.owasp.dependencycheck") version "8.3.1"
+
     // Add support for AsciidoctorJ
     id("org.asciidoctor.jvm.convert") version "3.3.2"
 
