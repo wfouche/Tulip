@@ -1,1 +1,0 @@
-Main-Class: Tulip_Java_Client
