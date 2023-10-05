@@ -87,3 +87,7 @@ application {
     // Define the main class for the application
     mainClass.set("LoadTest1")
 }
+
+dependencyCheck {
+    analyzers.assemblyEnabled = false
+}
