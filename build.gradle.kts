@@ -12,8 +12,13 @@ java {
 
 plugins {
 
-    // owasp
+    // Gradle owasp plugin
+    // $ ./gradlew dependencyCheckAnalyze --info
     id("org.owasp.dependencycheck") version "8.4.0"
+
+    // Gradle versions plugin
+    // $ ./gradlew dependencyUpdates
+    id("com.github.ben-manes.versions") version "0.48.0"
 
     // Add support for AsciidoctorJ
     id("org.asciidoctor.jvm.convert") version "3.3.2"
