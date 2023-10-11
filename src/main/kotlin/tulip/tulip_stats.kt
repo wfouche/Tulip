@@ -4,6 +4,8 @@ import java.util.*
 import java.io.BufferedWriter
 
 import java.io.FileWriter
+import kotlin.math.pow
+import kotlin.math.sqrt
 
 data class ActionSummary(
     var action_id: Int = 0,
@@ -22,7 +24,7 @@ data class ActionSummary(
     var num_actions: Int = 0,
     var num_success: Int = 0,
 
-    var latencyMap: MutableMap<Long, Long> = mutableMapOf<Long, Long>(),
+    var latencyMap: MutableMap<Long, Long> = mutableMapOf(),
 
     var duration_seconds: Double = 0.0,
 
@@ -33,8 +35,8 @@ data class ActionSummary(
     var max_rt: Double = 0.0,
     var max_rt_ts: String = "",
 
-    var pk: List<Double> = mutableListOf<Double>(),
-    var pv: List<Double> = mutableListOf<Double>(),
+    var pk: List<Double> = mutableListOf(),
+    var pv: List<Double> = mutableListOf(),
 
     var avg_cpu_system: Double = 0.0,
     var avg_cpu_process: Double = 0.0
@@ -42,13 +44,13 @@ data class ActionSummary(
 
 class ActionStats {
 
-    val latencyMap = mutableMapOf<Long, Long>()
-    var latencyMap_min_rt: Long = Long.MAX_VALUE
-    var latencyMap_max_rt: Long = Long.MIN_VALUE
-    var latencyMap_max_rt_ts = ""
+    private val latencyMap = mutableMapOf<Long, Long>()
+    private var latencyMap_min_rt: Long = Long.MAX_VALUE
+    private var latencyMap_max_rt: Long = Long.MIN_VALUE
+    private var latencyMap_max_rt_ts = ""
 
     var num_actions: Int = 0
-    var num_success: Int = 0
+    private var num_success: Int = 0
 
     val r = ActionSummary()
 
@@ -90,7 +92,7 @@ class ActionStats {
 
         // standard deviation
         // HOWTO: https://www.statcan.gc.ca/edu/power-pouvoir/ch12/5214891-eng.htm#a2
-        r.sdev = Math.sqrt(latencyMap.map { it.value * Math.pow((it.key / 1000.0 - r.art), 2.0) }.sum() / num_actions)
+        r.sdev = sqrt(latencyMap.map { it.value * (it.key / 1000.0 - r.art).pow(2.0) }.sum() / num_actions)
 
         // 95th percentile value
         // HOWTO 1: https://www.youtube.com/watch?v=9QhU2grGU_E
@@ -221,7 +223,7 @@ class ActionStats {
                     Locale.US,
                     r.max_rt
                 )
-            } at ${latencyMap_max_rt_ts}"
+            } at $latencyMap_max_rt_ts"
         )
 
         if (action_id == NUM_ACTIONS) {
@@ -261,7 +263,7 @@ class ActionStats {
             val k = r.pk[index].toString()
             val v = r.pv[index]
             if (t != "") t += ", "
-            t += "\"${k}\": ${v}"
+            t += "\"${k}\": $v"
         }
         results += t
         results += "}"
@@ -295,7 +297,7 @@ class ActionStats {
         //
         // Kotlin: map.merge(key, 1, {a, b -> a+b})
         //
-        latencyMap.merge(key, 1, { a, b -> a + b })
+        latencyMap.merge(key, 1) { a, b -> a + b }
 
         if (durationMicros < latencyMap_min_rt) {
             latencyMap_min_rt = durationMicros
@@ -322,7 +324,7 @@ class ActionStats {
 }
 
 object DataCollector {
-    val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
+    private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
 
     // val a = arrayOf<Array<ActionStats>>()
     // init {
@@ -420,9 +422,9 @@ object DataCollector {
             json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
 
             json += "\"jvm_memory_used\": ${tm-fm}, "
-            json += "\"jvm_memory_free\": ${fm}, "
-            json += "\"jvm_memory_total\": ${tm}, "
-            json += "\"jvm_memory_maximum\": ${mm}"
+            json += "\"jvm_memory_free\": $fm, "
+            json += "\"jvm_memory_total\": $tm, "
+            json += "\"jvm_memory_maximum\": $mm"
 
             json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
 

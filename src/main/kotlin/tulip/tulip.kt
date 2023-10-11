@@ -16,6 +16,7 @@ import java.util.concurrent.LinkedBlockingQueue as Queue
 import java.lang.Thread
 import java.util.concurrent.*
 import kotlin.sequences.iterator
+import kotlin.system.exitProcess
 
 /*-------------------------------------------------------------------------*/
 
@@ -55,9 +56,9 @@ fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile
     testSuite = tests
     newUser = func
 
-    userObjects = arrayOfNulls<User>(MAX_NUM_USERS)
-    userActions = arrayOfNulls<Iterator<Int>>(MAX_NUM_USERS)
-    userThreads = arrayOfNulls<UserThread>(MAX_NUM_THREADS)
+    userObjects = arrayOfNulls(MAX_NUM_USERS)
+    userActions = arrayOfNulls(MAX_NUM_USERS)
+    userThreads = arrayOfNulls(MAX_NUM_THREADS)
     actionNames = actionDesc
 }
 
@@ -224,7 +225,7 @@ class UserThread(private val threadId: Int) : Thread() {
     // Task Queue - input queue with tasks for this thread to complete.
     //
     var tq = Queue<Task>(10)
-    var running = true
+    private var running = true
 
     override fun run() {
         while (running) {
@@ -345,13 +346,13 @@ object CpuLoadMetrics : Thread() {
 
 fun assignTask(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
-    var w = userThreads!!.get(threadId)
+    var w = userThreads!![threadId]
     if (w == null) {
         w = UserThread(threadId).apply {
             isDaemon = true
             start()
         }
-        userThreads!!.set(threadId, w)
+        userThreads!![threadId] = w
     }
     w.tq.put(task)
 }
@@ -375,7 +376,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     var ts_begin = java.time.LocalDateTime.now().toString()
     val output = mutableListOf("")
     output.add("======================================================================")
-    output.add("= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - ${ts_begin}")
+    output.add("= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - $ts_begin")
     output.add("======================================================================")
     Console.put(output)
 
@@ -554,7 +555,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
             val ts_end = java.time.LocalDateTime.now().toString()
 
-            Console.put("${test_phase} run ${runId}: end   (${ts_end})")
+            Console.put("$test_phase run ${runId}: end   (${ts_end})")
 
             DataCollector.createSummary(
                 duration_millis,
@@ -621,13 +622,13 @@ fun runTulip(
     println("Scenario: ${context.name}")
     println("======================================================================")
     println("")
-    println("NUM_USERS = ${MAX_NUM_USERS}")
-    println("NUM_THREADS = ${MAX_NUM_THREADS}")
+    println("NUM_USERS = $MAX_NUM_USERS")
+    println("NUM_THREADS = $MAX_NUM_THREADS")
     println("NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
     if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {
         println("")
         println("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
-        System.exit(0)
+        exitProcess(0)
     }
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
         if (testCase.enabled) {

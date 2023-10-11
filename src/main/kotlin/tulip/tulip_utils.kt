@@ -16,13 +16,13 @@ import kotlin.math.pow
 
 /*-------------------------------------------------------------------------*/
 
-import org.http4k.client.ApacheClient
+/*import org.http4k.client.ApacheClient
 import org.http4k.core.Method
 import org.http4k.core.Request
 import org.http4k.core.Response
 import org.http4k.core.Status.Companion.OK
 import org.http4k.server.Undertow
-import org.http4k.server.asServer
+import org.http4k.server.asServer*/
 
 /*-------------------------------------------------------------------------*/
 
@@ -132,33 +132,35 @@ private fun measureTimeAccuracy(time: () -> Long): Long {
 
 /*-------------------------------------------------------------------------*/
 
-fun accuracyTimeMillis(): Long {
+/*fun accuracyTimeMillis(): Long {
     return measureTimeAccuracy(::timeMillis)
-}
+}*/
 
-fun accuracyTimeMicros(): Long {
+/*fun accuracyTimeMicros(): Long {
     return measureTimeAccuracy(::timeMicros)
-}
+}*/
 
+/*
 fun accuracyTimeNanos(): Long {
     return measureTimeAccuracy(::timeNanos)
 }
+*/
 
 /*-------------------------------------------------------------------------*/
 
-fun accuracySystemCurrentTimeMillis(): Long {
+/*fun accuracySystemCurrentTimeMillis(): Long {
     fun systemCurrentTimeMillis(): Long {
         return System.currentTimeMillis()
     }
     return measureTimeAccuracy(::systemCurrentTimeMillis)
-}
+}*/
 
-fun accuracySystemNanoTime(): Long {
+/*fun accuracySystemNanoTime(): Long {
     fun systemNanoTime(): Long {
         return System.nanoTime()
     }
     return measureTimeAccuracy(::systemNanoTime)
-}
+}*/
 
 /*-------------------------------------------------------------------------*/
 
@@ -249,18 +251,18 @@ fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
 
 /*-------------------------------------------------------------------------*/
 
-fun durationMillisToString(durationInMillis: Long): String {
+/*fun durationMillisToString(durationInMillis: Long): String {
     val seconds = durationInMillis / 1000
     val s = seconds % 60
     val m = (seconds / 60) % 60
     val h = (seconds / (60 * 60))
     val q = durationInMillis % 1000
     return String.format("%02d:%02d:%02d.%03d", h, m, s, q)
-}
+}*/
 
 /*-------------------------------------------------------------------------*/
 
-fun testHttp4k() {
+/*fun testHttp4k() {
     val app = { request: Request -> Response(OK).body("Hello, ${request.query("name")}!") }
 
     val server = app.asServer(Undertow(9000)).start()
@@ -272,6 +274,6 @@ fun testHttp4k() {
     println(client(request))
 
     server.stop()
-}
+}*/
 
 /*-------------------------------------------------------------------------*/
