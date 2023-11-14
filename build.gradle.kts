@@ -14,17 +14,17 @@ plugins {
 
     // Gradle owasp plugin
     // $ ./gradlew dependencyCheckAnalyze --info
-    id("org.owasp.dependencycheck") version "8.4.0"
+    id("org.owasp.dependencycheck") version "8.4.2"
 
     // Gradle versions plugin
     // $ ./gradlew dependencyUpdates
     id("com.github.ben-manes.versions") version "0.49.0"
 
     // Add support for AsciidoctorJ
-    id("org.asciidoctor.jvm.convert") version "3.3.2"
+    id("org.asciidoctor.jvm.convert") version "4.0.0-alpha.1"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.9.10"
+    id("org.jetbrains.kotlin.jvm") version "1.9.20"
 
     // Apply the application plugin to add support for building a CLI application.
     application
@@ -44,14 +44,14 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     //implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
-    implementation(platform("org.http4k:http4k-bom:5.8.4.0"))
+    implementation(platform("org.http4k:http4k-bom:5.8.6.0"))
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-client-apache")
     implementation("org.http4k:http4k-server-undertow")
     implementation("org.http4k:http4k-serverless-lambda")
 
     // okhttp
-    implementation("com.squareup.okhttp3:okhttp:4.10.0")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
 
     // JSON Kotlin Parser.
     implementation("com.beust:klaxon:5.6")
