@@ -14,17 +14,17 @@ plugins {
 
     // Gradle owasp plugin
     // $ ./gradlew dependencyCheckAnalyze --info
-    id("org.owasp.dependencycheck") version "8.4.2"
+    id("org.owasp.dependencycheck") version "9.0.9"
 
     // Gradle versions plugin
     // $ ./gradlew dependencyUpdates
-    id("com.github.ben-manes.versions") version "0.49.0"
+    id("com.github.ben-manes.versions") version "0.51.0"
 
     // Add support for AsciidoctorJ
-    id("org.asciidoctor.jvm.convert") version "4.0.0-alpha.1"
+    id("org.asciidoctor.jvm.convert") version "4.0.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.9.20"
+    id("org.jetbrains.kotlin.jvm") version "1.9.22"
 
     // Apply the application plugin to add support for building a CLI application.
     application
@@ -44,14 +44,14 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     //implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
-    implementation(platform("org.http4k:http4k-bom:5.8.6.0"))
+    implementation(platform("org.http4k:http4k-bom:5.13.4.1"))
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-client-apache")
     implementation("org.http4k:http4k-server-undertow")
     implementation("org.http4k:http4k-serverless-lambda")
 
     // okhttp
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.11")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")
 
     // JSON Kotlin Parser.
     implementation("com.beust:klaxon:5.6")
@@ -77,7 +77,10 @@ application {
     applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:+UseDynamicNumberOfGCThreads")
     // applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseG1GC", "-XX:+ParallelRefProcEnabled", "-XX:+UseDynamicNumberOfGCThreads", "-javaagent:./runtime/glowroot/glowroot.jar")
 
-    // applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m", "-XX:+UseZGC", "-XX:+UseDynamicNumberOfGCThreads")
+    // Java 21
+    // applicationDefaultJvmArgs = listOf("-server", "-Xms4096m", "-Xmx4096m",
+    // "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads")
+
     // applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseShenandoahGC")
     // applicationDefaultJvmArgs = listOf("-server", "-Xmx4096m", "-Xmx4096m", "-XX:+UseParallelGC")
 
@@ -90,4 +93,6 @@ application {
 
 dependencyCheck {
     analyzers.assemblyEnabled = false
+    nvd.apiKey = "ef1927c1-51b6-4b5c-a1b9-fb10b5e43725"
+    nvd.delay = 2000
 }
