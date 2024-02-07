@@ -14,11 +14,14 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.LinkedBlockingQueue as Queue
 
 import java.lang.Thread
+import java.time.format.DateTimeFormatter
 import java.util.concurrent.*
 import kotlin.sequences.iterator
 import kotlin.system.exitProcess
 
 /*-------------------------------------------------------------------------*/
+
+val formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS")
 
 //
 // Arrays of user objects and user actions.
@@ -373,7 +376,7 @@ fun createActionsGenerator(list: List<Int>): Iterator<Int> {
 /*-------------------------------------------------------------------------*/
 
 fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
-    var ts_begin = java.time.LocalDateTime.now().toString()
+    var ts_begin = java.time.LocalDateTime.now().format(formatter)
     val output = mutableListOf("")
     output.add("======================================================================")
     output.add("= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - $ts_begin")
@@ -472,7 +475,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         drainRspQueue()
         val timeMillis_end: Long = timeMillis()
         val duration_millis: Int = (timeMillis_end - timeMillis_start).toInt()
-        val ts_end = java.time.LocalDateTime.now().toString()
+        val ts_end = java.time.LocalDateTime.now().format(formatter)
 
         DataCollector.createSummary(
             duration_millis,
@@ -508,7 +511,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             }
 
             DataCollector.clearStats()
-            ts_begin = java.time.LocalDateTime.now().toString()
+            ts_begin = java.time.LocalDateTime.now().format(formatter)
             Console.put("\n${test_phase} run ${runId}: begin (${ts_begin})")
 
             timeMillis_start = timeMillis_end
@@ -553,7 +556,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
                 drainRspQueue()
             }
             val duration_millis: Int = (timeMillis() - timeMillis_start).toInt()
-            val ts_end = java.time.LocalDateTime.now().toString()
+            val ts_end = java.time.LocalDateTime.now().format(formatter)
 
             Console.put("$test_phase run ${runId}: end   (${ts_end})")
 

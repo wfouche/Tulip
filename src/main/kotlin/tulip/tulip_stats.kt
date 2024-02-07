@@ -304,7 +304,7 @@ class ActionStats {
         }
         if (durationMicros > latencyMap_max_rt) {
             latencyMap_max_rt = durationMicros
-            latencyMap_max_rt_ts = java.time.LocalDateTime.now().toString()
+            latencyMap_max_rt_ts = java.time.LocalDateTime.now().format(formatter)
         }
         num_actions += 1
         if (task.status == 1) {
