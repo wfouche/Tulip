@@ -26,6 +26,9 @@ plugins {
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.9.22"
 
+    // detekt - A static code analyzer for Kotlin
+    id("io.gitlab.arturbosch.detekt") version("1.23.5")
+
     // Apply the application plugin to add support for building a CLI application.
     application
 }
