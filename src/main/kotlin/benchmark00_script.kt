@@ -51,7 +51,7 @@ val tests: List<TestProfile> = listOf(
         // Limit the number of active user objects, A value of
         // zero sets the number of active users to unlimited.
         // L value from Little's Law.
-        queueLenghts = listOf(-1),
+        queueLengths = listOf(-1),
 
         // Actions to be performed on the user objects during this test.
         actions = listOf(Action(8)),
@@ -76,7 +76,7 @@ val tests: List<TestProfile> = listOf(
         // Limit the number of active user objects, A value of
         // zero sets the number of active users to unlimited.
         // L value from Little's Law.
-        queueLenghts = listOf(0),
+        queueLengths = listOf(0),
 
         // Actions to be performed on the user objects during this test.
         // 100 actions in total with a 50%/50% split between

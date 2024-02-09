@@ -73,12 +73,12 @@ fun timeNanos(): Long {
 //
 // Use this function to calculate elapsed time in milliseconds.
 //
-inline fun elapsedTimeMillis(block: () -> Unit): Long {
+/* inline fun elapsedTimeMillis(block: () -> Unit): Long {
     val start = timeMillis()
     block()
     return timeMillis() - start
 }
-
+*/
 //
 // Use this function to calculate elapsed time in microseconds.
 //
@@ -91,19 +91,19 @@ inline fun elapsedTimeMicros(block: () -> Unit): Long {
 //
 // Use this function to calculate elapsed time in nanoseconds.
 //
-inline fun elapsedTimeNanos(block: () -> Unit): Long {
+/* inline fun elapsedTimeNanos(block: () -> Unit): Long {
     val start = timeNanos()
     block()
     return timeNanos() - start
 }
-
+*/
 /*-------------------------------------------------------------------------*/
 
 //
-// It is worth reading the article on Accuracy vs Precision
+// It is worth reading the article on "Accuracy vs Precision"
 // at https://en.wikipedia.org/wiki/Accuracy_and_precision
 //
-private fun measureTimeAccuracy(time: () -> Long): Long {
+/*private fun measureTimeAccuracy(time: () -> Long): Long {
     val a = LongArray(1000)
     var z: Long
     var y: Long
@@ -128,7 +128,7 @@ private fun measureTimeAccuracy(time: () -> Long): Long {
 
     // return smallest element.
     return a[0]
-}
+}*/
 
 /*-------------------------------------------------------------------------*/
 
@@ -140,11 +140,9 @@ private fun measureTimeAccuracy(time: () -> Long): Long {
     return measureTimeAccuracy(::timeMicros)
 }*/
 
-/*
-fun accuracyTimeNanos(): Long {
+/*fun accuracyTimeNanos(): Long {
     return measureTimeAccuracy(::timeNanos)
-}
-*/
+}*/
 
 /*-------------------------------------------------------------------------*/
 
@@ -185,12 +183,12 @@ fun delayMillis(delay: Long) {
 }
 
 // Burn CPU cycles for 'delay' microseconds
-fun delayMicros(delay: Long) {
+/* fun delayMicros(delay: Long) {
     val end = timeNanos() + delay * 1000
     while (timeNanos() < end) {
         // pass
     }
-}
+}*/
 
 /*-------------------------------------------------------------------------*/
 
@@ -199,10 +197,10 @@ fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
     delayMillis(delay)
 }
 
-fun delayMicrosRandom(delayFrom: Long, delayTo: Long) {
+/* fun delayMicrosRandom(delayFrom: Long, delayTo: Long) {
     val delay = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
     delayMicros(delay)
-}
+}*/
 
 /*-------------------------------------------------------------------------*/
 
@@ -233,7 +231,7 @@ fun getSystemCpuLoad(): Double {
 
 fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
     val list: MutableList<Int> = mutableListOf()
-    test.queueLenghts.forEach { queueLength ->
+    test.queueLengths.forEach { queueLength ->
         list.add(
             when (queueLength) {
                 0 -> context.numThreads
@@ -246,7 +244,7 @@ fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
 }
 
 fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
-    return test.copy(queueLenghts = getQueueLengths(context, test))
+    return test.copy(queueLengths = getQueueLengths(context, test))
 }
 
 /*-------------------------------------------------------------------------*/

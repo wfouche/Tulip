@@ -8,91 +8,91 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 data class ActionSummary(
-    var action_id: Int = 0,
+    var actionId: Int = 0,
 
-    var row_id: Int = 0,
+    var rowId: Int = 0,
 
-    var test_begin: String = "",
-    var test_end: String = "",
-    var test_name: String = "",
-    var test_phase: String = "",
+    var testBegin: String = "",
+    var testEnd: String = "",
+    var testName: String = "",
+    var testPhase: String = "",
 
-    var test_id: Int = 0,
+    var testId: Int = 0,
     var indexUserProfile: Int = 0,
     var queueLength: Int = 0,
 
-    var num_actions: Int = 0,
-    var num_success: Int = 0,
+    var numActions: Int = 0,
+    var numSuccess: Int = 0,
 
     var latencyMap: MutableMap<Long, Long> = mutableMapOf(),
 
-    var duration_seconds: Double = 0.0,
+    var durationSeconds: Double = 0.0,
 
     var aps: Double = 0.0,
     var art: Double = 0.0,
     var sdev: Double = 0.0,
-    var min_rt: Double = 0.0,
-    var max_rt: Double = 0.0,
-    var max_rt_ts: String = "",
+    var minRt: Double = 0.0,
+    var maxRt: Double = 0.0,
+    var maxRtTs: String = "",
 
     var pk: List<Double> = mutableListOf(),
     var pv: List<Double> = mutableListOf(),
 
-    var avg_cpu_system: Double = 0.0,
-    var avg_cpu_process: Double = 0.0
+    var avgCpuSystem: Double = 0.0,
+    var avgCpuProcess: Double = 0.0
 )
 
 class ActionStats {
 
     private val latencyMap = mutableMapOf<Long, Long>()
-    private var latencyMap_min_rt: Long = Long.MAX_VALUE
-    private var latencyMap_max_rt: Long = Long.MIN_VALUE
-    private var latencyMap_max_rt_ts = ""
+    private var latencyMapMinRt: Long = Long.MAX_VALUE
+    private var latencyMapMaxRt: Long = Long.MIN_VALUE
+    private var latencyMapMaxRtTs = ""
 
-    var num_actions: Int = 0
-    private var num_success: Int = 0
+    var numActions: Int = 0
+    private var numSuccess: Int = 0
 
     val r = ActionSummary()
 
     fun createSummary(
-        action_id: Int,
-        duration_millis: Int,
+        actionId: Int,
+        durationMillis: Int,
         testCase: TestProfile,
         indexTestCase: Int,
         indexUserProfile: Int,
         queueLength: Int,
-        ts_begin: String,
-        ts_end: String,
-        test_phase: String,
+        tsBegin: String,
+        tsEnd: String,
+        testPhase: String,
         runId: Int
     ) {
-        r.action_id = action_id
+        r.actionId = actionId
 
-        r.row_id = runId
+        r.rowId = runId
 
-        r.test_name = testCase.name
-        r.test_begin = ts_begin
-        r.test_end = ts_end
-        r.test_phase = test_phase
+        r.testName = testCase.name
+        r.testBegin = tsBegin
+        r.testEnd = tsEnd
+        r.testPhase = testPhase
 
-        r.test_id = indexTestCase
+        r.testId = indexTestCase
         r.indexUserProfile = indexUserProfile
         r.queueLength = queueLength
 
-        r.num_actions = num_actions
-        r.num_success = num_success
+        r.numActions = numActions
+        r.numSuccess = numSuccess
 
-        r.duration_seconds = duration_millis.toDouble() / 1000.0
+        r.durationSeconds = durationMillis.toDouble() / 1000.0
 
         // actions per second (aps)
-        r.aps = num_actions / r.duration_seconds
+        r.aps = numActions / r.durationSeconds
 
         // average response time (art) in milliseconds
-        r.art = latencyMap.map { it.value * it.key }.sum() / 1000.0 / num_actions
+        r.art = latencyMap.map { it.value * it.key }.sum() / 1000.0 / numActions
 
         // standard deviation
         // HOWTO: https://www.statcan.gc.ca/edu/power-pouvoir/ch12/5214891-eng.htm#a2
-        r.sdev = sqrt(latencyMap.map { it.value * (it.key / 1000.0 - r.art).pow(2.0) }.sum() / num_actions)
+        r.sdev = sqrt(latencyMap.map { it.value * (it.key / 1000.0 - r.art).pow(2.0) }.sum() / numActions)
 
         // 95th percentile value
         // HOWTO 1: https://www.youtube.com/watch?v=9QhU2grGU_E
@@ -102,8 +102,8 @@ class ActionStats {
         //
         // Formula for finding Percentiles (Grouped Frequency Distribution)
         ///
-        fun percentile(k: Double, min_value: Double = 0.0, max_value: Double = 0.0): Double {
-            val P: Double = (k / 100.0) * num_actions
+        fun percentile(k: Double, minValue: Double = 0.0, maxValue: Double = 0.0): Double {
+            val P: Double = (k / 100.0) * numActions
 
             var CFb = 0.0
             var F = 0.0
@@ -113,7 +113,7 @@ class ActionStats {
             for (key in keys) {
                 tk = key
                 F = latencyMap[key]!!.toDouble()
-                if (100.0 * (CFb + F) / (1.0 * num_actions) >= k) {
+                if (100.0 * (CFb + F) / (1.0 * numActions) >= k) {
                     break
                 }
                 CFb += F
@@ -136,30 +136,30 @@ class ActionStats {
                 p = 0.0
             }
 
-            if (p < min_value) {
-                p = min_value
+            if (p < minValue) {
+                p = minValue
             }
-            if (p > max_value) {
-                p = max_value
+            if (p > maxValue) {
+                p = maxValue
             }
 
             return p
         }
 
         // min rt
-        r.min_rt = latencyMap_min_rt / 1000.0
+        r.minRt = latencyMapMinRt / 1000.0
 
         // max rt
-        r.max_rt = latencyMap_max_rt / 1000.0
+        r.maxRt = latencyMapMaxRt / 1000.0
 
         // max rt timestamp
-        r.max_rt_ts = latencyMap_max_rt_ts
+        r.maxRtTs = latencyMapMaxRtTs
 
         // percentiles
         r.pk = testCase.percentiles
         r.pv = mutableListOf<Double>().apply {
             r.pk.forEach {
-                val px = percentile(it, r.min_rt, r.max_rt)
+                val px = percentile(it, r.minRt, r.maxRt)
                 this.add(px)
             }
         }
@@ -167,29 +167,29 @@ class ActionStats {
         r.latencyMap = latencyMap
 
         // Summarize CPU usage for global stats only.
-        if (action_id == NUM_ACTIONS) {
+        if (actionId == NUM_ACTIONS) {
             // average process CPU load.
-            var cpu_load = 0.0
+            var cpuLoad = 0.0
             var i = 0.0
             while (!CpuLoadMetrics.processCpuStats.isEmpty()) {
-                cpu_load += CpuLoadMetrics.processCpuStats.take()
+                cpuLoad += CpuLoadMetrics.processCpuStats.take()
                 i += 1.0
             }
-            r.avg_cpu_process = if (i == 0.0) 0.0 else cpu_load / i
+            r.avgCpuProcess = if (i == 0.0) 0.0 else cpuLoad / i
 
             // average system CPU load.
-            cpu_load = 0.0
+            cpuLoad = 0.0
             i = 0.0
             while (!CpuLoadMetrics.systemCpuStats.isEmpty()) {
-                cpu_load += CpuLoadMetrics.systemCpuStats.take()
+                cpuLoad += CpuLoadMetrics.systemCpuStats.take()
                 i += 1.0
             }
-            r.avg_cpu_system = if (i == 0.0) 0.0 else cpu_load / i
+            r.avgCpuSystem = if (i == 0.0) 0.0 else cpuLoad / i
         }
 
     }
 
-    fun printStats(action_id: Int, printMap: Boolean = false) {
+    fun printStats(actionId: Int, printMap: Boolean = false) {
 
         val output = mutableListOf("")
 
@@ -197,15 +197,15 @@ class ActionStats {
             output.add("latencyMap = " + r.latencyMap.toString())
             output.add("")
         }
-        if (action_id != NUM_ACTIONS) {
-            output.add("  action_id = ${r.action_id}")
+        if (actionId != NUM_ACTIONS) {
+            output.add("  action_id = ${r.actionId}")
         }
-        output.add("  num_actions = ${r.num_actions}")
-        output.add("  num_success = ${r.num_success}")
-        output.add("  num_failed  = ${r.num_actions - r.num_success}")
+        output.add("  num_actions = ${r.numActions}")
+        output.add("  num_success = ${r.numSuccess}")
+        output.add("  num_failed  = ${r.numActions - r.numSuccess}")
         output.add("")
         output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
-        output.add("  duration of benchmark (in seconds)             = ${r.duration_seconds}")
+        output.add("  duration of benchmark (in seconds)             = ${r.durationSeconds}")
         output.add("")
         output.add("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, r.art)}")
         output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)}")
@@ -216,24 +216,24 @@ class ActionStats {
         }
 
         output.add("")
-        output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.min_rt)}")
+        output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.minRt)}")
         output.add(
             "  maximum response time (millis) = ${
                 "%.3f".format(
                     Locale.US,
-                    r.max_rt
+                    r.maxRt
                 )
-            } at $latencyMap_max_rt_ts"
+            } at $latencyMapMaxRtTs"
         )
 
-        if (action_id == NUM_ACTIONS) {
+        if (actionId == NUM_ACTIONS) {
             val fm = Runtime.getRuntime().freeMemory()
             val tm = Runtime.getRuntime().totalMemory()
             val mm = Runtime.getRuntime().maxMemory()
 
             output.add("")
-            output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avg_cpu_process)}")
-            output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avg_cpu_system)}")
+            output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avgCpuProcess)}")
+            output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avgCpuSystem)}")
 
             output.add("")
             output.add("  memory used (jvm)    = ${"%,d".format(Locale.US, tm-fm)}")
@@ -254,8 +254,8 @@ class ActionStats {
             results += "\"name\": \"${name}\""
         }
 
-        results += ", \"num_actions\": ${num_actions}, \"num_success\": ${num_success}, \"num_failed\": ${num_actions - num_success}"
-        results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.min_rt}, \"max_rt\": ${r.max_rt}, \"max_rt_ts\": \"${r.max_rt_ts}\""
+        results += ", \"num_actions\": ${numActions}, \"num_success\": ${numSuccess}, \"num_failed\": ${numActions - numSuccess}"
+        results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
 
         results += ", \"percentiles_rt\": {"
         var t = ""
@@ -299,27 +299,27 @@ class ActionStats {
         //
         latencyMap.merge(key, 1) { a, b -> a + b }
 
-        if (durationMicros < latencyMap_min_rt) {
-            latencyMap_min_rt = durationMicros
+        if (durationMicros < latencyMapMinRt) {
+            latencyMapMinRt = durationMicros
         }
-        if (durationMicros > latencyMap_max_rt) {
-            latencyMap_max_rt = durationMicros
-            latencyMap_max_rt_ts = java.time.LocalDateTime.now().format(formatter)
+        if (durationMicros > latencyMapMaxRt) {
+            latencyMapMaxRt = durationMicros
+            latencyMapMaxRtTs = java.time.LocalDateTime.now().format(formatter)
         }
-        num_actions += 1
+        numActions += 1
         if (task.status == 1) {
-            num_success += 1
+            numSuccess += 1
         }
     }
 
     fun clearStats() {
         latencyMap.clear()
-        latencyMap_min_rt = Long.MAX_VALUE
-        latencyMap_max_rt = Long.MIN_VALUE
-        latencyMap_max_rt_ts = ""
+        latencyMapMinRt = Long.MAX_VALUE
+        latencyMapMaxRt = Long.MIN_VALUE
+        latencyMapMaxRtTs = ""
 
-        num_actions = 0
-        num_success = 0
+        numActions = 0
+        numSuccess = 0
     }
 }
 
@@ -334,41 +334,41 @@ object DataCollector {
     // }
 
     fun createSummary(
-        duration_millis: Int,
+        durationMillis: Int,
         testCase: TestProfile,
         indexTestCase: Int,
         indexUserProfile: Int,
         queueLength: Int,
-        ts_begin: String,
-        ts_end: String,
-        test_phase: String,
+        tsBegin: String,
+        tsEnd: String,
+        testPhase: String,
         runId: Int
     ) {
         actionStats[NUM_ACTIONS].createSummary(
             NUM_ACTIONS,
-            duration_millis,
+            durationMillis,
             testCase,
             indexTestCase,
             indexUserProfile,
             queueLength,
-            ts_begin,
-            ts_end,
-            test_phase,
+            tsBegin,
+            tsEnd,
+            testPhase,
             runId
         )
         actionStats.forEachIndexed { index, data ->
-            if (data.num_actions > 0) {
+            if (data.numActions > 0) {
                 if (index != NUM_ACTIONS) {
                     data.createSummary(
                         index,
-                        duration_millis,
+                        durationMillis,
                         testCase,
                         indexTestCase,
                         indexUserProfile,
                         queueLength,
-                        ts_begin,
-                        ts_end,
-                        test_phase,
+                        tsBegin,
+                        tsEnd,
+                        testPhase,
                         -1
                     )
                 }
@@ -380,7 +380,7 @@ object DataCollector {
         actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS, printMap)
         if (printDetails) {
             actionStats.forEachIndexed { index, data ->
-                if (data.num_actions > 0) {
+                if (data.numActions > 0) {
                     if (index != NUM_ACTIONS) {
                         data.printStats(index, false)
                     }
@@ -405,21 +405,21 @@ object DataCollector {
             json += "\"num_threads\": ${MAX_NUM_THREADS}, "
             json += "\"queue_length\": ${r.queueLength}, "
 
-            json += "\"test_name\": \"${r.test_name}\", "
-            json += "\"test_id\": ${r.test_id}, "
-            json += "\"row_id\": ${r.row_id}, "
+            json += "\"test_name\": \"${r.testName}\", "
+            json += "\"test_id\": ${r.testId}, "
+            json += "\"row_id\": ${r.rowId}, "
 
-            json += "\"test_begin\": \"${r.test_begin}\", "
-            json += "\"test_end\": \"${r.test_end}\", "
+            json += "\"test_begin\": \"${r.testBegin}\", "
+            json += "\"test_end\": \"${r.testEnd}\", "
 
             json += "\"java\": { "
             json += "\"java.vendor\": \"${System.getProperty("java.vendor")}\", "
             json += "\"java.runtime.version\": \"${System.getProperty("java.runtime.version")}\""
             json += "}, "
 
-            json += "\"duration\": ${r.duration_seconds}, "
+            json += "\"duration\": ${r.durationSeconds}, "
 
-            json += "\"avg_cpu_process\": ${r.avg_cpu_process}, \"avg_cpu_system\": ${r.avg_cpu_system}, "
+            json += "\"avg_cpu_process\": ${r.avgCpuProcess}, \"avg_cpu_system\": ${r.avgCpuSystem}, "
 
             json += "\"jvm_memory_used\": ${tm-fm}, "
             json += "\"jvm_memory_free\": $fm, "
@@ -432,7 +432,7 @@ object DataCollector {
 
             var t = ""
             actionStats.forEachIndexed { index, data ->
-                if (data.num_actions > 0) {
+                if (data.numActions > 0) {
                     if (index != NUM_ACTIONS) {
                         if (t != "") {
                             t += ","

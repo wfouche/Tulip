@@ -4,7 +4,11 @@
 
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import tulip.*
+import tulip.User
+import tulip.Console
+import tulip.delay
+import tulip.delayMillisRandom
+import tulip.NUM_ACTIONS
 
 /*-------------------------------------------------------------------------*/
 
