@@ -30,8 +30,8 @@ plugins {
     // $ ./gradlew detekt
     // id("io.gitlab.arturbosch.detekt") version("1.23.5")
 
-    // apply the Pkl plugin
-    id("org.pkl-lang") version("0.25.1")
+    // apply the Pkl plugin - https://pkl-lang.org/index.html
+    id("org.pkl-lang") version("0.25.2")
     // if the `idea` plugin is applied, the Pkl plugin makes generated code visible to IntelliJ IDEA
     idea
 
@@ -53,7 +53,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     //implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
-    implementation(platform("org.http4k:http4k-bom:5.13.4.1"))
+    implementation(platform("org.http4k:http4k-bom:5.13.5.0"))
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-client-apache")
     implementation("org.http4k:http4k-server-undertow")
