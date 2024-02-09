@@ -30,6 +30,11 @@ plugins {
     // $ ./gradlew detekt
     // id("io.gitlab.arturbosch.detekt") version("1.23.5")
 
+    // apply the Pkl plugin
+    id("org.pkl-lang") version("0.25.1")
+    // if the `idea` plugin is applied, the Pkl plugin makes generated code visible to IntelliJ IDEA
+    idea
+
     // Apply the application plugin to add support for building a CLI application.
     application
 }
