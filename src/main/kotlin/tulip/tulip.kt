@@ -91,7 +91,7 @@ data class Action(
     //
     // Numeric action ID.
     //
-    val actionId: Int,
+    val id: Int,
 
     //
     // Number of occurrences of this action relative to other actions.
@@ -402,12 +402,12 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     }
     if (wSum == 0) {
         for (action in testCase.actions) {
-            actionList.add(action.actionId)
+            actionList.add(action.id)
         }
     } else {
         for (action in testCase.actions) {
             repeat(action.weight) {
-                actionList.add(action.actionId)
+                actionList.add(action.id)
             }
         }
         actionList.shuffle(rnd)
