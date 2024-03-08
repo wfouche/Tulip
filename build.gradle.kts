@@ -71,6 +71,10 @@ dependencies {
     // LMAX disruptor - https://github.com/LMAX-Exchange/disruptor
     implementation("com.lmax:disruptor:4.0.0")
 
+    // https://github.com/apple/pkl
+    // https://pkl-lang.org/main/current/index.html
+    implementation("org.pkl-lang:pkl-config-kotlin:0.25.2")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
