@@ -24,7 +24,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "4.0.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.9.22"
+    id("org.jetbrains.kotlin.jvm") version "1.9.23"
 
     // detekt - A static code analyzer for Kotlin
     // $ ./gradlew detekt
@@ -53,7 +53,7 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     //implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
-    implementation(platform("org.http4k:http4k-bom:5.13.5.0"))
+    implementation(platform("org.http4k:http4k-bom:5.14.0.0"))
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-client-apache")
     implementation("org.http4k:http4k-server-undertow")
