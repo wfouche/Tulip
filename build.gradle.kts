@@ -14,7 +14,7 @@ plugins {
 
     // Gradle owasp plugin
     // $ ./gradlew dependencyCheckAnalyze --info
-    id("org.owasp.dependencycheck") version "9.0.10"
+    id("org.owasp.dependencycheck") version "9.1.0"
 
     // Gradle versions plugin
     // $ ./gradlew dependencyUpdates
@@ -24,14 +24,14 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "4.0.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.9.23"
+    id("org.jetbrains.kotlin.jvm") version "1.9.24"
 
     // detekt - A static code analyzer for Kotlin
     // $ ./gradlew detekt
     // id("io.gitlab.arturbosch.detekt") version("1.23.5")
 
     // apply the Pkl plugin - https://pkl-lang.org/index.html
-    id("org.pkl-lang") version("0.25.2")
+    id("org.pkl-lang") version("0.25.3")
     // if the `idea` plugin is applied, the Pkl plugin makes generated code visible to IntelliJ IDEA
     idea
 
@@ -53,14 +53,14 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     //implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
-    implementation(platform("org.http4k:http4k-bom:5.14.1.0"))
+    implementation(platform("org.http4k:http4k-bom:5.18.2.0"))
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-client-apache")
     implementation("org.http4k:http4k-server-undertow")
     implementation("org.http4k:http4k-serverless-lambda")
 
     // okhttp
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.12")
+    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
 
     // JSON Kotlin Parser.
     implementation("com.beust:klaxon:5.6")
