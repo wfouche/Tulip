@@ -121,7 +121,7 @@ class UserHttp(userId: Int) : User(userId) {
 
 /*-------------------------------------------------------------------------*/
 
-val actionNames = mapOf(
+val g_actionNames = mapOf(
     0 to "init",
     3 to "REST-photos",
     NUM_ACTIONS-1 to "done")

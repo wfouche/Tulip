@@ -1,5 +1,6 @@
 sdk env
 ./gradlew --stop
+rm -f -r ./bin ./build
 ./gradlew clean
-./gradlew --warning-mode all build
+rm -f json_results.txt
 ./gradlew run

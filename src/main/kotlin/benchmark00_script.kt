@@ -1,99 +1,80 @@
 /*-------------------------------------------------------------------------*/
 
-import tulip.Action
-import tulip.Duration
-import tulip.NUM_ACTIONS
-import tulip.RuntimeContext
-import tulip.TestProfile
+import com.google.gson.annotations.SerializedName
+import com.google.gson.GsonBuilder
+import tulip.*
 import java.util.concurrent.TimeUnit
 
 /*-------------------------------------------------------------------------*/
 
-const val JSON_FILENAME = "json_results.txt"
+val g_contexts: MutableList<RuntimeContext> = mutableListOf()
+
+val g_tests: MutableList<TestProfile> = mutableListOf()
 
 /*-------------------------------------------------------------------------*/
 
-val contexts: List<RuntimeContext> = listOf(
-    // Context 1
-    RuntimeContext("Scenario-1", 4, 4),
-
-    // Context 2
-    RuntimeContext("Scenario-2", 8, 8)
+data class ConfigContext(
+    val name: String = "",
+    @SerializedName("num_users") val numUsers: Int = 0,
+    @SerializedName("num_threads") val numThreads: Int = 0
 )
 
-/*-------------------------------------------------------------------------*/
-
-val tests: List<TestProfile> = listOf(
-
-    // 0
-    TestProfile(
-        false,
-        name = "Test0 (Initialize)",
-        actions = listOf(Action(0), Action(7)),
-        filename = JSON_FILENAME
-    ),
-
-    // 1
-    TestProfile(
-        false,
-
-        // The name of this test.
-        name = "Test1 (Throughput Test - Max)",
-
-        // Duration in minutes
-        duration = Duration(1, 1, 1),
-
-        // Limit throughput 100.0 actions per second (on average).
-        // A value of zero indicates that the arrival rate is uncapped.
-        // λ value from Little's Law
-        arrivalRate = 0.0,
-
-        // Limit the number of active user objects, A value of
-        // zero sets the number of active users to unlimited.
-        // L value from Little's Law.
-        queueLengths = listOf(-1),
-
-        // Actions to be performed on the user objects during this test.
-        actions = listOf(Action(8)),
-
-        filename = JSON_FILENAME
-    ),
-
-    // 2
-    TestProfile(
-        true,
-        // The name of this test.
-        name = "Test2 (Throughput Test - Fixed)",
-
-        // Duration in minutes
-        duration = Duration(15, 15, 60, 4, TimeUnit.SECONDS),
-
-        // Limit throughput 100.0 actions per second (on average).
-        // A value of zero indicates that the arrival rate is uncapped.
-        // λ value from Little's Law
-        arrivalRate = 100.0,
-
-        // Limit the number of active user objects, A value of
-        // zero sets the number of active users to unlimited.
-        // L value from Little's Law.
-        queueLengths = listOf(0),
-
-        // Actions to be performed on the user objects during this test.
-        // 100 actions in total with a 50%/50% split between
-        // action 0 and action 1
-        // 6*1.0/4.0 + 14*3.0/4.0 = 12.0 ms (expected global average response time)
-        actions = listOf(Action(1, 25), Action(2, 75)),
-
-        filename = JSON_FILENAME
-    ),
-
-    // 3
-    TestProfile(
-        false,
-        name = "Test3 (Terminate)",
-        actions = listOf(Action(NUM_ACTIONS - 1)),
-        filename = JSON_FILENAME
-    )
+data class ConfigDuration(
+    @SerializedName("startup_duration") val startupDuration: Long = 0,
+    @SerializedName("warmup_duration") val warmupDuration: Long = 0,
+    @SerializedName("main_duration") val mainDuration: Long = 0,
+    @SerializedName("main_duration_repeat_count") val mainDurationRepeatCount: Int = 1
 )
+
+data class ConfigAction(
+    val id: Int,
+    val weight: Int = 0
+)
+
+data class ConfigTest(
+    val enabled: Boolean = false,
+    val name: String,
+    val time: ConfigDuration,
+    @SerializedName("throughput_rate") val throughputRate: Double = 0.0,
+    @SerializedName("work_in_progress") val workInProgress: Int = 0,
+    val actions: List<ConfigAction> = listOf()
+)
+
+data class BenchmarkConfig(
+    @SerializedName("json_filename") val jsonFilename: String,
+    val contexts: List<ConfigContext> = listOf(),
+    val benchmarks: List<ConfigTest> = listOf()
+)
+
+fun initConfig() {
+    val gson = GsonBuilder().setPrettyPrinting().create()
+    val sf = java.io.File("config.json").readText()
+    val config = gson.fromJson(sf,BenchmarkConfig::class.java)
+    //val json = gson.toJson(config)
+    //println("$json")
+    //println("${config}")
+    for (e:ConfigContext in config.contexts) {
+        //println("${e.name}")
+        val v = RuntimeContext(e.name, e.numUsers, e.numThreads)
+        g_contexts.add(v)
+    }
+    for (e:ConfigTest in config.benchmarks) {
+        //println("${e.name}")
+        val v = TestProfile(
+            enabled = e.enabled,
+            name = e.name,
+            duration = Duration(e.time.startupDuration, e.time.warmupDuration, e.time.mainDuration, e.time.mainDurationRepeatCount, TimeUnit.SECONDS),
+            arrivalRate = e.throughputRate,
+            queueLengths = listOf(e.workInProgress),
+            actions = mutableListOf<Action>().apply {
+                for (a: ConfigAction in e.actions) {
+                    this.add(Action(a.id, a.weight))
+                }
+            },
+            filename = config.jsonFilename,
+        )
+        g_tests.add(v)
+    }
+}
 
 /*-------------------------------------------------------------------------*/

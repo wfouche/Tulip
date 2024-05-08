@@ -75,6 +75,9 @@ dependencies {
     // https://pkl-lang.org/main/current/index.html
     implementation("org.pkl-lang:pkl-config-kotlin:0.25.2")
 
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
