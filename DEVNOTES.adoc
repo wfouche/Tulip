@@ -108,3 +108,15 @@ Create a user guide for Tulip with Antora
 Write a config.pkl file to generate config.json
 
 * https://pkl-lang.org/blog/introducing-pkl.html
+
+== GraalVM native application
+
+Build a native (exe) using GraalVM of a Tulip benchmark application
+
+* https://www.graalvm.org/
+
+== Docker Support
+
+Create a Docker container of a Tulip benchmark application using Docker Compose
+
+* https://docs.docker.com/compose/
