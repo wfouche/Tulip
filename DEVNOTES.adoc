@@ -108,6 +108,13 @@ Create a user guide for Tulip with Antora
 
 * https://twitter.com/antoraproject
 
+* https://www.baeldung.com/java-httpclient-connection-management
+
+** -Djdk.httpclient.connectionPoolSize=1
+** -Djdk.httpclient.keepalive.timeout=2
+
+* https://openjdk.org/groups/net/httpclient/recipes.html
+
 == Pkl Config Support
 
 Write a config.pkl file to generate config.json
