@@ -120,3 +120,18 @@ Build a native (exe) using GraalVM of a Tulip benchmark application
 Create a Docker container of a Tulip benchmark application using Docker Compose
 
 * https://docs.docker.com/compose/
+
+== Tulip Runtime Library
+
+Create a Maven Central hosted tulip-core.jar runtime library that can be imported by benchmark applications
+
+* https://jenkov.com/tutorials/maven/publish-to-central-maven-repository.html
+
+[source,xml]
+----
+<dependency>
+    <groupId></groupId>io.github.wfouche</groupId>
+    <artifactId>tulip-core</artifactId>
+    <version>0.8.1</version>
+</dependency>
+----
