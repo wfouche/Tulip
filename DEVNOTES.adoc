@@ -130,7 +130,7 @@ Create a Maven Central hosted tulip-core.jar runtime library that can be importe
 [source,xml]
 ----
 <dependency>
-    <groupId></groupId>io.github.wfouche</groupId>
+    <groupId>io.github.wfouche</groupId>
     <artifactId>tulip-core</artifactId>
     <version>0.8.1</version>
 </dependency>
