@@ -96,3 +96,9 @@ Add `--config` parameter to specify which `config.json` file to use.
 Use HttpClient from Java 21, and remove support for OkHttp
 
 * https://www.baeldung.com/java-httpclient-connection-management
+
+== Tulip Documentation
+
+Create a user guide for Tulip with Antora
+
+* https://twitter.com/antoraproject
