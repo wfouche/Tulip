@@ -12,6 +12,7 @@ import tulip.Console
 import tulip.delay
 import tulip.delayMillisRandom
 import tulip.NUM_ACTIONS
+import kotlinx.cli.*
 
 /*-------------------------------------------------------------------------*/
 
@@ -137,8 +138,11 @@ fun getUser(userId: Int): User {
 
 /*-------------------------------------------------------------------------*/
 
-fun main() {
-    tulip.initConfig()
+fun main(args: Array<String>) {
+    val parser = ArgParser("Tulip")
+    val configFilename by parser.option(ArgType.String, shortName = "c", description = "JSON configuration file", fullName = "config").default("config.json")
+    parser.parse(args)
+    tulip.initConfig(configFilename)
     runTests(tulip.g_contexts, tulip.g_tests, g_actionNames, ::getUser)
 }
 

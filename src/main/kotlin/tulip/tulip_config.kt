@@ -47,9 +47,9 @@ data class BenchmarkConfig(
     val benchmarks: List<ConfigTest> = listOf()
 )
 
-fun initConfig() {
+fun initConfig(configFilename: String) {
     val gson = GsonBuilder().setPrettyPrinting().create()
-    val sf = java.io.File("config.json").readText()
+    val sf = java.io.File(configFilename).readText()
     val config = gson.fromJson(sf,BenchmarkConfig::class.java)
     //val json = gson.toJson(config)
     //println("$json")

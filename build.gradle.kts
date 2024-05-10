@@ -53,6 +53,8 @@ dependencies {
     implementation(platform("org.jetbrains.kotlin:kotlin-bom"))
     //implementation("org.jetbrains.kotlin:kotlin-stdlib")
 
+    implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
+
     implementation(platform("org.http4k:http4k-bom:5.18.2.0"))
     implementation("org.http4k:http4k-core")
     implementation("org.http4k:http4k-client-apache")
