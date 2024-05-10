@@ -93,9 +93,14 @@ Add `--config` parameter to specify which `config.json` file to use.
 
 == HttpClient vs OkHttp
 
-Use HttpClient from Java 21, and remove support for OkHttp
+. Use HttpClient from Java 21, and remove support for OkHttp
 
-* https://www.baeldung.com/java-httpclient-connection-management
+** https://www.baeldung.com/java-httpclient-connection-management
+
+. Remove unused and optional JAR dependencies
+
+** http4k
+** ....
 
 == Tulip Documentation
 
@@ -135,3 +140,11 @@ Create a Maven Central hosted tulip-core.jar runtime library that can be importe
     <version>0.8.1</version>
 </dependency>
 ----
+
+== Java Benchmark Support
+
+Allow benchmark user class to be written in Java or other JVM compatible languages. Add support for:
+
+* [.line-through]#Kotlin#
+* Java
+* Scala
