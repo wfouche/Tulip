@@ -1,8 +1,9 @@
+package tulip
+
 /*-------------------------------------------------------------------------*/
 
 import com.google.gson.annotations.SerializedName
 import com.google.gson.GsonBuilder
-import tulip.*
 import java.util.concurrent.TimeUnit
 
 /*-------------------------------------------------------------------------*/
