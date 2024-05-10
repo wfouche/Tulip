@@ -1,0 +1,76 @@
+{
+    "json_filename": "json_results.txt",
+    "contexts": [
+        {
+            "name": "Scenario-1",
+            "num_users": 16,
+            "num_threads": 2
+        },
+        {
+            "name": "Scenario-2",
+            "num_users": 32,
+            "num_threads": 4
+        }
+    ],
+    "benchmarks": [
+        {
+            "name": "Test0 (Initialize)",
+            "enabled": true,
+            "time": {
+                "startup_duration": 0,
+                "warmup_duration": 0,
+                "main_duration": 0,
+                "main_duration_repeat_count": 1
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": 1,
+            "actions": [
+                {
+                    "id": 0
+                },
+                {
+                    "id": 7
+                }
+            ]
+        },
+        {
+            "name": "Test1 (Throughput Test - Max)",
+            "enabled": false,
+            "time": {
+                "startup_duration": 60,
+                "warmup_duration": 60,
+                "main_duration": 60,
+                "main_duration_repeat_count": 1
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": -1,
+            "actions": [
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Test2 (Throughput Test - Fixed)",
+            "enabled": true,
+            "time": {
+                "startup_duration": 15,
+                "warmup_duration": 15,
+                "main_duration": 60,
+                "main_duration_repeat_count": 4
+            },
+            "throughput_rate": 100.0,
+            "work_in_progress": 0,
+            "actions": [
+                {
+                    "id": 1,
+                    "weight": 25
+                },
+                {
+                    "id": 2,
+                    "weight": 75
+                }
+            ]
+        }
+    ]
+}

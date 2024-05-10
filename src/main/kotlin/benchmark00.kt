@@ -1,10 +1,13 @@
 /*-------------------------------------------------------------------------*/
 
+@file:JvmName("benchmark00")
+
 /*-------------------------------------------------------------------------*/
 
+import tulip.User
+import tulip.runTests
 import okhttp3.OkHttpClient
 import okhttp3.Request
-import tulip.User
 import tulip.Console
 import tulip.delay
 import tulip.delayMillisRandom
@@ -121,9 +124,22 @@ class UserHttp(userId: Int) : User(userId) {
 
 /*-------------------------------------------------------------------------*/
 
-val actionNames = mapOf(
+val g_actionNames = mapOf(
     0 to "init",
     3 to "REST-photos",
     NUM_ACTIONS-1 to "done")
+
+/*-------------------------------------------------------------------------*/
+
+fun getUser(userId: Int): User {
+    return UserHttp(userId)
+}
+
+/*-------------------------------------------------------------------------*/
+
+fun main() {
+    tulip.initConfig()
+    runTests(tulip.g_contexts, tulip.g_tests, g_actionNames, ::getUser)
+}
 
 /*-------------------------------------------------------------------------*/

@@ -24,7 +24,7 @@ plugins {
     id("org.asciidoctor.jvm.convert") version "4.0.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
-    id("org.jetbrains.kotlin.jvm") version "1.9.24"
+    id("org.jetbrains.kotlin.jvm") version "2.0.0-RC2"
 
     // detekt - A static code analyzer for Kotlin
     // $ ./gradlew detekt
@@ -71,6 +71,13 @@ dependencies {
     // LMAX disruptor - https://github.com/LMAX-Exchange/disruptor
     implementation("com.lmax:disruptor:4.0.0")
 
+    // https://github.com/apple/pkl
+    // https://pkl-lang.org/main/current/index.html
+    implementation("org.pkl-lang:pkl-config-kotlin:0.25.2")
+
+    // https://mvnrepository.com/artifact/com.google.code.gson/gson
+    implementation("com.google.code.gson:gson:2.10.1")
+
     // Use the Kotlin test library.
     testImplementation("org.jetbrains.kotlin:kotlin-test")
 
@@ -97,7 +104,7 @@ application {
     //, "-XX:+UseParallelGC")
 
     // Define the main class for the application
-    mainClass.set("LoadTest1")
+    mainClass.set("benchmark00")
 }
 
 dependencyCheck {
