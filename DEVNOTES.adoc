@@ -89,6 +89,8 @@
 
 Add `--config` parameter to specify which `config.json` file to use.
 
+* https://github.com/Kotlin/kotlinx-cli
+
 == HttpClient vs OkHttp
 
 Use HttpClient from Java 21, and remove support for OkHttp
