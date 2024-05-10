@@ -54,10 +54,10 @@ class UserHttp(userId: Int) : User(userId) {
         // https://www.baeldung.com/java-httpclient-connection-management
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
 
-        println(response.statusCode())
-        println(response.body())
+        //println(response.statusCode())
+        //println(response.body())
 
-        return true
+        return (response.statusCode() == 200)
     }
 
     // ----------------------------------------------------------------- //
