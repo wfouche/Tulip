@@ -8,9 +8,9 @@ import java.util.concurrent.TimeUnit
 
 /*-------------------------------------------------------------------------*/
 
-val g_contexts: MutableList<RuntimeContext> = mutableListOf()
+val g_contexts = mutableListOf<RuntimeContext>()
 
-val g_tests: MutableList<TestProfile> = mutableListOf()
+val g_tests = mutableListOf<TestProfile>()
 
 /*-------------------------------------------------------------------------*/
 
