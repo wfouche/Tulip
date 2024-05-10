@@ -156,6 +156,21 @@ Allow benchmark user class to be written in Java or other JVM compatible languag
 * Java
 * Scala
 
-== Use GSON for json_results.txt
+== Reimplement JSON output
 
-Re-implement how the json_results.txt file is created. Only use a hierarchy of data classes and GSON to create the JSON output.
+Re-implement how the json_results.txt file is created. Only use a hierarchy of data classes and GSON to create the JSON output, or kotlinx
+
+* https://www.baeldung.com/kotlin/data-class-json-serialize-default-values
+
+[source,kotlin]
+----
+import kotlinx.serialization.Serializable
+@Serializable
+data class Car(val type: String, @EncodeDefault val color: String = "Blue")
+
+val car = Car("Ford")
+val jsonString = Json.encodeToString(car)
+assertEquals("{\"type\":\"Ford\",\"color\":\"Blue\"}", jsonString)
+----
+
+* https://discuss.kotlinlang.org/t/request-for-built-in-tostring-json-true-for-data-classes-for-json-output/6720/2
