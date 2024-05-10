@@ -55,27 +55,18 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
 
-    implementation(platform("org.http4k:http4k-bom:5.18.2.0"))
-    implementation("org.http4k:http4k-core")
-    implementation("org.http4k:http4k-client-apache")
-    implementation("org.http4k:http4k-server-undertow")
-    implementation("org.http4k:http4k-serverless-lambda")
-
-    // okhttp
-    implementation("com.squareup.okhttp3:okhttp:5.0.0-alpha.14")
-
     // JSON Kotlin Parser.
-    implementation("com.beust:klaxon:5.6")
+    //implementation("com.beust:klaxon:5.6")
 
     // Conversant disruptor - https://github.com/conversant/disruptor
-    implementation("com.conversantmedia:disruptor:1.2.21")
+    //implementation("com.conversantmedia:disruptor:1.2.21")
 
     // LMAX disruptor - https://github.com/LMAX-Exchange/disruptor
-    implementation("com.lmax:disruptor:4.0.0")
+    //implementation("com.lmax:disruptor:4.0.0")
 
     // https://github.com/apple/pkl
     // https://pkl-lang.org/main/current/index.html
-    implementation("org.pkl-lang:pkl-config-kotlin:0.25.2")
+    //implementation("org.pkl-lang:pkl-config-kotlin:0.25.2")
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.10.1")

@@ -4,15 +4,12 @@
 
 /*-------------------------------------------------------------------------*/
 
-import tulip.User
-import tulip.runTests
-import okhttp3.OkHttpClient
-import okhttp3.Request
-import tulip.Console
-import tulip.delay
-import tulip.delayMillisRandom
-import tulip.NUM_ACTIONS
 import kotlinx.cli.*
+import tulip.*
+import java.net.URI
+import java.net.http.HttpClient
+import java.net.http.HttpRequest
+import java.net.http.HttpResponse
 
 /*-------------------------------------------------------------------------*/
 
@@ -20,10 +17,11 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-    private var httpClient = OkHttpClient()
+    private var client = HttpClient.newHttpClient()
 
-    private val request = Request.Builder()
-        .url("https://jsonplaceholder.typicode.com/photos/${userId + 1}")
+    private val request = HttpRequest.newBuilder()
+        .uri(URI("https://jsonplaceholder.typicode.com/photos/${userId + 1}"))
+        .GET()
         .build()
 
     // ----------------------------------------------------------------- //
@@ -53,17 +51,13 @@ class UserHttp(userId: Int) : User(userId) {
     // ----------------------------------------------------------------- //
 
     override fun action3(): Boolean {
-        // https://square.github.io/okhttp/recipes/
+        // https://www.baeldung.com/java-httpclient-connection-management
+        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
 
-        httpClient.newCall(request).execute().use { response ->
-            return response.isSuccessful
+        println(response.statusCode())
+        println(response.body())
 
-            //for ((name, value) in response.headers) {
-            //    println("$name: $value")
-            //}
-
-            //println(response.body!!.string())
-        }
+        return true
     }
 
     // ----------------------------------------------------------------- //
