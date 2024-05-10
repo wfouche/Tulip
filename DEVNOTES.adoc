@@ -102,3 +102,9 @@ Use HttpClient from Java 21, and remove support for OkHttp
 Create a user guide for Tulip with Antora
 
 * https://twitter.com/antoraproject
+
+== Pkl Config Support
+
+Write a config.pkl file to generate config.json
+
+* https://pkl-lang.org/blog/introducing-pkl.html
