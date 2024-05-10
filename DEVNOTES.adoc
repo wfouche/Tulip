@@ -155,3 +155,7 @@ Allow benchmark user class to be written in Java or other JVM compatible languag
 * [.line-through]#Kotlin#
 * Java
 * Scala
+
+== Use GSON for json_results.txt
+
+Re-implement how the json_results.txt file is created. Only use a hierarchy of data classes and GSON to create the JSON output.
