@@ -174,3 +174,9 @@ assertEquals("{\"type\":\"Ford\",\"color\":\"Blue\"}", jsonString)
 ----
 
 * https://discuss.kotlinlang.org/t/request-for-built-in-tostring-json-true-for-data-classes-for-json-output/6720/2
+
+== Micrometer Support
+
+Instrument the benchmark application using Micrometer (http://micrometer.io) and support performance data extraction via Prometheus and Grafana.
+
+* https://grafana.com/docs/grafana/latest/getting-started/get-started-grafana-prometheus/
