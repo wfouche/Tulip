@@ -195,7 +195,7 @@ data class Task(
 
 /*-------------------------------------------------------------------------*/
 
-class RateGovernor(private val timeMillisStart: Long, private val averageRate: Double) {
+class RateGovernor(private val averageRate: Double, private val timeMillisStart: Long = timeMillis())  {
 
     private var count: Long = 0
 
@@ -468,7 +468,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         // Typically only found at the start and end of a test suite.
         var rateGovernor: RateGovernor? = null
         if (testCase.arrivalRate > 0.0) {
-            rateGovernor = RateGovernor(timeMillisStart, testCase.arrivalRate)
+            rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
         }
 
         for (aid in actionList) {
@@ -527,7 +527,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             } else {
                 // Ramp-up or Main duration.
                 if (testCase.arrivalRate > 0.0) {
-                    rateGovernor = RateGovernor(timeMillisStart, testCase.arrivalRate)
+                    rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
                 }
             }
 
