@@ -208,7 +208,7 @@ class ActionStats {
         output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
         output.add("  duration of benchmark (in seconds)             = ${r.durationSeconds}")
         output.add("")
-        output.add("  average duration/response time in milliseconds = ${"%.3f".format(Locale.US, r.art)}")
+        output.add("  average latency     (response time)  (millis)  = ${"%.3f".format(Locale.US, r.art)}")
         output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)}")
         output.add("")
         r.pk.forEachIndexed { index, percentile ->
@@ -487,12 +487,12 @@ object DataCollector {
         Counter.builder("Tulip")
             .tags("action", task.actionId.toString())
             .register(registry)
-            .increment();
+            .increment()
 
         Counter.builder("Tulip")
             .tags("action", "tps")
             .register(registry)
-            .increment();
+            .increment()
     }
 
     fun clearStats() {
