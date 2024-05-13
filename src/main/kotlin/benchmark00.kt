@@ -13,11 +13,11 @@ import java.net.http.HttpResponse
 
 /*-------------------------------------------------------------------------*/
 
+private val client = HttpClient.newHttpClient()
+
 class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
-
-    private var client = HttpClient.newHttpClient()
 
     private val request = HttpRequest.newBuilder()
         .uri(URI("https://jsonplaceholder.typicode.com/photos/${userId + 1}"))
