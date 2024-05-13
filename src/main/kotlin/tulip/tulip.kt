@@ -51,13 +51,13 @@ var actionNames: Map<Int, String> = emptyMap()
 
 internal val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
-internal val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("num",     "threads")), AtomicInteger(0))
-internal val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("num",     "users")),   AtomicInteger(0))
 internal val mg_num_success    = registry.gauge("Tulip", listOf(Tag.of("num",   "success")),   AtomicInteger(0))
 internal val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
 internal val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",   "actions")),   AtomicInteger(0))
 
 internal val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context", "id")),      AtomicInteger(0))
+internal val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "threads")), AtomicInteger(0))
+internal val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "users")),   AtomicInteger(0))
 
 internal val mg_rt_avg = registry.gauge("Tulip", listOf(Tag.of("rt",   "avg")), AtomicInteger(0))
 internal val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",   "max")), AtomicInteger(0))
