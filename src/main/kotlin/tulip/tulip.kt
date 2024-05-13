@@ -4,6 +4,9 @@ package tulip
 
 /*-------------------------------------------------------------------------*/
 
+import io.micrometer.core.instrument.Clock
+import io.micrometer.jmx.JmxConfig
+import io.micrometer.jmx.JmxMeterRegistry
 import java.util.concurrent.LinkedBlockingQueue
 
 /*-------------------------------------------------------------------------*/
@@ -47,6 +50,8 @@ private var testSuite: List<TestProfile>? = null
 private var newUser: ((Int) -> User)? = null
 
 var actionNames: Map<Int, String> = emptyMap()
+
+val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
 /*-------------------------------------------------------------------------*/
 
@@ -263,6 +268,7 @@ class UserThread(private val threadId: Int) : Thread() {
                 }
 
                 task.rspQueue!!.put(task)
+
             }
         }
         userThreads!![threadId] = null
