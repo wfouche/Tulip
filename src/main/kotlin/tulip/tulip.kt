@@ -4,23 +4,21 @@ package tulip
 
 /*-------------------------------------------------------------------------*/
 
-import io.micrometer.core.instrument.Clock
-import io.micrometer.jmx.JmxConfig
-import io.micrometer.jmx.JmxMeterRegistry
-import java.util.concurrent.LinkedBlockingQueue
-
 /*-------------------------------------------------------------------------*/
 
 //https://github.com/conversant/disruptor
 //import com.conversantmedia.util.concurrent.DisruptorBlockingQueue as Queue
 //import java.util.concurrent.ArrayBlockingQueue  as Queue
-import java.util.concurrent.LinkedBlockingQueue as Queue
 
-import java.lang.Thread
+import io.micrometer.core.instrument.Clock
+import io.micrometer.core.instrument.Tag
+import io.micrometer.jmx.JmxConfig
+import io.micrometer.jmx.JmxMeterRegistry
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.*
-import kotlin.sequences.iterator
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.exitProcess
+import java.util.concurrent.LinkedBlockingQueue as Queue
 
 /*-------------------------------------------------------------------------*/
 
@@ -53,6 +51,11 @@ var actionNames: Map<Int, String> = emptyMap()
 
 val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
+private val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("num",       "threads")), AtomicInteger(0))
+private val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("num",       "users")),   AtomicInteger(0))
+private val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context",   "id")),      AtomicInteger(0))
+private val mg_benchmark_id = registry.gauge("Tulip", listOf(Tag.of("benchmark", "id")),      AtomicInteger(0))
+
 /*-------------------------------------------------------------------------*/
 
 fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, func: (Int) -> User) {
@@ -68,6 +71,10 @@ fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile
     userActions = arrayOfNulls(MAX_NUM_USERS)
     userThreads = arrayOfNulls(MAX_NUM_THREADS)
     actionNames = actionDesc
+
+    mg_num_threads.set(MAX_NUM_THREADS)
+    mg_num_users.set(MAX_NUM_USERS)
+    mg_context_id.set(contextId)
 }
 
 fun runtimeDone() {
@@ -193,7 +200,7 @@ data class Task(
     // Duration (elapsed time) in microseconds.
     var durationMicros: Long = 0,
 
-    var rspQueue: LinkedBlockingQueue<Task>? = null,
+    var rspQueue: Queue<Task>? = null,
 
     var status: Int = -1
 )
@@ -286,7 +293,7 @@ object Console : Thread() {
         start()
     }
 
-    private var q = LinkedBlockingQueue<MutableList<String>>(10)
+    private var q = Queue<MutableList<String>>(10)
 
     override fun run() {
         while (true) {
@@ -389,6 +396,8 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     output.add("======================================================================")
     Console.put(output)
 
+    mg_benchmark_id.set(indexTestCase)
+
     val rnd = ThreadLocalRandom.current()
 
     // create a list of randomized user IDs
@@ -429,7 +438,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     //
     // Create a queue containing a total of queueLength tokens.
     //
-    val rspQueue = LinkedBlockingQueue<Task>(queueLength)
+    val rspQueue = Queue<Task>(queueLength)
 
     fun initRspQueue() {
         repeat(queueLength) {
