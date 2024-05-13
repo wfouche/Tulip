@@ -49,12 +49,25 @@ private var newUser: ((Int) -> User)? = null
 
 var actionNames: Map<Int, String> = emptyMap()
 
-val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
+internal val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
-private val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("num",       "threads")), AtomicInteger(0))
-private val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("num",       "users")),   AtomicInteger(0))
-private val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context",   "id")),      AtomicInteger(0))
-private val mg_benchmark_id = registry.gauge("Tulip", listOf(Tag.of("benchmark", "id")),      AtomicInteger(0))
+internal val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("num",     "threads")), AtomicInteger(0))
+internal val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("num",     "users")),   AtomicInteger(0))
+internal val mg_num_success    = registry.gauge("Tulip", listOf(Tag.of("num",   "success")),   AtomicInteger(0))
+internal val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
+internal val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",   "actions")),   AtomicInteger(0))
+
+internal val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context", "id")),      AtomicInteger(0))
+
+internal val mg_rt_avg = registry.gauge("Tulip", listOf(Tag.of("rt",   "avg")), AtomicInteger(0))
+internal val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",   "max")), AtomicInteger(0))
+internal val mg_rt_min = registry.gauge("Tulip", listOf(Tag.of("rt",   "min")), AtomicInteger(0))
+
+internal val mg_benchmark_id  = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "id")),       AtomicInteger(0))
+internal val mg_benchmark_tps = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "tps")),      AtomicInteger(0))
+internal val mg_benchmark_dur = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "duration")), AtomicInteger(0))
+internal val mg_benchmark_phs = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
+internal val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
 
 /*-------------------------------------------------------------------------*/
 

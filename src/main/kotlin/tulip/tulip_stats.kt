@@ -241,6 +241,24 @@ class ActionStats {
             output.add("  free memory (jvm)    = ${"%,d".format(Locale.US, fm)}")
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
+
+            mg_rt_avg.set(r.art.toInt())
+            mg_rt_max.set(r.maxRt.toInt())
+            mg_rt_min.set(r.minRt.toInt())
+
+            mg_num_actions.set(r.numActions)
+            mg_num_success.set(r.numSuccess)
+            mg_num_failed.set(r.numActions - r.numSuccess)
+
+            mg_benchmark_tps.set(r.aps.toInt())
+            mg_benchmark_dur.set(r.durationSeconds.toInt())
+            var phaseId=0
+            if (r.testPhase == "Start-up") phaseId=0
+            if (r.testPhase == "Ramp-up") phaseId=1
+            if (r.testPhase == "Main") phaseId=2
+
+            mg_benchmark_phs.set(phaseId)
+            mg_benchmark_run.set(r.rowId)
         }
 
         Console.put(output)
