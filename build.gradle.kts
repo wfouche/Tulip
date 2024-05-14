@@ -55,8 +55,8 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
 
-    implementation("io.micrometer:micrometer-registry-prometheus:1.12.5")
-    implementation("io.micrometer:micrometer-registry-jmx:1.12.5")
+    implementation("io.micrometer:micrometer-registry-prometheus:1.13.0")
+    implementation("io.micrometer:micrometer-registry-jmx:1.13.0")
 
     // JSON Kotlin Parser.
     //implementation("com.beust:klaxon:5.6")
