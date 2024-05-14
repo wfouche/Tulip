@@ -21,7 +21,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.51.0"
 
     // Add support for AsciidoctorJ
-    id("org.asciidoctor.jvm.convert") version "4.0.2"
+    //id("org.asciidoctor.jvm.convert") version "4.0.2"
 
     // Apply the Kotlin JVM plugin to add support for Kotlin.
     id("org.jetbrains.kotlin.jvm") version "1.9.24"
@@ -31,7 +31,7 @@ plugins {
     // id("io.gitlab.arturbosch.detekt") version("1.23.5")
 
     // apply the Pkl plugin - https://pkl-lang.org/index.html
-    id("org.pkl-lang") version("0.25.3")
+    //id("org.pkl-lang") version("0.25.3")
     // if the `idea` plugin is applied, the Pkl plugin makes generated code visible to IntelliJ IDEA
     idea
 
@@ -55,7 +55,7 @@ dependencies {
 
     implementation("org.jetbrains.kotlinx:kotlinx-cli:0.3.6")
 
-    implementation("io.micrometer:micrometer-registry-prometheus:1.13.0")
+    //implementation("io.micrometer:micrometer-registry-prometheus:1.13.0")
     implementation("io.micrometer:micrometer-registry-jmx:1.13.0")
 
     // JSON Kotlin Parser.
