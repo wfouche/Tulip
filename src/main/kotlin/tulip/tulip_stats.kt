@@ -236,6 +236,9 @@ class ActionStats {
             output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avgCpuProcess)}")
             output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avgCpuSystem)}")
 
+            mg_cpu_tulip.set(r.avgCpuProcess.toInt())
+            mg_cpu_system.set(r.avgCpuSystem.toInt())
+
             output.add("")
             output.add("  memory used (jvm)    = ${"%,d".format(Locale.US, tm-fm)}")
             output.add("  free memory (jvm)    = ${"%,d".format(Locale.US, fm)}")
