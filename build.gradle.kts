@@ -14,7 +14,7 @@ plugins {
 
     // Gradle owasp plugin
     // $ ./gradlew dependencyCheckAnalyze --info
-    id("org.owasp.dependencycheck") version "9.1.0"
+    id("org.owasp.dependencycheck") version "9.2.0"
 
     // Gradle versions plugin
     // $ ./gradlew dependencyUpdates
