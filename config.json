@@ -3,7 +3,7 @@
     "contexts": [
         {
             "name": "Scenario-1",
-            "enabled": false,
+            "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },
