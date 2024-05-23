@@ -37,6 +37,8 @@ fun roundXN(x: Long, n: Long): Long {
 /*-------------------------------------------------------------------------*/
 
 // Log Linear Quantization function
+// Independent invention, but similar to DTRACE llquantize
+// https://bcantrill.dtrace.org/2011/02/08/llquantize/
 fun llq(x: Long): Long {
     // Do not quantize the values from 0 to 9.
     if (x < 10) return x
