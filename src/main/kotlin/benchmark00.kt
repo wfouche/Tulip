@@ -15,14 +15,27 @@ import java.net.http.HttpResponse
 
 private val client = HttpClient.newHttpClient()
 
-class UserHttp(userId: Int) : User(userId) {
-
-    // ----------------------------------------------------------------- //
-
-    private val request = HttpRequest.newBuilder()
-        .uri(URI("https://jsonplaceholder.typicode.com/photos/${userId + 1}"))
+private fun serviceCall(resource: String, userId: Int): Boolean {
+    // https://www.baeldung.com/java-httpclient-connection-management
+    val id = userId + 1
+    val request = HttpRequest.newBuilder()
+        .uri(URI("https://jsonplaceholder.typicode.com/${resource}/${id}"))
         .GET()
         .build()
+
+    val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+
+    //println(id)
+    //println(name)
+    //println(response.statusCode())
+    //println(response.body())
+
+    return (response.statusCode() == 200)
+}
+
+/*-------------------------------------------------------------------------*/
+
+class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
@@ -40,8 +53,6 @@ class UserHttp(userId: Int) : User(userId) {
         return true
     }
 
-    // ----------------------------------------------------------------- //
-
     override fun action2(): Boolean {
         // 14 ms delay (average)
         delayMillisRandom(1, 27)
@@ -51,57 +62,30 @@ class UserHttp(userId: Int) : User(userId) {
     // ----------------------------------------------------------------- //
 
     override fun action3(): Boolean {
-        // https://www.baeldung.com/java-httpclient-connection-management
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
-        //println(response.statusCode())
-        //println(response.body())
-
-        return (response.statusCode() == 200)
+        return serviceCall("posts", userId)
     }
-
-    // ----------------------------------------------------------------- //
 
     override fun action4(): Boolean {
-        // 14 ms delay (average)
-        //delayMillisRandom(1, 27)
-        val actionId = 4
-        Console.put("  $userId -> $actionId")
-        return true
+        return serviceCall("comments", userId)
     }
-
-    // ----------------------------------------------------------------- //
 
     override fun action5(): Boolean {
-        // 14 ms delay (average)
-        //delayMillisRandom(1, 27)
-        val actionId = 5
-        Console.put("  $userId -> $actionId")
-        return true
+        return serviceCall("albums", userId)
     }
-
-    // ----------------------------------------------------------------- //
 
     override fun action6(): Boolean {
-        // 14 ms delay (average)
-        //delayMillisRandom(1, 27)
-        val actionId = 6
-        Console.put("  $userId -> $actionId")
-        return true
+        return serviceCall("photos", userId)
     }
 
-    // ----------------------------------------------------------------- //
-
     override fun action7(): Boolean {
-        val actionId = 7
-        Console.put("  $userId -> $actionId")
-        return true
+        return serviceCall("todos", userId)
     }
 
     // ----------------------------------------------------------------- //
 
     override fun action8(): Boolean {
-        //val actionId = 8
+        val actionId = 8
+        Console.put("  $userId -> $actionId")
         return true
     }
 
@@ -120,9 +104,16 @@ class UserHttp(userId: Int) : User(userId) {
 /*-------------------------------------------------------------------------*/
 
 val g_actionNames = mapOf(
-    0 to "init",
-    3 to "REST-photos",
-    NUM_ACTIONS-1 to "done")
+    0  to "init",
+    1  to "DELAY-6ms",
+    2  to "DELAY-14ms",
+    3  to "REST-posts",
+    4  to "REST-comments",
+    5  to "REST-albums",
+    6  to "REST-photos",
+    7  to "REST-todos",
+    8  to "login",
+    99 to "done")
 
 /*-------------------------------------------------------------------------*/
 

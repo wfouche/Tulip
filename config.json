@@ -1,5 +1,5 @@
 {
-    "json_filename": "json_results.txt",
+    "json_filename": "tulip_results.json",
     "contexts": [
         {
             "name": "Scenario-1",
@@ -29,7 +29,7 @@
                     "id": 0
                 },
                 {
-                    "id": 7
+                    "id": 8
                 }
             ]
         },
@@ -69,6 +69,52 @@
                 {
                     "id": 2,
                     "weight": 75
+                }
+            ]
+        },
+        {
+            "name": "Test3 (REST calls)",
+            "enabled": true,
+            "time": {
+                "startup_duration": 0,
+                "warmup_duration": 0,
+                "main_duration": 0,
+                "main_duration_repeat_count": 1
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": 1,
+            "actions": [
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                }
+            ]
+        },
+        {
+            "name": "Test4 (Finalize)",
+            "enabled": false,
+            "time": {
+                "startup_duration": 0,
+                "warmup_duration": 0,
+                "main_duration": 0,
+                "main_duration_repeat_count": 1
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": 1,
+            "actions": [
+                {
+                    "id": 99
                 }
             ]
         }
