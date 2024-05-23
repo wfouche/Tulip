@@ -16,6 +16,7 @@ val g_tests = mutableListOf<TestProfile>()
 
 data class ConfigContext(
     val name: String = "",
+    val enabled: Boolean = false,
     @SerializedName("num_users") val numUsers: Int = 0,
     @SerializedName("num_threads") val numThreads: Int = 0
 )
@@ -33,8 +34,8 @@ data class ConfigAction(
 )
 
 data class ConfigTest(
-    val enabled: Boolean = false,
     val name: String,
+    val enabled: Boolean = false,
     val time: ConfigDuration,
     @SerializedName("throughput_rate") val throughputRate: Double = 0.0,
     @SerializedName("work_in_progress") val workInProgress: Int = 0,
@@ -56,8 +57,10 @@ fun initConfig(configFilename: String) {
     //println("${config}")
     for (e:ConfigContext in config.contexts) {
         //println("${e.name}")
-        val v = RuntimeContext(e.name, e.numUsers, e.numThreads)
-        g_contexts.add(v)
+        if (e.enabled) {
+            val v = RuntimeContext(e.name, e.numUsers, e.numThreads)
+            g_contexts.add(v)
+        }
     }
     for (e:ConfigTest in config.benchmarks) {
         //println("${e.name}")
