@@ -1,0 +1,32 @@
+= Tulip
+
+== Benchmark Flow Diagram
+
+[plantuml,diag00,svg]
+----
+
+Edit online
+@startuml
+
+state fork_state <<fork>>
+[*] --> Action1
+Action1 --> fork_state
+fork_state --> Action2
+fork_state --> Action3
+
+state join_state <<join>>
+Action2 --> join_state
+Action2: 40%
+Action3 --> join_state
+Action3: 60%
+join_state --> Action4
+Action4 --> Action5
+Action5 --> Action6
+Action6 --> join_state
+state end_state <<join>>
+
+Action6 --> end_state
+
+
+@enduml
+----
