@@ -1,9 +1,9 @@
 /*-------------------------------------------------------------------------*/
 
-import user.*
 import kotlinx.cli.*
 import tulip.User
 import user.UserHttp
+
 /*-------------------------------------------------------------------------*/
 
 val actionNames = mapOf(
