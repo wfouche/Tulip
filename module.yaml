@@ -1,0 +1,6 @@
+product: jvm/app
+
+dependencies@jvm:
+  - io.micrometer:micrometer-registry-jmx:1.13.0
+  - org.jetbrains.kotlinx:kotlinx-cli:0.3.6
+  - com.google.code.gson:gson:2.11.0
