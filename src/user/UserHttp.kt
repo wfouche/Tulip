@@ -32,7 +32,7 @@ private fun serviceCall(resource: String, userId: Int): Boolean {
 
 /*-------------------------------------------------------------------------*/
 
-private class UserHttp(userId: Int) : User(userId) {
+class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
@@ -102,26 +102,6 @@ private class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
-}
-
-/*-------------------------------------------------------------------------*/
-
-val g_actionNames = mapOf(
-    0  to "init",
-    1  to "DELAY-6ms",
-    2  to "DELAY-14ms",
-    3  to "REST-posts",
-    4  to "REST-comments",
-    5  to "REST-albums",
-    6  to "REST-photos",
-    7  to "REST-todos",
-    8  to "login",
-    99 to "done")
-
-/*-------------------------------------------------------------------------*/
-
-fun getUser(userId: Int): User {
-    return UserHttp(userId)
 }
 
 /*-------------------------------------------------------------------------*/
