@@ -1,6 +1,12 @@
 product: jvm/app
 
-dependencies@jvm:
+dependencies:
   - io.micrometer:micrometer-registry-jmx:1.13.0
   - org.jetbrains.kotlinx:kotlinx-cli:0.3.6
   - com.google.code.gson:gson:2.11.0
+
+settings:
+  kotlin:
+    languageVersion: 2.0
+  jvm:
+    target: 21
