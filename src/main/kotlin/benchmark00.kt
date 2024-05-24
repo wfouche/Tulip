@@ -91,6 +91,12 @@ class UserHttp(userId: Int) : User(userId) {
 
     // ----------------------------------------------------------------- //
 
+    override fun action9(): Boolean {
+        return true
+    }
+
+    // ----------------------------------------------------------------- //
+
     override fun stop(): Boolean {
         Console.put("  Terminate: UserId = $userId")
         delay(100)
