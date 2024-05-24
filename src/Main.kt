@@ -7,7 +7,7 @@ import user.UserHttp
 /*-------------------------------------------------------------------------*/
 
 val userActions = mapOf(
-    0  to "init",
+    0  to "start",
     1  to "DELAY-6ms",
     2  to "DELAY-14ms",
     3  to "REST-posts",
@@ -16,7 +16,7 @@ val userActions = mapOf(
     6  to "REST-photos",
     7  to "REST-todos",
     8  to "login",
-    99 to "done")
+    99 to "stop")
 
 /*-------------------------------------------------------------------------*/
 
