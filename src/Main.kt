@@ -6,7 +6,7 @@ import user.UserHttp
 
 /*-------------------------------------------------------------------------*/
 
-val actionNames = mapOf(
+val userActions = mapOf(
     0  to "init",
     1  to "DELAY-6ms",
     2  to "DELAY-14ms",
@@ -31,7 +31,7 @@ fun main(args: Array<String>) {
     val configFilename by parser.option(ArgType.String, shortName = "c", description = "JSON configuration file", fullName = "config").default("config.json")
     parser.parse(args)
     tulip.initConfig(configFilename)
-    tulip.runTests(tulip.g_contexts, tulip.g_tests, actionNames, ::getUser)
+    tulip.runTests(tulip.g_contexts, tulip.g_tests, userActions, ::getUser)
 }
 
 /*-------------------------------------------------------------------------*/
