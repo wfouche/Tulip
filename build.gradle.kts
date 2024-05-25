@@ -13,10 +13,6 @@ application {
 }
 
 plugins {
-    // Gradle owasp plugin
-    // $ ./gradlew dependencyCheckAnalyze --info
-    id("org.owasp.dependencycheck") version "9.2.0"
-
     // Gradle versions plugin
     // $ ./gradlew dependencyUpdates
     id("com.github.ben-manes.versions") version "0.51.0"
