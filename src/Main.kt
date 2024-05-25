@@ -36,6 +36,7 @@ fun main(args: Array<String>) {
     parser.parse(args)
     tulip.initConfig(configFilename)
     tulip.runTests(userActions, ::getUser)
+    tulip.logger.info {"Done"}
 }
 
 /*-------------------------------------------------------------------------*/

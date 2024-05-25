@@ -5,7 +5,8 @@ dependencies:
   - org.jetbrains.kotlinx:kotlinx-cli:0.3.6
   - com.google.code.gson:gson:2.11.0
   - org.slf4j:slf4j-api:2.0.13
-  - org.slf4j:slf4j-nop:2.0.13
+  - org.slf4j:slf4j-simple:2.0.13
+  - io.github.oshai:kotlin-logging-jvm:5.1.0
 
 settings:
   kotlin:

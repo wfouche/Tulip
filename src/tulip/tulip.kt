@@ -17,6 +17,11 @@ import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.exitProcess
 import java.util.concurrent.LinkedBlockingQueue as Queue
+import io.github.oshai.kotlinlogging.KotlinLogging
+
+/*-------------------------------------------------------------------------*/
+// https://github.com/oshai/kotlin-logging
+val logger = KotlinLogging.logger {}
 
 /*-------------------------------------------------------------------------*/
 
