@@ -88,9 +88,9 @@ fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile
     userThreads = arrayOfNulls(MAX_NUM_THREADS)
     actionNames = actionDesc
 
-    mg_num_threads.set(MAX_NUM_THREADS)
-    mg_num_users.set(MAX_NUM_USERS)
-    mg_context_id.set(contextId)
+    mg_num_threads?.set(MAX_NUM_THREADS)
+    mg_num_users?.set(MAX_NUM_USERS)
+    mg_context_id?.set(contextId)
 }
 
 fun runtimeDone() {
@@ -412,7 +412,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     output.add("======================================================================")
     Console.put(output)
 
-    mg_benchmark_id.set(indexTestCase)
+    mg_benchmark_id?.set(indexTestCase)
 
     val rnd = ThreadLocalRandom.current()
 
