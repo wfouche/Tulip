@@ -37,7 +37,7 @@
         },
         {
             "name": "Test1 (Throughput Test - Max)",
-            "enabled": false,
+            "enabled": true,
             "time": {
                 "startup_duration": 60,
                 "warmup_duration": 60,
@@ -48,7 +48,7 @@
             "work_in_progress": -1,
             "actions": [
                 {
-                    "id": 8
+                    "id": 9
                 }
             ]
         },
