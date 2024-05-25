@@ -368,7 +368,7 @@ object CpuLoadMetrics : Thread() {
                 val avgCpuProcess = totalCpuProcess / 10.0
                 systemCpuStats.put(avgCpuSystem)
                 processCpuStats.put(avgCpuProcess)
-                //println("${i}, ${avg_cpu_system}, ${avg_cpu_process}")
+                //Console.put("${i}, ${avgCpuSystem}, ${avgCpuProcess}")
                 totalCpuSystem = 0.0
                 totalCpuProcess = 0.0
                 i = 0
@@ -627,7 +627,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 /*-------------------------------------------------------------------------*/
 
 fun initTulip() {
-    println("Tulip (${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin ${KotlinVersion.CURRENT})")
+    Console.put("Tulip (${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin ${KotlinVersion.CURRENT})")
 }
 
 /*-------------------------------------------------------------------------*/
@@ -640,20 +640,20 @@ fun runTulip(
     getUser: (Int) -> User,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
-    println("")
+    Console.put("")
 
     runtimeInit(contextId, context, tests, actionNames, getUser)
 
-    println("======================================================================")
-    println("Scenario: ${context.name}")
-    println("======================================================================")
-    println("")
-    println("NUM_USERS = $MAX_NUM_USERS")
-    println("NUM_THREADS = $MAX_NUM_THREADS")
-    println("NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
+    Console.put("======================================================================")
+    Console.put("Scenario: ${context.name}")
+    Console.put("======================================================================")
+    Console.put("")
+    Console.put("NUM_USERS = $MAX_NUM_USERS")
+    Console.put("NUM_THREADS = $MAX_NUM_THREADS")
+    Console.put("NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
     if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {
-        println("")
-        println("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
+        Console.put("")
+        Console.put("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
         exitProcess(0)
     }
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
