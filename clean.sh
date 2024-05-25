@@ -3,4 +3,4 @@
 rm -f -r .gradle
 rm -f -r .idea
 rm -f -r build
-rm -f json_results.txt
+rm -f tulip_results.json
