@@ -668,10 +668,6 @@ fun runTulip(
 
 /*-------------------------------------------------------------------------*/
 
-fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, actionNames: Map<Int, String>, getUser: (Int) -> User) {
-    runTests(contexts, tests, actionNames, getUser, ::getTest)
-}
-
 fun runTests(actionNames: Map<Int, String>, getUser: (Int) -> User) {
     runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
 }
