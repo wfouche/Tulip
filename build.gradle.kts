@@ -11,3 +11,16 @@ application {
     // Define the main class for the application
     mainClass.set("benchmark00")
 }
+
+plugins {
+    // Gradle owasp plugin
+    // $ ./gradlew dependencyCheckAnalyze --info
+    id("org.owasp.dependencycheck") version "9.2.0"
+
+    // Gradle versions plugin
+    // $ ./gradlew dependencyUpdates
+    id("com.github.ben-manes.versions") version "0.51.0"
+
+    // Add support for AsciidoctorJ
+    id("org.asciidoctor.jvm.convert") version "4.0.2"
+}
