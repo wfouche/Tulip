@@ -672,6 +672,10 @@ fun runTests(contexts: List<RuntimeContext>, tests: List<TestProfile>, actionNam
     runTests(contexts, tests, actionNames, getUser, ::getTest)
 }
 
+fun runTests(actionNames: Map<Int, String>, getUser: (Int) -> User) {
+    runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
+}
+
 fun runTests(
     contexts: List<RuntimeContext>,
     tests: List<TestProfile>,
