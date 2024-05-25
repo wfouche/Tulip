@@ -4,8 +4,6 @@ package tulip
 
 /*-------------------------------------------------------------------------*/
 
-/*-------------------------------------------------------------------------*/
-
 //https://github.com/conversant/disruptor
 //import com.conversantmedia.util.concurrent.DisruptorBlockingQueue as Queue
 //import java.util.concurrent.ArrayBlockingQueue  as Queue
