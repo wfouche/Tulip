@@ -1,6 +1,6 @@
 package tulip
 
-import io.micrometer.core.instrument.Counter
+//import io.micrometer.core.instrument.Counter
 import java.util.*
 import java.io.BufferedWriter
 
@@ -487,15 +487,15 @@ object DataCollector {
         actionStats[NUM_ACTIONS].updateStats(task)
         actionStats[task.actionId].updateStats(task)
 
-        Counter.builder("Tulip")
-            .tags("action", task.actionId.toString())
-            .register(registry)
-            .increment()
-
-        Counter.builder("Tulip")
-            .tags("action", "tps")
-            .register(registry)
-            .increment()
+//        Counter.builder("Tulip")
+//            .tags("action", task.actionId.toString())
+//            .register(registry)
+//            .increment()
+//
+//        Counter.builder("Tulip")
+//            .tags("action", "tps")
+//            .register(registry)
+//            .increment()
     }
 
     fun clearStats() {
