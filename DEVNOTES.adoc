@@ -191,3 +191,9 @@ Instrument the benchmark application using Micrometer (http://micrometer.io) and
 Change the Tulip project to build using Amper/Gradle.
 
 * https://blog.jetbrains.com/blog/2023/11/09/amper-improving-the-build-tooling-user-experience/
+
+== [DONE] [.line-through]#Remove Glowroot support#
+
+Remove folder `tulip/runtime/glowroot`.
+
+See https://glowroot.org/ and https://github.com/glowroot/glowroot
