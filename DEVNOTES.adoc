@@ -185,3 +185,9 @@ Instrument the benchmark application using Micrometer (http://micrometer.io) and
 
 * https://wfouche.grafana.net/a/cloud-home-app/onboarding-flow/start
 * https://grafana.com/docs/grafana-cloud/send-data/metrics/metrics-prometheus/prometheus-config-examples/pivotal-software-inc-micrometer/
+
+== Amper Support
+
+Change the Tulip project to build using Amper/Gradle.
+
+* https://blog.jetbrains.com/blog/2023/11/09/amper-improving-the-build-tooling-user-experience/
