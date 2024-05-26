@@ -346,6 +346,7 @@ class ActionStats {
 }
 
 object DataCollector {
+    private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
 
     // val a = arrayOf<Array<ActionStats>>()
@@ -470,12 +471,26 @@ object DataCollector {
 
             val fw = FileWriter(filename, true)
             val bw = BufferedWriter(fw).apply {
-                write(json)
+                when (fileWriteId) {
+                    0 -> write("[${json}")
+                    else -> write(",${json}")
+                }
                 newLine()
             }
+            fileWriteId += 1
             bw.close()
             fw.close()
         }
+    }
+
+    fun closeStatsJson(filename: String) {
+        val fw = FileWriter(filename, true)
+        val bw = BufferedWriter(fw).apply {
+            write("]")
+            newLine()
+        }
+        bw.close()
+        fw.close()
     }
 
     fun updateStats(task: Task) {

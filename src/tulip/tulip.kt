@@ -675,7 +675,7 @@ fun runTests(actionNames: Map<Int, String>, getUser: (Int) -> User) {
     runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
 }
 
-fun runTests(
+private fun runTests(
     contexts: List<RuntimeContext>,
     tests: List<TestProfile>,
     actionNames: Map<Int, String>,
@@ -686,6 +686,8 @@ fun runTests(
     contexts.forEachIndexed { contextId, context ->
         runTulip(contextId, context, tests, actionNames, getUser, getTest)
     }
+    // write ']' to JSON results file
+    DataCollector.closeStatsJson(g_tests[0].filename)
 }
 
 /*-------------------------------------------------------------------------*/
