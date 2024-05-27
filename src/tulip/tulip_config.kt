@@ -8,6 +8,8 @@ import java.util.concurrent.TimeUnit
 
 /*-------------------------------------------------------------------------*/
 
+var g_config = BenchmarkConfig()
+
 val g_contexts = mutableListOf<RuntimeContext>()
 
 val g_tests = mutableListOf<TestProfile>()
@@ -43,9 +45,9 @@ data class ConfigTest(
 )
 
 data class BenchmarkConfig(
-    @SerializedName("json_filename") val jsonFilename: String,
-    @SerializedName("user_class") val userClass: String,
-    @SerializedName("user_actions") val userActions: Map<Int,String>,
+    @SerializedName("json_filename") val jsonFilename: String = "",
+    @SerializedName("user_class") val userClass: String = "",
+    @SerializedName("user_actions") val userActions: Map<Int,String> = mapOf(),
     val contexts: List<ConfigContext> = listOf(),
     val benchmarks: List<ConfigTest> = listOf()
 )
@@ -53,20 +55,20 @@ data class BenchmarkConfig(
 fun initConfig(configFilename: String) {
     val gson = GsonBuilder().setPrettyPrinting().create()
     val sf = java.io.File(configFilename).readText()
-    val config = gson.fromJson(sf,BenchmarkConfig::class.java)
+    g_config = gson.fromJson(sf,BenchmarkConfig::class.java)
     if (false) {
-        val json = gson.toJson(config)
+        val json = gson.toJson(g_config)
         println("$json")
-        println("${config}")
+        println("${g_config}")
     }
-    for (e:ConfigContext in config.contexts) {
+    for (e:ConfigContext in g_config.contexts) {
         //println("${e.name}")
         if (e.enabled) {
             val v = RuntimeContext(e.name, e.numUsers, e.numThreads)
             g_contexts.add(v)
         }
     }
-    for (e:ConfigTest in config.benchmarks) {
+    for (e:ConfigTest in g_config.benchmarks) {
         //println("${e.name}")
         val v = TestProfile(
             enabled = e.enabled,
@@ -79,7 +81,7 @@ fun initConfig(configFilename: String) {
                     this.add(Action(a.id, a.weight))
                 }
             },
-            filename = config.jsonFilename,
+            filename = g_config.jsonFilename,
         )
         g_tests.add(v)
     }
