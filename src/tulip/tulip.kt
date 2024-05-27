@@ -687,9 +687,9 @@ private fun runTests(
     val file = java.io.File(filename)
     val result = file.delete()
     if (result) {
-        println("File deleted successfully - ${filename}")
+        //println("File deleted successfully - ${filename}")
     } else {
-        throw Exception("Exiting, could not delete file - ${filename}")
+        //throw Exception("Exiting, could not delete file - ${filename}")
     }
 
     // initialize the Tulip runtime environment
