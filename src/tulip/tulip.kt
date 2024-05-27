@@ -682,12 +682,26 @@ private fun runTests(
     getUser: (Int) -> User,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
+    // Remove the previous JSON results file (if it exists)
+    val filename = g_tests[0].filename
+    val file = java.io.File(filename)
+    val result = file.delete()
+    if (result) {
+        println("File deleted successfully - ${filename}")
+    } else {
+        throw Exception("Exiting, could not delete file - ${filename}")
+    }
+
+    // initialize the Tulip runtime environment
     initTulip()
+
+    // run all benchmarks
     contexts.forEachIndexed { contextId, context ->
         runTulip(contextId, context, tests, actionNames, getUser, getTest)
     }
+
     // write ']' to JSON results file
-    DataCollector.closeStatsJson(g_tests[0].filename)
+    DataCollector.closeStatsJson(filename)
 }
 
 /*-------------------------------------------------------------------------*/
