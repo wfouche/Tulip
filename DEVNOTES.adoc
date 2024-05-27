@@ -197,3 +197,23 @@ Change the Tulip project to build using Amper/Gradle.
 Remove folder `tulip/runtime/glowroot`.
 
 See https://glowroot.org/ and https://github.com/glowroot/glowroot
+
+== Add user_actions to config.json
+
+[source,yaml]
+----
+{
+    "user_actions": {
+        "0": "start",
+        "1": "DELAY-6ms",
+        "2": "DELAY-14ms",
+        "3": "REST-posts",
+        "4": "REST-comments",
+        "5": "REST-albums",
+        "6": "REST-photos",
+        "7": "REST-todos",
+        "8": "login",
+        "99": "stop"
+    }
+}
+----
