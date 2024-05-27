@@ -3,9 +3,14 @@
     "user_class": "user.UserHttp",
     "user_actions": {
         "0": "start",
-        "1": "REST-users",
-        "2": "REST-photos",
-        "3": "REST-todos",
+        "1": "DELAY-6ms",
+        "2": "DELAY-14ms",
+        "3": "REST-posts",
+        "4": "REST-comments",
+        "5": "REST-albums",
+        "6": "REST-photos",
+        "7": "REST-todos",
+        "8": "login",
         "99": "stop"
     },
     "contexts": [
