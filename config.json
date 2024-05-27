@@ -1,5 +1,13 @@
 {
     "json_filename": "tulip_results.json",
+    "user_class": "user.UserHttp",
+    "user_actions": {
+        "0": "start",
+        "1": "REST-users",
+        "2": "REST-photos",
+        "3": "REST-todos",
+        "99": "stop"
+    },
     "contexts": [
         {
             "name": "Scenario-1",
