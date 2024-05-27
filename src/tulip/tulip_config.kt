@@ -44,6 +44,8 @@ data class ConfigTest(
 
 data class BenchmarkConfig(
     @SerializedName("json_filename") val jsonFilename: String,
+    @SerializedName("user_class") val userClass: String,
+    @SerializedName("user_actions") val userActions: Map<Int,String>,
     val contexts: List<ConfigContext> = listOf(),
     val benchmarks: List<ConfigTest> = listOf()
 )
@@ -52,9 +54,11 @@ fun initConfig(configFilename: String) {
     val gson = GsonBuilder().setPrettyPrinting().create()
     val sf = java.io.File(configFilename).readText()
     val config = gson.fromJson(sf,BenchmarkConfig::class.java)
-    //val json = gson.toJson(config)
-    //println("$json")
-    //println("${config}")
+    if (false) {
+        val json = gson.toJson(config)
+        println("$json")
+        println("${config}")
+    }
     for (e:ConfigContext in config.contexts) {
         //println("${e.name}")
         if (e.enabled) {
