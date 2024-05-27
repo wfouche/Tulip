@@ -1,6 +1,6 @@
 sdk env
-./gradlew --stop
+./gradlew -q --stop
 rm -f -r ./bin ./build
-./gradlew clean
-./gradlew run
-./gradlew --stop
+./gradlew -q clean
+./gradlew -q run
+./gradlew -q --stop
