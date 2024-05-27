@@ -1,7 +1,7 @@
 call init_env.cmd
-.\gradlew -q --stop
-rd/q/s .\bin
-rd/q/s .\build
-.\gradlew -q clean
-.\gradlew -q run
-.\gradlew -q --stop
+call .\gradlew -q --stop
+if exist .\bin   rd/q/s .\bin
+if exist .\build rd/q/s .\build
+call .\gradlew -q clean
+call .\gradlew -q run
+call .\gradlew -q --stop
