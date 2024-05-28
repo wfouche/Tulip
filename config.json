@@ -1,6 +1,6 @@
 {
     "json_filename": "tulip_results.json",
-    "user_class": "user.UserHttp",
+    "user_class": "user.HttpUser",
     "user_actions": {
         "0": "start",
         "1": "DELAY-6ms",

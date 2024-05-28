@@ -32,7 +32,7 @@ private fun serviceCall(resource: String, userId: Int): Boolean {
 
 /*-------------------------------------------------------------------------*/
 
-class UserHttp(userId: Int) : User(userId) {
+class HttpUser(userId: Int) : VirtualUser(userId) {
 
     // ----------------------------------------------------------------- //
 

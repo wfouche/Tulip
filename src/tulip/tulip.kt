@@ -37,7 +37,7 @@ var TULIP_SCENARIO_ID: Int = 0
 var MAX_NUM_USERS = 0
 var MAX_NUM_THREADS = 0
 
-private var userObjects: Array<User?>? = null // arrayOfNulls<User>(NUM_USERS)
+private var userObjects: Array<VirtualUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
 
 //
@@ -48,7 +48,7 @@ private var userThreads: Array<UserThread?>? = null //arrayOfNulls<UserThread>(N
 // ...
 private var testSuite: List<TestProfile>? = null
 
-private var newUser: ((Int,String) -> User)? = null
+private var newUser: ((Int,String) -> VirtualUser)? = null
 
 var actionNames: Map<Int, String> = emptyMap()
 
@@ -77,7 +77,7 @@ internal val mg_cpu_system = registry.gauge("Tulip", listOf(Tag.of("cpu",   "sys
 
 /*-------------------------------------------------------------------------*/
 
-fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, func: (Int,String) -> User) {
+fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, func: (Int,String) -> VirtualUser) {
     TULIP_SCENARIO_ID = contextId
     TULIP_SCENARIO_NAME = context.name
 
@@ -637,7 +637,7 @@ fun runTulip(
     context: RuntimeContext,
     tests: List<TestProfile>,
     actionNames: Map<Int, String>,
-    getUser: (Int,String) -> User,
+    getUser: (Int,String) -> VirtualUser,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
     Console.put("")
@@ -671,7 +671,7 @@ fun runTulip(
 
 /*-------------------------------------------------------------------------*/
 
-fun runTests(getUser: (Int,String) -> User) {
+fun runTests(getUser: (Int,String) -> VirtualUser) {
     val actionNames = tulip.g_config.userActions
     runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
 }
@@ -680,7 +680,7 @@ private fun runTests(
     contexts: List<RuntimeContext>,
     tests: List<TestProfile>,
     actionNames: Map<Int, String>,
-    getUser: (Int, String) -> User,
+    getUser: (Int, String) -> VirtualUser,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
     // Remove the previous JSON results file (if it exists)

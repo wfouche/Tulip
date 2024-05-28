@@ -5,14 +5,13 @@
 /*-------------------------------------------------------------------------*/
 
 import kotlinx.cli.*
-import tulip.User
-import user.UserHttp
+import tulip.VirtualUser
 
 /*-------------------------------------------------------------------------*/
 
-fun getUser(userId: Int, userClass: String): User {
+fun getUser(userId: Int, userClass: String): VirtualUser {
     return when (userClass) {
-        "user.UserHttp" -> user.UserHttp(userId)
+        "user.HttpUser" -> user.HttpUser(userId)
         else -> throw Exception("Unknown user class name provided - $userClass")
     }
 }
