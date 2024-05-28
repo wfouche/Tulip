@@ -19,4 +19,8 @@ plugins {
 
     // Add support for AsciidoctorJ
     id("org.asciidoctor.jvm.convert") version "4.0.2"
+
+    // Kotlin Dokka
+    // ./gradlew dokkaHtml
+    id("org.jetbrains.dokka") version "1.9.20"
 }
