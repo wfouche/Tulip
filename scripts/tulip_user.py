@@ -13,7 +13,7 @@ print("""
 //
 // Open base class for a Virtual User.
 //
-open class User(val userId: Int) {
+open class VirtualUser(val userId: Int) {
 
     private val map = arrayOf(
         ::start,""")
