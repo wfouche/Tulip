@@ -3,7 +3,6 @@ import tulip.Duration
 import tulip.NUM_ACTIONS
 import tulip.RuntimeContext
 import tulip.TestProfile
-import tulip.User
 
 const val JSON_FILENAME = "json_results.txt"
 

@@ -1,4 +1,3 @@
-import tulip.Console
 import tulip.User
 
 import okhttp3.OkHttpClient
