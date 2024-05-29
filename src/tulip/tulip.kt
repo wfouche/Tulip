@@ -104,7 +104,7 @@ fun runtimeDone() {
 
     // Wait for all user threads to exit.
     while (userThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
-        delay(500)
+        delayM10(500)
     }
 }
 
@@ -239,7 +239,7 @@ class RateGovernor(private val averageRate: Double, private val timeMillisStart:
         }
         if (averageRate < 100) {
             // At low throughput rates, we just sleep for the required number of millis.
-            delay(deltaMs)
+            delayM10(deltaMs)
         } else {
             // Soften the impact of large delays at very high throughput rates.
             if (deltaMs > 100) Thread.sleep(10)
@@ -345,10 +345,10 @@ object CpuLoadMetrics : Thread() {
 
     override fun run() {
         while (getProcessCpuLoad().isNaN()) {
-            delay(250)
+            delayM10(250)
         }
         while (getSystemCpuLoad().isNaN()) {
-            delay(250)
+            delayM10(250)
         }
 
         var timeMillisNext: Long = timeMillis()
@@ -358,7 +358,7 @@ object CpuLoadMetrics : Thread() {
         while (true) {
             timeMillisNext += 1000
             while (timeMillis() < timeMillisNext) {
-                delay(250)
+                delayM10(250)
             }
             totalCpuSystem += getSystemCpuLoad()
             totalCpuProcess += getProcessCpuLoad()
@@ -660,7 +660,7 @@ fun runTulip(
         if (testCase.enabled) {
             val x: TestProfile = getTest(context, testCase)
             x.queueLengths.forEachIndexed { indexUserProfile, queueLength ->
-                delay(5000)
+                delayM10(5000)
                 runTest(x, contextId, indexTestCase, indexUserProfile, queueLength)
             }
         }

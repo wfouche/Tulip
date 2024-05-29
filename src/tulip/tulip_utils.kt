@@ -16,16 +16,6 @@ import kotlin.math.pow
 
 /*-------------------------------------------------------------------------*/
 
-/*import org.http4k.client.ApacheClient
-import org.http4k.core.Method
-import org.http4k.core.Request
-import org.http4k.core.Response
-import org.http4k.core.Status.Companion.OK
-import org.http4k.server.Undertow
-import org.http4k.server.asServer*/
-
-/*-------------------------------------------------------------------------*/
-
 // Round value x to the nearest multiple of n.
 fun roundXN(x: Long, n: Long): Long {
     return if (x >= 0)
@@ -75,12 +65,12 @@ inline fun timeNanos(): Long {
 //
 // Use this function to calculate elapsed time in milliseconds.
 //
-/* inline fun elapsedTimeMillis(block: () -> Unit): Long {
+inline fun elapsedTimeMillis(block: () -> Unit): Long {
     val start = timeMillis()
     block()
     return timeMillis() - start
 }
-*/
+
 //
 // Use this function to calculate elapsed time in microseconds.
 //
@@ -93,19 +83,19 @@ inline fun elapsedTimeMicros(block: () -> Unit): Long {
 //
 // Use this function to calculate elapsed time in nanoseconds.
 //
-/* inline fun elapsedTimeNanos(block: () -> Unit): Long {
+inline fun elapsedTimeNanos(block: () -> Unit): Long {
     val start = timeNanos()
     block()
     return timeNanos() - start
 }
-*/
+
 /*-------------------------------------------------------------------------*/
 
 //
 // It is worth reading the article on "Accuracy vs Precision"
 // at https://en.wikipedia.org/wiki/Accuracy_and_precision
 //
-/*private fun measureTimeAccuracy(time: () -> Long): Long {
+private fun measureTimeAccuracy(time: () -> Long): Long {
     val a = LongArray(1000)
     var z: Long
     var y: Long
@@ -130,82 +120,68 @@ inline fun elapsedTimeMicros(block: () -> Unit): Long {
 
     // return smallest element.
     return a[0]
-}*/
+}
 
 /*-------------------------------------------------------------------------*/
 
-/*fun accuracyTimeMillis(): Long {
+fun accuracyTimeMillis(): Long {
     return measureTimeAccuracy(::timeMillis)
-}*/
+}
 
-/*fun accuracyTimeMicros(): Long {
+fun accuracyTimeMicros(): Long {
     return measureTimeAccuracy(::timeMicros)
-}*/
+}
 
-/*fun accuracyTimeNanos(): Long {
+fun accuracyTimeNanos(): Long {
     return measureTimeAccuracy(::timeNanos)
-}*/
+}
 
 /*-------------------------------------------------------------------------*/
 
-/*fun accuracySystemCurrentTimeMillis(): Long {
+fun accuracySystemCurrentTimeMillis(): Long {
     fun systemCurrentTimeMillis(): Long {
         return System.currentTimeMillis()
     }
     return measureTimeAccuracy(::systemCurrentTimeMillis)
-}*/
+}
 
-/*fun accuracySystemNanoTime(): Long {
+fun accuracySystemNanoTime(): Long {
     fun systemNanoTime(): Long {
         return System.nanoTime()
     }
     return measureTimeAccuracy(::systemNanoTime)
-}*/
+}
+
+/*-------------------------------------------------------------------------*/
+
+fun delay(delayMillis: Long) {
+    require(delayMillis >= 0) {"delayMillis cannot be negative, is $delayMillis"}
+    Thread.sleep(delayMillis)
+}
 
 /*-------------------------------------------------------------------------*/
 
 //
-// Delay function to workaround Thread.sleep issue on Windows.
+// Delay function to workaround Thread.sleep issue on old versions of Windows.
 // Only ever delay for a value that is a multiple of 10 milliseconds (ms).
 //
-fun delay(delayMillis: Long) {
+fun delayM10(delayMillis: Long) {
+    require(delayMillis >= 0) {"delayMillis cannot be negative, is $delayMillis"}
     // round delay to the nearest value of 10.
     // 11 -> 10, ..., 14 -> 10,  15 -> 20, etc.
-    Thread.sleep(roundXN(delayMillis, 10))
+    val delayMillisM10 = roundXN(delayMillis, 10)
+    delay(delayMillisM10)
 }
-
-/*-------------------------------------------------------------------------*/
-
-// Burn CPU cycles for 'delay' milliseconds
-fun delayMillis(delay: Long) {
-    val end = timeMicros() + delay * 1000
-    while (timeMicros() < end) {
-        // pass
-    }
-}
-
-// Burn CPU cycles for 'delay' microseconds
-/* fun delayMicros(delay: Long) {
-    val end = timeNanos() + delay * 1000
-    while (timeNanos() < end) {
-        // pass
-    }
-}*/
 
 /*-------------------------------------------------------------------------*/
 
 fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
-    require(delayFrom >= 0) { "delayFrom must be non-negative, was $delayFrom" }
-    require(delayTo >= 0) { "delayTo must be non-negative, was $delayTo" }
+    require(delayFrom >= 0) { "delayFrom must be non-negative, is $delayFrom" }
+    require(delayTo >= 0) { "delayTo must be non-negative, is $delayTo" }
     require(delayFrom < delayTo) { "delayFrom must be smaller than delayTo, but $delayFrom >= $delayTo"}
-    val delay = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
-    Thread.sleep(delay)
+    val delayMillis = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
+    delay(delayMillis)
 }
-
-/* fun delayMicrosRandom(delayFrom: Long, delayTo: Long) {
-    val delay = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
-    delayMicros(delay)
-}*/
 
 /*-------------------------------------------------------------------------*/
 
@@ -254,29 +230,13 @@ fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
 
 /*-------------------------------------------------------------------------*/
 
-/*fun durationMillisToString(durationInMillis: Long): String {
+fun durationMillisToString(durationInMillis: Long): String {
     val seconds = durationInMillis / 1000
     val s = seconds % 60
     val m = (seconds / 60) % 60
     val h = (seconds / (60 * 60))
     val q = durationInMillis % 1000
     return String.format("%02d:%02d:%02d.%03d", h, m, s, q)
-}*/
-
-/*-------------------------------------------------------------------------*/
-
-/*fun testHttp4k() {
-    val app = { request: Request -> Response(OK).body("Hello, ${request.query("name")}!") }
-
-    val server = app.asServer(Undertow(9000)).start()
-
-    val client = ApacheClient()
-
-    val request = Request(Method.GET, "http://localhost:9000").query("name", "John Doe")
-
-    println(client(request))
-
-    server.stop()
-}*/
+}
 
 /*-------------------------------------------------------------------------*/
