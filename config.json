@@ -22,7 +22,7 @@
         },
         {
             "name": "Scenario-2",
-            "enabled": true,
+            "enabled": false,
             "num_users": 32,
             "num_threads": 4
         }
