@@ -13,6 +13,9 @@
         "8": "login",
         "99": "stop"
     },
+    "user_params": {
+        "url": "https://jsonplaceholder.typicode.com"
+    },
     "contexts": [
         {
             "name": "Scenario-1",

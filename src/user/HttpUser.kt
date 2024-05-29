@@ -16,7 +16,7 @@ private fun serviceCall(resource: String, userId: Int): Boolean {
     // https://www.baeldung.com/java-httpclient-connection-management
     val id = userId + 1
     val request = HttpRequest.newBuilder()
-        .uri(URI("https://jsonplaceholder.typicode.com/${resource}/${id}"))
+        .uri(URI("${g_config.userParams["url"]}/${resource}/${id}"))
         .GET()
         .build()
 

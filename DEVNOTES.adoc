@@ -157,13 +157,12 @@ Create a Maven Central hosted tulip-core.jar runtime library that can be importe
 </dependency>
 ----
 
-== Java Benchmark Support
+== [DONE] [.line-through]#Java Benchmark Support#
 
 Allow benchmark user class to be written in Java or other JVM compatible languages. Add support for:
 
 * [.line-through]#Kotlin#
-* Java
-* Scala
+* [.line-through]#Java#
 
 == Reimplement JSON input (config.json)
 
@@ -236,5 +235,19 @@ See https://glowroot.org/ and https://github.com/glowroot/glowroot
         "8": "login",
         "99": "stop"
     }
+}
+----
+
+== [DONE] [.line-through]#Add user_params to config.json#
+
+[source,json]
+----
+{
+    ....
+    "user_params": {
+        "url": "https://jsonplaceholder.typicode.com",
+        ....
+    },
+    ....
 }
 ----
