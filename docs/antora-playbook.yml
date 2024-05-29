@@ -1,0 +1,85 @@
+site:
+  title: Antora GitHub Pages Demo
+  start_page: antora-gh-pages-demo::index.adoc
+content:
+  sources:
+    - url: .
+      branches: HEAD
+ui:
+  bundle:
+    url: ./ui-bundle.zip
+    #url: https://gitlab.com/antora/antora-ui-default/-/jobs/artifacts/HEAD/raw/build/ui-bundle.zip?job=bundle-stable
+    snapshot: true
+  supplemental_files:
+    # add @asciidoctor/tabs files during generation
+    - path: css/vendor/tabs.css
+      contents: './node_modules/@asciidoctor/tabs/dist/css/tabs.css'
+    - path: js/vendor/tabs.js
+      contents: './node_modules/@asciidoctor/tabs/dist/js/tabs.js'
+    - path: partials/footer-scripts.hbs
+      contents: |
+        <script id="site-script" src="{{{uiRootPath}}}/js/site.js" data-ui-root-path="{{{uiRootPath}}}"></script>
+        <script async src="{{{uiRootPath}}}/js/vendor/highlight.js"></script>
+        <script async src="{{{uiRootPath}}}/js/vendor/tabs.js"></script>
+        {{#if env.SITE_SEARCH_PROVIDER}}
+        {{> search-scripts}}
+        {{/if}}
+    - path: partials/head-styles.hbs
+      contents: |
+        <link rel="stylesheet" href="{{{uiRootPath}}}/css/site.css">
+        <link rel="stylesheet" href="{{{uiRootPath}}}/css/vendor/tabs.css">
+        {{> shiki-styles }}
+    # https://docs.antora.org/antora/latest/publish-to-github-pages/
+    - path: ui.yml
+      contents: |
+        static_files:
+        - .nojekyll
+    - path: .nojekyll
+    # Customize other contents
+    - path: partials/header-content.hbs
+      contents: |
+        <header class="header">
+          <nav class="navbar">
+            <div class="navbar-brand">
+              <a class="navbar-item" href="{{{or site.url siteRootPath}}}">{{site.title}}</a>
+              {{#if env.SITE_SEARCH_PROVIDER}}
+              <div class="navbar-item search hide-for-print">
+                <div id="search-field" class="field">
+                  <input id="search-input" type="text" placeholder="Search the docs"{{#if page.home}} autofocus{{/if}}>
+                </div>
+              </div>
+              {{/if}}
+              <button class="navbar-burger" data-target="topbar-nav">
+                <span></span>
+                <span></span>
+                <span></span>
+              </button>
+            </div>
+          </nav>
+        </header>
+    - path: partials/nav.hsb
+      contents: |
+        <div class="nav-container"{{#if page.component}} data-component="{{page.component.name}}" data-version="{{page.version}}"{{/if}}>
+          <aside class="nav">
+            <div class="panels">
+        {{> nav-menu}}
+            </div>
+          </aside>
+        </div>
+output:
+  clean: true
+antora:
+  extensions:
+    - '@antora/lunr-extension'
+    - require: 'antora-shiki-extension'
+      theme: "github-light"
+asciidoc:
+  attributes:
+    kroki-server-url: https://kroki.io
+    kroki-fetch-diagram: true
+    source-highlighter: shiki
+  extensions:
+    - '@asciidoctor/tabs'
+    - 'asciidoctor-kroki'
+    - 'asciidoctor-external-callout'
+    - '@djencks/asciidoctor-mathjax'
