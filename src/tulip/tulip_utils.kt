@@ -196,7 +196,7 @@ fun delayMillis(delay: Long) {
 
 fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
     val delay = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
-    delayMillis(delay)
+    Thread.sleep(delay)
 }
 
 /* fun delayMicrosRandom(delayFrom: Long, delayTo: Long) {
