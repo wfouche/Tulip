@@ -24,4 +24,8 @@ plugins {
     // Kotlin Dokka
     // ./gradlew dokkaHtml
     id("org.jetbrains.dokka") version "1.9.20"
+
+    // Apply GraalVM Native Image plugin
+    // https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
+    id("org.graalvm.buildtools.native") version "0.10.2"
 }
