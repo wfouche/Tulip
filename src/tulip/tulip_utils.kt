@@ -195,6 +195,9 @@ fun delayMillis(delay: Long) {
 /*-------------------------------------------------------------------------*/
 
 fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
+    require(delayFrom >= 0) { "delayFrom must be non-negative, was $delayFrom" }
+    require(delayTo >= 0) { "delayTo must be non-negative, was $delayTo" }
+    require(delayFrom < delayTo) { "delayFrom must be smaller than delayTo, but $delayFrom >= $delayTo"}
     val delay = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
     Thread.sleep(delay)
 }
