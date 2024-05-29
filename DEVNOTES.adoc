@@ -115,7 +115,7 @@ Create a user guide for Tulip with Antora
 
 * https://openjdk.org/groups/net/httpclient/recipes.html
 
-== Pkl Config Support
+== [DROPPED] [.line-through]#Pkl Config Support#
 
 Write a config.pkl file to generate config.json
 
@@ -126,6 +126,15 @@ Write a config.pkl file to generate config.json
 Build a native (exe) using GraalVM of a Tulip benchmark application
 
 * https://www.graalvm.org/
+
+[source,bash]
+----
+$ ./gradlew nativeCompile
+
+$ ./build/native/nativeCompile/tulip -c ./config.json
+----
+
+* https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
 
 == Docker Support
 
@@ -155,6 +164,13 @@ Allow benchmark user class to be written in Java or other JVM compatible languag
 * [.line-through]#Kotlin#
 * Java
 * Scala
+
+== Reimplement JSON input (config.json)
+
+Use Kotlin Serialization instead of GSON:
+
+* Support JSON5 format
+* Support GraalVM
 
 == Reimplement JSON output
 
@@ -202,11 +218,12 @@ Remove folder `tulip/runtime/glowroot`.
 
 See https://glowroot.org/ and https://github.com/glowroot/glowroot
 
-== Add user_actions to config.json
+== [DONE] [.line-through]#Add user_actions and user_class to config.json#
 
 [source,yaml]
 ----
 {
+    "user_class": "user.UserHttp",
     "user_actions": {
         "0": "start",
         "1": "DELAY-6ms",
