@@ -216,5 +216,4 @@ open class VirtualUser(val userId: Int) {
             false
         }
     }
-
 }

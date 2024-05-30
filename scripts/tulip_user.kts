@@ -41,6 +41,5 @@ text = """    open fun stop(): Boolean = false
             false
         }
     }
-
 }"""
 println(text)
