@@ -12,3 +12,6 @@ gradle=8.7
 
 # JBang
 jbang=0.116.0
+
+# KScript
+kscript=4.2.3
