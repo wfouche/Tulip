@@ -1,14 +1,7 @@
-/*-------------------------------------------------------------------------*/
-
 package tulip
-
-/*-------------------------------------------------------------------------*/
 
 const val NUM_ACTIONS = 100
 
-//
-// Open base class for a Virtual User.
-//
 open class VirtualUser(val userId: Int) {
 
     private val map = arrayOf(
@@ -225,5 +218,3 @@ open class VirtualUser(val userId: Int) {
     }
 
 }
-
-/*-------------------------------------------------------------------------*/
