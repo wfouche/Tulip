@@ -4,3 +4,6 @@
 
 # Ignore Gradle build output directory
 build/
+
+# Kotlin 2.0
+.kotlin/
