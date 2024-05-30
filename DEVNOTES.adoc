@@ -256,3 +256,8 @@ See https://glowroot.org/ and https://github.com/glowroot/glowroot
 
 * tulip_user.py
 * tulip_user.kts
+
+== Re-write json_print_asciidoc.py in Kotlin Script
+
+* json_print_asciidoc.py
+* json_print_asciidoc.kts
