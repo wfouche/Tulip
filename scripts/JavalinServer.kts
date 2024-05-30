@@ -15,4 +15,4 @@ fun main() {
         .start(7070)
 }
 
-// $ kscript JavalinServer.kt
+// $ kscript JavalinServer.kts
