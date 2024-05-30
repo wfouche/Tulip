@@ -14,5 +14,5 @@ val app = Javalin.create(/*config*/)
     .get("/todos/{id}")    { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
     .start(7070)
 
-// $ ./JavalinServer.kts
+// $ ./JavalinServer.kts        # or use command below
 // $ kscript JavalinServer.kts
