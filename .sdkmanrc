@@ -1,5 +1,7 @@
 # Enable auto-env through the sdkman_auto_env config
 # Add key=value pairs of SDKs to use below
+
+# Java
 java=21.0.3-tem
 #java=22.0.1-tem
 #java=21.0.3-graal
@@ -7,3 +9,6 @@ java=21.0.3-tem
 
 # Gradle
 gradle=8.7
+
+# JBang
+jbang=0.116.0
