@@ -4,3 +4,6 @@ java=21.0.3-tem
 #java=22.0.1-tem
 #java=21.0.3-graal
 #java=22.0.1-graal
+
+# Gradle
+gradle=8.7
