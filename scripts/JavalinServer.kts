@@ -1,3 +1,4 @@
+#!/usr/bin/env kscript
 @file:Repository("https://repo.maven.apache.org/maven2")
 @file:DependsOn("io.javalin:javalin:6.1.6")
 @file:DependsOn("org.slf4j:slf4j-simple:2.0.12")
@@ -13,4 +14,5 @@ val app = Javalin.create(/*config*/)
     .get("/todos/{id}")    { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
     .start(7070)
 
+// $ ./JavalinServer.kts
 // $ kscript JavalinServer.kts
