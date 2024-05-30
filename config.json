@@ -1,6 +1,9 @@
 {
     "json_filename": "tulip_results.json",
     "user_class": "user.HttpUser",
+    "user_params": {
+        "url": "https://jsonplaceholder.typicode.com"
+    },
     "user_actions": {
         "0": "start",
         "1": "DELAY-6ms",
@@ -12,9 +15,6 @@
         "7": "REST-todos",
         "8": "login",
         "99": "stop"
-    },
-    "user_params": {
-        "url": "https://jsonplaceholder.typicode.com"
     },
     "contexts": [
         {

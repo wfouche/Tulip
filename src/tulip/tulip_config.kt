@@ -47,8 +47,8 @@ data class ConfigTest(
 data class BenchmarkConfig(
     @SerializedName("json_filename") val jsonFilename: String = "",
     @SerializedName("user_class") val userClass: String = "",
-    @SerializedName("user_actions") val userActions: Map<Int,String> = mapOf(),
     @SerializedName("user_params") val userParams: Map<String,String> = mapOf(),
+    @SerializedName("user_actions") val userActions: Map<Int,String> = mapOf(),
     val contexts: List<ConfigContext> = listOf(),
     val benchmarks: List<ConfigTest> = listOf()
 )
