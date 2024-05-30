@@ -1,1 +1,1 @@
-python3 ./json_print.py < ../json_results.txt > ../json_results_formatted.txt
+jq < ../tulip_results.json > ../tulip_results_formatted.json
