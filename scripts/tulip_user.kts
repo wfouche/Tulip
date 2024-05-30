@@ -29,6 +29,8 @@ for (i in 0..NUM_ACTIONS-3) {
     println("    open fun action${i+1}(): Boolean = false")
 }
 
+// https://github.com/Kotlin/KEEP/issues/375
+// Wait for KEEP-375 to be implemented in Kotlin 2.1
 val escaped_text = "userId: \${userId}, actionId: \${actionId}"
 
 text = """    open fun stop(): Boolean = false
