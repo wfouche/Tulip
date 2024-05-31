@@ -261,3 +261,32 @@ See https://glowroot.org/ and https://github.com/glowroot/glowroot
 
 * json_print_asciidoc.py
 * json_print_asciidoc.kts
+
+== Benchmark Summary
+
+Display a summary of benchmark results at the end of the benchmark:
+
+Benchmark1::
+* Name
+* Average TPS
+* Average response time
+* 90th percentile
+* Max response time
+* Num-failed nnn (%xyz)
+
+Benchmark2::
+* Name
+* Average TPS
+* Average response time
+* 90th percentile
+* Max response time
+* Num-failed nnn (%xyz)
+
+Benchmark...::
+* Name
+* Average TPS
+* Average response time
+* 90th percentile
+* Max response time
+* Num-failed nnn (%xyz)
+
