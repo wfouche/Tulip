@@ -420,7 +420,7 @@ object DataCollector {
 
             val r = actionStats[NUM_ACTIONS].r
 
-            var json = "{"
+            var json = "{" + "\"attributes\": {\"type\": \"data\"},"
 
             json += "\"scenario_name\": \"${TULIP_SCENARIO_NAME}\", "
             json += "\"scenario_id\": ${TULIP_SCENARIO_ID}, "
