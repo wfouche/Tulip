@@ -252,7 +252,7 @@ See https://glowroot.org/ and https://github.com/glowroot/glowroot
 }
 ----
 
-== Re-write tulip_user.py in Kotlin Script
+== [DONE] [.line-through]#Re-write tulip_user.py in Kotlin Script#
 
 * tulip_user.py
 * tulip_user.kts
