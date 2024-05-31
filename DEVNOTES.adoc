@@ -290,3 +290,15 @@ Benchmark...::
 * Max response time
 * Num-failed nnn (%xyz)
 
+== Performance Requirements
+
+[source,json]
+----
+{
+    "performance_requirements": {
+        "avg-tps": "12 tps",
+        "avg-tps-variance": "10 percent",
+        ...
+    }
+}
+----
