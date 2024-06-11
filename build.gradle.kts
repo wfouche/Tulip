@@ -3,8 +3,8 @@ application {
     applicationDefaultJvmArgs = listOf(
         "-server",
         "-Xmx4096m",
-        "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
-        // "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
+        // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
+        "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
         "-Dcom.sun.management.jmxremote.port=3333",
         "-Dcom.sun.management.jmxremote.ssl=false",
         "-Dcom.sun.management.jmxremote.authenticate=false")
