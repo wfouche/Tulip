@@ -302,3 +302,11 @@ Benchmark...::
     }
 }
 ----
+
+== HdrHistogram
+
+Use https://hdrhistogram.github.io/HdrHistogram/[HdrHistogram] to replace Tulip's own log-linear quantization logic.
+
+HdrHistogram is a standard used by several load testing tools.
+
+* implementation("org.hdrhistogram:HdrHistogram:2.2.2")
