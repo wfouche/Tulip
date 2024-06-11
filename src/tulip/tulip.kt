@@ -515,19 +515,21 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         val durationMillis: Int = (timeMillisEnd - timeMillisStart).toInt()
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
-        DataCollector.createSummary(
-            durationMillis,
-            testCase,
-            indexTestCase,
-            indexUserProfile,
-            queueLength,
-            tsBegin,
-            tsEnd,
-            "Main",
-            0
-        )
-        DataCollector.printStats(true)
-        DataCollector.saveStatsJson(testCase.filename)
+        val durationMicros = elapsedTimeMicros {
+            DataCollector.createSummary(
+                durationMillis,
+                testCase,
+                indexTestCase,
+                indexUserProfile,
+                queueLength,
+                tsBegin,
+                tsEnd,
+                "Main",
+                0)
+            DataCollector.printStats(true)
+            DataCollector.saveStatsJson(testCase.filename)
+        }
+        //Console.put("Init: Duration spend in stats processing = ${durationMicros}")
     } else {
         // Normal test case.
         var timeMillisStart: Long
@@ -583,21 +585,24 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
             Console.put("$testPhase run ${runId}: end   (${tsEnd})")
 
-            DataCollector.createSummary(
-                durationMillis1,
-                testCase,
-                indexTestCase,
-                indexUserProfile,
-                queueLength,
-                tsBegin,
-                tsEnd,
-                testPhase,
-                runId
-            )
-            DataCollector.printStats(false)
-            if (testPhase == "Main") {
-                DataCollector.saveStatsJson(testCase.filename)
+            val durationMicros = elapsedTimeMicros {
+                DataCollector.createSummary(
+                    durationMillis1,
+                    testCase,
+                    indexTestCase,
+                    indexUserProfile,
+                    queueLength,
+                    tsBegin,
+                    tsEnd,
+                    testPhase,
+                    runId
+                )
+                DataCollector.printStats(false)
+                if (testPhase == "Main") {
+                    DataCollector.saveStatsJson(testCase.filename)
+                }
             }
+            //Console.put("Main: Duration spend in stats processing = ${durationMicros}")
         }
 
         // Start-up
