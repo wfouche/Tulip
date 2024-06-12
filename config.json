@@ -14,6 +14,7 @@
         "6": "REST-photos",
         "7": "REST-todos",
         "8": "login",
+        "9": "noop",
         "99": "stop"
     },
     "contexts": [
