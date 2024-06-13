@@ -19,7 +19,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.51.0"
 
     // Add support for AsciidoctorJ
-    id("org.asciidoctor.jvm.convert") version "4.0.2"
+    // id("org.asciidoctor.jvm.convert") version "4.0.2"
 
     // Kotlin Dokka
     // ./gradlew dokkaHtml
@@ -27,5 +27,5 @@ plugins {
 
     // Apply GraalVM Native Image plugin
     // https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
-    id("org.graalvm.buildtools.native") version "0.10.2"
+    // id("org.graalvm.buildtools.native") version "0.10.2"
 }
