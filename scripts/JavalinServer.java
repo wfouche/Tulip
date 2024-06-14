@@ -13,6 +13,11 @@ public class JavalinServer {
             .get("/albums/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
             .get("/photos/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
             .get("/todos/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
+            // curl -X GET http://localhost:7070:/rendezvous/ -H 'Content-Type: application/json' -d '{"login":"my_login","password":"my_password"}'
+            .get("/rendezvous", ctx -> {
+                System.out.println(ctx.body());
+                ctx.result("{\"code\": \"OK\"}").contentType("application/json");
+            } )
             .start(7070);
     }
 }
