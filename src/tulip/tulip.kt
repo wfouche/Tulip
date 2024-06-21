@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.exitProcess
+import java.util.concurrent.LinkedBlockingQueue as Java_Queue
 import java.util.concurrent.LinkedBlockingQueue as SPSC_Queue
 import java.util.concurrent.LinkedBlockingQueue as MPSC_Queue
 import io.github.oshai.kotlinlogging.KotlinLogging
@@ -259,7 +260,7 @@ class UserThread(private val threadId: Int) : Thread() {
     //
     // Task Queue - input queue with tasks for this thread to complete.
     //
-    var tq = SPSC_Queue<Task>(10)
+    val tq = SPSC_Queue<Task>(10)
     private var running = true
 
     override fun run() {
@@ -313,7 +314,7 @@ object Console : Thread() {
         start()
     }
 
-    private var q = MPSC_Queue<MutableList<String>>(10)
+    private var q = Java_Queue<MutableList<String>>(10)
 
     override fun run() {
         while (true) {
@@ -341,8 +342,8 @@ object CpuLoadMetrics : Thread() {
         start()
     }
 
-    val systemCpuStats = SPSC_Queue<Double>(1000)
-    val processCpuStats = SPSC_Queue<Double>(1000)
+    val systemCpuStats = Java_Queue<Double>(1000)
+    val processCpuStats = Java_Queue<Double>(1000)
 
     override fun run() {
         while (getProcessCpuLoad().isNaN()) {
