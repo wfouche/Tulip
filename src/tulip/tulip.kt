@@ -16,7 +16,8 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.exitProcess
-import java.util.concurrent.LinkedBlockingQueue as Queue
+import java.util.concurrent.LinkedBlockingQueue as SPSC_Queue
+import java.util.concurrent.LinkedBlockingQueue as MPSC_Queue
 import io.github.oshai.kotlinlogging.KotlinLogging
 
 /*-------------------------------------------------------------------------*/
@@ -219,7 +220,7 @@ data class Task(
     // Duration (elapsed time) in microseconds.
     var durationMicros: Long = 0,
 
-    var rspQueue: Queue<Task>? = null,
+    var rspQueue: MPSC_Queue<Task>? = null,
 
     var status: Int = -1
 )
@@ -258,7 +259,7 @@ class UserThread(private val threadId: Int) : Thread() {
     //
     // Task Queue - input queue with tasks for this thread to complete.
     //
-    var tq = Queue<Task>(10)
+    var tq = SPSC_Queue<Task>(10)
     private var running = true
 
     override fun run() {
@@ -312,7 +313,7 @@ object Console : Thread() {
         start()
     }
 
-    private var q = Queue<MutableList<String>>(10)
+    private var q = MPSC_Queue<MutableList<String>>(10)
 
     override fun run() {
         while (true) {
@@ -340,8 +341,8 @@ object CpuLoadMetrics : Thread() {
         start()
     }
 
-    val systemCpuStats = Queue<Double>(1000)
-    val processCpuStats = Queue<Double>(1000)
+    val systemCpuStats = SPSC_Queue<Double>(1000)
+    val processCpuStats = SPSC_Queue<Double>(1000)
 
     override fun run() {
         while (getProcessCpuLoad().isNaN()) {
@@ -457,7 +458,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     //
     // Create a queue containing a total of queueLength tokens.
     //
-    val rspQueue = Queue<Task>(queueLength)
+    val rspQueue = MPSC_Queue<Task>(queueLength)
 
     fun initRspQueue() {
         repeat(queueLength) {
