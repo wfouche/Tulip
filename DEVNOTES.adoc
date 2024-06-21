@@ -350,3 +350,21 @@ public class test_hdrhistogram {
     }
 }
 ----
+
+== Summary Statistics
+
+
+----
+PHASE    METRIC  THROUGHPUT    ACTIONS  MEAN      STD_DEV  p50       p90       p99       p99.9     MAX        SUCCESS   FAILED
+example  test    29,41 req/s         1  17,37 ms     0 ms  17,43 ms  17,43 ms  17,43 ms  17,43 ms  17,43 ms         1        0
+----
+
+== JCTools Concurrent Queues
+
+Replace queues in JC queues.
+
+* https://github.com/JCTools/JCTools
+
+== kscript
+
+Remove kscript, kotlin 1.9.24 and use jbang
