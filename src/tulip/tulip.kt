@@ -623,12 +623,11 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         if (indexUserProfile == 0) {
             assignTasks(testCase.duration.startupDurationMillis, "Start-up", 0, 0, 0.0)
         }
-        //Console.put("  Time Blocked = ${g_queueTimeBlocked} ns")
 
         // Ramp-up
         g_queueTimeBlocked = 0
         assignTasks(testCase.duration.warmupDurationMillis, "Ramp-up", 0, 0)
-        // Console.put("  Time Blocked = ${g_queueTimeBlocked} ns")
+        Console.put(mutableListOf("","  total time blocked   = ${g_queueTimeBlocked} ns"))
 
         // Main run(s)
         for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
