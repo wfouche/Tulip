@@ -368,3 +368,11 @@ Replace queues in JC queues.
 == kscript
 
 Remove kscript, kotlin 1.9.24 and use jbang
+
+== [DONE] [.line-through]#Total Time Blocked#
+
+Add a counter that records the total time that the main thread is blocked waiting to assigned tasks to worker threads.
+
+* https://medium.com/@siddontang/the-coordinated-omission-problem-in-the-benchmark-tools-5d9abef79279
+
+* http://btw2017.informatik.uni-stuttgart.de/slidesandpapers/E4-11-107/paper_web.pdf
