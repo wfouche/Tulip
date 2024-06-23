@@ -25,6 +25,8 @@ import io.github.oshai.kotlinlogging.KotlinLogging
 // https://github.com/oshai/kotlin-logging
 val logger = KotlinLogging.logger {}
 
+var g_queueTimeBlocked: Long = 0
+
 /*-------------------------------------------------------------------------*/
 
 val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS")
@@ -391,7 +393,12 @@ fun assignTask(task: Task) {
         }
         userThreads!![threadId] = w
     }
-    w.tq.put(task)
+    if (!w.tq.offer(task)) {
+        val qtw = elapsedTimeNanos {
+            w.tq.put(task)
+        }
+        if (qtw > 0) g_queueTimeBlocked += qtw
+    }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -612,21 +619,27 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         // Since we could have 1 or more population set sizes, only perform the start-up phase
         // on the first set, i.e., with index 0.
         //
+        g_queueTimeBlocked = 0
         if (indexUserProfile == 0) {
             assignTasks(testCase.duration.startupDurationMillis, "Start-up", 0, 0, 0.0)
         }
+        //Console.put("  Time Blocked = ${g_queueTimeBlocked} ns")
 
         // Ramp-up
+        g_queueTimeBlocked = 0
         assignTasks(testCase.duration.warmupDurationMillis, "Ramp-up", 0, 0)
+        // Console.put("  Time Blocked = ${g_queueTimeBlocked} ns")
 
         // Main run(s)
         for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
+            g_queueTimeBlocked = 0
             assignTasks(
                 testCase.duration.mainDurationMillis,
                 "Main",
                 runId,
                 testCase.duration.mainDurationRepeatCount - 1
             )
+            Console.put(mutableListOf("","  total time blocked   = ${g_queueTimeBlocked} ns"))
         }
     }
 }
