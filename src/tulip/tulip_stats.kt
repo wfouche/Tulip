@@ -242,7 +242,7 @@ class ActionStats {
             mg_cpu_system?.set(r.avgCpuSystem.toInt())
 
             output.add("")
-            output.add("  memory used (jvm)    = ${"%,d".format(Locale.US, tm-fm)}")
+            output.add("  memory used (jvm)    = ${"%,d".format(Locale.US, tm - fm)}")
             output.add("  free memory (jvm)    = ${"%,d".format(Locale.US, fm)}")
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
@@ -257,10 +257,10 @@ class ActionStats {
 
             mg_benchmark_tps?.set(r.aps.toInt())
             mg_benchmark_dur?.set(r.durationSeconds.toInt())
-            var phaseId=0
-            if (r.testPhase == "Start-up") phaseId=0
-            if (r.testPhase == "Ramp-up") phaseId=1
-            if (r.testPhase == "Main") phaseId=2
+            var phaseId = 0
+            if (r.testPhase == "Start-up") phaseId = 0
+            if (r.testPhase == "Ramp-up") phaseId = 1
+            if (r.testPhase == "Main") phaseId = 2
 
             mg_benchmark_phs?.set(phaseId)
             mg_benchmark_run?.set(r.rowId)
@@ -290,7 +290,12 @@ class ActionStats {
             t += "\"${k}\": $v"
         }
         results += t
+
         results += "}"
+
+        results += ", \"histogram_rt\": "
+        val gson = Gson()
+        results += gson.toJson(latencyMap).toString()
 
         return results
     }
