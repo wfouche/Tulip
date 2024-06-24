@@ -1,6 +1,7 @@
 package tulip
 
 //import io.micrometer.core.instrument.Counter
+import com.google.gson.Gson
 import java.util.*
 import java.io.BufferedWriter
 
@@ -195,7 +196,8 @@ class ActionStats {
         val output = mutableListOf("")
 
         if (printMap) {
-            output.add("latencyMap = " + r.latencyMap.toString())
+            val gson = Gson()
+            output.add("latencyMap = " + gson.toJson(latencyMap).toString())
             output.add("")
         }
         if (actionId != NUM_ACTIONS) {
