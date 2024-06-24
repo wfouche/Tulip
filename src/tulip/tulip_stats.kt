@@ -290,7 +290,6 @@ class ActionStats {
             t += "\"${k}\": $v"
         }
         results += t
-
         results += "}"
 
         results += ", \"histogram_rt\": "
