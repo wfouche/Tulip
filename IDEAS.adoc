@@ -376,3 +376,48 @@ Add a counter that records the total time that the main thread is blocked waitin
 * https://medium.com/@siddontang/the-coordinated-omission-problem-in-the-benchmark-tools-5d9abef79279
 
 * http://btw2017.informatik.uni-stuttgart.de/slidesandpapers/E4-11-107/paper_web.pdf
+
+== [DONE] [.line-through]#Add histogram_rt data to results file#
+
+[source,json]
+----
+{
+    "histogram_rt": {
+      "10000": 839,
+      "20000": 745,
+      "3000": 284,
+      "30000": 175,
+      "15000": 792,
+      "10": 95,
+      "5000": 247,
+      "25000": 815,
+      "2000": 242,
+      "15": 121,
+      "8000": 259,
+      "9000": 277,
+      "7000": 247,
+      "4000": 273,
+      "6000": 261,
+      "1000": 267,
+      "5": 3,
+      "50": 1,
+      "20": 33,
+      "6500": 1,
+      "9": 12,
+      "1500": 1,
+      "8": 4,
+      "6": 1,
+      "7": 3,
+      "9500": 3,
+      "3500": 1,
+      "25": 3,
+      "2500": 1,
+      "8500": 1,
+      "4500": 1,
+      "5500": 1,
+      "7500": 1,
+      "4": 1,
+      "30": 1
+    }
+}
+----
