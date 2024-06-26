@@ -427,3 +427,7 @@ Add a counter that records the total time that the main thread is blocked waitin
 Measure the wait time for each action, and add it to the service time.
 
 * https://redhatperf.github.io/post/coordinated-omission/
+
+== Virtual Threads
+
+Experiment with assigning one virtual thread to each user object when using Java 21 or above.
