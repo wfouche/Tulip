@@ -221,7 +221,7 @@ data class Task(
     var actionId: Int = -1,
 
     // Duration (elapsed time) in microseconds.
-    var durationMicros: Long = 0,
+    var serviceTimeMicros: Long = 0,
 
     var rspQueue: MPSC_Queue<Task>? = null,
 
@@ -293,7 +293,7 @@ class UserThread(private val threadId: Int) : Thread() {
                 // True or False, indicating that the task succeeded or failed.
                 // Also calculate the elapsed time in microseconds.
                 //
-                task.durationMicros = elapsedTimeMicros {
+                task.serviceTimeMicros = elapsedTimeMicros {
                     if (u.processAction(task.actionId)) task.status = 1 else task.status = 0
                 }
 
