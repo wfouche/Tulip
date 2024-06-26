@@ -225,7 +225,10 @@ data class Task(
 
     var rspQueue: MPSC_Queue<Task>? = null,
 
-    var status: Int = -1
+    var status: Int = -1,
+
+    var beginQueueTimeNanos: Long = 0,
+    var endQueueTimeNanos: Long = 0
 )
 
 /*-------------------------------------------------------------------------*/
@@ -293,6 +296,7 @@ class UserThread(private val threadId: Int) : Thread() {
                 // True or False, indicating that the task succeeded or failed.
                 // Also calculate the elapsed time in microseconds.
                 //
+                task.endQueueTimeNanos = timeNanos()
                 task.serviceTimeMicros = elapsedTimeMicros {
                     if (u.processAction(task.actionId)) task.status = 1 else task.status = 0
                 }
@@ -393,6 +397,7 @@ fun assignTask(task: Task) {
         }
         userThreads!![threadId] = w
     }
+    task.beginQueueTimeNanos = timeNanos()
     if (!w.tq.offer(task)) {
         val qtw = elapsedTimeNanos {
             w.tq.put(task)
