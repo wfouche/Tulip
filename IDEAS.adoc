@@ -430,4 +430,6 @@ Measure the wait time for each action, and add it to the service time.
 
 == Virtual Threads
 
-Experiment with assigning one virtual thread to each user object when using Java 21 or above.
+Experiment with assigning one virtual thread to each user object when using Java 21 or above:
+
+* https://medium.com/@RamLakshmanan/java-virtual-threads-easy-introduction-44d96b8270f8
