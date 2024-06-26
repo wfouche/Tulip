@@ -421,3 +421,9 @@ Add a counter that records the total time that the main thread is blocked waitin
     }
 }
 ----
+
+== [DONE] [.line-through]#Coordinaton Ommision Problem#
+
+Measure the wait time for each action, and add it to the service time.
+
+* https://redhatperf.github.io/post/coordinated-omission/
