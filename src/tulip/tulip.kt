@@ -221,7 +221,7 @@ data class Task(
     var actionId: Int = -1,
 
     // Duration (elapsed time) in microseconds.
-    var serviceTimeMicros: Long = 0,
+    var serviceTimeNanos: Long = 0,
 
     var rspQueue: MPSC_Queue<Task>? = null,
 
@@ -297,7 +297,7 @@ class UserThread(private val threadId: Int) : Thread() {
                 // Also calculate the elapsed time in microseconds.
                 //
                 task.endQueueTimeNanos = timeNanos()
-                task.serviceTimeMicros = elapsedTimeMicros {
+                task.serviceTimeNanos = elapsedTimeNanos {
                     if (u.processAction(task.actionId)) task.status = 1 else task.status = 0
                 }
 
