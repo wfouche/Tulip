@@ -1,6 +1,12 @@
 = Tulip (The Ultimate Load Injection Program)
 :sectnums:
 
+== Coordinated Omission
+
+Tulip compensates for back-pressure from the system under test and adjusts the measured service times accordingly:
+
+* https://redhatperf.github.io/post/coordinated-omission/
+
 == Kotlin Books
 
 * https://www.manning.com/books/kotlin-in-action[Kotlin in Action, 1st Edition]
