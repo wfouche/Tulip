@@ -1,4 +1,4 @@
-// rootProject.name = "Tulip"
+rootProject.name = "Tulip"
 
 pluginManagement {
     repositories {
