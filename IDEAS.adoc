@@ -439,3 +439,9 @@ Experiment with assigning one virtual thread to each user object when using Java
 Measure resource utilization via Glances:
 
 * https://nicolargo.github.io/glances/
+
+== Grazie Pro
+
+Use Grazie Pro to write better documentation:
+
+* https://x.com/jetbrains/status/1805949280437309603
