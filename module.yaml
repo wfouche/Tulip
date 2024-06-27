@@ -7,7 +7,7 @@ dependencies@jvm:
   - org.slf4j:slf4j-api:2.0.13
   - org.slf4j:slf4j-simple:2.0.13
   - io.github.oshai:kotlin-logging-jvm:5.1.0
-  - org.jctools:jctools-core:4.0.5
+  - org.hdrhistogram:HdrHistogram:2.2.2
 
 settings:
   kotlin:
