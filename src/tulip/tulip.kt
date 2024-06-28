@@ -222,13 +222,13 @@ data class Task(
 
     // Duration (elapsed time) in microseconds.
     var serviceTimeNanos: Long = 0,
+    var waitTimeNanos: Long = 0,
 
     var rspQueue: MPSC_Queue<Task>? = null,
 
     var status: Int = -1,
 
-    var beginQueueTimeNanos: Long = 0,
-    var endQueueTimeNanos: Long = 0
+    var beginQueueTimeNanos: Long = 0
 )
 
 /*-------------------------------------------------------------------------*/
@@ -296,7 +296,7 @@ class UserThread(private val threadId: Int) : Thread() {
                 // True or False, indicating that the task succeeded or failed.
                 // Also calculate the elapsed time in microseconds.
                 //
-                task.endQueueTimeNanos = timeNanos()
+                task.waitTimeNanos = timeNanos() - task.beginQueueTimeNanos
                 task.serviceTimeNanos = elapsedTimeNanos {
                     if (u.processAction(task.actionId)) task.status = 1 else task.status = 0
                 }

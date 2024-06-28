@@ -304,7 +304,7 @@ class ActionStats {
         // key = response time in microseconds (NOT milliseconds).
         // value = the number of times a given (key) response time occurred.
 
-        val durationMicros = (task.serviceTimeNanos + task.endQueueTimeNanos - task.beginQueueTimeNanos)/1000
+        val durationMicros = (task.serviceTimeNanos + task.waitTimeNanos)/1000
         val key = llq(durationMicros)
 
         // Attempt 1:
