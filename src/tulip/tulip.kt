@@ -632,7 +632,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         // Ramp-up
         g_queueTimeBlocked = 0
         assignTasks(testCase.duration.warmupDurationMillis, "Ramp-up", 0, 0)
-        Console.put(mutableListOf("","  total time blocked   = ${g_queueTimeBlocked} ns"))
+        Console.put("  total time blocked   = ${g_queueTimeBlocked} ns")
 
         // Main run(s)
         for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
@@ -643,7 +643,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
                 runId,
                 testCase.duration.mainDurationRepeatCount - 1
             )
-            Console.put(mutableListOf("","  total time blocked   = ${g_queueTimeBlocked} ns"))
+            Console.put("  total time blocked   = ${g_queueTimeBlocked} ns")
         }
     }
 }

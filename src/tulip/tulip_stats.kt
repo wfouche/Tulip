@@ -9,6 +9,8 @@ import java.io.FileWriter
 import kotlin.math.pow
 import kotlin.math.sqrt
 
+import org.HdrHistogram.Histogram
+
 data class ActionSummary(
     var actionId: Int = 0,
 
@@ -37,6 +39,9 @@ data class ActionSummary(
     var maxRt: Double = 0.0,
     var maxRtTs: String = "",
 
+    var awt: Double = 0.0,
+    var maxWt: Double = 0.0,
+
     var pk: List<Double> = mutableListOf(),
     var pv: List<Double> = mutableListOf(),
 
@@ -50,6 +55,8 @@ class ActionStats {
     private var latencyMapMinRt: Long = Long.MAX_VALUE
     private var latencyMapMaxRt: Long = Long.MIN_VALUE
     private var latencyMapMaxRtTs = ""
+    // Max expected value is 1000 * 1000 * 30 microseconds
+    private var waitTimeMicrosHistogram = Histogram(1000*1000*30, 3)
 
     var numActions: Int = 0
     private var numSuccess: Int = 0
@@ -168,6 +175,9 @@ class ActionStats {
 
         r.latencyMap = latencyMap
 
+        r.awt = waitTimeMicrosHistogram.mean / 1000.0
+        r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
+
         // Summarize CPU usage for global stats only.
         if (actionId == NUM_ACTIONS) {
             // average process CPU load.
@@ -246,6 +256,9 @@ class ActionStats {
             output.add("  free memory (jvm)    = ${"%,d".format(Locale.US, fm)}")
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
+            output.add("")
+            output.add("  average wait time    = ${"%.3f".format(Locale.US, r.awt)}")
+            output.add("  maximum wait time    = ${"%.3f".format(Locale.US, r.maxWt)}")
 
             mg_rt_avg?.set(r.art.toInt())
             mg_rt_max?.set(r.maxRt.toInt())
@@ -304,7 +317,8 @@ class ActionStats {
         // key = response time in microseconds (NOT milliseconds).
         // value = the number of times a given (key) response time occurred.
 
-        val durationMicros = (task.serviceTimeNanos + task.waitTimeNanos)/1000
+        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos/1000)
+        val durationMicros = (task.serviceTimeNanos)/1000
         val key = llq(durationMicros)
 
         // Attempt 1:
@@ -345,6 +359,7 @@ class ActionStats {
         latencyMapMinRt = Long.MAX_VALUE
         latencyMapMaxRt = Long.MIN_VALUE
         latencyMapMaxRtTs = ""
+        waitTimeMicrosHistogram.reset()
 
         numActions = 0
         numSuccess = 0
