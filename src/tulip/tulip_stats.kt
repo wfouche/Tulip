@@ -218,25 +218,25 @@ class ActionStats {
         output.add("  num_failed  = ${r.numActions - r.numSuccess}")
         output.add("")
         output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
-        output.add("  duration of benchmark (in seconds)             = ${r.durationSeconds}")
+        output.add("  duration of benchmark (in seconds)             = ${r.durationSeconds} seconds")
         output.add("")
-        output.add("  average latency     (response time)  (millis)  = ${"%.3f".format(Locale.US, r.art)}")
-        output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)}")
+        output.add("  average latency     (response time)  (millis)  = ${"%.3f".format(Locale.US, r.art)} ms")
+        output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)} ms")
         output.add("")
         r.pk.forEachIndexed { index, percentile ->
             val px = r.pv.elementAt(index)
-            output.add("  ${percentile}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)}")
+            output.add("  ${percentile}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)} ms")
         }
 
         output.add("")
-        output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.minRt)}")
+        output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.minRt)} ms")
         output.add(
             "  maximum response time (millis) = ${
                 "%.3f".format(
                     Locale.US,
                     r.maxRt
                 )
-            } at $latencyMapMaxRtTs"
+            } ms at $latencyMapMaxRtTs"
         )
 
         if (actionId == NUM_ACTIONS) {
@@ -257,8 +257,8 @@ class ActionStats {
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
             output.add("")
-            output.add("  average wait time    = ${"%.3f".format(Locale.US, r.awt)}")
-            output.add("  maximum wait time    = ${"%.3f".format(Locale.US, r.maxWt)}")
+            output.add("  average wait time    = ${"%.3f".format(Locale.US, r.awt)} ms")
+            output.add("  maximum wait time    = ${"%.3f".format(Locale.US, r.maxWt)} ms")
 
             mg_rt_avg?.set(r.art.toInt())
             mg_rt_max?.set(r.maxRt.toInt())
