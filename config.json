@@ -96,12 +96,12 @@
             "enabled": true,
             "time": {
                 "startup_duration": 0,
-                "warmup_duration": 0,
-                "main_duration": 0,
-                "main_duration_repeat_count": 1
+                "warmup_duration": 15,
+                "main_duration": 30,
+                "main_duration_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "work_in_progress": 1,
+            "throughput_rate": 5.0,
+            "work_in_progress": 2,
             "actions": [
                 {
                     "id": 3
