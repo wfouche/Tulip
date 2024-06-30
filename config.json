@@ -95,7 +95,7 @@
             "name": "Test3 (REST calls)",
             "enabled": true,
             "time": {
-                "startup_duration": 0,
+                "startup_duration": 15,
                 "warmup_duration": 15,
                 "main_duration": 30,
                 "main_duration_repeat_count": 3
