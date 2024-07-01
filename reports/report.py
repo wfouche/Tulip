@@ -1,5 +1,5 @@
 from __future__ import print_function
-# TODO - fix - summary - 00:00:00
+import datetime
 # TODO - fix - summary - avg RT, and percentiles
 import json
 import sys
@@ -87,7 +87,7 @@ benchmark_summary_row = """
     <td></td>
     <td></td>
     <td>-</td>
-    <td><b>00:00:00</b></td>
+    <td><b>%s</b></td>
     <td><b>%d<b></td>
     <td><b>%d<b></td>
     <td><b>%d<b></td>
@@ -119,7 +119,7 @@ for e in jb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            print(benchmark_summary_row%(sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,sm.max_rt, sm.max_rt_ts.replace("_", " ")))
+            print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,sm.max_rt, sm.max_rt_ts.replace("_", " ")))
         sm = Summary()
         jh.reset()
         print(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
@@ -155,5 +155,6 @@ for e in jb:
     sm.num_success += e["num_success"]
     sm.num_failed += e["num_failed"]
     sm.duration += e["duration"]
-print(benchmark_summary_row%(sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,sm.max_rt, sm.max_rt_ts.replace("_", " ")))
+
+print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,sm.max_rt, sm.max_rt_ts.replace("_", " ")))
 print(trailer)
