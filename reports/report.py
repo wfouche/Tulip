@@ -5,6 +5,10 @@ import json
 import sys
 import org.HdrHistogram.Histogram as Histogram
 
+print_detail_rows = True
+
+now = datetime.datetime.now()
+
 class Summary:
     num_rows = 0
     num_actions = 0
@@ -103,7 +107,7 @@ benchmark_summary_row = """
 
 trailer = """
 </table>
-
+<p>%s</p>
 </body>
 </html>
 """
@@ -133,7 +137,7 @@ for e in jb:
     #print("   ", jh.getMean()/1000.0)
     #print("   ", e["max_rt"])
     #print("   ", jh.getMaxValue()/1000.0)
-    print(benchmark_detail_row%( \
+    if print_detail_rows: print(benchmark_detail_row%( \
         e["row_id"],
         e["duration"],
         e["num_actions"],
@@ -157,4 +161,4 @@ for e in jb:
     sm.duration += e["duration"]
 
 print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,sm.max_rt, sm.max_rt_ts.replace("_", " ")))
-print(trailer)
+print(trailer%now.strftime("%Y-%m-%d / %H:%M:%S"))
