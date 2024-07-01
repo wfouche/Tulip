@@ -1,6 +1,5 @@
 from __future__ import print_function
 import datetime
-# TODO - fix - summary - avg RT, and percentiles
 import json
 import sys
 import org.HdrHistogram.Histogram as Histogram
@@ -96,10 +95,10 @@ benchmark_summary_row = """
     <td><b>%d<b></td>
     <td><b>%d<b></td>
     <td><b>%.1f</b></td>
-    <td><b>0.0 ms</b></td>
-    <td><b>0.0 ms<b></td>
-    <td><b>0.0 ms<b></td>
-    <td><b>0.0 ms<b></td>
+    <td><b>%.3f ms</b></td>
+    <td><b>%.1f ms<b></td>
+    <td><b>%.1f ms<b></td>
+    <td><b>%.1f ms<b></td>
     <td><b>%.1f ms<b></td>
     <td><b>%s<b></b></td>
   </tr>
@@ -123,7 +122,7 @@ for e in jb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,sm.max_rt, sm.max_rt_ts.replace("_", " ")))
+            print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(95.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " ")))
         sm = Summary()
         jh.reset()
         print(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
@@ -160,5 +159,5 @@ for e in jb:
     sm.num_failed += e["num_failed"]
     sm.duration += e["duration"]
 
-print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,sm.max_rt, sm.max_rt_ts.replace("_", " ")))
+print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(95.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " ")))
 print(trailer%now.strftime("%Y-%m-%d / %H:%M:%S"))
