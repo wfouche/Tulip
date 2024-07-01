@@ -4,6 +4,15 @@ import json
 import sys
 import org.HdrHistogram.Histogram as Histogram
 
+class Summary:
+    num_rows = 0
+    num_actions = 0
+    num_success = 0
+    num_failed = 0
+    duration = 0.0
+    max_rt = 0.0
+    max_rt_ts = ""
+
 header = """<!DOCTYPE html>
 <html>
 <style>
@@ -72,6 +81,25 @@ benchmark_detail_row = """
   </tr>
 """
 
+benchmark_summary_row = """
+  <tr>
+    <td></td>
+    <td></td>
+    <td>-</td>
+    <td><b>00:00:00</b></td>
+    <td>0</td>
+    <td>0</td>
+    <td>0</td>
+    <td><b>0.0</b></td>
+    <td><b>0.0 ms</b></td>
+    <td><b>0.0 ms<b></td>
+    <td><b>0.0 ms<b></td>
+    <td><b>0.0 ms<b></td>
+    <td><b>%.1f ms<b></td>
+    <td><b>%s<b></b></td>
+  </tr>
+"""
+
 trailer = """
 </table>
 
@@ -80,7 +108,7 @@ trailer = """
 """
 
 print(header)
-
+sm = None
 jh = Histogram(30*1000*1000, 3)
 filename = sys.argv[1]
 fileObj = open(filename)
@@ -89,6 +117,9 @@ prev_row_id = 0
 for e in jb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
+        if sm is not None:
+            print(benchmark_summary_row%(sm.max_rt, sm.max_rt_ts.replace("_", " ")))
+        sm = Summary()
         jh.reset()
         print(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
         # print("<trace - reset jh>")
@@ -116,4 +147,8 @@ for e in jb:
         e["max_rt_ts"].replace("_", " ")
         ))
 
+    if sm.max_rt < e["max_rt"]:
+        sm.max_rt = e["max_rt"]
+        sm.max_rt_ts = e["max_rt_ts"]
+print(benchmark_summary_row%(sm.max_rt, sm.max_rt_ts.replace("_", " ")))
 print(trailer)
