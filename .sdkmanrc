@@ -12,9 +12,3 @@ gradle=8.8
 
 # JBang
 jbang=0.116.0
-
-# Kotlin
-kotlin=1.9.24
-
-# KScript
-kscript=4.2.3
