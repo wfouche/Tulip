@@ -91,16 +91,16 @@ benchmark_summary_row = """
     <td></td>
     <td>-</td>
     <td><b>%s</b></td>
-    <td><b>%d<b></td>
-    <td><b>%d<b></td>
-    <td><b>%d<b></td>
+    <td><b>%d</b></td>
+    <td><b>%d</b></td>
+    <td><b>%d</b></td>
     <td><b>%.1f</b></td>
     <td><b>%.3f ms</b></td>
-    <td><b>%.1f ms<b></td>
-    <td><b>%.1f ms<b></td>
-    <td><b>%.1f ms<b></td>
-    <td><b>%.1f ms<b></td>
-    <td><b>%s<b></b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%s</b></td>
   </tr>
 """
 
