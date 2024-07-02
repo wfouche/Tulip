@@ -33,7 +33,7 @@
     ],
     "benchmarks": [
         {
-            "name": "Test0 (Initialize)",
+            "name": "Init",
             "enabled": true,
             "time": {
                 "startup_duration": 0,
@@ -53,7 +53,7 @@
             ]
         },
         {
-            "name": "Test1 (Throughput Test - Max)",
+            "name": "Max Throughput",
             "enabled": true,
             "time": {
                 "startup_duration": 60,
@@ -70,7 +70,7 @@
             ]
         },
         {
-            "name": "Test2 (Throughput Test - Fixed)",
+            "name": "Fixed Throughput",
             "enabled": true,
             "time": {
                 "startup_duration": 15,
@@ -92,7 +92,7 @@
             ]
         },
         {
-            "name": "Test3 (REST calls)",
+            "name": "REST",
             "enabled": true,
             "time": {
                 "startup_duration": 15,
@@ -121,7 +121,7 @@
             ]
         },
         {
-            "name": "Test4 (Finalize)",
+            "name": "Stop",
             "enabled": true,
             "time": {
                 "startup_duration": 0,
