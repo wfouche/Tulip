@@ -122,7 +122,11 @@ for e in jb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(95.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " ")))
+            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(95.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+            if not print_detail_rows:
+                html = html.replace("<b>","")
+                html = html.replace("</b>","")
+            print(html)
         sm = Summary()
         jh.reset()
         print(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
@@ -159,5 +163,9 @@ for e in jb:
     sm.num_failed += e["num_failed"]
     sm.duration += e["duration"]
 
-print(benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(95.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " ")))
+html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(95.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+if not print_detail_rows:
+    html = html.replace("<b>","")
+    html = html.replace("</b>","")
+print(html)
 print(trailer%now.strftime("%Y-%m-%d / %H:%M:%S"))
