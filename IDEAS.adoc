@@ -262,7 +262,7 @@ See https://glowroot.org/ and https://github.com/glowroot/glowroot
 * json_print_asciidoc.py
 * json_print_asciidoc.kts
 
-== Benchmark Summary
+== [DONE] [.line-through]#Benchmark Summary#
 
 Display a summary of benchmark results at the end of the benchmark:
 
@@ -303,7 +303,7 @@ Benchmark...::
 }
 ----
 
-== HdrHistogram
+== [DROPPED] [.line-through]#HdrHistogram#
 
 Use https://hdrhistogram.github.io/HdrHistogram/[HdrHistogram] to replace Tulip's own log-linear quantization logic.
 
@@ -351,9 +351,11 @@ public class test_hdrhistogram {
 }
 ----
 
-== Summary Statistics
+== [DONE] [.line-through]#Summary Statistics#
 
+Implemented HTML reports: full and summary. See `reports` folder.
 
+.Hyperfoil as reference
 ----
 PHASE    METRIC  THROUGHPUT    ACTIONS  MEAN      STD_DEV  p50       p90       p99       p99.9     MAX        SUCCESS   FAILED
 example  test    29,41 req/s         1  17,37 ms     0 ms  17,43 ms  17,43 ms  17,43 ms  17,43 ms  17,43 ms         1        0
@@ -365,7 +367,7 @@ Replace queues in JC queues.
 
 * https://github.com/JCTools/JCTools
 
-== kscript
+== [DONE] [.line-through]#kscript#
 
 Remove kscript, kotlin 1.9.24 and use jbang
 
