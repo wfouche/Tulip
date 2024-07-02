@@ -290,7 +290,7 @@ Benchmark...::
 * Max response time
 * Num-failed nnn (%xyz)
 
-== Performance Requirements
+== [DROPPED] [.line-through]#Performance Requirements#
 
 [source,json]
 ----
