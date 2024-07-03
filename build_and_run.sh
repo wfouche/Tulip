@@ -1,3 +1,5 @@
+#!/bin/bash
+source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk env
 ./gradlew -q --stop
 rm -f -r ./bin ./build
