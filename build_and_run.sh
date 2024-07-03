@@ -5,9 +5,4 @@ rm -f -r ./bin ./build
 ./gradlew -q run
 ./gradlew -q --stop
 
-echo ""
-pushd ./reports
-./report.sh
-echo ""
-w3m -dump -cols 200 report.html
-popd
+./text_report.sh
