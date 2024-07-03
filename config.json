@@ -121,7 +121,7 @@
             ]
         },
         {
-            "name": "Stop",
+            "name": "Shutdown",
             "enabled": true,
             "time": {
                 "startup_duration": 0,
