@@ -4,7 +4,11 @@ import json
 import sys
 import org.HdrHistogram.Histogram as Histogram
 
-print_detail_rows = True
+filename = sys.argv[1]
+if sys.argv[2] == '0':
+    print_detail_rows = False
+else:
+    print_detail_rows = True
 
 now = datetime.datetime.now()
 
@@ -114,7 +118,6 @@ trailer = """
 print(header)
 sm = None
 jh = Histogram(30*1000*1000, 3)
-filename = sys.argv[1]
 fileObj = open(filename)
 jb = json.load(fileObj)
 prev_row_id = 0
