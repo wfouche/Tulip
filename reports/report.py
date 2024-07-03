@@ -117,7 +117,7 @@ trailer = """
 
 print(header)
 sm = None
-jh = Histogram(30*1000*1000, 3)
+jh = Histogram(1,3600*1000*1000, 3)
 fileObj = open(filename)
 jb = json.load(fileObj)
 prev_row_id = 0
