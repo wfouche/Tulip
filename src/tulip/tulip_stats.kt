@@ -55,8 +55,8 @@ class ActionStats {
     private var latencyMapMinRt: Long = Long.MAX_VALUE
     private var latencyMapMaxRt: Long = Long.MIN_VALUE
     private var latencyMapMaxRtTs = ""
-    // Max expected value is 1000 * 1000 * 30 microseconds
-    private var waitTimeMicrosHistogram = Histogram(1000*1000*30, 3)
+    // Max expected value is 1000 * 1000 * 3600 microseconds
+    private var waitTimeMicrosHistogram = Histogram(1L, 3600*1000*1000L, 3)
 
     var numActions: Int = 0
     private var numSuccess: Int = 0
