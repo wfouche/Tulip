@@ -50,7 +50,7 @@ table, th, td {
 benchmark_header = """
   <tr>
     <td>%d</td>
-    <td><b>%s</b></td>
+    <td>%s</td>
     <td></td>
     <td></td>
     <td></td>
