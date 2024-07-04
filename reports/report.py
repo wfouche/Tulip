@@ -30,7 +30,7 @@ table, th, td {
 </style>
 <body>
 
-<h2>Tulip Benchmark Report</h2>
+<h2>Benchmark Report</h2>
 
 <table style="width:100%">
   <tr>
