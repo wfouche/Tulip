@@ -42,23 +42,28 @@ Type 'scoop help' for instructions.
 PS C:\>
 ----
 
-Install Git and Git-Bash:
+Install Git and Git-Bash
 
-[source,powershell]
+[source,cmd]
 ----
-C:\> scoop install git
+scoop install git
 ----
 
 Install MS Java 21 (OpenJDK)
 ----
-C:\> scoop bucket add java
-C:\> scoop install microsoft21-jdk
+scoop bucket add java
+----
+
+----
+scoop install microsoft21-jdk
 ----
 
 (Optionally) Install WinGetUI (aka UniGetUI) to apply future updates to the installed applications
 ----
-C:\> scoop bucket add extras
-C:\> scoop install extras/wingetui
+scoop bucket add extras
+----
+----
+scoop install extras/wingetui
 ----
 
 == Build from Source
