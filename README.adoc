@@ -1,18 +1,90 @@
 = Tulip (The Ultimate Load Injection Program)
 :sectnums:
 
-== Coordinated Omission
+== Dependencies
+
+Install Git and JDK21 before building Tulip from source.
+
+=== Linux
+
+=== MacOS
+
+=== Windows
+
+Open a Windows PowerShell (PS) terminal (version 5.1 or later) and from the PS `C:\>` prompt, run:
+
+.Step 1 - run Set-ExecutionPolicy
+----
+PS C:\> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+----
+.Step 2 - answer 'Y' when prompted to change the execution policy.
+----
+Execution Policy Change
+The execution policy helps protect you from scripts that you do not trust. Changing the execution policy might expose you to the security risks described in the about_Execution_Policies help topic at https:/go.microsoft.com/fwlink/?LinkID=135170. Do you want to change the execution policy?
+[Y] Yes  [A] Yes to All  [N] No  [L] No to All  [S] Suspend  [?] Help (default is "N"): Y
+PS C:\>
+----
+
+.Step 3 - run Invoke-RestMethod
+----
+PS C:\> Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+----
+
+.Step 4 - wait for the installation to finish
+----
+Initializing...
+Downloading...
+Extracting...
+Creating shim...
+Adding ~\scoop\shims to your path.
+Scoop was installed successfully!
+Type 'scoop help' for instructions.
+PS C:\>
+----
+
+Install Git and Git-Bash:
+
+[source,powershell]
+----
+C:\> scoop install git
+----
+
+Install MS Java 21 (OpenJDK)
+----
+C:\> scoop bucket add java
+C:\> scoop install microsoft21-jdk
+----
+
+(Optionally) Install WinGetUI (aka UniGetUI) to apply future updates to the installed applications
+----
+C:\> scoop bucket add extras
+C:\> scoop install extras/wingetui
+----
+
+== Build from Source
+
+=== Windows
+
+----
+c:\Users\<user>\IdeaProjects> git clone https://github.com/wfouche/Tulip.git
+c:\Users\<user>\IdeaProjects> cd  Tulip
+c:\Users\<user>\IdeaProjects\Tulip> build_and_run.cmd
+----
+
+== Appendix
+
+=== Coordinated Omission
 
 Tulip compensates for back-pressure from the system under test and adjusts the measured service times accordingly:
 
 * https://redhatperf.github.io/post/coordinated-omission/
 
-== Kotlin Books
+=== Kotlin Books
 
 * https://www.manning.com/books/kotlin-in-action[Kotlin in Action, 1st Edition]
 * https://typealias.com/start/[Kotlin: An Illustrated Guide]
 
-== Performance Engineering
+=== Performance Engineering
 
 * "Stop Rate Limiting! Capacity Management Done Right" by Jon Moore
 ** https://www.youtube.com/watch?v=m64SWl9bfvk
