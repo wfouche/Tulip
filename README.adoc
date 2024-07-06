@@ -1,5 +1,6 @@
 = Tulip (The Ultimate Load Injection Program)
 :sectnums:
+:toc:
 
 == Dependencies
 
