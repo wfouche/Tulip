@@ -71,9 +71,9 @@ scoop install extras/wingetui
 === Windows
 
 ----
-c:\Users\<user>\IdeaProjects> git clone https://github.com/wfouche/Tulip.git
-c:\Users\<user>\IdeaProjects> cd  Tulip
-c:\Users\<user>\IdeaProjects\Tulip> build_and_run.cmd
+git clone https://github.com/wfouche/Tulip.git
+cd  Tulip
+build_and_run.cmd
 ----
 
 == Appendix
