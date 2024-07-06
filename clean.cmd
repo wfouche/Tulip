@@ -1,7 +1,4 @@
-call init_env.cmd
-
 call .\gradlew --stop
-
 REM timeout 5
 REM rd/q/s %USERPROFILE%\.gradle
 timeout 5
