@@ -23,6 +23,8 @@ $ sdk version
 
 === MacOS
 
+*TBD*
+
 === Windows
 
 Open a Windows PowerShell (PS) terminal (version 5.1 or later) and from the PS `C:\>` prompt, run:
@@ -90,6 +92,10 @@ cd  Tulip
 sdk env install
 ./build_and_run.sh
 ----
+
+=== MacOS
+
+*TBD*
 
 === Windows
 
