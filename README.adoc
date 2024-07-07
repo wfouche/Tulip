@@ -23,7 +23,18 @@ $ sdk version
 
 === MacOS
 
-*TBD*
+Install SDKMAN from Bash
+----
+$ curl -s "https://get.sdkman.io" | bash
+----
+
+----
+$ source "$HOME/.sdkman/bin/sdkman-init.sh"
+----
+
+----
+$ sdk version
+----
 
 === Windows
 
@@ -95,7 +106,13 @@ sdk env install
 
 === MacOS
 
-*TBD*
+----
+# Use bash instead of zsh (default shell)
+git clone https://github.com/wfouche/Tulip.git
+cd  Tulip
+sdk env install
+./build_and_run.sh
+----
 
 === Windows
 
