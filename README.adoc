@@ -8,7 +8,7 @@ Install Git and JDK21 before building Tulip from source.
 
 === Linux
 
-Install SDKMAN from Bash
+Install SDKMAN from bash
 ----
 $ curl -s "https://get.sdkman.io" | bash
 ----
@@ -23,7 +23,7 @@ $ sdk version
 
 === MacOS
 
-Install SDKMAN from Bash
+Install SDKMAN from zsh or bash
 ----
 $ curl -s "https://get.sdkman.io" | bash
 ----
@@ -107,7 +107,6 @@ sdk env install
 === MacOS
 
 ----
-# Use bash instead of zsh (default shell)
 git clone https://github.com/wfouche/Tulip.git
 cd  Tulip
 sdk env install
