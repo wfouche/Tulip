@@ -53,11 +53,15 @@ data class ActionSummary(
 )
 
 class ActionStats {
-    private val latencyMap2: Histogram = Histogram(3)
+    // <numberOfSignificantValueDigits>
+    //private val NUM_DIGITS=1  // Tested - inaccurate results, don't use
+    private val NUM_DIGITS=2    // Tested - good results, small results file (default, optimal)
+    //private val NUM_DIGITS=3  // Tested - great results, large results file, histogram_rt
+    private val latencyMap2: Histogram = Histogram(NUM_DIGITS)
     private var latencyMapMinRt: Long = Long.MAX_VALUE
     private var latencyMapMaxRt: Long = Long.MIN_VALUE
     private var latencyMapMaxRtTs = ""
-    private var waitTimeMicrosHistogram = Histogram(3)
+    private var waitTimeMicrosHistogram = Histogram(NUM_DIGITS)
 
     var numActions: Int = 0
     private var numSuccess: Int = 0
