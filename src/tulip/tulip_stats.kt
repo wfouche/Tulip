@@ -10,6 +10,9 @@ import kotlin.math.pow
 import kotlin.math.sqrt
 
 import org.HdrHistogram.Histogram
+import java.nio.ByteBuffer
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
 
 data class ActionSummary(
     var actionId: Int = 0,
@@ -54,8 +57,7 @@ class ActionStats {
     private var latencyMapMinRt: Long = Long.MAX_VALUE
     private var latencyMapMaxRt: Long = Long.MIN_VALUE
     private var latencyMapMaxRtTs = ""
-    // Max expected value is 1000 * 1000 * 3600 microseconds
-    private var waitTimeMicrosHistogram = Histogram(1L, 3600*1000*1000L, 3)
+    private var waitTimeMicrosHistogram = Histogram(3)
 
     var numActions: Int = 0
     private var numSuccess: Int = 0
@@ -232,6 +234,7 @@ class ActionStats {
         Console.put(output)
     }
 
+    @OptIn(ExperimentalEncodingApi::class)
     fun saveStatsJson(actionId: Int): String {
         var results = ""
 
@@ -256,9 +259,10 @@ class ActionStats {
         results += "}"
 
         results += ", \"histogram_rt\": "
-        val gson = Gson()
-        val latencyMap: MutableMap<Long, Long> = mutableMapOf()
-        results += gson.toJson(latencyMap).toString()
+        val b = ByteBuffer.allocate(latencyMap2.neededByteBufferCapacity)
+        latencyMap2.encodeIntoCompressedByteBuffer(b)
+        val b64s = Base64.encode(b.array())
+        results += '\"' + b64s + '\"'
 
         return results
     }

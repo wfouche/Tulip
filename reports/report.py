@@ -43,8 +43,8 @@ table, th, td {
     <th>#F</th>
     <th>Avg TPS</th>
     <th>Avg RT</th>
+    <th>50p RT</th>
     <th>90p RT</th>
-    <th>95p RT</th>
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RT Timestamp</th>
@@ -125,7 +125,7 @@ for e in jb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(95.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -135,9 +135,8 @@ for e in jb:
         print(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
         # print("<trace - reset jh>")
     #print(e["row_id"]) #, e["histogram_rt"])
-    ht = e["histogram_rt"]
-    for key in ht.keys():
-        jh.recordValueWithCount(int(key), ht[key])
+    ht = Histogram.fromString(e["histogram_rt"])
+    jh.add(ht)
     #print(jh.toString())
     #print("   ", e["avg_rt"])
     #print("   ", jh.getMean()/1000.0)
@@ -151,8 +150,8 @@ for e in jb:
         e["num_failed"],
         e["avg_tps"],
         e["avg_rt"],
+        e["percentiles_rt"]["50.0"],
         e["percentiles_rt"]["90.0"],
-        e["percentiles_rt"]["95.0"],
         e["percentiles_rt"]["99.0"],
         e["max_rt"],
         e["max_rt_ts"].replace("_", " ")
@@ -166,7 +165,7 @@ for e in jb:
     sm.num_failed += e["num_failed"]
     sm.duration += e["duration"]
 
-html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(95.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
 if not print_detail_rows:
     html = html.replace("<b>","")
     html = html.replace("</b>","")
