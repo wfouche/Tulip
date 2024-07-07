@@ -121,7 +121,7 @@ cd  Tulip
 build_and_run.cmd
 ----
 
-== Results
+== Example Benchmark Report
 
 [source,text,options=nowrap]
 ----
