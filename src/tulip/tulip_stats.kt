@@ -28,7 +28,7 @@ data class ActionSummary(
     var numActions: Int = 0,
     var numSuccess: Int = 0,
 
-    var latencyMap: MutableMap<Long, Long> = mutableMapOf(),
+    var latencyMap2: Histogram = Histogram(3),
 
     var durationSeconds: Double = 0.0,
 
@@ -50,8 +50,7 @@ data class ActionSummary(
 )
 
 class ActionStats {
-
-    private val latencyMap = mutableMapOf<Long, Long>()
+    private val latencyMap2: Histogram = Histogram(3)
     private var latencyMapMinRt: Long = Long.MAX_VALUE
     private var latencyMapMaxRt: Long = Long.MIN_VALUE
     private var latencyMapMaxRtTs = ""
@@ -97,63 +96,13 @@ class ActionStats {
         r.aps = numActions / r.durationSeconds
 
         // average response time (art) in milliseconds
-        r.art = latencyMap.map { it.value * it.key }.sum() / 1000.0 / numActions
+        //r.art = latencyMap.map { it.value * it.key }.sum() / 1000.0 / numActions
+        r.art = latencyMap2.mean / 1000.0
 
         // standard deviation
         // HOWTO: https://www.statcan.gc.ca/edu/power-pouvoir/ch12/5214891-eng.htm#a2
-        r.sdev = sqrt(latencyMap.map { it.value * (it.key / 1000.0 - r.art).pow(2.0) }.sum() / numActions)
-
-        // 95th percentile value
-        // HOWTO 1: https://www.youtube.com/watch?v=9QhU2grGU_E
-        // HOWTO 2: https://www.youtube.com/watch?v=8U__c22VOVA
-        //
-        // https://harding.edu/sbreezeel/460%20files/statbook/chapter5.pdf
-        //
-        // Formula for finding Percentiles (Grouped Frequency Distribution)
-        ///
-        fun percentile(k: Double, minValue: Double = 0.0, maxValue: Double = 0.0): Double {
-            val P: Double = (k / 100.0) * numActions
-
-            var CFb = 0.0
-            var F = 0.0
-
-            val keys = latencyMap.keys.sorted()
-            var tk: Long = 0
-            for (key in keys) {
-                tk = key
-                F = latencyMap[key]!!.toDouble()
-                if (100.0 * (CFb + F) / (1.0 * numActions) >= k) {
-                    break
-                }
-                CFb += F
-            }
-            var L = tk
-            var U = tk
-
-            while (llq(L) == tk) {
-                L -= 1
-            }
-            L += 1
-
-            while (llq(U) == tk) {
-                U += 1
-            }
-            U -= 1
-
-            var p: Double = (L + ((P - CFb) / F) * (U - L)) / 1000.0
-            if (p < 0.0) {
-                p = 0.0
-            }
-
-            if (p < minValue) {
-                p = minValue
-            }
-            if (p > maxValue) {
-                p = maxValue
-            }
-
-            return p
-        }
+        //r.sdev = sqrt(latencyMap.map { it.value * (it.key / 1000.0 - r.art).pow(2.0) }.sum()
+        r.sdev = latencyMap2.stdDeviation / 1000.0
 
         // min rt
         r.minRt = latencyMapMinRt / 1000.0
@@ -168,12 +117,12 @@ class ActionStats {
         r.pk = testCase.percentiles
         r.pv = mutableListOf<Double>().apply {
             r.pk.forEach {
-                val px = percentile(it, r.minRt, r.maxRt)
+                val px = latencyMap2.getValueAtPercentile(it) / 1000.0
                 this.add(px)
             }
         }
 
-        r.latencyMap = latencyMap
+        r.latencyMap2 = latencyMap2
 
         r.awt = waitTimeMicrosHistogram.mean / 1000.0
         r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
@@ -207,6 +156,7 @@ class ActionStats {
 
         if (printMap) {
             val gson = Gson()
+            val latencyMap: MutableMap<Long, Long> = mutableMapOf()
             output.add("latencyMap = " + gson.toJson(latencyMap).toString())
             output.add("")
         }
@@ -307,39 +257,15 @@ class ActionStats {
 
         results += ", \"histogram_rt\": "
         val gson = Gson()
+        val latencyMap: MutableMap<Long, Long> = mutableMapOf()
         results += gson.toJson(latencyMap).toString()
 
         return results
     }
 
     fun updateStats(task: Task) {
-        // frequency map: count the number of times a given (key) response time occurred.
-        // key = response time in microseconds (NOT milliseconds).
-        // value = the number of times a given (key) response time occurred.
-
-        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos/1000)
         val durationMicros = (task.serviceTimeNanos)/1000
-        val key = llq(durationMicros)
-
-        // Attempt 1:
-        //
-        // if (key in latencyMap.keys) {
-        //    latencyMap[key] = (latencyMap[key])!! + 1
-        //} else {
-        //    latencyMap[key] = 1
-        //}
-
-        // Attempt 2:
-        //
-        //latencyMap[key] = latencyMap.getOrDefault(key, 0) + 1
-
-        // Attempt 3:
-        //
-        // Java 8:  map.merge(key, 1, (a, b) -> a + b);
-        //
-        // Kotlin: map.merge(key, 1, {a, b -> a+b})
-        //
-        latencyMap.merge(key, 1) { a, b -> a + b }
+        latencyMap2.recordValue(durationMicros)
 
         if (durationMicros < latencyMapMinRt) {
             latencyMapMinRt = durationMicros
@@ -352,10 +278,11 @@ class ActionStats {
         if (task.status == 1) {
             numSuccess += 1
         }
+        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos/1000)
     }
 
     fun clearStats() {
-        latencyMap.clear()
+        latencyMap2.reset()
         latencyMapMinRt = Long.MAX_VALUE
         latencyMapMaxRt = Long.MIN_VALUE
         latencyMapMaxRtTs = ""
