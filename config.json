@@ -2,6 +2,7 @@
     "json_filename": "tulip_results.json",
     "user_class": "user.HttpUser",
     "user_params": {
+        "url2": "http://localhost:7070",
         "url": "https://jsonplaceholder.typicode.com"
     },
     "user_actions": {
@@ -100,7 +101,7 @@
                 "main_duration": 30,
                 "main_duration_repeat_count": 3
             },
-            "throughput_rate": 5.0,
+            "throughput_rate": 1500.0,
             "work_in_progress": 2,
             "actions": [
                 {
