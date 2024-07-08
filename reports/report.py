@@ -38,7 +38,7 @@ table, th, td {
     <th>Name</th>
     <th>RID</th>
     <th>Duration</th>
-    <th>#T</th>
+    <th>#N</th>
     <th>#S</th>
     <th>#F</th>
     <th>Avg TPS</th>
@@ -132,7 +132,7 @@ for e in jb:
             print(html)
         sm = Summary()
         jh.reset()
-        print(benchmark_header%(int(e["scenario_id"]), e["test_name"] + "<br>users = %d<br>threads = %d"%(e["num_users"],e["num_threads"])))
+        print(benchmark_header%(int(e["scenario_id"]), e["test_name"] + " (u:%d t:%d)"%(e["num_users"],e["num_threads"])))
         # print("<trace - reset jh>")
     #print(e["row_id"]) #, e["histogram_rt"])
     ht = Histogram.fromString(e["histogram_rt"])
