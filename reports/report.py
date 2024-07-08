@@ -43,7 +43,7 @@ table, th, td {
     <th>#F</th>
     <th>Avg TPS</th>
     <th>Avg RT</th>
-    <th>50p RT</th>
+    <th>Sdv RT</th>
     <th>90p RT</th>
     <th>99p RT</th>
     <th>Max RT</th>
@@ -125,7 +125,7 @@ for e in jb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -150,7 +150,7 @@ for e in jb:
         e["num_failed"],
         e["avg_tps"],
         e["avg_rt"],
-        e["percentiles_rt"]["50.0"],
+        ht.getStdDeviation()/1000.0,
         e["percentiles_rt"]["90.0"],
         e["percentiles_rt"]["99.0"],
         e["max_rt"],
@@ -165,7 +165,7 @@ for e in jb:
     sm.num_failed += e["num_failed"]
     sm.duration += e["duration"]
 
-html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
 if not print_detail_rows:
     html = html.replace("<b>","")
     html = html.replace("</b>","")
