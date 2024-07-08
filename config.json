@@ -8,11 +8,11 @@
         "0": "start",
         "1": "DELAY-6ms",
         "2": "DELAY-14ms",
-        "3": "REST-posts",
-        "4": "REST-comments",
-        "5": "REST-albums",
-        "6": "REST-photos",
-        "7": "REST-todos",
+        "3": "HTTP-posts",
+        "4": "HTTP-comments",
+        "5": "HTTP-albums",
+        "6": "HTTP-photos",
+        "7": "HTTP-todos",
         "8": "login",
         "9": "noop",
         "99": "stop"
@@ -92,7 +92,7 @@
             ]
         },
         {
-            "name": "REST",
+            "name": "HTTP",
             "enabled": true,
             "time": {
                 "startup_duration": 15,
