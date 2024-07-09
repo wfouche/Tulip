@@ -8,7 +8,7 @@ Install Git and JDK21 before building Tulip from source.
 
 === Linux
 
-Install SDKMAN from bash
+Install SDKMAN from bash (https://sdkman.io)
 ----
 $ curl -s "https://get.sdkman.io" | bash
 ----
@@ -28,7 +28,7 @@ $ sudo apt install w3m
 
 === MacOS
 
-Install SDKMAN from zsh or bash
+Install SDKMAN from zsh or bash (https://sdkman.io)
 ----
 $ curl -s "https://get.sdkman.io" | bash
 ----
