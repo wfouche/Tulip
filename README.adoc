@@ -21,6 +21,11 @@ $ source "$HOME/.sdkman/bin/sdkman-init.sh"
 $ sdk version
 ----
 
+Install `w3m` (Debian, Ubuntu) to display reports
+----
+$ sudo apt install w3m
+----
+
 === MacOS
 
 Install SDKMAN from zsh or bash
@@ -34,6 +39,11 @@ $ source "$HOME/.sdkman/bin/sdkman-init.sh"
 
 ----
 $ sdk version
+----
+
+Install `w3m` (MacOS) to display reports
+----
+$ brew install w3m
 ----
 
 === Windows
