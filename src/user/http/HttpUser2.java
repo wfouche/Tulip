@@ -101,6 +101,11 @@ public class HttpUser2 extends VirtualUser {
 
     @Override
     public boolean stop() {
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) {
+            return false;
+        }
         return true;
     }
 

@@ -2,8 +2,8 @@
     "json_filename": "tulip_results.json",
     "user_class": "user.http.HttpUser",
     "user_params": {
-        "url2": "http://localhost:7070",
-        "url": "https://jsonplaceholder.typicode.com"
+        "url": "http://localhost:7070",
+        "urlx": "https://jsonplaceholder.typicode.com"
     },
     "user_actions": {
         "0": "start",
@@ -57,10 +57,10 @@
             "name": "Max TPS",
             "enabled": true,
             "time": {
-                "startup_duration": 60,
-                "warmup_duration": 60,
-                "main_duration": 60,
-                "main_duration_repeat_count": 1
+                "startup_duration": 15,
+                "warmup_duration": 30,
+                "main_duration": 30,
+                "main_duration_repeat_count": 3
             },
             "throughput_rate": 0.0,
             "work_in_progress": -1,
@@ -76,7 +76,7 @@
             "time": {
                 "startup_duration": 15,
                 "warmup_duration": 15,
-                "main_duration": 60,
+                "main_duration": 30,
                 "main_duration_repeat_count": 4
             },
             "throughput_rate": 100.0,
@@ -101,7 +101,7 @@
                 "main_duration": 30,
                 "main_duration_repeat_count": 3
             },
-            "throughput_rate": 5.0,
+            "throughput_rate": 1250.0,
             "work_in_progress": 2,
             "actions": [
                 {
