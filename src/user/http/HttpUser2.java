@@ -9,7 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.URI;
 import java.net.http.HttpResponse;
 
-import static tulip.Tulip_utilsKt.delayMillisRandom;
+import static tulip.TulipKt.delayMillisRandom;
 
 public class HttpUser2 extends VirtualUser {
 
