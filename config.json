@@ -101,7 +101,7 @@
                 "main_duration": 30,
                 "main_duration_repeat_count": 3
             },
-            "throughput_rate": 1500.0,
+            "throughput_rate": 5.0,
             "work_in_progress": 2,
             "actions": [
                 {
