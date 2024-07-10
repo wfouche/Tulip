@@ -1,5 +1,0 @@
-= HttpUser
-
-Documentation for the HttpUser virtual user class for the example benchmark00 for Tulip.
-
-*TBD*
