@@ -6,21 +6,8 @@ package tulip
 
 import java.lang.management.ManagementFactory
 import java.util.concurrent.ThreadLocalRandom
-import java.util.concurrent.TimeUnit
 import javax.management.Attribute
 import javax.management.ObjectName
-
-import kotlin.math.floor
-import kotlin.math.log10
-import kotlin.math.pow
-
-/*-------------------------------------------------------------------------*/
-//
-// Use this monotonically increasing function to get a millisecond accurate timestamp.
-//
-fun timeMillis(): Long {
-    return TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
-}
 
 /*-------------------------------------------------------------------------*/
 
@@ -65,8 +52,6 @@ private fun measureTimeAccuracy(time: () -> Long): Long {
     // return smallest element.
     return a[0]
 }
-
-/*-------------------------------------------------------------------------*/
 
 fun accuracySystemCurrentTimeMillis(): Long {
     fun systemCurrentTimeMillis(): Long {
@@ -132,6 +117,8 @@ fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
     }
     return list
 }
+
+/*-------------------------------------------------------------------------*/
 
 fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
     return test.copy(queueLengths = getQueueLengths(context, test))

@@ -233,13 +233,13 @@ data class Task(
 
 /*-------------------------------------------------------------------------*/
 
-class RateGovernor(private val averageRate: Double, private val timeMillisStart: Long = timeMillis())  {
+class RateGovernor(private val averageRate: Double, private val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()))  {
 
     private var count: Long = 0
 
     fun pace() {
         count += 1
-        var deltaMs: Long = (timeMillisStart + ((count * 1000) / averageRate) - timeMillis()).toLong()
+        var deltaMs: Long = (timeMillisStart + ((count * 1000) / averageRate) - TimeUnit.NANOSECONDS.toMillis(System.nanoTime())).toLong()
         if (deltaMs > 0) Thread.sleep(deltaMs)
     }
 }
@@ -349,13 +349,13 @@ object CpuLoadMetrics : Thread() {
             Thread.sleep(250)
         }
 
-        var timeMillisNext: Long = timeMillis()
+        var timeMillisNext: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
         var i = 0
         var totalCpuSystem = 0.0
         var totalCpuProcess = 0.0
         while (true) {
             timeMillisNext += 1000
-            while (timeMillis() < timeMillisNext) {
+            while (TimeUnit.NANOSECONDS.toMillis(System.nanoTime()) < timeMillisNext) {
                 Thread.sleep(250)
             }
             totalCpuSystem += getSystemCpuLoad()
@@ -500,7 +500,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
         initRspQueue()
 
-        val timeMillisStart: Long = timeMillis()
+        val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
 
         // Special bootstrap test case to initialize terminals, and other objects.
         // Typically only found at the start and end of a test suite.
@@ -515,7 +515,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             }
         }
         drainRspQueue()
-        val timeMillisEnd: Long = timeMillis()
+        val timeMillisEnd: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
         val durationMillis: Int = (timeMillisEnd - timeMillisStart).toInt()
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
@@ -537,7 +537,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     } else {
         // Normal test case.
         var timeMillisStart: Long
-        var timeMillisEnd: Long = timeMillis()
+        var timeMillisEnd: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
 
         fun assignTasks(
             durationMillis: Long,
