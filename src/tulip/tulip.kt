@@ -571,17 +571,27 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             timeMillisStart = timeMillisEnd
             timeMillisEnd = timeMillisStart + durationMillis
 
-            var rateGovernor: RateGovernor? = null
+            val rateGovernor: RateGovernor? = null
+            // New rate control logic - begin
+            var nanosPerAction: Double = 0.0
             if (arrivalRate > -1.0) {
                 // Warm-up duration at max speed, ungoverned.
             } else {
                 // Ramp-up or Main duration.
                 if (testCase.arrivalRate > 0.0) {
-                    rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
+                    //rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
+                    nanosPerAction = 1000000000.0 /  testCase.arrivalRate
                 }
             }
 
-            while (timeMillis() < timeMillisEnd) {
+            val durationNanos: Double = durationMillis * 1000000.0
+            val startTimeNanos = System.nanoTime()
+            val endTimeNanos: Double = startTimeNanos + durationNanos
+            var rTime: Double = startTimeNanos.toDouble()
+            var vTime: Double = rTime
+            // New rate control logic - end
+
+            while (rTime < endTimeNanos) {
                 // Pick a random user object to assign a task to.
                 val uid = userList.random()
 
@@ -589,19 +599,25 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
                 val aid: Int = userActions!![uid]!!.next()
 
                 startTask(uid, aid, rateGovernor)
+
+                vTime += nanosPerAction
+                if (vTime > rTime) {
+                    Thread.sleep(((vTime-rTime)/1000000.0).toLong())
+                }
+                rTime = System.nanoTime().toDouble()
             }
             if (runId == runIdMax) {
                 //Console.put("drainRspQueue: runId == runIdMax")
                 drainRspQueue()
             }
-            val durationMillis1: Int = (timeMillis() - timeMillisStart).toInt()
+            //val durationMillis1: Int = (timeMillis() - timeMillisStart).toInt()
             val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
             Console.put("$testPhase run ${runId}: end   (${tsEnd})")
 
             val durationMicros = elapsedTimeMicros {
                 DataCollector.createSummary(
-                    durationMillis1,
+                    durationMillis.toInt(),
                     testCase,
                     indexTestCase,
                     indexUserProfile,
