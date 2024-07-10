@@ -22,53 +22,6 @@ inline fun elapsedTimeNanos(block: () -> Unit): Long {
 
 /*-------------------------------------------------------------------------*/
 
-//
-// It is worth reading the article on "Accuracy vs Precision"
-// at https://en.wikipedia.org/wiki/Accuracy_and_precision
-//
-private fun measureTimeAccuracy(time: () -> Long): Long {
-    val a = LongArray(1000)
-    var z: Long
-    var y: Long
-
-    // warm-up
-    repeat(10_000_000) {
-        time()
-    }
-
-    // timing
-    y = time()
-    repeat(a.size) {
-        z = y
-        while (z == y) {
-            y = time()
-        }
-        a[it] = y - z
-    }
-
-    // sort in increasing order.
-    a.sort()
-
-    // return smallest element.
-    return a[0]
-}
-
-fun accuracySystemCurrentTimeMillis(): Long {
-    fun systemCurrentTimeMillis(): Long {
-        return System.currentTimeMillis()
-    }
-    return measureTimeAccuracy(::systemCurrentTimeMillis)
-}
-
-fun accuracySystemNanoTime(): Long {
-    fun systemNanoTime(): Long {
-        return System.nanoTime()
-    }
-    return measureTimeAccuracy(::systemNanoTime)
-}
-
-/*-------------------------------------------------------------------------*/
-
 fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
     require(delayFrom >= 0) { "delayFrom must be non-negative, is $delayFrom" }
     require(delayTo >= 0) { "delayTo must be non-negative, is $delayTo" }
@@ -122,17 +75,6 @@ fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
 
 fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
     return test.copy(queueLengths = getQueueLengths(context, test))
-}
-
-/*-------------------------------------------------------------------------*/
-
-fun durationMillisToString(durationInMillis: Long): String {
-    val seconds = durationInMillis / 1000
-    val s = seconds % 60
-    val m = (seconds / 60) % 60
-    val h = (seconds / (60 * 60))
-    val q = durationInMillis % 1000
-    return String.format("%02d:%02d:%02d.%03d", h, m, s, q)
 }
 
 /*-------------------------------------------------------------------------*/
