@@ -12,6 +12,7 @@ import tulip.VirtualUser
 fun getUser(userId: Int, userClass: String): VirtualUser {
     return when (userClass) {
         "user.http.HttpUser" -> user.http.HttpUser(userId)
+        "user.http.HttpUser2" -> user.http.HttpUser2(userId)
         else -> throw Exception("Unknown user class name provided - $userClass")
     }
 }
