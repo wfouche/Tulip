@@ -2,7 +2,7 @@
 :toc:
 :sectnums:
 
-== Virtual Nanosecond Clock
+== [DONE] [.line-through]#Virtual Nanosecond Clock#
 
 Rework the rate governor logic to use a virtual nanosecond clock. Each virtual clock tick should advance the virtual clock by
 
@@ -172,14 +172,14 @@ Allow benchmark user class to be written in Java or other JVM compatible languag
 * [.line-through]#Kotlin#
 * [.line-through]#Java#
 
-== Reimplement JSON input (config.json)
+== [DROPPED] [.line-through]#Reimplement JSON input (config.json)#
 
 Use Kotlin Serialization instead of GSON:
 
 * Support JSON5 format
 * Support GraalVM
 
-== Reimplement JSON output
+== [DROPPED] [.line-through]#Reimplement JSON output#
 
 Re-implement how the json_results.txt file is created. Only use a hierarchy of data classes and GSON to create the JSON output, or kotlinx
 
@@ -265,7 +265,7 @@ See https://glowroot.org/ and https://github.com/glowroot/glowroot
 * tulip_user.py
 * tulip_user.kts
 
-== Re-write json_print_asciidoc.py in Kotlin Script
+== [DROPPED] [.line-through]#Re-write json_print_asciidoc.py in Kotlin Script#
 
 * json_print_asciidoc.py
 * json_print_asciidoc.kts
