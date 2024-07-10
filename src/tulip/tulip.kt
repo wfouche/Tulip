@@ -603,9 +603,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
                 vTime += nanosPerAction
                 if (vTime > rTime) {
                     val delayMillis: Long = ((vTime-rTime)/1000000.0).toLong()
-                    if (delayMillis > 0) {
-                        Thread.sleep(delayMillis)
-                    }
+                    Thread.sleep(delayMillis)
                 }
                 rTime = System.nanoTime().toDouble()
             }
