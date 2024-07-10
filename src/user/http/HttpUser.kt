@@ -96,7 +96,7 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
 
     override fun stop(): Boolean {
         Console.put("  Terminate: UserId = $userId")
-        delay(100)
+        Thread.sleep(100)
         return true
     }
 

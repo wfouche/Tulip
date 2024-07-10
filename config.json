@@ -2,8 +2,8 @@
     "json_filename": "tulip_results.json",
     "user_class": "user.http.HttpUser",
     "user_params": {
-        "url": "http://localhost:7070",
-        "urlx": "https://jsonplaceholder.typicode.com"
+        "urlx": "http://localhost:7070",
+        "url": "https://jsonplaceholder.typicode.com"
     },
     "user_actions": {
         "0": "start",

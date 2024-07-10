@@ -15,78 +15,22 @@ import kotlin.math.log10
 import kotlin.math.pow
 
 /*-------------------------------------------------------------------------*/
-
-// Round value x to the nearest multiple of n.
-fun roundXN(x: Long, n: Long): Long {
-    return if (x >= 0)
-        ((x + n / 2.0) / n).toLong() * n
-    else
-        ((x - n / 2.0) / n).toLong() * n
-}
-
-/*-------------------------------------------------------------------------*/
-
-// Log Linear Quantization function
-// Independent invention, but similar to DTRACE llquantize
-// https://bcantrill.dtrace.org/2011/02/08/llquantize/
-fun llq(x: Long): Long {
-    // Do not quantize the values from 0 to 9.
-    if (x < 10) return x
-    val a: Double = floor(log10(x.toDouble())) - 1.0
-    val n: Long = ((10.0).pow(a)).toLong() * 5
-    return roundXN(x, n)
-}
-
-/*-------------------------------------------------------------------------*/
-
 //
 // Use this monotonically increasing function to get a millisecond accurate timestamp.
 //
 fun timeMillis(): Long {
-    return TimeUnit.NANOSECONDS.toMillis(timeNanos())
-}
-
-//
-// Use this monotonically increasing function to get a microsecond accurate timestamp.
-//
-fun timeMicros(): Long {
-    return TimeUnit.NANOSECONDS.toMicros(timeNanos())
-}
-
-//
-// Use this monotonically increasing function to get a nanosecond accurate timestamp.
-//
-fun timeNanos(): Long {
-    return System.nanoTime()
+    return TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
 }
 
 /*-------------------------------------------------------------------------*/
-
-//
-// Use this function to calculate elapsed time in milliseconds.
-//
-inline fun elapsedTimeMillis(block: () -> Unit): Long {
-    val start = timeMillis()
-    block()
-    return timeMillis() - start
-}
-
-//
-// Use this function to calculate elapsed time in microseconds.
-//
-inline fun elapsedTimeMicros(block: () -> Unit): Long {
-    val start = timeMicros()
-    block()
-    return timeMicros() - start
-}
 
 //
 // Use this function to calculate elapsed time in nanoseconds.
 //
 inline fun elapsedTimeNanos(block: () -> Unit): Long {
-    val start = timeNanos()
+    val start = System.nanoTime()
     block()
-    return timeNanos() - start
+    return System.nanoTime() - start
 }
 
 /*-------------------------------------------------------------------------*/
@@ -124,20 +68,6 @@ private fun measureTimeAccuracy(time: () -> Long): Long {
 
 /*-------------------------------------------------------------------------*/
 
-fun accuracyTimeMillis(): Long {
-    return measureTimeAccuracy(::timeMillis)
-}
-
-fun accuracyTimeMicros(): Long {
-    return measureTimeAccuracy(::timeMicros)
-}
-
-fun accuracyTimeNanos(): Long {
-    return measureTimeAccuracy(::timeNanos)
-}
-
-/*-------------------------------------------------------------------------*/
-
 fun accuracySystemCurrentTimeMillis(): Long {
     fun systemCurrentTimeMillis(): Long {
         return System.currentTimeMillis()
@@ -154,33 +84,12 @@ fun accuracySystemNanoTime(): Long {
 
 /*-------------------------------------------------------------------------*/
 
-fun delay(delayMillis: Long) {
-    require(delayMillis >= 0) {"delayMillis cannot be negative, is $delayMillis"}
-    Thread.sleep(delayMillis)
-}
-
-/*-------------------------------------------------------------------------*/
-
-//
-// Delay function to workaround Thread.sleep issue on old versions of Windows.
-// Only ever delay for a value that is a multiple of 10 milliseconds (ms).
-//
-fun delayM10(delayMillis: Long) {
-    require(delayMillis >= 0) {"delayMillis cannot be negative, is $delayMillis"}
-    // round delay to the nearest value of 10.
-    // 11 -> 10, ..., 14 -> 10,  15 -> 20, etc.
-    val delayMillisM10 = roundXN(delayMillis, 10)
-    delay(delayMillisM10)
-}
-
-/*-------------------------------------------------------------------------*/
-
 fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
     require(delayFrom >= 0) { "delayFrom must be non-negative, is $delayFrom" }
     require(delayTo >= 0) { "delayTo must be non-negative, is $delayTo" }
     require(delayFrom < delayTo) { "delayFrom must be smaller than delayTo, but $delayFrom >= $delayTo"}
     val delayMillis = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
-    delay(delayMillis)
+    Thread.sleep(delayMillis)
 }
 
 /*-------------------------------------------------------------------------*/

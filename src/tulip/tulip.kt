@@ -108,7 +108,7 @@ fun runtimeDone() {
 
     // Wait for all user threads to exit.
     while (userThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
-        delayM10(500)
+        Thread.sleep(500)
     }
 }
 
@@ -240,17 +240,7 @@ class RateGovernor(private val averageRate: Double, private val timeMillisStart:
     fun pace() {
         count += 1
         var deltaMs: Long = (timeMillisStart + ((count * 1000) / averageRate) - timeMillis()).toLong()
-        deltaMs = roundXN(deltaMs, 10)
-        if (deltaMs < 0) {
-            return
-        }
-        if (averageRate < 100) {
-            // At low throughput rates, we just sleep for the required number of millis.
-            delayM10(deltaMs)
-        } else {
-            // Soften the impact of large delays at very high throughput rates.
-            if (deltaMs > 100) Thread.sleep(10)
-        }
+        if (deltaMs > 0) Thread.sleep(deltaMs)
     }
 }
 
@@ -296,7 +286,7 @@ class UserThread(private val threadId: Int) : Thread() {
                 // True or False, indicating that the task succeeded or failed.
                 // Also calculate the elapsed time in microseconds.
                 //
-                task.waitTimeNanos = timeNanos() - task.beginQueueTimeNanos
+                task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
                 task.serviceTimeNanos = elapsedTimeNanos {
                     if (u.processAction(task.actionId)) task.status = 1 else task.status = 0
                 }
@@ -353,10 +343,10 @@ object CpuLoadMetrics : Thread() {
 
     override fun run() {
         while (getProcessCpuLoad().isNaN()) {
-            delayM10(250)
+            Thread.sleep(250)
         }
         while (getSystemCpuLoad().isNaN()) {
-            delayM10(250)
+            Thread.sleep(250)
         }
 
         var timeMillisNext: Long = timeMillis()
@@ -366,7 +356,7 @@ object CpuLoadMetrics : Thread() {
         while (true) {
             timeMillisNext += 1000
             while (timeMillis() < timeMillisNext) {
-                delayM10(250)
+                Thread.sleep(250)
             }
             totalCpuSystem += getSystemCpuLoad()
             totalCpuProcess += getProcessCpuLoad()
@@ -397,7 +387,7 @@ fun assignTask(task: Task) {
         }
         userThreads!![threadId] = w
     }
-    task.beginQueueTimeNanos = timeNanos()
+    task.beginQueueTimeNanos = System.nanoTime()
     if (!w.tq.offer(task)) {
         val qtw = elapsedTimeNanos {
             w.tq.put(task)
@@ -529,7 +519,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         val durationMillis: Int = (timeMillisEnd - timeMillisStart).toInt()
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
-        val durationMicros = elapsedTimeMicros {
+        val durationNanos = elapsedTimeNanos {
             DataCollector.createSummary(
                 durationMillis,
                 testCase,
@@ -616,7 +606,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
             Console.put("$testPhase run ${runId}: end   (${tsEnd})")
 
-            val durationMicros = elapsedTimeMicros {
+            val durationNanos2 = elapsedTimeNanos {
                 DataCollector.createSummary(
                     durationMillis.toInt(),
                     testCase,
@@ -701,7 +691,7 @@ fun runTulip(
         if (testCase.enabled) {
             val x: TestProfile = getTest(context, testCase)
             x.queueLengths.forEachIndexed { indexUserProfile, queueLength ->
-                delayM10(5000)
+                Thread.sleep(5000)
                 runTest(x, contextId, indexTestCase, indexUserProfile, queueLength)
             }
         }
