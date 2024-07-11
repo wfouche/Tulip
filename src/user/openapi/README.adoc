@@ -1,0 +1,1 @@
+https://github.com/stefanwille/openapi-generator-typescript-example/blob/master/json-placeholder-api.yaml
