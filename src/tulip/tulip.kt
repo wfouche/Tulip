@@ -597,7 +597,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             DataCollector.printStats(true)
             DataCollector.saveStatsJson(testCase.filename)
         }
-        //Console.put("Init: Duration spend in stats processing = ${durationMicros}")
+        //Console.put("Init: Duration spend in stats processing = ${durationNanos2}")
     } else {
         // Normal test case.
         var timeMillisStart: Long
@@ -665,7 +665,6 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
                 //Console.put("drainRspQueue: runId == runIdMax")
                 drainRspQueue()
             }
-            //val durationMillis1: Int = (timeMillis() - timeMillisStart).toInt()
             val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
             Console.put("$testPhase run ${runId}: end   (${tsEnd})")
@@ -687,7 +686,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
                     DataCollector.saveStatsJson(testCase.filename)
                 }
             }
-            //Console.put("Main: Duration spend in stats processing = ${durationMicros}")
+            //Console.put("Main: Duration spend in stats processing = ${durationNanos2}")
         }
 
         // Start-up
