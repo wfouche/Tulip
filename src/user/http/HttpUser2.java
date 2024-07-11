@@ -15,13 +15,14 @@ public class HttpUser2 extends VirtualUser {
 
     private static final HttpClient client = HttpClient.newHttpClient();
 
-    private static boolean serviceCall (String resource, int userId) {
+    private static boolean serviceCall (VirtualUser user, String resource, int userId) {
         // https://www.baeldung.com/java-httpclient-connection-management
         var id = userId + 1;
         HttpRequest request = null;
         try {
+            String url = user.getUserParamValue("url");
             request = HttpRequest.newBuilder()
-                    .uri(new URI("http://localhost:7070" + "/" + resource + "/" + Integer.valueOf(userId).toString()))
+                    .uri(new URI(url + "/" + resource + "/" + Integer.valueOf(userId).toString()))
                     .GET()
                     .build();
         } catch (URISyntaxException e) {
@@ -66,32 +67,32 @@ public class HttpUser2 extends VirtualUser {
 
     @Override
     public boolean action3() {
-        return serviceCall("posts", this.getUserId());
+        return serviceCall(this,"posts", this.getUserId());
     }
 
     @Override
     public boolean action4() {
-        return serviceCall("comments", this.getUserId());
+        return serviceCall(this,"comments", this.getUserId());
     }
 
     @Override
     public boolean action5() {
-        return serviceCall("albums", this.getUserId());
+        return serviceCall(this,"albums", this.getUserId());
     }
 
     @Override
     public boolean action6() {
-        return serviceCall("photos", this.getUserId());
+        return serviceCall(this,"photos", this.getUserId());
     }
 
     @Override
     public boolean action7() {
-        return serviceCall("todos", this.getUserId());
+        return serviceCall(this,"todos", this.getUserId());
     }
 
     @Override
     public boolean action8() {
-        return serviceCall("posts", this.getUserId());
+        return serviceCall(this,"posts", this.getUserId());
     }
 
     @Override

@@ -583,7 +583,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         val durationMillis: Int = (timeMillisEnd - timeMillisStart).toInt()
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
-        val durationNanos = elapsedTimeNanos {
+        val durationNanos2 = elapsedTimeNanos {
             DataCollector.createSummary(
                 durationMillis,
                 testCase,

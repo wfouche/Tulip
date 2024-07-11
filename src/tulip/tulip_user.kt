@@ -216,4 +216,10 @@ open class VirtualUser(val userId: Int) {
             false
         }
     }
+
+    open fun getUserParamValue(paramName: String): String {
+        var s: String? = g_config.userParams[paramName]
+        if (s == null) s = ""
+        return s
+    }
 }

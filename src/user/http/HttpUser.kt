@@ -12,11 +12,12 @@ import java.net.http.HttpResponse
 
 private val client = HttpClient.newHttpClient()
 
-private fun serviceCall(resource: String, userId: Int): Boolean {
+private fun serviceCall(user: VirtualUser, resource: String, userId: Int): Boolean {
     // https://www.baeldung.com/java-httpclient-connection-management
     val id = userId + 1
+    val url: String = user.getUserParamValue("url")
     val request = HttpRequest.newBuilder()
-        .uri(URI("${g_config.userParams["url"]}/${resource}/${id}"))
+        .uri(URI("${url}/${resource}/${id}"))
         .GET()
         .build()
 
@@ -59,23 +60,23 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
     // ----------------------------------------------------------------- //
 
     override fun action3(): Boolean {
-        return serviceCall("posts", userId)
+        return serviceCall(this,"posts", userId)
     }
 
     override fun action4(): Boolean {
-        return serviceCall("comments", userId)
+        return serviceCall(this,"comments", userId)
     }
 
     override fun action5(): Boolean {
-        return serviceCall("albums", userId)
+        return serviceCall(this,"albums", userId)
     }
 
     override fun action6(): Boolean {
-        return serviceCall("photos", userId)
+        return serviceCall(this,"photos", userId)
     }
 
     override fun action7(): Boolean {
-        return serviceCall("todos", userId)
+        return serviceCall(this,"todos", userId)
     }
 
     // ----------------------------------------------------------------- //
