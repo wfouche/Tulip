@@ -71,7 +71,7 @@
             ]
         },
         {
-            "name": "Fixed TPS",
+            "name": "Fixed TPS-a",
             "enabled": true,
             "time": {
                 "startup_duration": 15,
@@ -89,6 +89,23 @@
                 {
                     "id": 2,
                     "weight": 75
+                }
+            ]
+        },
+        {
+            "name": "Fixed TPS-b",
+            "enabled": true,
+            "time": {
+                "startup_duration": 15,
+                "warmup_duration": 15,
+                "main_duration": 30,
+                "main_duration_repeat_count": 4
+            },
+            "throughput_rate": 100.0,
+            "work_in_progress": 0,
+            "actions": [
+                {
+                    "id": 10
                 }
             ]
         },

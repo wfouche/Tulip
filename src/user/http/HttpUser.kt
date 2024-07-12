@@ -97,6 +97,12 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
 
     // ----------------------------------------------------------------- //
 
+    override fun action10(): Boolean {
+        Thread.sleep(10)
+        return true
+    }
+
+    // ----------------------------------------------------------------- //
     override fun stop(): Boolean {
         Console.put("  Terminate: UserId = $userId")
         Thread.sleep(100)
