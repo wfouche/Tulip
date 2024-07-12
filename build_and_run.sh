@@ -1,10 +1,19 @@
 #!/bin/bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk env
+
 ./gradlew -q --stop
 rm -f -r ./bin ./build
+
 ./gradlew -q clean
-./gradlew -q run "$1"
+
+param1="$1"
+if [[ "$param1" == "" ]]; then
+   ./gradlew -q run
+else
+   ./gradlew -q run "$param1"
+fi
+
 ./gradlew -q --stop
 
 ./text_report.sh

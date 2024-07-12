@@ -742,9 +742,9 @@ fun runTulip(
     Console.put("Scenario: ${context.name}")
     Console.put("======================================================================")
     Console.put("")
-    Console.put("NUM_USERS = $MAX_NUM_USERS")
-    Console.put("NUM_THREADS = $MAX_NUM_THREADS")
-    Console.put("NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
+    Console.put("  NUM_USERS = $MAX_NUM_USERS")
+    Console.put("  NUM_THREADS = $MAX_NUM_THREADS")
+    Console.put("  NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
     if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {
         Console.put("")
         Console.put("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
@@ -786,9 +786,6 @@ private fun runTests(
     } else {
         //throw Exception("Exiting, could not delete file - ${filename}")
     }
-
-    // initialize the Tulip runtime environment
-    initTulip()
 
     // run all benchmarks
     contexts.forEachIndexed { contextId, context ->

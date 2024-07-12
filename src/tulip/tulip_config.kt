@@ -54,6 +54,9 @@ data class BenchmarkConfig(
 )
 
 fun initConfig(configFilename: String) {
+    initTulip()
+    Console.put("")
+    Console.put("  filename = $configFilename")
     val gson = GsonBuilder().setPrettyPrinting().create()
     val sf = java.io.File(configFilename).readText()
     g_config = gson.fromJson(sf,BenchmarkConfig::class.java)
