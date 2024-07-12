@@ -603,124 +603,126 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             DataCollector.saveStatsJson(testCase.filename)
         }
         //Console.put("Init: Duration spend in stats processing = ${durationNanos2}")
-    } else {
-        // Normal test case.
-        var timeMillisStart: Long
-        var timeMillisEnd: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
-
-        fun assignTasks(
-            durationMillis: Long,
-            testPhase: String,
-            runId: Int,
-            runIdMax: Int,
-            arrivalRate: Double = -1.0
-        ) {
-            if (durationMillis == 0L) {
-                return
-            }
-            if (runId == 0) {
-                //Console.put("initRspQueue: runId == 0")
-                initRspQueue()
-            }
-
-            DataCollector.clearStats()
-            tsBegin = java.time.LocalDateTime.now().format(formatter)
-            Console.put("\n${testPhase} run ${runId}: begin (${tsBegin})")
-
-            timeMillisStart = timeMillisEnd
-            timeMillisEnd = timeMillisStart + durationMillis
-
-            val rateGovernor: RateGovernor? = null
-            // New rate control logic - begin
-            var nanosPerAction: Double = 0.0
-            if (arrivalRate > -1.0) {
-                // Warm-up duration at max speed, ungoverned.
-            } else {
-                // Ramp-up or Main duration.
-                if (testCase.arrivalRate > 0.0) {
-                    //rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
-                    nanosPerAction = 1000000000.0 /  testCase.arrivalRate
-                }
-            }
-
-            val durationNanos: Double = durationMillis * 1000000.0
-            val startTimeNanos = System.nanoTime()
-            val endTimeNanos: Double = startTimeNanos + durationNanos
-            var rTime: Double = startTimeNanos.toDouble()
-            var vTime: Double = rTime
-            // New rate control logic - end
-
-            while (rTime < endTimeNanos) {
-                // Pick a random user object to assign a task to.
-                val uid = userList.random()
-
-                // Pick the next task for the user object to execute.
-                val aid: Int = userActions!![uid]!!.next()
-
-                startTask(uid, aid, rateGovernor)
-
-                vTime += nanosPerAction
-                if (vTime > rTime) {
-                    val delayMillis: Long = ((vTime-rTime)/1000000.0).toLong()
-                    Thread.sleep(delayMillis)
-                }
-                rTime = System.nanoTime().toDouble()
-            }
-            if (runId == runIdMax) {
-                //Console.put("drainRspQueue: runId == runIdMax")
-                if (testPhase == "Benchmark") drainRspQueue()
-            }
-            val tsEnd = java.time.LocalDateTime.now().format(formatter)
-
-            Console.put("$testPhase run ${runId}: end   (${tsEnd})")
-
-            val durationNanos2 = elapsedTimeNanos {
-                DataCollector.createSummary(
-                    durationMillis.toInt(),
-                    testCase,
-                    indexTestCase,
-                    indexUserProfile,
-                    queueLength,
-                    tsBegin,
-                    tsEnd,
-                    testPhase,
-                    runId
-                )
-                DataCollector.printStats(false)
-                if (testPhase == "Benchmark") {
-                    DataCollector.saveStatsJson(testCase.filename)
-                }
-            }
-            //Console.put("Main: Duration spend in stats processing = ${durationNanos2}")
-        }
-
-        // Start-up
-        //
-        // Since we could have 1 or more population set sizes, only perform the start-up phase
-        // on the first set, i.e., with index 0.
-        //
-        g_queueTimeBlocked = 0
-        if (indexUserProfile == 0) {
-            assignTasks(testCase.duration.startupDurationMillis, "Prewarmup", 0, 0, 0.0)
-        }
-
-        // Ramp-up
-        g_queueTimeBlocked = 0
-        assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
-        Console.put("  total time blocked   = ${g_queueTimeBlocked/1000/1000} ms")
-
-        // Main run(s)
-        for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
-            g_queueTimeBlocked = 0
-            assignTasks(
-                testCase.duration.mainDurationMillis,
-                "Benchmark",
-                runId,
-                testCase.duration.mainDurationRepeatCount - 1
-            )
-            Console.put("  total time blocked   = ${g_queueTimeBlocked/1000/1000} ms")
-        }
+        return
     }
+
+    // Normal test case.
+    var timeMillisStart: Long
+    var timeMillisEnd: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
+
+    fun assignTasks(
+        durationMillis: Long,
+        testPhase: String,
+        runId: Int,
+        runIdMax: Int,
+        arrivalRate: Double = -1.0) {
+
+        if (durationMillis == 0L) {
+            return
+        }
+        if (runId == 0) {
+            //Console.put("initRspQueue: runId == 0")
+            initRspQueue()
+        }
+
+        DataCollector.clearStats()
+        tsBegin = java.time.LocalDateTime.now().format(formatter)
+        Console.put("\n${testPhase} run ${runId}: begin (${tsBegin})")
+
+        timeMillisStart = timeMillisEnd
+        timeMillisEnd = timeMillisStart + durationMillis
+
+        val rateGovernor: RateGovernor? = null
+        // New rate control logic - begin
+        var nanosPerAction: Double = 0.0
+        if (arrivalRate > -1.0) {
+            // Warm-up duration at max speed, ungoverned.
+        } else {
+            // Ramp-up or Main duration.
+            if (testCase.arrivalRate > 0.0) {
+                //rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
+                nanosPerAction = 1000000000.0 /  testCase.arrivalRate
+            }
+        }
+
+        val durationNanos: Double = durationMillis * 1000000.0
+        val startTimeNanos = System.nanoTime()
+        val endTimeNanos: Double = startTimeNanos + durationNanos
+        var rTime: Double = startTimeNanos.toDouble()
+        var vTime: Double = rTime
+        // New rate control logic - end
+
+        while (rTime < endTimeNanos) {
+            // Pick a random user object to assign a task to.
+            val uid = userList.random()
+
+            // Pick the next task for the user object to execute.
+            val aid: Int = userActions!![uid]!!.next()
+
+            startTask(uid, aid, rateGovernor)
+
+            vTime += nanosPerAction
+            if (vTime > rTime) {
+                val delayMillis: Long = ((vTime-rTime)/1000000.0).toLong()
+                Thread.sleep(delayMillis)
+            }
+            rTime = System.nanoTime().toDouble()
+        }
+        if (runId == runIdMax) {
+            //Console.put("drainRspQueue: runId == runIdMax")
+            if (testPhase == "Benchmark") drainRspQueue()
+        }
+        val tsEnd = java.time.LocalDateTime.now().format(formatter)
+
+        Console.put("$testPhase run ${runId}: end   (${tsEnd})")
+
+        val durationNanos2 = elapsedTimeNanos {
+            DataCollector.createSummary(
+                durationMillis.toInt(),
+                testCase,
+                indexTestCase,
+                indexUserProfile,
+                queueLength,
+                tsBegin,
+                tsEnd,
+                testPhase,
+                runId
+            )
+            DataCollector.printStats(false)
+            if (testPhase == "Benchmark") {
+                DataCollector.saveStatsJson(testCase.filename)
+            }
+        }
+        //Console.put("Main: Duration spend in stats processing = ${durationNanos2}")
+    }
+
+    // Start-up
+    //
+    // Since we could have 1 or more population set sizes, only perform the start-up phase
+    // on the first set, i.e., with index 0.
+    //
+    g_queueTimeBlocked = 0
+    if (indexUserProfile == 0) {
+        assignTasks(testCase.duration.startupDurationMillis, "Prewarmup", 0, 0, 0.0)
+    }
+
+    // Ramp-up
+    g_queueTimeBlocked = 0
+    assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
+    Console.put("  total time blocked   = ${g_queueTimeBlocked/1000/1000} ms")
+
+    // Main run(s)
+    for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
+        g_queueTimeBlocked = 0
+        assignTasks(
+            testCase.duration.mainDurationMillis,
+            "Benchmark",
+            runId,
+            testCase.duration.mainDurationRepeatCount - 1
+        )
+        Console.put("  total time blocked   = ${g_queueTimeBlocked/1000/1000} ms")
+    }
+
 }
 
 /*-------------------------------------------------------------------------*/
