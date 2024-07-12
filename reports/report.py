@@ -43,7 +43,7 @@ table, th, td {
     <th>#F</th>
     <th>Avg TPS</th>
     <th>Avg RT</th>
-    <th>Sdv RT</th>
+    <th>Stdev RT</th>
     <th>90p RT</th>
     <th>99p RT</th>
     <th>Max RT</th>
