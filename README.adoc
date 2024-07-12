@@ -111,7 +111,7 @@ scoop install extras/wingetui
 git clone https://github.com/wfouche/Tulip.git
 cd  Tulip
 sdk env install
-./build_and_run.sh
+./build_and_run.sh  or ./build_and_run.sh --args="--config config.json"
 ----
 
 === MacOS
