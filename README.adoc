@@ -137,7 +137,7 @@ build_and_run.cmd
 ----
 Benchmark Report
 
-SID         Name         RID Duration    #N       #S    #F  Avg TPS    Avg RT   Sdv RT  90p RT   99p RT   Max RT      Max RT Timestamp
+SID         Name         RID Duration    #N       #S    #F  Avg TPS    Avg RT   Stdev  90p RT   99p RT   Max RT      Max RT Timestamp
 0   Init (u:16 t:2)
                          0   0.026    32       32       0  1230.8    0.120 ms   0.5 ms 0.0 ms   2.6 ms   2.6 ms   2024-07-10 11:49:02.337
                          -   0:00:00  32       32       0  1230.8    0.120 ms   0.4 ms 0.0 ms   2.6 ms   2.6 ms   2024-07-10 11:49:02.337
