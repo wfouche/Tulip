@@ -2,7 +2,9 @@ package user.http
 
 /*-------------------------------------------------------------------------*/
 
-import tulip.*
+import tulip.Console
+import tulip.VirtualUser
+import tulip.delayMillisRandom
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -99,6 +101,14 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
         Console.put("  Terminate: UserId = $userId")
         Thread.sleep(100)
         return true
+    }
+
+    // ----------------------------------------------------------------- //
+
+    companion object {
+        init {
+            Console.put("Loading .... Kotlin class ... HttpUser")
+        }
     }
 
     // ----------------------------------------------------------------- //
