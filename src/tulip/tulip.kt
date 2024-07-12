@@ -526,18 +526,23 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     // Create a queue containing a total of queueLength tokens.
     //
     val rspQueue = MPSC_Queue<Task>(queueLength)
+    var rspQueueInitialized: Boolean = false
 
     fun initRspQueue() {
+        if (rspQueueInitialized) return
         repeat(queueLength) {
             rspQueue.put(Task())
         }
+        rspQueueInitialized = true
     }
 
     fun drainRspQueue() {
+        if (!rspQueueInitialized) return
         repeat(queueLength) {
             val task: Task = rspQueue.take()
             DataCollector.updateStats(task)
         }
+        rspQueueInitialized = false
     }
 
     fun startTask(uid: Int, aid: Int, rateGovernor: RateGovernor?) {
@@ -663,7 +668,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             }
             if (runId == runIdMax) {
                 //Console.put("drainRspQueue: runId == runIdMax")
-                drainRspQueue()
+                if (testPhase == "Main") drainRspQueue()
             }
             val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
