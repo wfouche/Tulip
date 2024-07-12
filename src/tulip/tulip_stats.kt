@@ -125,7 +125,8 @@ class ActionStats {
         r.pk = testCase.percentiles
         r.pv = mutableListOf<Double>().apply {
             r.pk.forEach {
-                val px = latencyMap2.getValueAtPercentile(it) / 1000.0
+                var px = latencyMap2.getValueAtPercentile(it) / 1000.0
+                if (px > r.maxRt) px = r.maxRt
                 this.add(px)
             }
         }
