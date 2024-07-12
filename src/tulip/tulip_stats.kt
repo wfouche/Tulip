@@ -229,9 +229,9 @@ class ActionStats {
             mg_benchmark_tps?.set(r.aps.toInt())
             mg_benchmark_dur?.set(r.durationSeconds.toInt())
             var phaseId = 0
-            if (r.testPhase == "Start-up") phaseId = 0
-            if (r.testPhase == "Ramp-up") phaseId = 1
-            if (r.testPhase == "Main") phaseId = 2
+            if (r.testPhase == "Prewarmup") phaseId = 0
+            if (r.testPhase == "Warmup") phaseId = 1
+            if (r.testPhase == "Benchmark") phaseId = 2
 
             mg_benchmark_phs?.set(phaseId)
             mg_benchmark_run?.set(r.rowId)

@@ -597,7 +597,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
                 queueLength,
                 tsBegin,
                 tsEnd,
-                "Main",
+                "Benchmark",
                 0)
             DataCollector.printStats(true)
             DataCollector.saveStatsJson(testCase.filename)
@@ -668,7 +668,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             }
             if (runId == runIdMax) {
                 //Console.put("drainRspQueue: runId == runIdMax")
-                if (testPhase == "Main") drainRspQueue()
+                if (testPhase == "Benchmark") drainRspQueue()
             }
             val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
@@ -687,7 +687,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
                     runId
                 )
                 DataCollector.printStats(false)
-                if (testPhase == "Main") {
+                if (testPhase == "Benchmark") {
                     DataCollector.saveStatsJson(testCase.filename)
                 }
             }
@@ -701,12 +701,12 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         //
         g_queueTimeBlocked = 0
         if (indexUserProfile == 0) {
-            assignTasks(testCase.duration.startupDurationMillis, "Start-up", 0, 0, 0.0)
+            assignTasks(testCase.duration.startupDurationMillis, "Prewarmup", 0, 0, 0.0)
         }
 
         // Ramp-up
         g_queueTimeBlocked = 0
-        assignTasks(testCase.duration.warmupDurationMillis, "Ramp-up", 0, 0)
+        assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
         Console.put("  total time blocked   = ${g_queueTimeBlocked/1000/1000} ms")
 
         // Main run(s)
@@ -714,7 +714,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             g_queueTimeBlocked = 0
             assignTasks(
                 testCase.duration.mainDurationMillis,
-                "Main",
+                "Benchmark",
                 runId,
                 testCase.duration.mainDurationRepeatCount - 1
             )
