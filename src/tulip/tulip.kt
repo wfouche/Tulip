@@ -16,9 +16,9 @@ import java.time.format.DateTimeFormatter
 import java.util.concurrent.*
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.exitProcess
-import java.util.concurrent.LinkedBlockingQueue as Java_Queue
-import java.util.concurrent.LinkedBlockingQueue as SPSC_Queue
-import java.util.concurrent.LinkedBlockingQueue as MPSC_Queue
+import java.util.concurrent.ArrayBlockingQueue as Java_Queue
+import java.util.concurrent.ArrayBlockingQueue as SPSC_Queue
+import java.util.concurrent.ArrayBlockingQueue as MPSC_Queue
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.lang.management.ManagementFactory
 import javax.management.Attribute
