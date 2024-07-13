@@ -55,7 +55,7 @@
             ]
         },
         {
-            "name": "Max TPS",
+            "name": "Max TPS-a",
             "enabled": true,
             "time": {
                 "startup_duration": 15,
@@ -64,6 +64,23 @@
                 "main_duration_repeat_count": 3
             },
             "throughput_rate": 0.0,
+            "work_in_progress": -1,
+            "actions": [
+                {
+                    "id": 9
+                }
+            ]
+        },
+        {
+            "name": "Max TPS-b",
+            "enabled": true,
+            "time": {
+                "startup_duration": 15,
+                "warmup_duration": 30,
+                "main_duration": 30,
+                "main_duration_repeat_count": 3
+            },
+            "throughput_rate": 1000000.0,
             "work_in_progress": -1,
             "actions": [
                 {
