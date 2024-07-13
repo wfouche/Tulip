@@ -2,8 +2,8 @@
     "json_filename": "tulip_results.json",
     "user_class": "user.http.HttpUser",
     "user_params": {
-        "urlx": "http://localhost:7070",
-        "url": "https://jsonplaceholder.typicode.com"
+        "url": "https://jsonplaceholder.typicode.com",
+        "urlx": "http://localhost:7070"
     },
     "user_actions": {
         "0": "start",
@@ -128,7 +128,36 @@
             ]
         },
         {
-            "name": "HTTP",
+            "name": "HTTP-a",
+            "enabled": true,
+            "time": {
+                "startup_duration": 15,
+                "warmup_duration": 15,
+                "main_duration": 30,
+                "main_duration_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": 0,
+            "actions": [
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                }
+            ]
+        },
+        {
+            "name": "HTTP-b",
             "enabled": true,
             "time": {
                 "startup_duration": 15,
@@ -137,7 +166,7 @@
                 "main_duration_repeat_count": 3
             },
             "throughput_rate": 1250.0,
-            "work_in_progress": 2,
+            "work_in_progress": 0,
             "actions": [
                 {
                     "id": 3
