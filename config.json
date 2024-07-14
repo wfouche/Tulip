@@ -58,10 +58,10 @@
             "name": "Max TPS-a",
             "enabled": true,
             "time": {
-                "startup_duration": 15,
+                "prewarmup_duration": 15,
                 "warmup_duration": 30,
-                "main_duration": 30,
-                "main_duration_repeat_count": 3
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
             },
             "throughput_rate": 0.0,
             "work_in_progress": -1,
@@ -75,10 +75,10 @@
             "name": "Max TPS-b",
             "enabled": true,
             "time": {
-                "startup_duration": 15,
+                "prewarmup_duration": 15,
                 "warmup_duration": 30,
-                "main_duration": 30,
-                "main_duration_repeat_count": 3
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
             },
             "throughput_rate": 1000000.0,
             "work_in_progress": -1,
@@ -92,10 +92,10 @@
             "name": "Fixed TPS-a",
             "enabled": true,
             "time": {
-                "startup_duration": 15,
+                "prewarmup_duration": 15,
                 "warmup_duration": 15,
-                "main_duration": 30,
-                "main_duration_repeat_count": 4
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 4
             },
             "throughput_rate": 100.0,
             "work_in_progress": 0,
@@ -114,10 +114,10 @@
             "name": "Fixed TPS-b",
             "enabled": true,
             "time": {
-                "startup_duration": 15,
+                "prewarmup_duration": 15,
                 "warmup_duration": 15,
-                "main_duration": 30,
-                "main_duration_repeat_count": 4
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 4
             },
             "throughput_rate": 100.0,
             "work_in_progress": 0,
@@ -131,10 +131,10 @@
             "name": "HTTP-a",
             "enabled": true,
             "time": {
-                "startup_duration": 15,
+                "prewarmup_duration": 15,
                 "warmup_duration": 15,
-                "main_duration": 30,
-                "main_duration_repeat_count": 3
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
             },
             "throughput_rate": 0.0,
             "work_in_progress": 0,
@@ -160,10 +160,10 @@
             "name": "HTTP-b",
             "enabled": true,
             "time": {
-                "startup_duration": 15,
+                "prewarmup_duration": 15,
                 "warmup_duration": 15,
-                "main_duration": 30,
-                "main_duration_repeat_count": 3
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
             },
             "throughput_rate": 1250.0,
             "work_in_progress": 0,
@@ -189,10 +189,10 @@
             "name": "Shutdown",
             "enabled": true,
             "time": {
-                "startup_duration": 0,
+                "prewarmup_duration": 0,
                 "warmup_duration": 0,
-                "main_duration": 0,
-                "main_duration_repeat_count": 1
+                "benchmark_duration": 0,
+                "benchmark_duration_repeat_count": 1
             },
             "throughput_rate": 0.0,
             "work_in_progress": 1,
