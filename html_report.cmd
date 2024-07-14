@@ -1,5 +1,5 @@
 @echo off
 pushd .\reports
 call .\report.cmd
-.\report.html
+.\benchmark_report.html
 popd

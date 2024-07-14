@@ -1,4 +1,4 @@
 pushd ./reports
 ./report.sh
-google-chrome report.html
+google-chrome benchmark_report.html
 popd
