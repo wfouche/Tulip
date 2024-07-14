@@ -37,8 +37,8 @@ table, th, td {
     <th>SID</th>
     <th>Name</th>
     <th>RID</th>
-    <th>Duration</th>
     <th>Avg TPS</th>
+    <th>Duration</th>
     <th>#N</th>
     <th>#S</th>
     <th>#F</th>
@@ -75,8 +75,8 @@ benchmark_detail_row = """
     <td></td>
     <td></td>
     <td>%d</td>
-    <td>%s</td>
     <td>%.1f</td>
+    <td>%s</td>
     <td>%d</td>
     <td>%d</td>
     <td>%d</td>
@@ -94,8 +94,8 @@ benchmark_summary_row = """
     <td></td>
     <td></td>
     <td>-</td>
-    <td><b>%s</b></td>
     <td><b>%.1f</b></td>
+    <td><b>%s</b></td>
     <td><b>%d</b></td>
     <td><b>%d</b></td>
     <td><b>%d</b></td>
@@ -125,7 +125,7 @@ for e in jb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions/sm.duration,sm.num_actions,sm.num_success,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+            html = benchmark_summary_row%(sm.num_actions/sm.duration,str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -144,8 +144,8 @@ for e in jb:
     #print("   ", jh.getMaxValue()/1000.0)
     if print_detail_rows: print(benchmark_detail_row%( \
         e["row_id"],
-        e["duration"],
         e["avg_tps"],
+        e["duration"],
         e["num_actions"],
         e["num_success"],
         e["num_failed"],
@@ -165,7 +165,7 @@ for e in jb:
     sm.num_failed += e["num_failed"]
     sm.duration += e["duration"]
 
-html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions/sm.duration,sm.num_actions,sm.num_success,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+html = benchmark_summary_row%(sm.num_actions/sm.duration,str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_success,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
 if not print_detail_rows:
     html = html.replace("<b>","")
     html = html.replace("</b>","")
