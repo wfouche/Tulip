@@ -14,14 +14,8 @@ import java.net.http.HttpResponse
 
 private val client = HttpClient.newHttpClient()
 
-private fun serviceCall(user: VirtualUser, resource: String, userId: Int): Boolean {
+private fun serviceCall(request:HttpRequest): Boolean {
     // https://www.baeldung.com/java-httpclient-connection-management
-    val id = userId + 1
-    val url: String = user.getUserParamValue("url")
-    val request = HttpRequest.newBuilder()
-        .uri(URI("${url}/${resource}/${id}"))
-        .GET()
-        .build()
 
     val response = client.send(request, HttpResponse.BodyHandlers.ofString())
 
@@ -38,6 +32,12 @@ private fun serviceCall(user: VirtualUser, resource: String, userId: Int): Boole
 class HttpUser(userId: Int) : VirtualUser(userId) {
 
     // ----------------------------------------------------------------- //
+
+    val requestPosts = createRequest("posts")
+    val requestComments = createRequest("comments")
+    val requestAlbums = createRequest("albums")
+    val requestPhotos = createRequest("photos")
+    val requestTodos = createRequest("todos")
 
     override fun start(): Boolean {
         val actionId = 0
@@ -62,23 +62,23 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
     // ----------------------------------------------------------------- //
 
     override fun action3(): Boolean {
-        return serviceCall(this,"posts", userId)
+        return serviceCall(requestPosts)
     }
 
     override fun action4(): Boolean {
-        return serviceCall(this,"comments", userId)
+        return serviceCall(requestComments)
     }
 
     override fun action5(): Boolean {
-        return serviceCall(this,"albums", userId)
+        return serviceCall(requestAlbums)
     }
 
     override fun action6(): Boolean {
-        return serviceCall(this,"photos", userId)
+        return serviceCall(requestPhotos)
     }
 
     override fun action7(): Boolean {
-        return serviceCall(this,"todos", userId)
+        return serviceCall(requestTodos)
     }
 
     // ----------------------------------------------------------------- //
@@ -103,10 +103,23 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
     }
 
     // ----------------------------------------------------------------- //
+
     override fun stop(): Boolean {
         Console.put("  Terminate: UserId = $userId")
         Thread.sleep(100)
         return true
+    }
+
+    // ----------------------------------------------------------------- //
+
+    private fun createRequest(name: String): HttpRequest {
+        val id = userId + 1
+        val url: String = this.getUserParamValue("url")
+        val request:HttpRequest = HttpRequest.newBuilder()
+            .uri(URI("${url}/${name}/${id}"))
+            .GET()
+            .build()
+        return request
     }
 
     // ----------------------------------------------------------------- //
