@@ -274,7 +274,7 @@ class UserThread(private val threadId: Int) : Thread() {
     //
     // Task Queue - input queue with tasks for this thread to complete.
     //
-    val tq = SPSC_Queue<Task>(10)
+    val tq = SPSC_Queue<Task>(100)
     private var running = true
 
     override fun run() {
