@@ -356,7 +356,7 @@ fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
     test.queueLengths.forEach { queueLength ->
         list.add(
             when (queueLength) {
-                0 -> context.numThreads
+                0 -> context.numThreads * 2
                 -1 -> context.numThreads * USER_THREAD_QSIZE
                 else -> queueLength
             }
