@@ -600,10 +600,6 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             }
             rTime = System.nanoTime().toDouble()
         }
-        if (runId == runIdMax) {
-            //Console.put("drainRspQueue: runId == runIdMax")
-            if (testPhase == "Benchmark") drainRspQueue()
-        }
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
         Console.put("$testPhase run ${runId}: end   (${tsEnd})")
@@ -626,6 +622,10 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
             }
         }
         //Console.put("Main: Duration spend in stats processing = ${durationNanos2}")
+        if (runId == runIdMax) {
+            //Console.put("drainRspQueue: runId == runIdMax")
+            if (testPhase == "Benchmark") drainRspQueue()
+        }
     }
 
     // Start-up
