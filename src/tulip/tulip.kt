@@ -265,6 +265,8 @@ class RateGovernor(private val averageRate: Double, private val timeMillisStart:
 
 /*-------------------------------------------------------------------------*/
 
+const val USER_THREAD_QSIZE = 100
+
 class UserThread(private val threadId: Int) : Thread() {
 
     init {
@@ -274,7 +276,7 @@ class UserThread(private val threadId: Int) : Thread() {
     //
     // Task Queue - input queue with tasks for this thread to complete.
     //
-    val tq = SPSC_Queue<Task>(100)
+    val tq = SPSC_Queue<Task>(USER_THREAD_QSIZE)
     private var running = true
 
     override fun run() {
@@ -355,7 +357,7 @@ fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
         list.add(
             when (queueLength) {
                 0 -> context.numThreads
-                -1 -> context.numThreads * 10
+                -1 -> context.numThreads * USER_THREAD_QSIZE
                 else -> queueLength
             }
         )
