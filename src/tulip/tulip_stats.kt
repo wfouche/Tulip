@@ -50,8 +50,8 @@ data class ActionSummary(
     var pk: List<Double> = mutableListOf(),
     var pv: List<Double> = mutableListOf(),
 
-    var avgCpuSystem: Double = 0.0,
-    var avgCpuProcess: Double = 0.0
+    //var avgCpuSystem: Double = 0.0,
+    //var avgCpuProcess: Double = 0.0
 )
 
 class ActionStats {
@@ -139,22 +139,10 @@ class ActionStats {
         // Summarize CPU usage for global stats only.
         if (actionId == NUM_ACTIONS) {
             // average process CPU load.
-            var cpuLoad = 0.0
-            var i = 0.0
-            while (!CpuLoadMetrics.processCpuStats.isEmpty()) {
-                cpuLoad += CpuLoadMetrics.processCpuStats.take()
-                i += 1.0
-            }
-            r.avgCpuProcess = if (i == 0.0) 0.0 else cpuLoad / i
+            // r.avgCpuProcess = 0.0
 
             // average system CPU load.
-            cpuLoad = 0.0
-            i = 0.0
-            while (!CpuLoadMetrics.systemCpuStats.isEmpty()) {
-                cpuLoad += CpuLoadMetrics.systemCpuStats.take()
-                i += 1.0
-            }
-            r.avgCpuSystem = if (i == 0.0) 0.0 else cpuLoad / i
+            // r.avgCpuSystem = 0.0
         }
 
     }
@@ -203,12 +191,12 @@ class ActionStats {
             val tm = Runtime.getRuntime().totalMemory()
             val mm = Runtime.getRuntime().maxMemory()
 
-            output.add("")
-            output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avgCpuProcess)}")
-            output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avgCpuSystem)}")
+            //output.add("")
+            //output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avgCpuProcess)}")
+            //output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avgCpuSystem)}")
 
-            mg_cpu_tulip?.set(r.avgCpuProcess.toInt())
-            mg_cpu_system?.set(r.avgCpuSystem.toInt())
+            //mg_cpu_tulip?.set(r.avgCpuProcess.toInt())
+            //mg_cpu_system?.set(r.avgCpuSystem.toInt())
 
             output.add("")
             output.add("  memory used (jvm)    = ${"%,d".format(Locale.US, tm - fm)}")
@@ -402,7 +390,7 @@ object DataCollector {
 
             json += "\"duration\": ${r.durationSeconds}, "
 
-            json += "\"avg_cpu_process\": ${r.avgCpuProcess}, \"avg_cpu_system\": ${r.avgCpuSystem}, "
+            // json += "\"avg_cpu_process\": ${r.avgCpuProcess}, \"avg_cpu_system\": ${r.avgCpuSystem}, "
 
             json += "\"jvm_memory_used\": ${tm-fm}, "
             json += "\"jvm_memory_free\": $fm, "
