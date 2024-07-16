@@ -179,6 +179,220 @@ SID          Name          RID  Avg TPS  Duration    #N        #S     #F   Avg R
 
 ----
 
+== Example Benchmark Configuration
+
+=== Default Test Configuration
+
+[source,json]
+----
+{
+    "json_filename": "benchmark_results.json",
+    "user_class": "user.http.HttpUser",
+    "user_params": {
+        "url": "https://jsonplaceholder.typicode.com",
+        "urlx": "http://localhost:7070"
+    },
+    "user_actions": {
+        "0": "start",
+        "1": "DELAY-6ms",
+        "2": "DELAY-14ms",
+        "3": "HTTP-posts",
+        "4": "HTTP-comments",
+        "5": "HTTP-albums",
+        "6": "HTTP-photos",
+        "7": "HTTP-todos",
+        "8": "login",
+        "9": "noop",
+        "10": "DELAY-10ms",
+        "99": "stop"
+    },
+    "contexts": [
+        {
+            "name": "Scenario-1",
+            "enabled": true,
+            "num_users": 16,
+            "num_threads": 2
+        },
+        {
+            "name": "Scenario-2",
+            "enabled": false,
+            "num_users": 32,
+            "num_threads": 4
+        }
+    ],
+    "benchmarks": [
+        {
+            "name": "Init",
+            "enabled": true,
+            "time": {
+                "prewarmup_duration": 0,
+                "warmup_duration": 0,
+                "benchmark_duration": 0,
+                "benchmark_duration_repeat_count": 1
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": 1,
+            "actions": [
+                {
+                    "id": 0
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Max TPS-a",
+            "enabled": true,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": -1,
+            "actions": [
+                {
+                    "id": 9
+                }
+            ]
+        },
+        {
+            "name": "Max TPS-b",
+            "enabled": true,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
+            },
+            "throughput_rate": 1000000.0,
+            "work_in_progress": -1,
+            "actions": [
+                {
+                    "id": 9
+                }
+            ]
+        },
+        {
+            "name": "Fixed TPS-a",
+            "enabled": true,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 4
+            },
+            "throughput_rate": 100.0,
+            "work_in_progress": 0,
+            "actions": [
+                {
+                    "id": 1,
+                    "weight": 25
+                },
+                {
+                    "id": 2,
+                    "weight": 75
+                }
+            ]
+        },
+        {
+            "name": "Fixed TPS-b",
+            "enabled": true,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 4
+            },
+            "throughput_rate": 100.0,
+            "work_in_progress": 0,
+            "actions": [
+                {
+                    "id": 10
+                }
+            ]
+        },
+        {
+            "name": "HTTP-a",
+            "enabled": true,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": -1,
+            "actions": [
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                }
+            ]
+        },
+        {
+            "name": "HTTP-b",
+            "enabled": true,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
+            },
+            "throughput_rate": 1250.0,
+            "work_in_progress": 0,
+            "actions": [
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                }
+            ]
+        },
+        {
+            "name": "Shutdown",
+            "enabled": true,
+            "time": {
+                "prewarmup_duration": 0,
+                "warmup_duration": 0,
+                "benchmark_duration": 0,
+                "benchmark_duration_repeat_count": 1
+            },
+            "throughput_rate": 0.0,
+            "work_in_progress": 1,
+            "actions": [
+                {
+                    "id": 99
+                }
+            ]
+        }
+    ]
+}
+----
+
 == Appendix
 
 === Coordinated Omission
