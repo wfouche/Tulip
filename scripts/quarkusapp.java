@@ -1,5 +1,5 @@
 //usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.quarkus.platform:quarkus-bom:3.11.0@pom
+//DEPS io.quarkus.platform:quarkus-bom:3.12.2@pom
 //DEPS io.quarkus:quarkus-rest
 
 import io.quarkus.runtime.Quarkus;
