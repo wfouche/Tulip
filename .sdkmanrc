@@ -11,4 +11,4 @@ java=21.0.3-tem
 gradle=8.9
 
 # JBang
-jbang=0.116.0
+jbang=0.117.1
