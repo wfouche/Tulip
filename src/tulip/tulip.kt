@@ -252,6 +252,10 @@ open class VirtualUser(val userId: Int) {
         if (s == null) s = ""
         return s
     }
+
+    open fun getActionName(actionId: Int): String {
+        return if (actionNames.containsKey(actionId)) actionNames[actionId]!! else "action${actionId}"
+    }
 }
 
 /*-------------------------------------------------------------------------*/
