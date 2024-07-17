@@ -41,7 +41,7 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
 
     override fun start(): Boolean {
         val actionId = 0
-        Console.put("  $userId -> $actionId")
+        Console.put("  $userId -> $actionId -> ${getActionName(actionId)}")
         return true
     }
 
@@ -85,7 +85,7 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
 
     override fun action8(): Boolean {
         val actionId = 8
-        Console.put("  $userId -> $actionId")
+        Console.put("  $userId -> $actionId -> ${getActionName(actionId)}")
         return true
     }
 
