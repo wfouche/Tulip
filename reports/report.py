@@ -110,7 +110,6 @@ benchmark_summary_row = """
 
 trailer = """
 </table>
-<p>%s</p>
 </body>
 </html>
 """
@@ -170,4 +169,4 @@ if not print_detail_rows:
     html = html.replace("<b>","")
     html = html.replace("</b>","")
 print(html)
-print(trailer%now.strftime("%Y-%m-%d / %H:%M:%S"))
+print(trailer)
