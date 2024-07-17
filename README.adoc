@@ -404,6 +404,7 @@ Tulip compensates for back-pressure from the system under test and adjusts the m
 === Kotlin Books
 
 * https://www.manning.com/books/kotlin-in-action[Kotlin in Action, 1st Edition]
+* https://www.manning.com/books/kotlin-in-action-second-edition[Kotlin in Action, 2nd Edition]
 * https://typealias.com/start/[Kotlin: An Illustrated Guide]
 
 === Performance Engineering
