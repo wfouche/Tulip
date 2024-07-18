@@ -803,6 +803,7 @@ class ActionStats {
 
         results += ", \"num_actions\": ${numActions}, \"num_success\": ${numSuccess}, \"num_failed\": ${numActions - numSuccess}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
+        results += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
 
         results += ", \"percentiles_rt\": {"
         var t = ""
