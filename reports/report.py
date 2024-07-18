@@ -50,8 +50,8 @@ table, th, td {
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
-    <th>AWT</th>
-    <th>MWT</th>
+    <th>Awt</th>
+    <th>Mwt</th>
   </tr>
 """
 
