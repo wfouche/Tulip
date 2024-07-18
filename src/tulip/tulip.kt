@@ -595,7 +595,7 @@ data class ActionSummary(
     var numActions: Int = 0,
     var numSuccess: Int = 0,
 
-    var latencyMap2: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
+    var histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
 
     var durationSeconds: Double = 0.0,
 
@@ -621,10 +621,10 @@ class ActionStats {
     //private val NUM_DIGITS=1  // Tested - inaccurate results, don't use
     //private val NUM_DIGITS=2  // Tested - good results, small results file (default, optimal)
     //private val NUM_DIGITS=3  // Tested - great results, large results file, histogram_rt
-    private val latencyMap2: Histogram = Histogram(histogramNumberOfSignificantValueDigits)
-    private var latencyMapMinRt: Long = Long.MAX_VALUE
-    private var latencyMapMaxRt: Long = Long.MIN_VALUE
-    private var latencyMapMaxRtTs = ""
+    private val histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits)
+    private var histogramMinRt: Long = Long.MAX_VALUE
+    private var histogramMaxRt: Long = Long.MIN_VALUE
+    private var histogramMaxRtTs = ""
     private var waitTimeMicrosHistogram = Histogram(histogramNumberOfSignificantValueDigits)
 
     var numActions: Int = 0
@@ -666,34 +666,31 @@ class ActionStats {
         r.aps = numActions / r.durationSeconds
 
         // average response time (art) in milliseconds
-        //r.art = latencyMap.map { it.value * it.key }.sum() / 1000.0 / numActions
-        r.art = latencyMap2.mean / 1000.0
+        r.art = histogram.mean / 1000.0
 
         // standard deviation
-        // HOWTO: https://www.statcan.gc.ca/edu/power-pouvoir/ch12/5214891-eng.htm#a2
-        //r.sdev = sqrt(latencyMap.map { it.value * (it.key / 1000.0 - r.art).pow(2.0) }.sum()
-        r.sdev = latencyMap2.stdDeviation / 1000.0
+        r.sdev = histogram.stdDeviation / 1000.0
 
         // min rt
-        r.minRt = latencyMapMinRt / 1000.0
+        r.minRt = histogramMinRt / 1000.0
 
         // max rt
-        r.maxRt = latencyMapMaxRt / 1000.0
+        r.maxRt = histogramMaxRt / 1000.0
 
         // max rt timestamp
-        r.maxRtTs = latencyMapMaxRtTs
+        r.maxRtTs = histogramMaxRtTs
 
         // percentiles
         r.pk = testCase.percentiles
         r.pv = mutableListOf<Double>().apply {
             r.pk.forEach {
-                var px = latencyMap2.getValueAtPercentile(it) / 1000.0
+                var px = histogram.getValueAtPercentile(it) / 1000.0
                 if (px > r.maxRt) px = r.maxRt
                 this.add(px)
             }
         }
 
-        r.latencyMap2 = latencyMap2
+        r.histogram = histogram
 
         r.awt = waitTimeMicrosHistogram.mean / 1000.0
         r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
@@ -745,7 +742,7 @@ class ActionStats {
                     Locale.US,
                     r.maxRt
                 )
-            } ms at $latencyMapMaxRtTs"
+            } ms at $histogramMaxRtTs"
         )
 
         if (actionId == NUM_ACTIONS) {
@@ -819,8 +816,8 @@ class ActionStats {
         results += "}"
 
         results += ", \"histogram_rt\": "
-        val b = ByteBuffer.allocate(latencyMap2.neededByteBufferCapacity)
-        latencyMap2.encodeIntoCompressedByteBuffer(b)
+        val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
+        histogram.encodeIntoCompressedByteBuffer(b)
         val b64s = Base64.encode(b.array())
         results += '\"' + b64s + '\"'
 
@@ -829,14 +826,14 @@ class ActionStats {
 
     fun updateStats(task: Task) {
         val durationMicros = (task.serviceTimeNanos)/1000
-        latencyMap2.recordValue(durationMicros)
+        histogram.recordValue(durationMicros)
 
-        if (durationMicros < latencyMapMinRt) {
-            latencyMapMinRt = durationMicros
+        if (durationMicros < histogramMinRt) {
+            histogramMinRt = durationMicros
         }
-        if (durationMicros > latencyMapMaxRt) {
-            latencyMapMaxRt = durationMicros
-            latencyMapMaxRtTs = java.time.LocalDateTime.now().format(formatter)
+        if (durationMicros > histogramMaxRt) {
+            histogramMaxRt = durationMicros
+            histogramMaxRtTs = java.time.LocalDateTime.now().format(formatter)
         }
         numActions += 1
         if (task.status == 1) {
@@ -846,10 +843,10 @@ class ActionStats {
     }
 
     fun clearStats() {
-        latencyMap2.reset()
-        latencyMapMinRt = Long.MAX_VALUE
-        latencyMapMaxRt = Long.MIN_VALUE
-        latencyMapMaxRtTs = ""
+        histogram.reset()
+        histogramMinRt = Long.MAX_VALUE
+        histogramMaxRt = Long.MIN_VALUE
+        histogramMaxRtTs = ""
         waitTimeMicrosHistogram.reset()
 
         numActions = 0
