@@ -133,7 +133,7 @@ sm = None
 jh = Histogram(1,3600*1000*1000, 3)
 fileObj = open(filename)
 jb = json.load(fileObj)
-description = "/ " + jb["description"] + " / " + jb["timestamp"]
+description = "/ " + jb["config"]["description"] + " / " + jb["timestamp"]
 rb = jb["results"]
 
 print(header.replace("__DESC__", description))

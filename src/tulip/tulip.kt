@@ -314,8 +314,8 @@ internal val mg_benchmark_dur = registry.gauge("Tulip", listOf(Tag.of("benchmark
 internal val mg_benchmark_phs = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
 internal val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
 
-internal val mg_cpu_tulip = registry.gauge("Tulip", listOf(Tag.of("cpu",   "tulip")), AtomicInteger(0))
-internal val mg_cpu_system = registry.gauge("Tulip", listOf(Tag.of("cpu",   "system")), AtomicInteger(0))
+// internal val mg_cpu_tulip = registry.gauge("Tulip", listOf(Tag.of("cpu",   "tulip")), AtomicInteger(0))
+// internal val mg_cpu_system = registry.gauge("Tulip", listOf(Tag.of("cpu",   "system")), AtomicInteger(0))
 
 /*-------------------------------------------------------------------------*/
 
@@ -542,7 +542,7 @@ fun initConfig(configFilename: String) {
     g_config = gson.fromJson(sf,BenchmarkConfig::class.java)
     if (false) {
         val json = gson.toJson(g_config)
-        println("$json")
+        println(json)
         println("${g_config}")
     }
     for (e:ConfigContext in g_config.contexts) {
@@ -615,6 +615,8 @@ data class ActionSummary(
     //var avgCpuSystem: Double = 0.0,
     //var avgCpuProcess: Double = 0.0
 )
+
+/*-------------------------------------------------------------------------*/
 
 class ActionStats {
     // <numberOfSignificantValueDigits>
@@ -696,13 +698,13 @@ class ActionStats {
         r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
 
         // Summarize CPU usage for global stats only.
-        if (actionId == NUM_ACTIONS) {
-            // average process CPU load.
-            // r.avgCpuProcess = 0.0
-
-            // average system CPU load.
-            // r.avgCpuSystem = 0.0
-        }
+        //if (actionId == NUM_ACTIONS) {
+        //    // average process CPU load.
+        //    // r.avgCpuProcess = 0.0
+        //
+        //    // average system CPU load.
+        //    // r.avgCpuSystem = 0.0
+        //}
 
     }
 
@@ -854,6 +856,8 @@ class ActionStats {
     }
 }
 
+/*-------------------------------------------------------------------------*/
+
 object DataCollector {
     private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
@@ -983,7 +987,10 @@ object DataCollector {
             val bw = BufferedWriter(fw).apply {
                 when (fileWriteId) {
                     0 -> {
-                        write("{\"description\": \"${g_config.description}\", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\", \"results\":[${json}")
+                        val gson = GsonBuilder().setPrettyPrinting().create()
+                        val jsonString = gson.toJson(g_config)
+                        //val jsonString = "${g_config}"
+                        write("{ \"config\": ${jsonString}, \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\", \"results\":[${json}")
                     }
                     else -> {
                         write(",${json}")
@@ -1244,7 +1251,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     // Create a queue containing a total of queueLength tokens.
     //
     val rspQueue = MPSC_Queue<Task>(queueLength)
-    var rspQueueInitialized: Boolean = false
+    var rspQueueInitialized = false
 
     fun initRspQueue() {
         if (rspQueueInitialized) return
@@ -1306,7 +1313,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         val durationMillis: Int = (timeMillisEnd - timeMillisStart).toInt()
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
-        val durationNanos2 = elapsedTimeNanos {
+        elapsedTimeNanos {
             DataCollector.createSummary(
                 durationMillis,
                 testCase,
@@ -1352,7 +1359,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
         val rateGovernor: RateGovernor? = null
         // New rate control logic - begin
-        var nanosPerAction: Double = 0.0
+        var nanosPerAction = 0.0
         if (arrivalRate > -1.0) {
             // Warm-up duration at max speed, ungoverned.
         } else {
@@ -1390,7 +1397,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
         Console.put("$testPhase run ${runId}: end   (${tsEnd})")
 
-        val durationNanos2 = elapsedTimeNanos {
+        elapsedTimeNanos {
             DataCollector.createSummary(
                 durationMillis.toInt(),
                 testCase,
@@ -1491,7 +1498,7 @@ fun runTulip(
 /*-------------------------------------------------------------------------*/
 
 fun runTests(getUser: (Int,String) -> VirtualUser) {
-    val actionNames = tulip.g_config.userActions
+    val actionNames = g_config.userActions
     runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
 }
 
@@ -1505,12 +1512,12 @@ private fun runTests(
     // Remove the previous JSON results file (if it exists)
     val filename = g_tests[0].filename
     val file = java.io.File(filename)
-    val result = file.delete()
-    if (result) {
-        //println("File deleted successfully - ${filename}")
-    } else {
-        //throw Exception("Exiting, could not delete file - ${filename}")
-    }
+    file.delete()
+    //if (result) {
+    //    //println("File deleted successfully - ${filename}")
+    //} else {
+    //    //throw Exception("Exiting, could not delete file - ${filename}")
+    //}
 
     // run all benchmarks
     contexts.forEachIndexed { contextId, context ->
