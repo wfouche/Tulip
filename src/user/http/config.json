@@ -1,4 +1,5 @@
 {
+    "description": "Micro-benchmarks",
     "json_filename": "benchmark_results.json",
     "user_class": "user.http.HttpUser",
     "user_params": {
