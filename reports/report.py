@@ -119,8 +119,9 @@ sm = None
 jh = Histogram(1,3600*1000*1000, 3)
 fileObj = open(filename)
 jb = json.load(fileObj)
+rb = jb["results"]
 prev_row_id = 0
-for e in jb:
+for e in rb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:

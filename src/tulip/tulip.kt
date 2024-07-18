@@ -983,7 +983,7 @@ object DataCollector {
             val fw = FileWriter(filename, true)
             val bw = BufferedWriter(fw).apply {
                 when (fileWriteId) {
-                    0 -> write("[${json}")
+                    0 -> write("{\"results\":[${json}")
                     else -> write(",${json}")
                 }
                 newLine()
@@ -998,6 +998,8 @@ object DataCollector {
         val fw = FileWriter(filename, true)
         val bw = BufferedWriter(fw).apply {
             write("]")
+            newLine()
+            write("}")
             newLine()
         }
         bw.close()
