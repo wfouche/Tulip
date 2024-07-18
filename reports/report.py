@@ -120,7 +120,7 @@ fileObj = open(filename)
 jb = json.load(fileObj)
 description = ""
 if "description" in jb.keys():
-    description = "- " + jb["description"]
+    description = "/ " + jb["description"]
 rb = jb["results"]
 
 print(header.replace("__DESC__", description))
