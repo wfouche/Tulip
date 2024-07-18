@@ -47,7 +47,7 @@ table, th, td {
     <th>90p RT</th>
     <th>99p RT</th>
     <th>Max RT</th>
-    <th>Max RT Timestamp</th>
+    <th>Max RTT</th>
   </tr>
 """
 
@@ -118,9 +118,7 @@ sm = None
 jh = Histogram(1,3600*1000*1000, 3)
 fileObj = open(filename)
 jb = json.load(fileObj)
-description = ""
-if "description" in jb.keys():
-    description = "/ " + jb["description"]
+description = "/ " + jb["description"] + " / " + jb["timestamp"]
 rb = jb["results"]
 
 print(header.replace("__DESC__", description))
@@ -130,7 +128,7 @@ for e in rb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            html = benchmark_summary_row%(sm.num_actions/sm.duration,str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+            html = benchmark_summary_row%(sm.num_actions/sm.duration,str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4])
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -159,7 +157,7 @@ for e in rb:
         e["percentiles_rt"]["90.0"],
         e["percentiles_rt"]["99.0"],
         e["max_rt"],
-        e["max_rt_ts"].replace("_", " ")
+        e["max_rt_ts"][8:-4]
         ))
 
     if sm.max_rt < e["max_rt"]:
@@ -170,7 +168,7 @@ for e in rb:
     sm.num_failed += e["num_failed"]
     sm.duration += e["duration"]
 
-html = benchmark_summary_row%(sm.num_actions/sm.duration,str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts.replace("_", " "))
+html = benchmark_summary_row%(sm.num_actions/sm.duration,str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4])
 if not print_detail_rows:
     html = html.replace("<b>","")
     html = html.replace("</b>","")

@@ -983,7 +983,7 @@ object DataCollector {
             val bw = BufferedWriter(fw).apply {
                 when (fileWriteId) {
                     0 -> {
-                        write("{\"description\": \"${g_config.description}\", \"results\":[${json}")
+                        write("{\"description\": \"${g_config.description}\", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\", \"results\":[${json}")
                     }
                     else -> {
                         write(",${json}")
