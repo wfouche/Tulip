@@ -487,8 +487,6 @@ fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
 
 /*-------------------------------------------------------------------------*/
 
-/*-------------------------------------------------------------------------*/
-
 var g_config = BenchmarkConfig()
 
 val g_contexts = mutableListOf<RuntimeContext>()
@@ -526,6 +524,7 @@ data class ConfigTest(
 )
 
 data class BenchmarkConfig(
+    @SerializedName("description") val description: String = "",
     @SerializedName("json_filename") val jsonFilename: String = "",
     @SerializedName("user_class") val userClass: String = "",
     @SerializedName("user_params") val userParams: Map<String,String> = mapOf(),
@@ -983,8 +982,12 @@ object DataCollector {
             val fw = FileWriter(filename, true)
             val bw = BufferedWriter(fw).apply {
                 when (fileWriteId) {
-                    0 -> write("{\"results\":[${json}")
-                    else -> write(",${json}")
+                    0 -> {
+                        write("{\"description\": \"${g_config.description}\", \"results\":[${json}")
+                    }
+                    else -> {
+                        write(",${json}")
+                    }
                 }
                 newLine()
             }

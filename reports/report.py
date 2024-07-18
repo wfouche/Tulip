@@ -30,7 +30,7 @@ table, th, td {
 </style>
 <body>
 
-<h2>Benchmark Report</h2>
+<h2>Benchmark Report __DESC__</h2>
 
 <table style="width:100%">
   <tr>
@@ -114,12 +114,17 @@ trailer = """
 </html>
 """
 
-print(header)
 sm = None
 jh = Histogram(1,3600*1000*1000, 3)
 fileObj = open(filename)
 jb = json.load(fileObj)
+description = ""
+if "description" in jb.keys():
+    description = "- " + jb["description"]
 rb = jb["results"]
+
+print(header.replace("__DESC__", description))
+
 prev_row_id = 0
 for e in rb:
     current_row_id = int(e["row_id"])
