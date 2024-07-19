@@ -263,21 +263,21 @@ open class VirtualUser(val userId: Int) {
 // https://github.com/oshai/kotlin-logging
 val logger = KotlinLogging.logger {}
 
-var blocked: Boolean = false
+private var blocked: Boolean = false
 
 /*-------------------------------------------------------------------------*/
 
-val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS")
+private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS")
 
 //
 // Arrays of user objects and user actions.
 //
 
-var TULIP_SCENARIO_NAME: String = ""
-var TULIP_SCENARIO_ID: Int = 0
+private var TULIP_SCENARIO_NAME: String = ""
+private var TULIP_SCENARIO_ID: Int = 0
 
-var MAX_NUM_USERS = 0
-var MAX_NUM_THREADS = 0
+private var MAX_NUM_USERS = 0
+private var MAX_NUM_THREADS = 0
 
 private var userObjects: Array<VirtualUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
@@ -402,6 +402,8 @@ data class Duration(
     val mainDurationMillis: Long = timeUnit.toMillis(mainDurationUnits)
 )
 
+/*-------------------------------------------------------------------------*/
+
 data class TestProfile(
     val enabled: Boolean = true,
 
@@ -487,11 +489,11 @@ fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
 
 /*-------------------------------------------------------------------------*/
 
-var g_config = BenchmarkConfig()
+private var g_config = BenchmarkConfig()
 
-val g_contexts = mutableListOf<RuntimeContext>()
+private val g_contexts = mutableListOf<RuntimeContext>()
 
-val g_tests = mutableListOf<TestProfile>()
+private val g_tests = mutableListOf<TestProfile>()
 
 /*-------------------------------------------------------------------------*/
 
@@ -1061,7 +1063,7 @@ class RateGovernor(private val averageRate: Double, private val timeMillisStart:
 
 /*-------------------------------------------------------------------------*/
 
-const val USER_THREAD_QSIZE = 100
+private const val USER_THREAD_QSIZE = 100
 
 class UserThread(private val threadId: Int) : Thread() {
 
