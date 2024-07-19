@@ -263,7 +263,7 @@ open class VirtualUser(val userId: Int) {
 // https://github.com/oshai/kotlin-logging
 val logger = KotlinLogging.logger {}
 
-private var blocked: Boolean = false
+private var blocked_ns: Long = 0L
 
 /*-------------------------------------------------------------------------*/
 
@@ -393,7 +393,7 @@ data class Duration(
 
     val mainDurationRepeatCount: Int = 1,
 
-    val timeUnit: TimeUnit = TimeUnit.MINUTES,
+    val timeUnit: TimeUnit = TimeUnit.SECONDS,
 
     // ------------------------------
 
@@ -805,8 +805,8 @@ class ActionStats {
         results += ", \"num_actions\": ${numActions}, \"num_success\": ${numSuccess}, \"num_failed\": ${numActions - numSuccess}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
         results += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
-        val bk: Int = if (blocked) 1 else 0
-        results += ", \"blocked\": ${bk}"
+        val pblocked = 100.0 * blocked_ns / (r.durationSeconds*1000*1000*1000)
+        results += ", \"percentage_blocked\": ${"%.3f".format(Locale.US,pblocked)}"
 
         results += ", \"percentiles_rt\": {"
         var t = ""
@@ -1186,11 +1186,7 @@ fun assignTask(task: Task) {
         val qtw = elapsedTimeNanos {
             w.tq.put(task)
         }
-        if (qtw > 0) {
-            if (!blocked) {
-                blocked = true
-            }
-        }
+        if (qtw > 0) blocked_ns += qtw
     }
 }
 
@@ -1435,24 +1431,30 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     // Since we could have 1 or more population set sizes, only perform the start-up phase
     // on the first set, i.e., with index 0.
     //
-    blocked = false
+    blocked_ns = 0L
     if (indexUserProfile == 0) {
         assignTasks(testCase.duration.startupDurationMillis, "Prewarmup", 0, 0, 0.0)
     }
 
     // Ramp-up
-    blocked = false
+    blocked_ns = 0L
     assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
+    val pb1 = 100.0 * blocked_ns / (testCase.duration.mainDurationMillis*1000*1000)
+    // Console.put("  blocked_ns = ${blocked_ns}")
+    Console.put("  percentage blocked   = ${"%.3f".format(Locale.US, pb1)}")
 
     // Main run(s)
     for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
-        blocked = false
+        blocked_ns = 0L
         assignTasks(
             testCase.duration.mainDurationMillis,
             "Benchmark",
             runId,
             testCase.duration.mainDurationRepeatCount - 1
         )
+        val pb2 = 100.0 * blocked_ns / (testCase.duration.mainDurationMillis*1000*1000)
+        // Console.put("  blocked_ns = ${blocked_ns}")
+        Console.put("  percentage blocked   = ${"%.3f".format(Locale.US, pb2)}")
     }
 
 }

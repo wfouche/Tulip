@@ -21,7 +21,7 @@ class Summary:
     max_rt_ts = ""
     max_awt = 0.0
     max_wt = 0.0
-    blocked = 0
+    blocked = 0.0
 
 header = """<!DOCTYPE html>
 <html>
@@ -50,7 +50,7 @@ table, th, td {
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
-    <th>Blk</th>
+    <th>&#37;Blkd</th>
     <th>Awt</th>
     <th>Mwt</th>
   </tr>
@@ -94,7 +94,7 @@ benchmark_detail_row = """
     <td>%.1f ms</td>
     <td>%.1f ms</td>
     <td>%s</td>
-    <td>%d</td>
+    <td>%.3f</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
   </tr>
@@ -116,7 +116,7 @@ benchmark_summary_row = """
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%s</b></td>
-    <td><b>%d</b></td>
+    <td><b>%.3f</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
   </tr>
@@ -165,7 +165,7 @@ for e in rb:
         e["percentiles_rt"]["99.0"],
         e["max_rt"],
         e["max_rt_ts"][8:-4].replace("_"," "),
-        e["blocked"],
+        e["percentage_blocked"],
         e["avg_wt"],
         e["max_wt"]
         ))
@@ -179,8 +179,8 @@ for e in rb:
         sm.max_awt = e["avg_wt"]
     if sm.max_wt < e["max_wt"]:
         sm.max_wt = e["max_wt"]
-    if sm.blocked < e["blocked"]:
-        sm.blocked = e["blocked"]
+    if sm.blocked < e["percentage_blocked"]:
+        sm.blocked = e["percentage_blocked"]
 
 html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions/sm.duration,sm.num_failed,sm.num_actions,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.blocked,sm.max_awt,sm.max_wt)
 if not print_detail_rows:
