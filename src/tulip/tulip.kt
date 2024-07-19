@@ -990,7 +990,11 @@ object DataCollector {
                         val gson = GsonBuilder().setPrettyPrinting().create()
                         val jsonString = gson.toJson(g_config)
                         //val jsonString = "${g_config}"
-                        write("{ \"config\": ${jsonString}, \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\", \"results\":[${json}")
+                        write("{  ")
+                        newLine()
+                        write("\"config\": ${jsonString}")
+                        newLine()
+                        write(", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\", \"results\":[${json}")
                     }
                     else -> {
                         write(",${json}")
