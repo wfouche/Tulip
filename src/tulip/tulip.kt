@@ -940,7 +940,6 @@ object DataCollector {
             json += "\"num_users\": ${MAX_NUM_USERS}, "
             json += "\"num_threads\": ${MAX_NUM_THREADS}, "
             json += "\"queue_length\": ${r.queueLength}, "
-            json += "\"total_time_blocked_ns\": ${g_queueTimeBlocked}, "
 
             json += "\"test_name\": \"${r.testName}\", "
             json += "\"test_id\": ${r.testId}, "
