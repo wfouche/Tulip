@@ -33,11 +33,11 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
 
     // ----------------------------------------------------------------- //
 
-    val requestPosts = createRequest("posts")
-    val requestComments = createRequest("comments")
-    val requestAlbums = createRequest("albums")
-    val requestPhotos = createRequest("photos")
-    val requestTodos = createRequest("todos")
+    private val requestPosts = createRequest("posts")
+    private val requestComments = createRequest("comments")
+    private val requestAlbums = createRequest("albums")
+    private val requestPhotos = createRequest("photos")
+    private val requestTodos = createRequest("todos")
 
     override fun start(): Boolean {
         val actionId = 0
