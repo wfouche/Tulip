@@ -9,6 +9,19 @@ import tulip.VirtualUser
 
 /*-------------------------------------------------------------------------*/
 
+val name = """                                       
+888888888888          88  88               
+     88               88  ""               
+     88               88                   
+     88  88       88  88  88  8b,dPPYba,   
+     88  88       88  88  88  88P'    "8a  
+     88  88       88  88  88  88       d8  
+     88  "8a,   ,a88  88  88  88b,   ,a8"  
+     88   `"YbbdP'Y8  88  88  88`YbbdP"'   
+                              88           
+                              88           
+"""
+
 fun getUser(userId: Int, userClass: String): VirtualUser {
     return when (userClass) {
         "user.http.HttpUser" -> user.http.HttpUser(userId)
@@ -20,6 +33,7 @@ fun getUser(userId: Int, userClass: String): VirtualUser {
 /*-------------------------------------------------------------------------*/
 
 fun main(args: Array<String>) {
+    tulip.Console.put(name)
     val parser = ArgParser("Tulip")
     val configFilename by parser.option(
         ArgType.String,
