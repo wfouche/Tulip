@@ -263,7 +263,7 @@ open class VirtualUser(val userId: Int) {
 // https://github.com/oshai/kotlin-logging
 val logger = KotlinLogging.logger {}
 
-var g_queueTimeBlocked: Long = 0
+var blocked: Boolean = false
 
 /*-------------------------------------------------------------------------*/
 
@@ -803,8 +803,8 @@ class ActionStats {
         results += ", \"num_actions\": ${numActions}, \"num_success\": ${numSuccess}, \"num_failed\": ${numActions - numSuccess}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
         results += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
-        val blocked: Int = if (g_queueTimeBlocked > 0) 1 else 0
-        results += ", \"blocked\": ${blocked}"
+        val bk: Int = if (blocked) 1 else 0
+        results += ", \"blocked\": ${bk}"
 
         results += ", \"percentiles_rt\": {"
         var t = ""
@@ -1184,7 +1184,11 @@ fun assignTask(task: Task) {
         val qtw = elapsedTimeNanos {
             w.tq.put(task)
         }
-        if (qtw > 0) g_queueTimeBlocked += qtw
+        if (qtw > 0) {
+            if (!blocked) {
+                blocked = true
+            }
+        }
     }
 }
 
@@ -1429,26 +1433,24 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     // Since we could have 1 or more population set sizes, only perform the start-up phase
     // on the first set, i.e., with index 0.
     //
-    g_queueTimeBlocked = 0
+    blocked = false
     if (indexUserProfile == 0) {
         assignTasks(testCase.duration.startupDurationMillis, "Prewarmup", 0, 0, 0.0)
     }
 
     // Ramp-up
-    g_queueTimeBlocked = 0
+    blocked = false
     assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
-    Console.put("  total time blocked   = ${g_queueTimeBlocked/1000/1000} ms")
 
     // Main run(s)
     for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
-        g_queueTimeBlocked = 0
+        blocked = false
         assignTasks(
             testCase.duration.mainDurationMillis,
             "Benchmark",
             runId,
             testCase.duration.mainDurationRepeatCount - 1
         )
-        Console.put("  total time blocked   = ${g_queueTimeBlocked/1000/1000} ms")
     }
 
 }
