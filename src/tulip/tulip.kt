@@ -805,7 +805,8 @@ class ActionStats {
         results += ", \"num_actions\": ${numActions}, \"num_success\": ${numSuccess}, \"num_failed\": ${numActions - numSuccess}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
         results += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
-        val pblocked = 100.0 * blocked_ns / (r.durationSeconds*1000*1000*1000)
+        var pblocked = 100.0 * blocked_ns / (r.durationSeconds*1000*1000*1000)
+        if (pblocked > 100.0) pblocked = 100.0
         results += ", \"percentage_blocked\": ${"%.3f".format(Locale.US,pblocked)}"
 
         results += ", \"percentiles_rt\": {"
