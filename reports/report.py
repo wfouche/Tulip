@@ -39,10 +39,10 @@ table, th, td {
     <th>SID</th>
     <th>Name</th>
     <th>RID</th>
-    <th>Avg TPS</th>
     <th>Duration</th>
-    <th>#N</th>
+    <th>Avg TPS</th>
     <th>#F</th>
+    <th>#N</th>
     <th>Avg RT</th>
     <th>Stdev</th>
     <th>50p RT</th>
@@ -83,8 +83,8 @@ benchmark_detail_row = """
     <td></td>
     <td></td>
     <td>%d</td>
-    <td>%.1f</td>
     <td>%s</td>
+    <td>%.1f</td>
     <td>%d</td>
     <td>%d</td>
     <td>%.3f ms</td>
@@ -105,8 +105,8 @@ benchmark_summary_row = """
     <td></td>
     <td></td>
     <td>-</td>
-    <td><b>%.1f</b></td>
     <td><b>%s</b></td>
+    <td><b>%.1f</b></td>
     <td><b>%d</b></td>
     <td><b>%d</b></td>
     <td><b>%.3f ms</b></td>
@@ -142,7 +142,7 @@ for e in rb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            html = benchmark_summary_row%(sm.num_actions/sm.duration,str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.blocked,sm.max_awt,sm.max_wt)
+            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions/sm.duration,sm.num_failed,sm.num_actions,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.blocked,sm.max_awt,sm.max_wt)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -154,10 +154,10 @@ for e in rb:
     jh.add(ht)
     if print_detail_rows: print(benchmark_detail_row%( \
         e["row_id"],
-        e["avg_tps"],
         e["duration"],
-        e["num_actions"],
+        e["avg_tps"],
         e["num_failed"],
+        e["num_actions"],
         e["avg_rt"],
         ht.getStdDeviation()/1000.0,
         e["percentiles_rt"]["50.0"],
@@ -182,7 +182,7 @@ for e in rb:
     if sm.blocked < e["blocked"]:
         sm.blocked = e["blocked"]
 
-html = benchmark_summary_row%(sm.num_actions/sm.duration,str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.blocked,sm.max_awt,sm.max_wt)
+html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions/sm.duration,sm.num_failed,sm.num_actions,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(50.0)/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.blocked,sm.max_awt,sm.max_wt)
 if not print_detail_rows:
     html = html.replace("<b>","")
     html = html.replace("</b>","")
