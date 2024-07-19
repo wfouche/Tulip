@@ -1462,7 +1462,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 /*-------------------------------------------------------------------------*/
 
 fun initTulip() {
-    Console.put("Tulip (${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin ${KotlinVersion.CURRENT})")
+    Console.put("Tulip (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
 }
 
 /*-------------------------------------------------------------------------*/
