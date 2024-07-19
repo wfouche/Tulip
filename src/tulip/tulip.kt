@@ -767,8 +767,8 @@ class ActionStats {
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
             output.add("")
-            output.add("  average wait time    = ${"%.3f".format(Locale.US, r.awt)} ms")
-            output.add("  maximum wait time    = ${"%.3f".format(Locale.US, r.maxWt)} ms")
+            output.add("  average wait time  = ${"%.3f".format(Locale.US, r.awt)} ms")
+            output.add("  maximum wait time  = ${"%.3f".format(Locale.US, r.maxWt)} ms")
 
             mg_rt_avg?.set(r.art.toInt())
             mg_rt_max?.set(r.maxRt.toInt())
@@ -1441,7 +1441,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
     val pb1 = 100.0 * blocked_ns / (testCase.duration.mainDurationMillis*1000*1000)
     // Console.put("  blocked_ns = ${blocked_ns}")
-    Console.put("  percentage blocked   = ${"%.3f".format(Locale.US, pb1)}")
+    Console.put("  percentage blocked = ${"%.3f".format(Locale.US, pb1)}")
 
     // Main run(s)
     for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
@@ -1454,7 +1454,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
         )
         val pb2 = 100.0 * blocked_ns / (testCase.duration.mainDurationMillis*1000*1000)
         // Console.put("  blocked_ns = ${blocked_ns}")
-        Console.put("  percentage blocked   = ${"%.3f".format(Locale.US, pb2)}")
+        Console.put("  percentage blocked = ${"%.3f".format(Locale.US, pb2)}")
     }
 
 }
