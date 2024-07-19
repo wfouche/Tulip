@@ -15,7 +15,6 @@ now = datetime.datetime.now()
 class Summary:
     num_rows = 0
     num_actions = 0
-    num_success = 0
     num_failed = 0
     duration = 0.0
     max_rt = 0.0
@@ -151,15 +150,8 @@ for e in rb:
         sm = Summary()
         jh.reset()
         print(benchmark_header%(int(e["scenario_id"]), e["test_name"] + " (u:%d t:%d)"%(e["num_users"],e["num_threads"])))
-        # print("<trace - reset jh>")
-    #print(e["row_id"]) #, e["histogram_rt"])
     ht = Histogram.fromString(e["histogram_rt"])
     jh.add(ht)
-    #print(jh.toString())
-    #print("   ", e["avg_rt"])
-    #print("   ", jh.getMean()/1000.0)
-    #print("   ", e["max_rt"])
-    #print("   ", jh.getMaxValue()/1000.0)
     if print_detail_rows: print(benchmark_detail_row%( \
         e["row_id"],
         e["avg_tps"],
@@ -177,12 +169,10 @@ for e in rb:
         e["avg_wt"],
         e["max_wt"]
         ))
-
     if sm.max_rt < e["max_rt"]:
         sm.max_rt = e["max_rt"]
         sm.max_rt_ts = e["max_rt_ts"]
     sm.num_actions += e["num_actions"]
-    sm.num_success += e["num_success"]
     sm.num_failed += e["num_failed"]
     sm.duration += e["duration"]
     if sm.max_awt < e["avg_wt"]:
