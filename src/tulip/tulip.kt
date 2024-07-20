@@ -765,6 +765,11 @@ class ActionStats {
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
             output.add("")
+            val awqs: Double = wthread_queue_stats.mean
+            val mwqs: Long = wthread_queue_stats.maxValue
+            output.add("  avg wkr thrd qsize  = ${"%.3f".format(Locale.US, awqs)}")
+            output.add("  max wkr thrd qsize  = ${"%,d".format(Locale.US, mwqs)}")
+            output.add("")
             output.add("  average wait time  = ${"%.3f".format(Locale.US, r.awt)} ms")
             output.add("  maximum wait time  = ${"%.3f".format(Locale.US, r.maxWt)} ms")
 
@@ -801,10 +806,6 @@ class ActionStats {
 
         results += ", \"num_actions\": ${numActions}, \"num_failed\": ${numActions - numSuccess}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
-        results += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
-        var pblocked = 100.0 * blocked_ns / (r.durationSeconds*1000*1000*1000)
-        if (pblocked > 100.0) pblocked = 100.0
-        results += ", \"percentage_blocked\": ${"%.3f".format(Locale.US,pblocked)}"
 
         results += ", \"percentiles_rt\": {"
         var t = ""
@@ -853,6 +854,8 @@ class ActionStats {
 
         numActions = 0
         numSuccess = 0
+
+        wthread_queue_stats.reset()
     }
 }
 
@@ -962,6 +965,11 @@ object DataCollector {
             json += "\"jvm_memory_total\": $tm, "
             json += "\"jvm_memory_maximum\": $mm"
 
+            json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
+            var pblocked = 100.0 * blocked_ns / (r.durationSeconds*1000*1000*1000)
+            if (pblocked > 100.0) pblocked = 100.0
+            json += ", \"percentage_blocked\": ${"%.3f".format(Locale.US,pblocked)}"
+
             json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
 
             json += ", \"user_actions\": {"
@@ -1061,7 +1069,7 @@ class RateGovernor(private val averageRate: Double, private val timeMillisStart:
 
 /*-------------------------------------------------------------------------*/
 
-private const val USER_THREAD_QSIZE = 100
+private const val USER_THREAD_QSIZE = 11
 
 class UserThread(private val threadId: Int) : Thread() {
 
@@ -1169,6 +1177,8 @@ fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
 
 /*-------------------------------------------------------------------------*/
 
+private val wthread_queue_stats = Histogram(histogramNumberOfSignificantValueDigits)
+
 fun assignTask(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
     var w = userThreads!![threadId]
@@ -1186,6 +1196,7 @@ fun assignTask(task: Task) {
         }
         if (qtw > 0) blocked_ns += qtw
     }
+    wthread_queue_stats.recordValue(w.tq.size.toLong())
 }
 
 /*-------------------------------------------------------------------------*/
