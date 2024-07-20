@@ -263,8 +263,6 @@ open class VirtualUser(val userId: Int) {
 // https://github.com/oshai/kotlin-logging
 val logger = KotlinLogging.logger {}
 
-private var blocked_ns: Long = 0L
-
 /*-------------------------------------------------------------------------*/
 
 private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS")
@@ -970,10 +968,6 @@ object DataCollector {
             json += ", \"max_wthread_qsize\": ${mwqs}"
 
             json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
-            var pblocked = 100.0 * blocked_ns / (r.durationSeconds*1000*1000*1000)
-            if (pblocked > 100.0) pblocked = 100.0
-            json += ", \"percentage_blocked\": ${"%.3f".format(Locale.US,pblocked)}"
-
 
             json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
 
@@ -1196,10 +1190,7 @@ fun assignTask(task: Task) {
     }
     task.beginQueueTimeNanos = System.nanoTime()
     if (!w.tq.offer(task)) {
-        val qtw = elapsedTimeNanos {
-            w.tq.put(task)
-        }
-        if (qtw > 0) blocked_ns += qtw
+        w.tq.put(task)
     }
     wthread_queue_stats.recordValue(w.tq.size.toLong())
 }
