@@ -22,6 +22,7 @@ import java.util.concurrent.TimeUnit
 import java.io.BufferedWriter
 import java.io.FileWriter
 import org.HdrHistogram.Histogram
+import org.HdrHistogram.IntCountsHistogram
 import java.nio.ByteBuffer
 import java.util.*
 import java.util.concurrent.ThreadLocalRandom
@@ -617,6 +618,8 @@ data class ActionSummary(
 
 /*-------------------------------------------------------------------------*/
 
+private var waitTimeMicrosHistogram = Histogram(histogramNumberOfSignificantValueDigits)
+
 class ActionStats {
     // <numberOfSignificantValueDigits>
     //private val NUM_DIGITS=1  // Tested - inaccurate results, don't use
@@ -626,7 +629,6 @@ class ActionStats {
     private var histogramMinRt: Long = Long.MAX_VALUE
     private var histogramMaxRt: Long = Long.MIN_VALUE
     private var histogramMaxRtTs = ""
-    private var waitTimeMicrosHistogram = Histogram(histogramNumberOfSignificantValueDigits)
 
     var numActions: Int = 0
     private var numSuccess: Int = 0
@@ -847,12 +849,9 @@ class ActionStats {
         histogramMinRt = Long.MAX_VALUE
         histogramMaxRt = Long.MIN_VALUE
         histogramMaxRtTs = ""
-        waitTimeMicrosHistogram.reset()
 
         numActions = 0
         numSuccess = 0
-
-        wthread_queue_stats.reset()
     }
 }
 
@@ -1050,6 +1049,8 @@ object DataCollector {
         actionStats.forEach {
             it.clearStats()
         }
+        waitTimeMicrosHistogram.reset()
+        wthread_queue_stats.reset()
     }
 }
 
@@ -1176,7 +1177,7 @@ fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
 
 /*-------------------------------------------------------------------------*/
 
-private val wthread_queue_stats = Histogram(histogramNumberOfSignificantValueDigits)
+private val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
 
 fun assignTask(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
