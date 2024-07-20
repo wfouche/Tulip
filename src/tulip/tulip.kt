@@ -296,9 +296,8 @@ private var actionNames: Map<Int, String> = emptyMap()
 
 internal val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
-internal val mg_num_success    = registry.gauge("Tulip", listOf(Tag.of("num",   "success")),   AtomicInteger(0))
-internal val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
 internal val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",   "actions")),   AtomicInteger(0))
+internal val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
 
 internal val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context", "id")),      AtomicInteger(0))
 internal val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "threads")), AtomicInteger(0))
@@ -724,7 +723,6 @@ class ActionStats {
             output.add("  action_id = ${r.actionId}")
         }
         output.add("  num_actions = ${r.numActions}")
-        output.add("  num_success = ${r.numSuccess}")
         output.add("  num_failed  = ${r.numActions - r.numSuccess}")
         output.add("")
         output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
@@ -775,7 +773,6 @@ class ActionStats {
             mg_rt_min?.set(r.minRt.toInt())
 
             mg_num_actions?.set(r.numActions)
-            mg_num_success?.set(r.numSuccess)
             mg_num_failed?.set(r.numActions - r.numSuccess)
 
             mg_benchmark_tps?.set(r.aps.toInt())
@@ -802,7 +799,7 @@ class ActionStats {
             results += "\"name\": \"${name}\""
         }
 
-        results += ", \"num_actions\": ${numActions}, \"num_success\": ${numSuccess}, \"num_failed\": ${numActions - numSuccess}"
+        results += ", \"num_actions\": ${numActions}, \"num_failed\": ${numActions - numSuccess}"
         results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
         results += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
         var pblocked = 100.0 * blocked_ns / (r.durationSeconds*1000*1000*1000)
@@ -1463,7 +1460,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 /*-------------------------------------------------------------------------*/
 
 fun initTulip() {
-    Console.put("Tulip (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
+    Console.put("Tulip 2.0 (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
 }
 
 /*-------------------------------------------------------------------------*/

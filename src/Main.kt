@@ -9,17 +9,15 @@ import tulip.VirtualUser
 
 /*-------------------------------------------------------------------------*/
 
+// https://devops.datenkollektiv.de/banner.txt/index.html
+// <standard>
 val name = """                                       
-888888888888          88  88               
-     88               88  ""               
-     88               88                   
-     88  88       88  88  88  8b,dPPYba,   
-     88  88       88  88  88  88P'    "8a  
-     88  88       88  88  88  88       d8  
-     88  "8a,   ,a88  88  88  88b,   ,a8"  
-     88   `"YbbdP'Y8  88  88  88`YbbdP"'   
-                              88           
-                              88           
+  _____      _ _         ____    ___  
+ |_   _|   _| (_)_ __   |___ \  / _ \ 
+   | || | | | | | '_ \    __) || | | |
+   | || |_| | | | |_) |  / __/ | |_| |
+   |_| \__,_|_|_| .__/  |_____(_)___/ 
+                |_|                   
 """
 
 fun getUser(userId: Int, userClass: String): VirtualUser {
