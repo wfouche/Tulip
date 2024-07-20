@@ -1436,30 +1436,21 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
     // Since we could have 1 or more population set sizes, only perform the start-up phase
     // on the first set, i.e., with index 0.
     //
-    blocked_ns = 0L
     if (indexUserProfile == 0) {
         assignTasks(testCase.duration.startupDurationMillis, "Prewarmup", 0, 0, 0.0)
     }
 
     // Ramp-up
-    blocked_ns = 0L
     assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
-    val pb1 = 100.0 * blocked_ns / (testCase.duration.mainDurationMillis*1000*1000)
-    // Console.put("  blocked_ns = ${blocked_ns}")
-    Console.put("  percentage blocked = ${"%.3f".format(Locale.US, pb1)}")
 
     // Main run(s)
     for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
-        blocked_ns = 0L
         assignTasks(
             testCase.duration.mainDurationMillis,
             "Benchmark",
             runId,
             testCase.duration.mainDurationRepeatCount - 1
         )
-        val pb2 = 100.0 * blocked_ns / (testCase.duration.mainDurationMillis*1000*1000)
-        // Console.put("  blocked_ns = ${blocked_ns}")
-        Console.put("  percentage blocked = ${"%.3f".format(Locale.US, pb2)}")
     }
 
 }
