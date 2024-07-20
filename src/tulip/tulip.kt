@@ -767,9 +767,8 @@ class ActionStats {
             output.add("")
             val awqs: Double = wthread_queue_stats.mean
             val mwqs: Long = wthread_queue_stats.maxValue
-            output.add("  avg wkr thrd qsize  = ${"%.3f".format(Locale.US, awqs)}")
-            output.add("  max wkr thrd qsize  = ${"%,d".format(Locale.US, mwqs)}")
-            output.add("")
+            output.add("  avg wkr thrd qsize = ${"%.3f".format(Locale.US, awqs)}")
+            output.add("  max wkr thrd qsize = ${"%,d".format(Locale.US, mwqs)}")
             output.add("  average wait time  = ${"%.3f".format(Locale.US, r.awt)} ms")
             output.add("  maximum wait time  = ${"%.3f".format(Locale.US, r.maxWt)} ms")
 
@@ -965,10 +964,16 @@ object DataCollector {
             json += "\"jvm_memory_total\": $tm, "
             json += "\"jvm_memory_maximum\": $mm"
 
+            val awqs: Double = wthread_queue_stats.mean
+            val mwqs: Long = wthread_queue_stats.maxValue
+            json += ", \"avg_wthread_qsize\": ${awqs}"
+            json += ", \"max_wthread_qsize\": ${mwqs}"
+
             json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
             var pblocked = 100.0 * blocked_ns / (r.durationSeconds*1000*1000*1000)
             if (pblocked > 100.0) pblocked = 100.0
             json += ", \"percentage_blocked\": ${"%.3f".format(Locale.US,pblocked)}"
+
 
             json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
 
