@@ -8,8 +8,8 @@ application {
         //
         // $ ls /sys/kernel/mm/hugepages/
         //   hugepages-1048576kB  hugepages-2048kB
-        //
-	    // $ echo 2048 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+        // // # Reserve 2 GB of RAM
+	    // $ echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
         //
 	    // "-XX:+UseLargePages",
 
