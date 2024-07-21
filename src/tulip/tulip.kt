@@ -32,6 +32,9 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 /*-------------------------------------------------------------------------*/
 
 const val VERSION_STRING = "2.0.0-Beta1"
+
+/*-------------------------------------------------------------------------*/
+
 const val NUM_ACTIONS = 100
 
 open class VirtualUser(val userId: Int) {
@@ -263,7 +266,7 @@ open class VirtualUser(val userId: Int) {
 /*-------------------------------------------------------------------------*/
 
 // https://github.com/oshai/kotlin-logging
-val logger = KotlinLogging.logger {}
+private val logger = KotlinLogging.logger {}
 
 /*-------------------------------------------------------------------------*/
 
@@ -294,31 +297,31 @@ private var newUser: ((Int,String) -> VirtualUser)? = null
 
 private var actionNames: Map<Int, String> = emptyMap()
 
-internal val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
+private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
-internal val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",   "actions")),   AtomicInteger(0))
-internal val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
+private val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",   "actions")),   AtomicInteger(0))
+private val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
 
-internal val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context", "id")),      AtomicInteger(0))
-internal val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "threads")), AtomicInteger(0))
-internal val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "users")),   AtomicInteger(0))
+private val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context", "id")),      AtomicInteger(0))
+private val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "threads")), AtomicInteger(0))
+private val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "users")),   AtomicInteger(0))
 
-internal val mg_rt_avg = registry.gauge("Tulip", listOf(Tag.of("rt",   "avg")), AtomicInteger(0))
-internal val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",   "max")), AtomicInteger(0))
-internal val mg_rt_min = registry.gauge("Tulip", listOf(Tag.of("rt",   "min")), AtomicInteger(0))
+private val mg_rt_avg = registry.gauge("Tulip", listOf(Tag.of("rt",   "avg")), AtomicInteger(0))
+private val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",   "max")), AtomicInteger(0))
+private val mg_rt_min = registry.gauge("Tulip", listOf(Tag.of("rt",   "min")), AtomicInteger(0))
 
-internal val mg_benchmark_id  = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "id")),       AtomicInteger(0))
-internal val mg_benchmark_tps = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "tps")),      AtomicInteger(0))
-internal val mg_benchmark_dur = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "duration")), AtomicInteger(0))
-internal val mg_benchmark_phs = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
-internal val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
+private val mg_benchmark_id  = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "id")),       AtomicInteger(0))
+private val mg_benchmark_tps = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "tps")),      AtomicInteger(0))
+private val mg_benchmark_dur = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "duration")), AtomicInteger(0))
+private val mg_benchmark_phs = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
+private val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
 
 // internal val mg_cpu_tulip = registry.gauge("Tulip", listOf(Tag.of("cpu",   "tulip")), AtomicInteger(0))
 // internal val mg_cpu_system = registry.gauge("Tulip", listOf(Tag.of("cpu",   "system")), AtomicInteger(0))
 
 /*-------------------------------------------------------------------------*/
 
-fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, func: (Int,String) -> VirtualUser) {
+private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, func: (Int,String) -> VirtualUser) {
     TULIP_SCENARIO_ID = contextId
     TULIP_SCENARIO_NAME = context.name
 
@@ -337,7 +340,7 @@ fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile
     mg_context_id?.set(contextId)
 }
 
-fun runtimeDone() {
+private fun runtimeDone() {
     // Terminate all user threads.
     userThreads!!.forEach { userThread ->
         userThread!!.tq.put(Task(status = 999))
@@ -351,7 +354,7 @@ fun runtimeDone() {
 
 /*-------------------------------------------------------------------------*/
 
-data class RuntimeContext(
+private data class RuntimeContext(
     val name: String = "",
     val numUsers: Int = 0,
     val numThreads: Int = 0
@@ -359,7 +362,7 @@ data class RuntimeContext(
 
 /*-------------------------------------------------------------------------*/
 
-data class Action(
+private data class Action(
     //
     // Numeric action ID.
     //
@@ -373,7 +376,7 @@ data class Action(
 
 /*-------------------------------------------------------------------------*/
 
-data class Duration(
+private data class Duration(
 
     // Start-up only executed once per TestCase.
     //
@@ -403,7 +406,7 @@ data class Duration(
 
 /*-------------------------------------------------------------------------*/
 
-data class TestProfile(
+private data class TestProfile(
     val enabled: Boolean = true,
 
     //
@@ -445,7 +448,7 @@ data class TestProfile(
 //
 // Task data class. Tasks are created be the main thread and send to User objects to perform known actions.
 //
-data class Task(
+private data class Task(
 
     // The user ID of the user object to which an operation should be applied.
     var userId: Int = -1,
@@ -496,26 +499,26 @@ private val g_tests = mutableListOf<TestProfile>()
 
 /*-------------------------------------------------------------------------*/
 
-data class ConfigContext(
+private data class ConfigContext(
     val name: String = "",
     val enabled: Boolean = false,
     @SerializedName("num_users") val numUsers: Int = 0,
     @SerializedName("num_threads") val numThreads: Int = 0
 )
 
-data class ConfigDuration(
+private data class ConfigDuration(
     @SerializedName("prewarmup_duration") val startupDuration: Long = 0,
     @SerializedName("warmup_duration") val warmupDuration: Long = 0,
     @SerializedName("benchmark_duration") val mainDuration: Long = 0,
     @SerializedName("benchmark_duration_repeat_count") val mainDurationRepeatCount: Int = 1
 )
 
-data class ConfigAction(
+private data class ConfigAction(
     val id: Int,
     val weight: Int = 0
 )
 
-data class ConfigTest(
+private data class ConfigTest(
     val name: String,
     val enabled: Boolean = false,
     val time: ConfigDuration,
@@ -524,7 +527,7 @@ data class ConfigTest(
     val actions: List<ConfigAction> = listOf()
 )
 
-data class BenchmarkConfig(
+private data class BenchmarkConfig(
     @SerializedName("description") val description: String = "",
     @SerializedName("json_filename") val jsonFilename: String = "",
     @SerializedName("user_class") val userClass: String = "",
@@ -579,7 +582,7 @@ fun initConfig(configFilename: String) {
 
 private const val histogramNumberOfSignificantValueDigits=2
 
-data class ActionSummary(
+private data class ActionSummary(
     var actionId: Int = 0,
 
     var rowId: Int = 0,
@@ -621,7 +624,7 @@ data class ActionSummary(
 
 private var waitTimeMicrosHistogram = Histogram(histogramNumberOfSignificantValueDigits)
 
-class ActionStats {
+private class ActionStats {
     // <numberOfSignificantValueDigits>
     //private val NUM_DIGITS=1  // Tested - inaccurate results, don't use
     //private val NUM_DIGITS=2  // Tested - good results, small results file (default, optimal)
@@ -858,7 +861,7 @@ class ActionStats {
 
 /*-------------------------------------------------------------------------*/
 
-object DataCollector {
+private object DataCollector {
     private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
 
@@ -1057,7 +1060,7 @@ object DataCollector {
 
 /*-------------------------------------------------------------------------*/
 
-class RateGovernor(private val averageRate: Double, private val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()))  {
+private class RateGovernor(private val averageRate: Double, private val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()))  {
 
     private var count: Long = 0
 
@@ -1072,7 +1075,7 @@ class RateGovernor(private val averageRate: Double, private val timeMillisStart:
 
 private const val USER_THREAD_QSIZE = 11
 
-class UserThread(private val threadId: Int) : Thread() {
+private class UserThread(private val threadId: Int) : Thread() {
 
     init {
         name = "user-thread-$threadId"
@@ -1156,7 +1159,7 @@ object Console : Thread() {
 
 /*-------------------------------------------------------------------------*/
 
-fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
+private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
     val list: MutableList<Int> = mutableListOf()
     test.queueLengths.forEach { queueLength ->
         list.add(
@@ -1172,7 +1175,7 @@ fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
+private fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
     return test.copy(queueLengths = getQueueLengths(context, test))
 }
 
@@ -1180,7 +1183,7 @@ fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
 
 private val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
 
-fun assignTask(task: Task) {
+private fun assignTask(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
     var w = userThreads!![threadId]
     if (w == null) {
@@ -1199,7 +1202,7 @@ fun assignTask(task: Task) {
 
 /*-------------------------------------------------------------------------*/
 
-fun createActionGenerator(list: List<Int>): Iterator<Int> {
+private fun createActionGenerator(list: List<Int>): Iterator<Int> {
     val actions = iterator {
         while (true) {
             for (e in list) {
@@ -1212,7 +1215,7 @@ fun createActionGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
+private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
     var tsBegin = java.time.LocalDateTime.now().format(formatter)
     val output = mutableListOf("")
     output.add("======================================================================")
@@ -1459,13 +1462,13 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 
 /*-------------------------------------------------------------------------*/
 
-fun initTulip() {
+private fun initTulip() {
     Console.put("Tulip $VERSION_STRING (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
 }
 
 /*-------------------------------------------------------------------------*/
 
-fun runTulip(
+private fun runTulip(
     contextId: Int,
     context: RuntimeContext,
     tests: List<TestProfile>,
@@ -1504,11 +1507,6 @@ fun runTulip(
 
 /*-------------------------------------------------------------------------*/
 
-fun runTests(getUser: (Int,String) -> VirtualUser) {
-    val actionNames = g_config.userActions
-    runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
-}
-
 private fun runTests(
     contexts: List<RuntimeContext>,
     tests: List<TestProfile>,
@@ -1533,6 +1531,11 @@ private fun runTests(
 
     // write ']' to JSON results file
     DataCollector.closeStatsJson(filename)
+}
+
+fun runTests(getUser: (Int,String) -> VirtualUser) {
+    val actionNames = g_config.userActions
+    runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
 }
 
 /*-------------------------------------------------------------------------*/
