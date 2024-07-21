@@ -2,13 +2,13 @@
 # Add key=value pairs of SDKs to use below
 
 # Java
-java=21.0.4-amzn
+java=21.0.4-tem
 #java=22.0.1-tem
 #java=21.0.3-graal
 #java=22.0.1-graal
 
-# Gradle
-gradle=8.9
+# Gradle 8.6 is required by Jetbrains Amper 0.3.1
+gradle=8.6
 
 # JBang
 jbang=0.117.1
