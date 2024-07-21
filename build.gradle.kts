@@ -25,9 +25,6 @@ application {
         // "-Dcom.sun.management.jmxremote.authenticate=false"
 
         )
-
-    // Define the main class for the application
-    mainClass.set("benchmark00")
 }
 
 plugins {
