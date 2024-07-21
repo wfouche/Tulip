@@ -31,6 +31,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 
 /*-------------------------------------------------------------------------*/
 
+const val VERSION_STRING = "2.0.0-Beta1"
 const val NUM_ACTIONS = 100
 
 open class VirtualUser(val userId: Int) {
@@ -1459,7 +1460,7 @@ fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUser
 /*-------------------------------------------------------------------------*/
 
 fun initTulip() {
-    Console.put("Tulip 2.0 (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
+    Console.put("Tulip $VERSION_STRING (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
 }
 
 /*-------------------------------------------------------------------------*/
