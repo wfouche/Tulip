@@ -16,9 +16,9 @@ application {
         "-Xms2048m",
 	    "-Xmx2048m",
 
-        "-XX:+UseParallelGC",
+        // "-XX:+UseParallelGC",
         // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
-        // "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
+        "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
 
         // "-Dcom.sun.management.jmxremote.port=3333",
         // "-Dcom.sun.management.jmxremote.ssl=false",
