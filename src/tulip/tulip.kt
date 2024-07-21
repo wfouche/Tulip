@@ -1536,6 +1536,7 @@ private fun runTests(
 fun runTests(getUser: (Int,String) -> VirtualUser) {
     val actionNames = g_config.userActions
     runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
+    logger.info { "Done" }
 }
 
 /*-------------------------------------------------------------------------*/
