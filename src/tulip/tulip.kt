@@ -14,9 +14,9 @@ import io.micrometer.jmx.JmxMeterRegistry
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.system.exitProcess
-import java.util.concurrent.LinkedBlockingQueue as Java_Queue
-import java.util.concurrent.LinkedBlockingQueue as SPSC_Queue
-import java.util.concurrent.LinkedBlockingQueue as MPSC_Queue
+import java.util.concurrent.ArrayBlockingQueue as Java_Queue
+import java.util.concurrent.ArrayBlockingQueue as SPSC_Queue
+import java.util.concurrent.ArrayBlockingQueue as MPSC_Queue
 import io.github.oshai.kotlinlogging.KotlinLogging
 import java.util.concurrent.TimeUnit
 import java.io.BufferedWriter
@@ -24,10 +24,10 @@ import java.io.FileWriter
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
 import java.nio.ByteBuffer
-import java.util.*
+import java.util.Locale
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.io.encoding.ExperimentalEncodingAp
 
 /*-------------------------------------------------------------------------*/
 
@@ -448,7 +448,7 @@ private data class TestProfile(
 //
 // Task data class. Tasks are created be the main thread and send to User objects to perform known actions.
 //
-private data class Task(
+data class Task(
 
     // The user ID of the user object to which an operation should be applied.
     var userId: Int = -1,
