@@ -455,3 +455,7 @@ Measure resource utilization via Glances:
 Use Grazie Pro to write better documentation:
 
 * https://x.com/jetbrains/status/1805949280437309603
+
+== AMPER-851
+
+* https://youtrack.jetbrains.com/issue/AMPER-851/Execution-failed-for-task-dokkaHtml-lateinit-property-module-has-not-been-initialized
