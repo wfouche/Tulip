@@ -7,31 +7,47 @@ package tulip
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
+import io.github.oshai.kotlinlogging.KotlinLogging
 import io.micrometer.core.instrument.Clock
 import io.micrometer.core.instrument.Tag
 import io.micrometer.jmx.JmxConfig
 import io.micrometer.jmx.JmxMeterRegistry
-import java.time.format.DateTimeFormatter
-import java.util.concurrent.atomic.AtomicInteger
-import kotlin.system.exitProcess
-import java.util.concurrent.ArrayBlockingQueue as Java_Queue
-import java.util.concurrent.ArrayBlockingQueue as SPSC_Queue
-import java.util.concurrent.ArrayBlockingQueue as MPSC_Queue
-import io.github.oshai.kotlinlogging.KotlinLogging
-import java.util.concurrent.TimeUnit
-import java.io.BufferedWriter
-import java.io.FileWriter
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
+import java.io.BufferedWriter
+import java.io.FileWriter
 import java.nio.ByteBuffer
-import java.util.Locale
+import java.time.format.DateTimeFormatter
+import java.util.*
 import java.util.concurrent.ThreadLocalRandom
+import java.util.concurrent.TimeUnit
+import java.util.concurrent.atomic.AtomicInteger
 import kotlin.io.encoding.Base64
-import kotlin.io.encoding.ExperimentalEncodingAp
+import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.system.exitProcess
+import java.util.concurrent.ArrayBlockingQueue
 
 /*-------------------------------------------------------------------------*/
 
 const val VERSION_STRING = "2.0.0-Beta1"
+
+/*-------------------------------------------------------------------------*/
+
+class InformativeBlockingQueue<E> : ArrayBlockingQueue<E> {
+    val capacity: Int
+
+    constructor(capacity: Int) : super(capacity, false) {
+        this.capacity = capacity
+    }
+
+    constructor(capacity: Int, fair: Boolean) : super(capacity, fair) {
+        this.capacity = capacity
+    }
+}
+
+typealias Java_Queue<E> = InformativeBlockingQueue<E>
+typealias MPSC_Queue<E> = InformativeBlockingQueue<E>
+typealias SPSC_Queue<E> = InformativeBlockingQueue<E>
 
 /*-------------------------------------------------------------------------*/
 
@@ -1195,11 +1211,15 @@ private fun assignTask(task: Task) {
     }
     task.beginQueueTimeNanos = System.nanoTime()
     if (!w.tq.offer(task)) {
+        // We know the queue is full, so queue size = queue capacity
+        // No locking required, just reading of property capacity.
+        wthread_queue_stats.recordValue(w.tq.capacity.toLong())
         w.tq.put(task)
+    } else {
+        // Grab a reentrant lock and read the size property.
+        wthread_queue_stats.recordValue(w.tq.size.toLong())
     }
-    wthread_queue_stats.recordValue(w.tq.size.toLong())
 }
-
 /*-------------------------------------------------------------------------*/
 
 private fun createActionGenerator(list: List<Int>): Iterator<Int> {
