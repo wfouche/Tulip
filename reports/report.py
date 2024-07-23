@@ -41,9 +41,9 @@ table, th, td {
     <th>Name</th>
     <th>RID</th>
     <th>Duration</th>
-    <th>Avg TPS</th>
-    <th>#F</th>
     <th>#N</th>
+    <th>#F</th>
+    <th>Avg TPS</th>
     <th>Avg WT</th>
     <th>Max WT</th>
     <th>Aqsz</th>
@@ -85,9 +85,9 @@ benchmark_detail_row = """
     <td></td>
     <td>%d</td>
     <td>%s</td>
+    <td>%d</td>
+    <td>%d</td>
     <td>%.1f</td>
-    <td>%d</td>
-    <td>%d</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
     <td>%.3f</td>
@@ -107,9 +107,9 @@ benchmark_summary_row = """
     <td></td>
     <td>-</td>
     <td><b>%s</b></td>
+    <td><b>%d</b></td>
+    <td><b>%d</b></td>
     <td><b>%.1f</b></td>
-    <td><b>%d</b></td>
-    <td><b>%d</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.3f</b></td>
@@ -143,7 +143,7 @@ for e in rb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions/sm.duration,sm.num_failed,sm.num_actions,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
+            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -156,9 +156,9 @@ for e in rb:
     if print_detail_rows: print(benchmark_detail_row%( \
         e["row_id"],
         e["duration"],
-        e["avg_tps"],
-        e["num_failed"],
         e["num_actions"],
+        e["num_failed"],
+        e["avg_tps"],
         e["avg_wt"],
         e["max_wt"],
         e["avg_wthread_qsize"],
@@ -185,7 +185,7 @@ for e in rb:
     if sm.max_wt < e["max_wt"]:
         sm.max_wt = e["max_wt"]
 
-html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions/sm.duration,sm.num_failed,sm.num_actions,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
+html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
 if not print_detail_rows:
     html = html.replace("<b>","")
     html = html.replace("</b>","")
