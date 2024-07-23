@@ -46,8 +46,8 @@ table, th, td {
     <th>Avg TPS</th>
     <th>Avg WT</th>
     <th>Max WT</th>
-    <th>Aqsz</th>
-    <th>Mqsz</th>
+    <th>Avg QS</th>
+    <th>Max QS</th>
     <th>Avg RT</th>
     <th>Stdev</th>
     <th>90p RT</th>
