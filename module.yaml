@@ -13,5 +13,5 @@ settings:
   kotlin:
     languageVersion: 2.0
   jvm:
-    mainClass: MainKt
+    mainClass: Benchmark00Kt
     release: 21
