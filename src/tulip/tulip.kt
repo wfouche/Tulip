@@ -507,7 +507,7 @@ fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
 
 /*-------------------------------------------------------------------------*/
 
-private var g_config = BenchmarkConfig()
+public var g_config = BenchmarkConfig()
 
 private val g_contexts = mutableListOf<RuntimeContext>()
 
