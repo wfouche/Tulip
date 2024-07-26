@@ -459,3 +459,7 @@ Use Grazie Pro to write better documentation:
 == AMPER-851
 
 * https://youtrack.jetbrains.com/issue/AMPER-851/Execution-failed-for-task-dokkaHtml-lateinit-property-module-has-not-been-initialized
+
+== Github Benchmark Actions
+
+* https://github.com/benchmark-action/github-action-benchmark
