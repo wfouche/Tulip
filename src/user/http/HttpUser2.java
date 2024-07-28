@@ -1,6 +1,6 @@
 package user.http;
 
-import tulip.*;
+import tulip.user.VirtualUser;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,7 +9,7 @@ import java.net.http.HttpRequest;
 import java.net.URI;
 import java.net.http.HttpResponse;
 
-import static tulip.TulipKt.delayMillisRandom;
+import static tulip.core.TulipKt.delayMillisRandom;
 
 public class HttpUser2 extends VirtualUser {
 

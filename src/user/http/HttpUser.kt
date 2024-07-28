@@ -2,9 +2,9 @@ package user.http
 
 /*-------------------------------------------------------------------------*/
 
-import tulip.Console
-import tulip.VirtualUser
-import tulip.delayMillisRandom
+import tulip.core.Console
+import tulip.core.delayMillisRandom
+import tulip.user.VirtualUser
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest

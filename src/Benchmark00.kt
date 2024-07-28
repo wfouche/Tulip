@@ -1,7 +1,9 @@
 /*-------------------------------------------------------------------------*/
 
-import kotlinx.cli.*
-import tulip.VirtualUser
+import tulip.user.VirtualUser
+import com.github.ajalt.clikt.core.*
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.option
 
 /*-------------------------------------------------------------------------*/
 
@@ -26,18 +28,16 @@ fun getUser(userId: Int, userClass: String): VirtualUser {
 
 /*-------------------------------------------------------------------------*/
 
-fun main(args: Array<String>) {
-    tulip.Console.put(name)
-    val parser = ArgParser("Tulip")
-    val configFilename by parser.option(
-        ArgType.String,
-        shortName = "c",
-        description = "JSON configuration file",
-        fullName = "config"
-    ).default("config.json")
-    parser.parse(args)
-    tulip.initConfig(configFilename)
-    tulip.runTests(::getUser)
+class TulipCli : CliktCommand() {
+    val configOpt by option("--config").default("config.json")
+    val resultOpt by option("--result")
+    val reportOpt by option("--report")
+    override fun run() {
+        tulip.core.initConfig(configOpt)
+        tulip.core.runTests(::getUser)
+    }
 }
+
+fun main(args: Array<String>) = TulipCli().main(args)
 
 /*-------------------------------------------------------------------------*/
