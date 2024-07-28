@@ -515,26 +515,26 @@ private val g_tests = mutableListOf<TestProfile>()
 
 /*-------------------------------------------------------------------------*/
 
-private data class ConfigContext(
+data class ConfigContext(
     val name: String = "",
     val enabled: Boolean = false,
     @SerializedName("num_users") val numUsers: Int = 0,
     @SerializedName("num_threads") val numThreads: Int = 0
 )
 
-private data class ConfigDuration(
+data class ConfigDuration(
     @SerializedName("prewarmup_duration") val startupDuration: Long = 0,
     @SerializedName("warmup_duration") val warmupDuration: Long = 0,
     @SerializedName("benchmark_duration") val mainDuration: Long = 0,
     @SerializedName("benchmark_duration_repeat_count") val mainDurationRepeatCount: Int = 1
 )
 
-private data class ConfigAction(
+data class ConfigAction(
     val id: Int,
     val weight: Int = 0
 )
 
-private data class ConfigTest(
+data class ConfigTest(
     val name: String,
     val enabled: Boolean = false,
     val time: ConfigDuration,
@@ -543,7 +543,7 @@ private data class ConfigTest(
     val actions: List<ConfigAction> = listOf()
 )
 
-private data class BenchmarkConfig(
+data class BenchmarkConfig(
     @SerializedName("description") val description: String = "",
     @SerializedName("json_filename") val jsonFilename: String = "",
     @SerializedName("user_class") val userClass: String = "",
