@@ -6,7 +6,7 @@ import tulip.core.g_config
 
 const val NUM_ACTIONS = 100
 
-open class VirtualUser(val userId: Int) {
+open class TulipUser(val userId: Int) {
 
     private val map = arrayOf(
         ::start,

@@ -4,7 +4,7 @@ package user.http
 
 import tulip.core.Console
 import tulip.core.delayMillisRandom
-import tulip.user.VirtualUser
+import tulip.user.TulipUser
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -29,7 +29,7 @@ private fun serviceCall(request:HttpRequest): Boolean {
 
 /*-------------------------------------------------------------------------*/
 
-class HttpUser(userId: Int) : VirtualUser(userId) {
+class HttpUser(userId: Int) : TulipUser(userId) {
 
     // ----------------------------------------------------------------- //
 

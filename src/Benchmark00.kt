@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------------------*/
 
-import tulip.user.VirtualUser
+import tulip.user.TulipUser
 import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
@@ -25,7 +25,7 @@ val name = """
 
 class UserFactory: TulipUserFactory() {
 
-    override fun getUser(userId: Int, className: String): VirtualUser {
+    override fun getUser(userId: Int, className: String): TulipUser {
         return when (className) {
             "user.http.HttpUser" -> user.http.HttpUser(userId)
             "user.http.HttpUser2" -> user.http.HttpUser2(userId)

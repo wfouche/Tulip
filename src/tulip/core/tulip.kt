@@ -28,7 +28,7 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.system.exitProcess
 import java.util.concurrent.ArrayBlockingQueue
-import tulip.user.VirtualUser
+import tulip.user.TulipUser
 
 /*-------------------------------------------------------------------------*/
 
@@ -71,7 +71,7 @@ private var TULIP_SCENARIO_ID: Int = 0
 private var MAX_NUM_USERS = 0
 private var MAX_NUM_THREADS = 0
 
-private var userObjects: Array<VirtualUser?>? = null // arrayOfNulls<User>(NUM_USERS)
+private var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
 
 //
