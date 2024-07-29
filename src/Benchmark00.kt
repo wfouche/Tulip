@@ -41,6 +41,7 @@ class TulipCli : CliktCommand() {
     val resultOpt by option("--result")
     val reportOpt by option("--report")
     override fun run() {
+        echo(name)
         TulipApi.runTulip(configOpt, UserFactory())
     }
 }
