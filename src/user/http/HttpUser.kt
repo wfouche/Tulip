@@ -4,7 +4,7 @@ package user.http
 
 import tulip.core.Console
 import tulip.core.delayMillisRandom
-import tulip.user.TulipUser
+import tulip.api.TulipUser
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest

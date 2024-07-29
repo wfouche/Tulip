@@ -14,8 +14,9 @@ import io.micrometer.jmx.JmxConfig
 import io.micrometer.jmx.JmxMeterRegistry
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
+import tulip.api.TulipApi
 import tulip.api.TulipUserFactory
-import tulip.user.NUM_ACTIONS
+import tulip.api.TulipUser
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.nio.ByteBuffer
@@ -28,11 +29,14 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.system.exitProcess
 import java.util.concurrent.ArrayBlockingQueue
-import tulip.user.TulipUser
 
 /*-------------------------------------------------------------------------*/
 
 const val VERSION_STRING = "2.0.0-Beta1"
+
+/*-------------------------------------------------------------------------*/
+
+const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 
 /*-------------------------------------------------------------------------*/
 

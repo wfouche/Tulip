@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------------------*/
 
-import tulip.user.TulipUser
+import tulip.api.TulipUser
 import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option

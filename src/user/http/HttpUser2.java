@@ -1,6 +1,6 @@
 package user.http;
 
-import tulip.user.TulipUser;
+import tulip.api.TulipUser;
 
 import java.io.IOException;
 import java.net.URISyntaxException;

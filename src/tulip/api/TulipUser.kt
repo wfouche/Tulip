@@ -1,10 +1,8 @@
-package tulip.user
+package tulip.api
 
 import tulip.core.Console
 import tulip.core.actionNames
 import tulip.core.g_config
-
-const val NUM_ACTIONS = 100
 
 open class TulipUser(val userId: Int) {
 

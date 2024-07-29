@@ -1,5 +1,5 @@
 import tulip.api.TulipUserFactory;
-import tulip.user.TulipUser;
+import tulip.api.TulipUser;
 
 public class Benchmark01UserFactory extends TulipUserFactory {
     @Override
