@@ -14,6 +14,7 @@ import io.micrometer.jmx.JmxConfig
 import io.micrometer.jmx.JmxMeterRegistry
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
+import tulip.api.TulipUserFactory
 import tulip.user.NUM_ACTIONS
 import java.io.BufferedWriter
 import java.io.FileWriter
@@ -81,7 +82,7 @@ private var userThreads: Array<UserThread?>? = null //arrayOfNulls<UserThread>(N
 // ...
 private var testSuite: List<TestProfile>? = null
 
-private var newUser: ((Int,String) -> VirtualUser)? = null
+private var newUser: TulipUserFactory? = null
 
 public var actionNames: Map<Int, String> = emptyMap()
 
@@ -109,14 +110,14 @@ private val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark"
 
 /*-------------------------------------------------------------------------*/
 
-private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, func: (Int,String) -> VirtualUser) {
+private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, userFactory: TulipUserFactory) {
     TULIP_SCENARIO_ID = contextId
     TULIP_SCENARIO_NAME = context.name
 
     MAX_NUM_USERS = context.numUsers
     MAX_NUM_THREADS = context.numThreads
     testSuite = tests
-    newUser = func
+    newUser = userFactory
 
     userObjects = arrayOfNulls(MAX_NUM_USERS)
     userActions = arrayOfNulls(MAX_NUM_USERS)
@@ -894,7 +895,7 @@ private class UserThread(private val threadId: Int) : Thread() {
                 //
                 var u = userObjects!![task.userId]
                 if (u == null) {
-                    u = newUser!!(task.userId, g_config.userClass)
+                    u = newUser!!.getUser(task.userId, g_config.userClass)
                     userObjects!![task.userId] = u
                 }
 
@@ -1265,12 +1266,12 @@ private fun runTulip(
     context: RuntimeContext,
     tests: List<TestProfile>,
     actionNames: Map<Int, String>,
-    getUser: (Int,String) -> VirtualUser,
+    userFactory: TulipUserFactory,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
     Console.put("")
 
-    runtimeInit(contextId, context, tests, actionNames, getUser)
+    runtimeInit(contextId, context, tests, actionNames, userFactory)
 
     Console.put("======================================================================")
     Console.put("Scenario: ${context.name}")
@@ -1303,7 +1304,7 @@ private fun runTests(
     contexts: List<RuntimeContext>,
     tests: List<TestProfile>,
     actionNames: Map<Int, String>,
-    getUser: (Int, String) -> VirtualUser,
+    userFactory: TulipUserFactory,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
     // Remove the previous JSON results file (if it exists)
@@ -1318,16 +1319,16 @@ private fun runTests(
 
     // run all benchmarks
     contexts.forEachIndexed { contextId, context ->
-        runTulip(contextId, context, tests, actionNames, getUser, getTest)
+        runTulip(contextId, context, tests, actionNames, userFactory, getTest)
     }
 
     // write ']' to JSON results file
     DataCollector.closeStatsJson(filename)
 }
 
-fun runTests(getUser: (Int,String) -> VirtualUser) {
+fun runTests(userFactory: TulipUserFactory) {
     val actionNames = g_config.userActions
-    runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
+    runTests(g_contexts, g_tests, actionNames, userFactory, ::getTest)
     logger.info { "Done" }
 }
 

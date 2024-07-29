@@ -5,6 +5,9 @@ import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 
+import tulip.api.TulipApi
+import tulip.api.TulipUserFactory
+
 /*-------------------------------------------------------------------------*/
 
 // https://devops.datenkollektiv.de/banner.txt/index.html
@@ -18,11 +21,16 @@ val name = """
                 |_|                   
 """
 
-fun getUser(userId: Int, userClass: String): VirtualUser {
-    return when (userClass) {
-        "user.http.HttpUser" -> user.http.HttpUser(userId)
-        "user.http.HttpUser2" -> user.http.HttpUser2(userId)
-        else -> throw Exception("Unknown user class name provided - $userClass")
+/*-------------------------------------------------------------------------*/
+
+class UserFactory: TulipUserFactory() {
+
+    override fun getUser(userId: Int, className: String): VirtualUser {
+        return when (className) {
+            "user.http.HttpUser" -> user.http.HttpUser(userId)
+            "user.http.HttpUser2" -> user.http.HttpUser2(userId)
+            else -> throw Exception("Unknown user class name provided - $className")
+        }
     }
 }
 
@@ -33,8 +41,7 @@ class TulipCli : CliktCommand() {
     val resultOpt by option("--result")
     val reportOpt by option("--report")
     override fun run() {
-        tulip.core.initConfig(configOpt)
-        tulip.core.runTests(::getUser)
+        TulipApi.runTulip(configOpt, UserFactory())
     }
 }
 
