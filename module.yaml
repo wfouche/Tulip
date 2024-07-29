@@ -8,6 +8,7 @@ dependencies:
   - io.github.oshai:kotlin-logging-jvm:7.0.0
   - org.hdrhistogram:HdrHistogram:2.2.2
   - com.github.ajalt.clikt:clikt-jvm:4.4.0
+  - commons-cli:commons-cli:1.8.0
 
 settings:
   kotlin:
