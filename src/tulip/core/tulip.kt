@@ -38,6 +38,8 @@ const val VERSION_STRING = "2.0.0-Beta1"
 
 const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 
+private const val histogramNumberOfSignificantValueDigits=2
+
 /*-------------------------------------------------------------------------*/
 
 class InformativeBlockingQueue<E> : ArrayBlockingQueue<E> {
@@ -373,8 +375,6 @@ fun initConfig(configFilename: String) {
 
 /*-------------------------------------------------------------------------*/
 
-private const val histogramNumberOfSignificantValueDigits=2
-
 private data class ActionSummary(
     var actionId: Int = 0,
 
@@ -615,10 +615,14 @@ private class ActionStats {
         results += "}"
 
         results += ", \"histogram_rt\": "
-        val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
-        histogram.encodeIntoCompressedByteBuffer(b)
-        val b64s = Base64.encode(b.array())
-        results += '\"' + b64s + '\"'
+        if (actionId == -1) {
+            val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
+            histogram.encodeIntoCompressedByteBuffer(b)
+            val b64s = Base64.encode(b.array())
+            results += '\"' + b64s + '\"'
+        } else {
+            results += "\"\""
+        }
 
         return results
     }
