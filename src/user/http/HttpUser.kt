@@ -2,9 +2,9 @@ package user.http
 
 /*-------------------------------------------------------------------------*/
 
-import tulip.Console
-import tulip.VirtualUser
-import tulip.delayMillisRandom
+import tulip.core.Console
+import tulip.core.delayMillisRandom
+import tulip.api.TulipUser
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -29,7 +29,7 @@ private fun serviceCall(request:HttpRequest): Boolean {
 
 /*-------------------------------------------------------------------------*/
 
-class HttpUser(userId: Int) : VirtualUser(userId) {
+class HttpUser(userId: Int) : TulipUser(userId) {
 
     // ----------------------------------------------------------------- //
 
@@ -126,7 +126,7 @@ class HttpUser(userId: Int) : VirtualUser(userId) {
 
     companion object {
         init {
-            Console.put("Loading .... Kotlin class ... HttpUser")
+            //Console.put("Loading .... Kotlin class ... HttpUser")
         }
     }
 

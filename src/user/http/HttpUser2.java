@@ -1,6 +1,6 @@
 package user.http;
 
-import tulip.*;
+import tulip.api.TulipUser;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -9,13 +9,13 @@ import java.net.http.HttpRequest;
 import java.net.URI;
 import java.net.http.HttpResponse;
 
-import static tulip.TulipKt.delayMillisRandom;
+import static tulip.core.TulipKt.delayMillisRandom;
 
-public class HttpUser2 extends VirtualUser {
+public class HttpUser2 extends TulipUser {
 
     private static final HttpClient client = HttpClient.newHttpClient();
 
-    private static boolean serviceCall (VirtualUser user, String resource, int userId) {
+    private static boolean serviceCall (TulipUser user, String resource, int userId) {
         // https://www.baeldung.com/java-httpclient-connection-management
         var id = userId + 1;
         HttpRequest request = null;
@@ -121,6 +121,6 @@ public class HttpUser2 extends VirtualUser {
     }
 
     static {
-        System.out.println("Loading .... Java class ... HttpUser2");
+        //System.out.println("Loading .... Java class ... HttpUser2");
     }
 }

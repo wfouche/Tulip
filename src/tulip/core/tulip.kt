@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------------------*/
 
-package tulip
+package tulip.core
 
 /*-------------------------------------------------------------------------*/
 
@@ -14,6 +14,9 @@ import io.micrometer.jmx.JmxConfig
 import io.micrometer.jmx.JmxMeterRegistry
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
+import tulip.api.TulipApi
+import tulip.api.TulipUserFactory
+import tulip.api.TulipUser
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.nio.ByteBuffer
@@ -30,6 +33,12 @@ import java.util.concurrent.ArrayBlockingQueue
 /*-------------------------------------------------------------------------*/
 
 const val VERSION_STRING = "2.0.0-Beta1"
+
+/*-------------------------------------------------------------------------*/
+
+const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
+
+private const val histogramNumberOfSignificantValueDigits=2
 
 /*-------------------------------------------------------------------------*/
 
@@ -51,236 +60,6 @@ typealias SPSC_Queue<E> = InformativeBlockingQueue<E>
 
 /*-------------------------------------------------------------------------*/
 
-const val NUM_ACTIONS = 100
-
-open class VirtualUser(val userId: Int) {
-
-    private val map = arrayOf(
-        ::start,
-        ::action1,
-        ::action2,
-        ::action3,
-        ::action4,
-        ::action5,
-        ::action6,
-        ::action7,
-        ::action8,
-        ::action9,
-        ::action10,
-        ::action11,
-        ::action12,
-        ::action13,
-        ::action14,
-        ::action15,
-        ::action16,
-        ::action17,
-        ::action18,
-        ::action19,
-        ::action20,
-        ::action21,
-        ::action22,
-        ::action23,
-        ::action24,
-        ::action25,
-        ::action26,
-        ::action27,
-        ::action28,
-        ::action29,
-        ::action30,
-        ::action31,
-        ::action32,
-        ::action33,
-        ::action34,
-        ::action35,
-        ::action36,
-        ::action37,
-        ::action38,
-        ::action39,
-        ::action40,
-        ::action41,
-        ::action42,
-        ::action43,
-        ::action44,
-        ::action45,
-        ::action46,
-        ::action47,
-        ::action48,
-        ::action49,
-        ::action50,
-        ::action51,
-        ::action52,
-        ::action53,
-        ::action54,
-        ::action55,
-        ::action56,
-        ::action57,
-        ::action58,
-        ::action59,
-        ::action60,
-        ::action61,
-        ::action62,
-        ::action63,
-        ::action64,
-        ::action65,
-        ::action66,
-        ::action67,
-        ::action68,
-        ::action69,
-        ::action70,
-        ::action71,
-        ::action72,
-        ::action73,
-        ::action74,
-        ::action75,
-        ::action76,
-        ::action77,
-        ::action78,
-        ::action79,
-        ::action80,
-        ::action81,
-        ::action82,
-        ::action83,
-        ::action84,
-        ::action85,
-        ::action86,
-        ::action87,
-        ::action88,
-        ::action89,
-        ::action90,
-        ::action91,
-        ::action92,
-        ::action93,
-        ::action94,
-        ::action95,
-        ::action96,
-        ::action97,
-        ::action98,
-        ::stop
-    )
-
-    open fun start(): Boolean = false
-    open fun action1(): Boolean = false
-    open fun action2(): Boolean = false
-    open fun action3(): Boolean = false
-    open fun action4(): Boolean = false
-    open fun action5(): Boolean = false
-    open fun action6(): Boolean = false
-    open fun action7(): Boolean = false
-    open fun action8(): Boolean = false
-    open fun action9(): Boolean = false
-    open fun action10(): Boolean = false
-    open fun action11(): Boolean = false
-    open fun action12(): Boolean = false
-    open fun action13(): Boolean = false
-    open fun action14(): Boolean = false
-    open fun action15(): Boolean = false
-    open fun action16(): Boolean = false
-    open fun action17(): Boolean = false
-    open fun action18(): Boolean = false
-    open fun action19(): Boolean = false
-    open fun action20(): Boolean = false
-    open fun action21(): Boolean = false
-    open fun action22(): Boolean = false
-    open fun action23(): Boolean = false
-    open fun action24(): Boolean = false
-    open fun action25(): Boolean = false
-    open fun action26(): Boolean = false
-    open fun action27(): Boolean = false
-    open fun action28(): Boolean = false
-    open fun action29(): Boolean = false
-    open fun action30(): Boolean = false
-    open fun action31(): Boolean = false
-    open fun action32(): Boolean = false
-    open fun action33(): Boolean = false
-    open fun action34(): Boolean = false
-    open fun action35(): Boolean = false
-    open fun action36(): Boolean = false
-    open fun action37(): Boolean = false
-    open fun action38(): Boolean = false
-    open fun action39(): Boolean = false
-    open fun action40(): Boolean = false
-    open fun action41(): Boolean = false
-    open fun action42(): Boolean = false
-    open fun action43(): Boolean = false
-    open fun action44(): Boolean = false
-    open fun action45(): Boolean = false
-    open fun action46(): Boolean = false
-    open fun action47(): Boolean = false
-    open fun action48(): Boolean = false
-    open fun action49(): Boolean = false
-    open fun action50(): Boolean = false
-    open fun action51(): Boolean = false
-    open fun action52(): Boolean = false
-    open fun action53(): Boolean = false
-    open fun action54(): Boolean = false
-    open fun action55(): Boolean = false
-    open fun action56(): Boolean = false
-    open fun action57(): Boolean = false
-    open fun action58(): Boolean = false
-    open fun action59(): Boolean = false
-    open fun action60(): Boolean = false
-    open fun action61(): Boolean = false
-    open fun action62(): Boolean = false
-    open fun action63(): Boolean = false
-    open fun action64(): Boolean = false
-    open fun action65(): Boolean = false
-    open fun action66(): Boolean = false
-    open fun action67(): Boolean = false
-    open fun action68(): Boolean = false
-    open fun action69(): Boolean = false
-    open fun action70(): Boolean = false
-    open fun action71(): Boolean = false
-    open fun action72(): Boolean = false
-    open fun action73(): Boolean = false
-    open fun action74(): Boolean = false
-    open fun action75(): Boolean = false
-    open fun action76(): Boolean = false
-    open fun action77(): Boolean = false
-    open fun action78(): Boolean = false
-    open fun action79(): Boolean = false
-    open fun action80(): Boolean = false
-    open fun action81(): Boolean = false
-    open fun action82(): Boolean = false
-    open fun action83(): Boolean = false
-    open fun action84(): Boolean = false
-    open fun action85(): Boolean = false
-    open fun action86(): Boolean = false
-    open fun action87(): Boolean = false
-    open fun action88(): Boolean = false
-    open fun action89(): Boolean = false
-    open fun action90(): Boolean = false
-    open fun action91(): Boolean = false
-    open fun action92(): Boolean = false
-    open fun action93(): Boolean = false
-    open fun action94(): Boolean = false
-    open fun action95(): Boolean = false
-    open fun action96(): Boolean = false
-    open fun action97(): Boolean = false
-    open fun action98(): Boolean = false
-    open fun stop(): Boolean = false
-
-    open fun processAction(actionId: Int): Boolean {
-        return try {
-            map[actionId]()
-        } catch (e: Exception) {
-            Console.put("userId: ${userId}, actionId: ${actionId}, " + e.toString())
-            false
-        }
-    }
-
-    open fun getUserParamValue(paramName: String): String {
-        var s: String? = g_config.userParams[paramName]
-        if (s == null) s = ""
-        return s
-    }
-
-    open fun getActionName(actionId: Int): String {
-        return if (actionNames.containsKey(actionId)) actionNames[actionId]!! else "action${actionId}"
-    }
-}
-
-/*-------------------------------------------------------------------------*/
-
 // https://github.com/oshai/kotlin-logging
 private val logger = KotlinLogging.logger {}
 
@@ -298,7 +77,7 @@ private var TULIP_SCENARIO_ID: Int = 0
 private var MAX_NUM_USERS = 0
 private var MAX_NUM_THREADS = 0
 
-private var userObjects: Array<VirtualUser?>? = null // arrayOfNulls<User>(NUM_USERS)
+private var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
 
 //
@@ -309,9 +88,9 @@ private var userThreads: Array<UserThread?>? = null //arrayOfNulls<UserThread>(N
 // ...
 private var testSuite: List<TestProfile>? = null
 
-private var newUser: ((Int,String) -> VirtualUser)? = null
+private var newUser: TulipUserFactory? = null
 
-private var actionNames: Map<Int, String> = emptyMap()
+public var actionNames: Map<Int, String> = emptyMap()
 
 private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
@@ -337,14 +116,14 @@ private val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark"
 
 /*-------------------------------------------------------------------------*/
 
-private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, func: (Int,String) -> VirtualUser) {
+private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, userFactory: TulipUserFactory) {
     TULIP_SCENARIO_ID = contextId
     TULIP_SCENARIO_NAME = context.name
 
     MAX_NUM_USERS = context.numUsers
     MAX_NUM_THREADS = context.numThreads
     testSuite = tests
-    newUser = func
+    newUser = userFactory
 
     userObjects = arrayOfNulls(MAX_NUM_USERS)
     userActions = arrayOfNulls(MAX_NUM_USERS)
@@ -596,8 +375,6 @@ fun initConfig(configFilename: String) {
 
 /*-------------------------------------------------------------------------*/
 
-private const val histogramNumberOfSignificantValueDigits=2
-
 private data class ActionSummary(
     var actionId: Int = 0,
 
@@ -838,10 +615,14 @@ private class ActionStats {
         results += "}"
 
         results += ", \"histogram_rt\": "
-        val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
-        histogram.encodeIntoCompressedByteBuffer(b)
-        val b64s = Base64.encode(b.array())
-        results += '\"' + b64s + '\"'
+        if (actionId == -1) {
+            val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
+            histogram.encodeIntoCompressedByteBuffer(b)
+            val b64s = Base64.encode(b.array())
+            results += '\"' + b64s + '\"'
+        } else {
+            results += "\"\""
+        }
 
         return results
     }
@@ -1122,7 +903,7 @@ private class UserThread(private val threadId: Int) : Thread() {
                 //
                 var u = userObjects!![task.userId]
                 if (u == null) {
-                    u = newUser!!(task.userId, g_config.userClass)
+                    u = newUser!!.getUser(task.userId, g_config.userClass)
                     userObjects!![task.userId] = u
                 }
 
@@ -1133,7 +914,7 @@ private class UserThread(private val threadId: Int) : Thread() {
                 //
                 task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
                 task.serviceTimeNanos = elapsedTimeNanos {
-                    if (u.processAction(task.actionId)) task.status = 1 else task.status = 0
+                    if (u!!.processAction(task.actionId)) task.status = 1 else task.status = 0
                 }
 
                 task.rspQueue!!.put(task)
@@ -1493,12 +1274,12 @@ private fun runTulip(
     context: RuntimeContext,
     tests: List<TestProfile>,
     actionNames: Map<Int, String>,
-    getUser: (Int,String) -> VirtualUser,
+    userFactory: TulipUserFactory,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
     Console.put("")
 
-    runtimeInit(contextId, context, tests, actionNames, getUser)
+    runtimeInit(contextId, context, tests, actionNames, userFactory)
 
     Console.put("======================================================================")
     Console.put("Scenario: ${context.name}")
@@ -1531,7 +1312,7 @@ private fun runTests(
     contexts: List<RuntimeContext>,
     tests: List<TestProfile>,
     actionNames: Map<Int, String>,
-    getUser: (Int, String) -> VirtualUser,
+    userFactory: TulipUserFactory,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
     // Remove the previous JSON results file (if it exists)
@@ -1546,16 +1327,16 @@ private fun runTests(
 
     // run all benchmarks
     contexts.forEachIndexed { contextId, context ->
-        runTulip(contextId, context, tests, actionNames, getUser, getTest)
+        runTulip(contextId, context, tests, actionNames, userFactory, getTest)
     }
 
     // write ']' to JSON results file
     DataCollector.closeStatsJson(filename)
 }
 
-fun runTests(getUser: (Int,String) -> VirtualUser) {
+fun runTests(userFactory: TulipUserFactory) {
     val actionNames = g_config.userActions
-    runTests(g_contexts, g_tests, actionNames, getUser, ::getTest)
+    runTests(g_contexts, g_tests, actionNames, userFactory, ::getTest)
     logger.info { "Done" }
 }
 

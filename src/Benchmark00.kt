@@ -1,7 +1,12 @@
 /*-------------------------------------------------------------------------*/
 
-import kotlinx.cli.*
-import tulip.VirtualUser
+import tulip.api.TulipUser
+import com.github.ajalt.clikt.core.*
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.option
+
+import tulip.api.TulipApi
+import tulip.api.TulipUserFactory
 
 /*-------------------------------------------------------------------------*/
 
@@ -16,28 +21,33 @@ val name = """
                 |_|                   
 """
 
-fun getUser(userId: Int, userClass: String): VirtualUser {
-    return when (userClass) {
-        "user.http.HttpUser" -> user.http.HttpUser(userId)
-        "user.http.HttpUser2" -> user.http.HttpUser2(userId)
-        else -> throw Exception("Unknown user class name provided - $userClass")
+/*-------------------------------------------------------------------------*/
+
+class UserFactory: TulipUserFactory() {
+
+    override fun getUser(userId: Int, className: String): TulipUser {
+        return when (className) {
+            "user.http.HttpUser" -> user.http.HttpUser(userId)
+            "user.http.HttpUser2" -> user.http.HttpUser2(userId)
+            else -> throw Exception("Unknown user class name provided - $className")
+        }
     }
 }
 
 /*-------------------------------------------------------------------------*/
 
-fun main(args: Array<String>) {
-    tulip.Console.put(name)
-    val parser = ArgParser("Tulip")
-    val configFilename by parser.option(
-        ArgType.String,
-        shortName = "c",
-        description = "JSON configuration file",
-        fullName = "config"
-    ).default("config.json")
-    parser.parse(args)
-    tulip.initConfig(configFilename)
-    tulip.runTests(::getUser)
+class TulipCli : CliktCommand() {
+    val configOpt by option("--config").default("config.json")
+    val resultOpt by option("--result")
+    val reportOpt by option("--report")
+    override fun run() {
+        echo(name)
+        TulipApi.runTulip(configOpt, UserFactory())
+    }
 }
+
+/*-------------------------------------------------------------------------*/
+
+fun main(args: Array<String>) = TulipCli().main(args)
 
 /*-------------------------------------------------------------------------*/
