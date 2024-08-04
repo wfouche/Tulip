@@ -32,9 +32,7 @@ import java.util.concurrent.ArrayBlockingQueue
 
 /*-------------------------------------------------------------------------*/
 
-const val VERSION_STRING = "2.0.0-Beta3"
-
-/*-------------------------------------------------------------------------*/
+const val VERSION_STRING = TulipApi.VERSION_STRING
 
 const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 
