@@ -7,8 +7,8 @@ java=21.0.4-tem
 #java=21.0.3-graal
 #java=22.0.1-graal
 
-# Gradle 8.6 is required by Jetbrains Amper 0.3.1
-gradle=8.6
+# Gradle
+gradle=8.9
 
 # JBang
 jbang=0.117.1
