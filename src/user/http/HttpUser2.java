@@ -121,6 +121,6 @@ public class HttpUser2 extends TulipUser {
     }
 
     static {
-        System.out.println("Loading .... Java class ... HttpUser2");
+        //System.out.println("Loading .... Java class ... HttpUser2");
     }
 }

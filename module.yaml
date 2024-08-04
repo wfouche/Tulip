@@ -14,5 +14,6 @@ settings:
   kotlin:
     languageVersion: 2.0
   jvm:
-    mainClass: Benchmark00Kt
+    mainClass: Benchmark00Kt   # Kotlin main
+    #ainClass: Benchmark01     # Java main
     release: 21

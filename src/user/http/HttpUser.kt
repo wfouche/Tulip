@@ -126,7 +126,7 @@ class HttpUser(userId: Int) : TulipUser(userId) {
 
     companion object {
         init {
-            Console.put("Loading .... Kotlin class ... HttpUser")
+            //Console.put("Loading .... Kotlin class ... HttpUser")
         }
     }
 
