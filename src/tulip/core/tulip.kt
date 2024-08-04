@@ -32,7 +32,7 @@ import java.util.concurrent.ArrayBlockingQueue
 
 /*-------------------------------------------------------------------------*/
 
-const val VERSION_STRING = "2.0.0-Beta2"
+const val VERSION_STRING = "2.0.0-Beta3"
 
 /*-------------------------------------------------------------------------*/
 
