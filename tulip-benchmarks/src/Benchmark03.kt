@@ -15,7 +15,7 @@ import org.tulip.api.TulipUserFactory
 
 // https://devops.datenkollektiv.de/banner.txt/index.html
 // <standard>
-private const val banner = """                                       
+private const val banner03 = """                                       
   _____      _ _         ____    ___  
  |_   _|   _| (_)_ __   |___ \  / _ \ 
    | || | | | | | '_ \    __) || | | |

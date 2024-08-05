@@ -12,7 +12,7 @@ import org.tulip.api.TulipUserFactory
 
 // https://devops.datenkollektiv.de/banner.txt/index.html
 // <standard>
-private const val banner = """                                       
+private const val banner00 = """                                       
   _____      _ _         ____    ___  
  |_   _|   _| (_)_ __   |___ \  / _ \ 
    | || | | | | | '_ \    __) || | | |
@@ -23,7 +23,7 @@ private const val banner = """
 
 /*-------------------------------------------------------------------------*/
 
-private class UserFactory: TulipUserFactory() {
+private class UserFactory00: TulipUserFactory() {
 
     override fun getUser(userId: Int, className: String): TulipUser {
         return when (className) {
@@ -36,18 +36,18 @@ private class UserFactory: TulipUserFactory() {
 
 /*-------------------------------------------------------------------------*/
 
-private class TulipCli : CliktCommand() {
+private class TulipCli00 : CliktCommand() {
     private val configOpt by option("--config").default("config.json")
     private val resultOpt by option("--result")
     private val reportOpt by option("--report")
     override fun run() {
-        echo(banner)
-        TulipApi.runTulip(configOpt, UserFactory())
+        echo(banner00)
+        TulipApi.runTulip(configOpt, UserFactory00())
     }
 }
 
 /*-------------------------------------------------------------------------*/
 
-fun main(args: Array<String>) = TulipCli().main(args)
+fun main(args: Array<String>) = TulipCli00().main(args)
 
 /*-------------------------------------------------------------------------*/
