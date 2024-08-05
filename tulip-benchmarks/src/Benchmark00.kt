@@ -1,3 +1,5 @@
+package benchmark02
+
 /*-------------------------------------------------------------------------*/
 
 import org.tulip.api.TulipUser
@@ -12,7 +14,7 @@ import org.tulip.api.TulipUserFactory
 
 // https://devops.datenkollektiv.de/banner.txt/index.html
 // <standard>
-val name = """                                       
+private const val banner = """                                       
   _____      _ _         ____    ___  
  |_   _|   _| (_)_ __   |___ \  / _ \ 
    | || | | | | | '_ \    __) || | | |
@@ -23,7 +25,7 @@ val name = """
 
 /*-------------------------------------------------------------------------*/
 
-class UserFactory: TulipUserFactory() {
+private class UserFactory: TulipUserFactory() {
 
     override fun getUser(userId: Int, className: String): TulipUser {
         return when (className) {
@@ -36,12 +38,12 @@ class UserFactory: TulipUserFactory() {
 
 /*-------------------------------------------------------------------------*/
 
-class TulipCli : CliktCommand() {
-    val configOpt by option("--config").default("config.json")
-    val resultOpt by option("--result")
-    val reportOpt by option("--report")
+private class TulipCli : CliktCommand() {
+    private val configOpt by option("--config").default("config.json")
+    private val resultOpt by option("--result")
+    private val reportOpt by option("--report")
     override fun run() {
-        echo(name)
+        echo(banner)
         TulipApi.runTulip(configOpt, UserFactory())
     }
 }
