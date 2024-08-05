@@ -1,5 +1,3 @@
-package benchmark02
-
 /*-------------------------------------------------------------------------*/
 
 import org.tulip.api.TulipUser
