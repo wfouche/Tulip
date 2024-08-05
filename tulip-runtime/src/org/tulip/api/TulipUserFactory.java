@@ -1,4 +1,4 @@
-package tulip.api;
+package org.tulip.api;
 
 public abstract class TulipUserFactory {
 

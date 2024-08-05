@@ -1,12 +1,12 @@
 /*-------------------------------------------------------------------------*/
 
-import tulip.api.TulipUser
+import org.tulip.api.TulipUser
 import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 
-import tulip.api.TulipApi
-import tulip.api.TulipUserFactory
+import org.tulip.api.TulipApi
+import org.tulip.api.TulipUserFactory
 
 /*-------------------------------------------------------------------------*/
 

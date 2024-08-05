@@ -5,9 +5,8 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.9/userguide/building_java_projects.html in the Gradle documentation.
  */
 
-group = "com.github.wfouche.tulip"
-version = "2.0.0-beta4"
-
+group = "org.tulip"
+version = "0.0.0-SNAPSHOT"
 
 tasks.jar {
     manifest {

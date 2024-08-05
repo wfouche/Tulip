@@ -1,8 +1,8 @@
-package tulip.api
+package org.tulip.api
 
-import tulip.core.Console
-import tulip.core.actionNames
-import tulip.core.g_config
+import org.tulip.core.Console
+import org.tulip.core.actionNames
+import org.tulip.core.g_config
 
 open class TulipUser(val userId: Int) {
 

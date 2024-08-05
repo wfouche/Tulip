@@ -1,4 +1,6 @@
-package tulip.api;
+package org.tulip.api;
+
+import org.tulip.core.TulipKt;
 
 public class TulipApi {
 
@@ -7,7 +9,7 @@ public class TulipApi {
     public static final int NUM_ACTIONS = 100;
 
     public static void runTulip(String configFilename, TulipUserFactory userFactory) {
-        tulip.core.TulipKt.initConfig(configFilename);
-        tulip.core.TulipKt.runTests(userFactory);
+        TulipKt.initConfig(configFilename);
+        TulipKt.runTests(userFactory);
     }
 }

@@ -1,4 +1,4 @@
-import tulip.api.TulipApi;
+import org.tulip.api.TulipApi;
 import org.apache.commons.cli.*;
 
 public class Benchmark01 {

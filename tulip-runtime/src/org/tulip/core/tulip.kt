@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------------------*/
 
-package tulip.core
+package org.tulip.core
 
 /*-------------------------------------------------------------------------*/
 
@@ -14,9 +14,9 @@ import io.micrometer.jmx.JmxConfig
 import io.micrometer.jmx.JmxMeterRegistry
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
-import tulip.api.TulipApi
-import tulip.api.TulipUserFactory
-import tulip.api.TulipUser
+import org.tulip.api.TulipApi
+import org.tulip.api.TulipUserFactory
+import org.tulip.api.TulipUser
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.nio.ByteBuffer
@@ -336,20 +336,20 @@ fun initConfig(configFilename: String) {
     Console.put("  config filename = $configFilename")
     val gson = GsonBuilder().setPrettyPrinting().create()
     val sf = java.io.File(configFilename).readText()
-    g_config = gson.fromJson(sf,BenchmarkConfig::class.java)
+    g_config = gson.fromJson(sf, BenchmarkConfig::class.java)
     if (false) {
         val json = gson.toJson(g_config)
         println(json)
-        println("${g_config}")
+        println("$g_config")
     }
-    for (e:ConfigContext in g_config.contexts) {
+    for (e: ConfigContext in g_config.contexts) {
         //println("${e.name}")
         if (e.enabled) {
             val v = RuntimeContext(e.name, e.numUsers, e.numThreads)
             g_contexts.add(v)
         }
     }
-    for (e:ConfigTest in g_config.benchmarks) {
+    for (e: ConfigTest in g_config.benchmarks) {
         //println("${e.name}")
         val v = TestProfile(
             enabled = e.enabled,
@@ -733,10 +733,10 @@ private object DataCollector {
 
             var json = "{" + "\"attributes\": {\"type\": \"data\"},"
 
-            json += "\"scenario_name\": \"${TULIP_SCENARIO_NAME}\", "
-            json += "\"scenario_id\": ${TULIP_SCENARIO_ID}, "
-            json += "\"num_users\": ${MAX_NUM_USERS}, "
-            json += "\"num_threads\": ${MAX_NUM_THREADS}, "
+            json += "\"scenario_name\": \"$TULIP_SCENARIO_NAME\", "
+            json += "\"scenario_id\": $TULIP_SCENARIO_ID, "
+            json += "\"num_users\": $MAX_NUM_USERS, "
+            json += "\"num_threads\": $MAX_NUM_THREADS, "
             json += "\"queue_length\": ${r.queueLength}, "
 
             json += "\"test_name\": \"${r.testName}\", "
