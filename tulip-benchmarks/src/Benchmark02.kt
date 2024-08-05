@@ -1,6 +1,4 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.javalin:javalin:6.2.0
-//DEPS org.slf4j:slf4j-simple:2.0.13
 //DEPS org.tulip:tulip-runtime-jvm:2.0.0-SNAPSHOT
 //DEPS com.github.ajalt.clikt:clikt-jvm:4.4.0
 //SOURCES user/http/HttpUser.kt user/http/HttpUser2.java
