@@ -44,7 +44,7 @@ class UserFactory: TulipUserFactory() {
 /*-------------------------------------------------------------------------*/
 
 class TulipCli : CliktCommand() {
-    val configOpt by option("--config").default("user/http/config.json")
+    val configOpt by option("--config").default("config.json")
     val resultOpt by option("--result")
     val reportOpt by option("--report")
     override fun run() {
