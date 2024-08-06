@@ -1,2 +1,2 @@
 REM Stay with Gradle 8.6 for now since Jetbrains Amper 3.0 requires it
-.\gradlew.bat wrapper --gradle-version 8.6
+.\gradlew.bat wrapper --gradle-version 8.9
