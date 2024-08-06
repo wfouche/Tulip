@@ -23,23 +23,5 @@ application {
         // "-Dcom.sun.management.jmxremote.port=3333",
         // "-Dcom.sun.management.jmxremote.ssl=false",
         // "-Dcom.sun.management.jmxremote.authenticate=false"
-
-        )
-}
-
-plugins {
-    // Gradle versions plugin
-    // $ ./gradlew dependencyUpdates
-    id("com.github.ben-manes.versions") version "0.51.0"
-
-    // Add support for AsciidoctorJ
-    // id("org.asciidoctor.jvm.convert") version "4.0.2"
-
-    // Kotlin Dokka
-    // ./gradlew dokkaHtml
-    id("org.jetbrains.dokka") version "1.9.20"
-
-    // Apply GraalVM Native Image plugin
-    // https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html
-    // id("org.graalvm.buildtools.native") version "0.10.2"
+    )
 }
