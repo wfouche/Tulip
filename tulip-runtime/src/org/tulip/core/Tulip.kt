@@ -322,7 +322,8 @@ data class ConfigTest(
 
 data class BenchmarkConfig(
     @SerializedName("description") val description: String = "",
-    @SerializedName("json_filename") val jsonFilename: String = "",
+    @SerializedName("output_filename") val jsonFilename: String = "",
+    @SerializedName("report_filename") val htmlFilename: String = "",
     @SerializedName("user_class") val userClass: String = "",
     @SerializedName("user_params") val userParams: Map<String,String> = mapOf(),
     @SerializedName("user_actions") val userActions: Map<Int,String> = mapOf(),
@@ -366,8 +367,10 @@ fun initConfig(configFilename: String) {
         )
         g_tests.add(v)
     }
-    Console.put("  results filename = ${g_config.jsonFilename}")
+    Console.put("  output filename = ${g_config.jsonFilename}")
+    Console.put("  report filename = ${g_config.htmlFilename}")
     val wd = System.getProperty("user.dir")
+    Console.put("")
     Console.put("  working directory = $wd")
 }
 
