@@ -25,3 +25,8 @@ application {
         // "-Dcom.sun.management.jmxremote.authenticate=false"
     )
 }
+
+repositories {
+    mavenCentral()
+    mavenLocal()
+}
