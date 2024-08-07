@@ -1,3 +1,3 @@
-gradle run --args="--config ./benchmark_config.json"
+gradle run --args="--config benchmark_config.json"
 
 ./report.sh
