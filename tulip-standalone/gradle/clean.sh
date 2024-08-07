@@ -1,1 +1,1 @@
-rm -f -r build benchmark_results.json benchmark_report.html
+rm -f benchmark_output.json benchmark_report.html
