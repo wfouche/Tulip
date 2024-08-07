@@ -136,7 +136,13 @@ jb = json.load(fileObj)
 description = "/ " + jb["config"]["description"] + " / " + jb["timestamp"].replace("_", " ")
 rb = jb["results"]
 
-print(header.replace("__DESC__", description))
+report_fn = jb["config"]["report_filename"]
+report_fh = open(report_fn, "w+")
+
+def printf(s):
+    report_fh.write(s)
+
+printf(header.replace("__DESC__", description))
 
 prev_row_id = 0
 for e in rb:
@@ -147,13 +153,13 @@ for e in rb:
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
-            print(html)
+            printf(html)
         sm = Summary()
         jh.reset()
-        print(benchmark_header%(int(e["scenario_id"]), e["test_name"] + " (u:%d t:%d)"%(e["num_users"],e["num_threads"])))
+        printf(benchmark_header%(int(e["scenario_id"]), e["test_name"] + " (u:%d t:%d)"%(e["num_users"],e["num_threads"])))
     ht = Histogram.fromString(e["histogram_rt"])
     jh.add(ht)
-    if print_detail_rows: print(benchmark_detail_row%( \
+    if print_detail_rows: printf(benchmark_detail_row%( \
         e["row_id"],
         e["duration"],
         e["num_actions"],
@@ -189,5 +195,7 @@ html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),
 if not print_detail_rows:
     html = html.replace("<b>","")
     html = html.replace("</b>","")
-print(html)
-print(trailer)
+printf(html)
+printf(trailer)
+
+report_fh.close()
