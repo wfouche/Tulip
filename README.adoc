@@ -237,7 +237,8 @@ SID          Name           RID Duration    #N     #F  Avg TPS   Avg WT   Max WT
 ----
 {
     "description": "Micro-benchmarks",
-    "json_filename": "benchmark_results.json",
+    "output_filename": "benchmark_output.json",
+    "report_filename": "benchmark_report.html",
     "user_class": "user.http.HttpUser",
     "user_params": {
         "url": "https://jsonplaceholder.typicode.com",
