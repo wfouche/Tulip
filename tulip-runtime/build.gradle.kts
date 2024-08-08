@@ -8,6 +8,10 @@
 group = "org.tulip"
 version = "2.0.0-SNAPSHOT"
 
+plugins {
+    id("org.jreleaser").version("1.13.1")
+}
+
 tasks.jar {
     manifest {
         attributes(mapOf("Implementation-Title" to project.name,
