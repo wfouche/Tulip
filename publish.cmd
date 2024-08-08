@@ -1,0 +1,1 @@
+.\gradlew :tulip-runtime:publishToMavenLocal
