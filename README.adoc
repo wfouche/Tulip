@@ -236,27 +236,29 @@ SID          Name           RID Duration    #N     #F  Avg TPS   Avg WT   Max WT
 [source,json]
 ----
 {
-    "description": "Micro-benchmarks",
-    "output_filename": "benchmark_output.json",
-    "report_filename": "benchmark_report.html",
-    "user_class": "user.http.HttpUser",
-    "user_params": {
-        "url": "https://jsonplaceholder.typicode.com",
-        "urlx": "http://localhost:7070"
-    },
-    "user_actions": {
-        "0": "start",
-        "1": "DELAY-6ms",
-        "2": "DELAY-14ms",
-        "3": "HTTP-posts",
-        "4": "HTTP-comments",
-        "5": "HTTP-albums",
-        "6": "HTTP-photos",
-        "7": "HTTP-todos",
-        "8": "login",
-        "9": "noop",
-        "10": "DELAY-10ms",
-        "99": "stop"
+     "static": {
+        "description": "Micro-benchmarks",
+        "output_filename": "benchmark_output.json",
+        "report_filename": "benchmark_report.html",
+        "user_class": "user.http.HttpUser",
+        "user_params": {
+            "url": "https://jsonplaceholder.typicode.com",
+            "urlx": "http://localhost:7070"
+        },
+        "user_actions": {
+            "0": "start",
+            "1": "DELAY-6ms",
+            "2": "DELAY-14ms",
+            "3": "HTTP-posts",
+            "4": "HTTP-comments",
+            "5": "HTTP-albums",
+            "6": "HTTP-photos",
+            "7": "HTTP-todos",
+            "8": "login",
+            "9": "noop",
+            "10": "DELAY-10ms",
+            "99": "stop"
+        }
     },
     "contexts": [
         {
