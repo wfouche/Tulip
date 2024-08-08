@@ -320,13 +320,17 @@ data class ConfigTest(
     val actions: List<ConfigAction> = listOf()
 )
 
-data class BenchmarkConfig(
+data class StaticConfig(
     @SerializedName("description") val description: String = "",
     @SerializedName("output_filename") val jsonFilename: String = "",
     @SerializedName("report_filename") val htmlFilename: String = "",
     @SerializedName("user_class") val userClass: String = "",
     @SerializedName("user_params") val userParams: Map<String,String> = mapOf(),
-    @SerializedName("user_actions") val userActions: Map<Int,String> = mapOf(),
+    @SerializedName("user_actions") val userActions: Map<Int,String> = mapOf()
+)
+
+data class BenchmarkConfig(
+    val static: StaticConfig = StaticConfig(),
     val contexts: List<ConfigContext> = listOf(),
     val benchmarks: List<ConfigTest> = listOf()
 )
@@ -363,12 +367,12 @@ fun initConfig(configFilename: String) {
                     this.add(Action(a.id, a.weight))
                 }
             },
-            filename = g_config.jsonFilename,
+            filename = g_config.static.jsonFilename,
         )
         g_tests.add(v)
     }
-    Console.put("  output filename = ${g_config.jsonFilename}")
-    Console.put("  report filename = ${g_config.htmlFilename}")
+    Console.put("  output filename = ${g_config.static.jsonFilename}")
+    Console.put("  report filename = ${g_config.static.htmlFilename}")
     val wd = System.getProperty("user.dir")
     Console.put("")
     Console.put("  working directory = $wd")
@@ -904,7 +908,7 @@ private class UserThread(private val threadId: Int) : Thread() {
                 //
                 var u = userObjects!![task.userId]
                 if (u == null) {
-                    u = newUser!!.getUser(task.userId, g_config.userClass)
+                    u = newUser!!.getUser(task.userId, g_config.static.userClass)
                     userObjects!![task.userId] = u
                 }
 
@@ -1336,7 +1340,7 @@ private fun runTests(
 }
 
 fun runTests(userFactory: TulipUserFactory) {
-    val actionNames = g_config.userActions
+    val actionNames = g_config.static.userActions
     runTests(g_contexts, g_tests, actionNames, userFactory, ::getTest)
     logger.info { "Done" }
 }

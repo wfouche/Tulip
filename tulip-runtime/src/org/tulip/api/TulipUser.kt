@@ -220,7 +220,7 @@ open class TulipUser(val userId: Int) {
     }
 
     open fun getUserParamValue(paramName: String): String {
-        var s: String? = g_config.userParams[paramName]
+        var s: String? = g_config.static.userParams[paramName]
         if (s == null) s = ""
         return s
     }

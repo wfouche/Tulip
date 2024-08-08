@@ -133,10 +133,10 @@ sm = None
 jh = Histogram(1,3600*1000*1000, 3)
 fileObj = open(filename)
 jb = json.load(fileObj)
-description = "/ " + jb["config"]["description"] + " / " + jb["timestamp"].replace("_", " ")
+description = "/ " + jb["config"]["static"]["description"] + " / " + jb["timestamp"].replace("_", " ")
 rb = jb["results"]
 
-report_fn = jb["config"]["report_filename"]
+report_fn = jb["config"]["static"]["report_filename"]
 report_fh = open(report_fn, "w+")
 
 def printf(s):
