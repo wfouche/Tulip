@@ -36,7 +36,7 @@ const val VERSION_STRING = TulipApi.VERSION_STRING
 
 const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 
-private const val histogramNumberOfSignificantValueDigits=2
+private const val histogramNumberOfSignificantValueDigits=3
 
 /*-------------------------------------------------------------------------*/
 
