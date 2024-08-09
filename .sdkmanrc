@@ -12,3 +12,6 @@ gradle=8.9
 
 # JBang
 jbang=0.117.1
+
+# JReleaser
+jreleaser=1.13.1
