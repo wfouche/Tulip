@@ -41,7 +41,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun start(): Boolean {
         val actionId = 0
-        Console.put("  $userId -> $actionId -> ${getActionName(actionId)}")
+        Console.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
         return true
     }
 
@@ -85,7 +85,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun action8(): Boolean {
         val actionId = 8
-        Console.put("  $userId -> $actionId -> ${getActionName(actionId)}")
+        Console.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
         return true
     }
 
