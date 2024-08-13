@@ -44,8 +44,8 @@ public class HttpUser2 extends TulipUser {
         return (response.statusCode() == 200);
     }
 
-    public HttpUser2(int userId) {
-        super(userId);
+    public HttpUser2(int userId, int threadId) {
+        super(userId, threadId);
     }
 
     @Override

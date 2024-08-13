@@ -27,7 +27,7 @@ private fun serviceCall(request:HttpRequest): Boolean {
 
 /*-------------------------------------------------------------------------*/
 
-class HttpUser(userId: Int) : TulipUser(userId) {
+class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
@@ -104,7 +104,7 @@ class HttpUser(userId: Int) : TulipUser(userId) {
 
     override fun stop(): Boolean {
         Console.put("  Terminate: UserId = $userId")
-        Thread.sleep(100)
+        //Thread.sleep(100)
         return true
     }
 

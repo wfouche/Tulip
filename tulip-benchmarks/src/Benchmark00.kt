@@ -25,10 +25,10 @@ private const val banner00 = """
 
 private class UserFactory00: TulipUserFactory() {
 
-    override fun getUser(userId: Int, className: String): TulipUser {
+    override fun getUser(userId: Int, className: String, threadId: Int): TulipUser {
         return when (className) {
-            "user.http.HttpUser" -> user.http.HttpUser(userId)
-            "user.http.HttpUser2" -> user.http.HttpUser2(userId)
+            "user.http.HttpUser" -> user.http.HttpUser(userId, threadId)
+            "user.http.HttpUser2" -> user.http.HttpUser2(userId, threadId)
             else -> throw Exception("Unknown user class name provided - $className")
         }
     }

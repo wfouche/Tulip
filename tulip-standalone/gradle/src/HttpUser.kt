@@ -27,7 +27,7 @@ private fun serviceCall(request:HttpRequest): Boolean {
 
 /*-------------------------------------------------------------------------*/
 
-class HttpUser(userId: Int) : TulipUser(userId) {
+class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 

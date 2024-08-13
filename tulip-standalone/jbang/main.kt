@@ -17,9 +17,9 @@ import org.tulip.api.TulipUserFactory
 
 class UserFactory: TulipUserFactory() {
 
-    override fun getUser(userId: Int, className: String): TulipUser {
+    override fun getUser(userId: Int, className: String, threadId: Int): TulipUser {
         return when (className) {
-            "user.http.HttpUser" -> HttpUser(userId)
+            "user.http.HttpUser" -> HttpUser(userId, threadId)
             else -> throw Exception("Unknown user class name provided - $className")
         }
     }

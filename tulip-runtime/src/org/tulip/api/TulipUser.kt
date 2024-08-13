@@ -4,7 +4,7 @@ import org.tulip.core.Console
 import org.tulip.core.actionNames
 import org.tulip.core.g_config
 
-open class TulipUser(val userId: Int) {
+open class TulipUser(val userId: Int, val threadId: Int) {
 
     private val map = arrayOf(
         ::start,
@@ -214,7 +214,7 @@ open class TulipUser(val userId: Int) {
         return try {
             map[actionId]()
         } catch (e: Exception) {
-            Console.put("userId: ${userId}, actionId: ${actionId}, " + e.toString())
+            Console.put("userId: ${userId}, actionId: ${actionId}, threadId: ${threadId}, " + e.toString())
             false
         }
     }
@@ -228,4 +228,5 @@ open class TulipUser(val userId: Int) {
     open fun getActionName(actionId: Int): String {
         return if (actionNames.containsKey(actionId)) actionNames[actionId]!! else "action${actionId}"
     }
+
 }

@@ -908,7 +908,7 @@ private class UserThread(private val threadId: Int) : Thread() {
                 //
                 var u = userObjects!![task.userId]
                 if (u == null) {
-                    u = newUser!!.getUser(task.userId, g_config.static.userClass)
+                    u = newUser!!.getUser(task.userId, g_config.static.userClass, threadId)
                     userObjects!![task.userId] = u
                 }
 
