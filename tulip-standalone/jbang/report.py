@@ -24,6 +24,9 @@ class Summary:
     avg_qs = 0.0
     max_qs = 0
 
+jhh = {}
+jss = {}
+
 header = """<!DOCTYPE html>
 <html>
 <style>
@@ -105,7 +108,7 @@ benchmark_summary_row = """
   <tr>
     <td></td>
     <td></td>
-    <td>-</td>
+    <td>%s</td>
     <td><b>%s</b></td>
     <td><b>%d</b></td>
     <td><b>%d</b></td>
@@ -130,7 +133,7 @@ trailer = """
 """
 
 sm = None
-jh = Histogram(1,3600*1000*1000, 3)
+jh = Histogram(1, 3600*1000*1000, 3)
 fileObj = open(filename)
 jb = json.load(fileObj)
 description = "/ " + jb["config"]["static"]["description"] + " / " + jb["timestamp"].replace("_", " ")
@@ -142,6 +145,24 @@ report_fh = open(report_fn, "w+")
 def printf(s):
     report_fh.write(s)
 
+def print_global_summary():
+    html = benchmark_summary_row%("[-]",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
+    if not print_detail_rows:
+        html = html.replace("<b>","")
+        html = html.replace("</b>","")
+    printf(html)
+
+def print_action_summary():
+    for key in jss.keys():
+        smx = jss[key]
+        jhx = jhh[key]
+        text = "[%s]"%(key)
+        html = benchmark_summary_row%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.max_awt,smx.max_wt,smx.avg_qs,smx.max_qs,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "))
+        if not print_detail_rows:
+            html = html.replace("<b>","")
+            html = html.replace("</b>","")
+        printf(html)
+
 printf(header.replace("__DESC__", description))
 
 prev_row_id = 0
@@ -149,13 +170,12 @@ for e in rb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
-            if not print_detail_rows:
-                html = html.replace("<b>","")
-                html = html.replace("</b>","")
-            printf(html)
+            print_global_summary()
+            print_action_summary()
         sm = Summary()
         jh.reset()
+        jhh = {}
+        jss = {}
         printf(benchmark_header%(int(e["scenario_id"]), e["test_name"] + " (u:%d t:%d)"%(e["num_users"],e["num_threads"])))
     ht = Histogram.fromString(e["histogram_rt"])
     jh.add(ht)
@@ -191,11 +211,44 @@ for e in rb:
     if sm.max_wt < e["max_wt"]:
         sm.max_wt = e["max_wt"]
 
-html = benchmark_summary_row%(str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
-if not print_detail_rows:
-    html = html.replace("<b>","")
-    html = html.replace("</b>","")
-printf(html)
+    # jhh ...
+    for key in e["user_actions"].keys():
+        ar = e["user_actions"][key]
+        htt = Histogram.fromString(ar["histogram_rt"])
+        #print(ar["name"] + " - " + "%.3f"%(htt.getMean()/1000.0))
+        if jhh.has_key(key):
+            jhh[key].add(htt)
+        else:
+            jhh[key] = Histogram(1, 3600*1000*1000, 3)
+            jhh[key].add(htt)
+        #print(ar["name"] + " - " + "%.3f"%(jhh[key].getMean()/1000.0) + " - %d"%(jhh[key].getTotalCount()))
+
+    # jss ...
+    for key in e["user_actions"].keys():
+        ar = e["user_actions"][key]
+        if jss.has_key(key):
+            smx = jss[key]
+        else:
+            smx = jss[key] = Summary()
+
+        if smx.max_rt < ar["max_rt"]:
+            smx.max_rt = ar["max_rt"]
+            smx.max_rt_ts = ar["max_rt_ts"]
+        smx.num_actions += ar["num_actions"]
+        smx.num_failed += ar["num_failed"]
+
+        smx.duration += e["duration"]
+        if smx.avg_qs < e["avg_wthread_qsize"]:
+            smx.avg_qs = e["avg_wthread_qsize"]
+        if smx.max_qs < e["max_wthread_qsize"]:
+            smx.max_qs = e["max_wthread_qsize"]
+        if smx.max_awt < e["avg_wt"]:
+            smx.max_awt = e["avg_wt"]
+        if smx.max_wt < e["max_wt"]:
+            smx.max_wt = e["max_wt"]
+
+print_global_summary()
+print_action_summary()
 printf(trailer)
 
 report_fh.close()
