@@ -620,14 +620,20 @@ private class ActionStats {
         results += "}"
 
         results += ", \"histogram_rt\": "
-        if (actionId == -1) {
-            val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
-            val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
-            val b64s = Base64.encode(b.array(), 0, numBytes)
-            results += '\"' + b64s + '\"'
-        } else {
-            results += "\"\""
-        }
+
+        val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
+        val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
+        val b64s = Base64.encode(b.array(), 0, numBytes)
+        results += '\"' + b64s + '\"'
+
+//        if (actionId == -1) {
+//            val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
+//            val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
+//            val b64s = Base64.encode(b.array(), 0, numBytes)
+//            results += '\"' + b64s + '\"'
+//        } else {
+//            results += "\"\""
+//        }
 
         return results
     }
