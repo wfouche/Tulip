@@ -622,8 +622,8 @@ private class ActionStats {
         results += ", \"histogram_rt\": "
         if (actionId == -1) {
             val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
-            histogram.encodeIntoCompressedByteBuffer(b)
-            val b64s = Base64.encode(b.array())
+            val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
+            val b64s = Base64.encode(b.array(), 0, numBytes)
             results += '\"' + b64s + '\"'
         } else {
             results += "\"\""
