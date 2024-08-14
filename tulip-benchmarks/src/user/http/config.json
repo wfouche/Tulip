@@ -19,8 +19,7 @@
             "7": "HTTP-todos",
             "8": "login",
             "9": "noop",
-            "10": "DELAY-10ms",
-            "99": "stop"
+            "10": "DELAY-10ms"
         }
     },
     "contexts": [
