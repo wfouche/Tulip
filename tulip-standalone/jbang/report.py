@@ -156,7 +156,7 @@ def print_action_summary():
     for key in jss.keys():
         smx = jss[key]
         jhx = jhh[key]
-        text = "[%s]"%(key)
+        text = "[%s.%s]"%(key, jb["config"]["static"]["user_actions"][key])
         html = benchmark_summary_row%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.max_awt,smx.max_wt,smx.avg_qs,smx.max_qs,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "))
         if not print_detail_rows:
             html = html.replace("<b>","")
