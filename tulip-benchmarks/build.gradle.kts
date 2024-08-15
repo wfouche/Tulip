@@ -9,12 +9,12 @@ application {
         // $ ls /sys/kernel/mm/hugepages/
         //   hugepages-1048576kB  hugepages-2048kB
         // // # Reserve 2 GB of RAM
-	    // $ echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+        // $ echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
         //
 	    // "-XX:+UseLargePages",
 
-        "-Xms2048m",
-	    "-Xmx2048m",
+        //"-Xms2048m",
+        "-Xmx2048m",
 
         // "-XX:+UseParallelGC",
         // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
