@@ -239,8 +239,8 @@ for e in rb:
     current_row_id = int(e["row_id"])
     if current_row_id <= prev_row_id:
         if sm is not None:
-            print_global_summary()
             print_action_summary()
+            print_global_summary()
             printf(benchmark_empty_row)
             printf(benchmark_columns)
         sm = Summary()
@@ -318,8 +318,8 @@ for e in rb:
         if smx.max_wt < e["max_wt"]:
             smx.max_wt = e["max_wt"]
 
-print_global_summary()
 print_action_summary()
+print_global_summary()
 printf(trailer)
 
 report_fh.close()
