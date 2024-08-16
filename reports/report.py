@@ -138,7 +138,7 @@ benchmark_detail_row = """
     <td>%.1f ms</td>
     <td>%.3f</td>
     <td>%d</td>
-    <td>%.1f</td>
+    <td>%.3f</td>
     <td>%.3f ms</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
@@ -160,7 +160,7 @@ benchmark_summary_row = """
     <td><b>%.1f ms</b></td>
     <td><b>%.3f</b></td>
     <td><b>%d</b></td>
-    <td><b>%.1f</b></td>
+    <td><b>%.3f</b></td>
     <td><b>%.3f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
