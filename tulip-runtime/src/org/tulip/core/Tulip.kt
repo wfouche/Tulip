@@ -886,7 +886,7 @@ private const val USER_THREAD_QSIZE = 11
 private class UserThread(private val threadId: Int) : Thread() {
 
     init {
-        name = "user-thread-$threadId"
+        name = "tulip-thread-$threadId"
     }
 
     //
