@@ -47,6 +47,8 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
+    // 0.25*6 + 0.75*14 = 12.0 ms
+
     override fun action1(): Boolean {
         // 6 ms delay (average)
         delayMillisRandom(0, 12)
@@ -124,11 +126,11 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-    companion object {
-        init {
-            //Console.put("Loading .... Kotlin class ... HttpUser")
-        }
-    }
+//    companion object {
+//        init {
+//            //Console.put("Loading .... Kotlin class ... HttpUser")
+//        }
+//    }
 
     // ----------------------------------------------------------------- //
 
