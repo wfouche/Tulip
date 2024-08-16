@@ -138,7 +138,7 @@ benchmark_detail_row = """
     <td>%.1f ms</td>
     <td>%.3f</td>
     <td>%d</td>
-    <td>%.1f</td>
+    <td>%.3f</td>
     <td>%.3f ms</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
@@ -160,7 +160,29 @@ benchmark_summary_row = """
     <td><b>%.1f ms</b></td>
     <td><b>%.3f</b></td>
     <td><b>%d</b></td>
-    <td><b>%.1f</b></td>
+    <td><b>%.3f</b></td>
+    <td><b>%.3f ms</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%s</b></td>
+  </tr>
+"""
+
+benchmark_summary_row_action = """
+  <tr>
+    <td></td>
+    <td></td>
+    <td>%s</td>
+    <td><b>%s</b></td>
+    <td><b>%d</b></td>
+    <td><b>%d</b></td>
+    <td><b>-</b></td>
+    <td><b>-</b></td>
+    <td><b>-</b></td>
+    <td><b>-</b></td>
+    <td><b>%.3f</b></td>
     <td><b>%.3f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
@@ -204,7 +226,7 @@ def print_action_summary():
             text = "[%s.%s]"%(key, jb["config"]["static"]["user_actions"][key])
         else:
             text = "[%s]"%(key)
-        html = benchmark_summary_row%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.max_awt,smx.max_wt,smx.avg_qs,smx.max_qs,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "))
+        html = benchmark_summary_row_action%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "))
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
