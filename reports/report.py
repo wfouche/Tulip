@@ -60,6 +60,28 @@ table, th, td {
   </tr>
 """
 
+benchmark_columns = """
+  <tr>
+    <th>SID</th>
+    <th>Name</th>
+    <th>RID</th>
+    <th>Duration</th>
+    <th>#N</th>
+    <th>#F</th>
+    <th>Avg WT</th>
+    <th>Max WT</th>
+    <th>Avg QS</th>
+    <th>Max QS</th>
+    <th>Avg TPS</th>
+    <th>Avg RT</th>
+    <th>Stdev</th>
+    <th>90p RT</th>
+    <th>99p RT</th>
+    <th>Max RT</th>
+    <th>Max RTT</th>
+  </tr>
+"""
+
 benchmark_header = """
   <tr>
     <td>%d</td>
@@ -79,6 +101,28 @@ benchmark_header = """
     <td></td>
     <td></td>
     <td></td>
+  </tr>
+"""
+
+benchmark_empty_row = """
+  <tr>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
 """
 
@@ -175,6 +219,8 @@ for e in rb:
         if sm is not None:
             print_global_summary()
             print_action_summary()
+            printf(benchmark_empty_row)
+            printf(benchmark_columns)
         sm = Summary()
         jh.reset()
         jhh = {}
