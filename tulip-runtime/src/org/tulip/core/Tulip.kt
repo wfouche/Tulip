@@ -19,6 +19,7 @@ import org.tulip.api.TulipUserFactory
 import org.tulip.api.TulipUser
 import java.io.BufferedWriter
 import java.io.FileWriter
+import java.lang.management.ManagementFactory
 import java.nio.ByteBuffer
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -550,9 +551,10 @@ private class ActionStats {
         )
 
         if (actionId == NUM_ACTIONS) {
-            val fm = Runtime.getRuntime().freeMemory()
-            val tm = Runtime.getRuntime().totalMemory()
-            val mm = Runtime.getRuntime().maxMemory()
+            val rt = Runtime.getRuntime()
+            val fm = rt.freeMemory()
+            val tm = rt.totalMemory()
+            val mm = rt.maxMemory()
 
             //output.add("")
             //output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avgCpuProcess)}")
@@ -738,9 +740,10 @@ private object DataCollector {
 
     fun saveStatsJson(filename: String) {
         if (filename != "") {
-            val fm = Runtime.getRuntime().freeMemory()
-            val tm = Runtime.getRuntime().totalMemory()
-            val mm = Runtime.getRuntime().maxMemory()
+            val rt = Runtime.getRuntime()
+            val fm = rt.freeMemory()
+            val tm = rt.totalMemory()
+            val mm = rt.maxMemory()
 
             val r = actionStats[NUM_ACTIONS].r
 
@@ -771,7 +774,9 @@ private object DataCollector {
             json += "\"jvm_memory_used\": ${tm-fm}, "
             json += "\"jvm_memory_free\": $fm, "
             json += "\"jvm_memory_total\": $tm, "
-            json += "\"jvm_memory_maximum\": $mm"
+            json += "\"jvm_memory_maximum\": $mm, "
+
+            json += "\"system_cpu_utilization\": ${MonitorSystemCpuLoad.getCpuUtilization()}"
 
             val awqs: Double = wthread_queue_stats.mean
             val mwqs: Long = wthread_queue_stats.maxValue
@@ -962,6 +967,43 @@ object Console : Thread() {
 
     fun put(list: MutableList<String>) {
         q.put(list)
+    }
+}
+
+object MonitorSystemCpuLoad: Thread () {
+
+    init {
+        isDaemon = true
+        name = "cpu-load-monitor-thread"
+        start()
+    }
+
+    private var maxCpuUtilization = 0.0
+
+    override fun run() {
+        val mxbean = ManagementFactory.getOperatingSystemMXBean()
+        val numCpus = mxbean.availableProcessors
+        while (true) {
+            sleep(2000)
+            val cpuLoad = mxbean.systemLoadAverage
+            var cpuUtilization = 100.0 * (cpuLoad / numCpus)
+            if (cpuUtilization > 100.0) cpuUtilization = 100.0
+            if (maxCpuUtilization < cpuUtilization) {
+                synchronized(this) {
+                    maxCpuUtilization = cpuUtilization
+                }
+            }
+            //Console.put("cpu usage = ${cpuUtilization}")
+        }
+    }
+
+    fun getCpuUtilization(): Double {
+        val cpuUtilization: Double
+        synchronized(this) {
+            cpuUtilization = maxCpuUtilization
+            maxCpuUtilization = 0.0
+        }
+        return cpuUtilization
     }
 }
 
