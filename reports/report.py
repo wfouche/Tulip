@@ -46,10 +46,6 @@ table, th, td {
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg WT</th>
-    <th>Max WT</th>
-    <th>Avg QS</th>
-    <th>Max QS</th>
     <th>Avg TPS</th>
     <th>Avg RT</th>
     <th>Stdev</th>
@@ -57,6 +53,10 @@ table, th, td {
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
+    <th>Avg QS</th>
+    <th>Max QS</th>
+    <th>Avg WT</th>
+    <th>Max WT</th>
   </tr>
 """
 
@@ -68,10 +68,6 @@ benchmark_columns = """
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg WT</th>
-    <th>Max WT</th>
-    <th>Avg QS</th>
-    <th>Max QS</th>
     <th>Avg TPS</th>
     <th>Avg RT</th>
     <th>Stdev</th>
@@ -79,6 +75,10 @@ benchmark_columns = """
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
+    <th>Avg QS</th>
+    <th>Max QS</th>
+    <th>Avg WT</th>
+    <th>Max WT</th>
   </tr>
 """
 
@@ -134,10 +134,6 @@ benchmark_detail_row = """
     <td>%s</td>
     <td>%d</td>
     <td>%d</td>
-    <td>%.1f ms</td>
-    <td>%.1f ms</td>
-    <td>%.3f</td>
-    <td>%d</td>
     <td>%.3f</td>
     <td>%.3f ms</td>
     <td>%.1f ms</td>
@@ -145,6 +141,10 @@ benchmark_detail_row = """
     <td>%.1f ms</td>
     <td>%.1f ms</td>
     <td>%s</td>
+    <td>%.3f</td>
+    <td>%d</td>
+    <td>%.1f ms</td>
+    <td>%.1f ms</td>
   </tr>
 """
 
@@ -156,10 +156,6 @@ benchmark_summary_row = """
     <td><b>%s</b></td>
     <td><b>%d</b></td>
     <td><b>%d</b></td>
-    <td><b>%.1f ms</b></td>
-    <td><b>%.1f ms</b></td>
-    <td><b>%.3f</b></td>
-    <td><b>%d</b></td>
     <td><b>%.3f</b></td>
     <td><b>%.3f ms</b></td>
     <td><b>%.1f ms</b></td>
@@ -167,6 +163,10 @@ benchmark_summary_row = """
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%s</b></td>
+    <td><b>%.3f</b></td>
+    <td><b>%d</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f ms</b></td>
   </tr>
 """
 
@@ -190,7 +190,7 @@ def printf(s):
     report_fh.write(s)
 
 def print_global_summary():
-    html = benchmark_summary_row%("",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
+    html = benchmark_summary_row%("",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt)
     if not print_detail_rows:
         html = html.replace("<b>","")
         html = html.replace("</b>","")
@@ -204,7 +204,7 @@ def print_action_summary():
             text = "[%s.%s]"%(key, jb["config"]["static"]["user_actions"][key])
         else:
             text = "[%s]"%(key)
-        html = benchmark_summary_row%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.max_awt,smx.max_wt,smx.avg_qs,smx.max_qs,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "))
+        html = benchmark_summary_row%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -233,17 +233,17 @@ for e in rb:
         e["duration"],
         e["num_actions"],
         e["num_failed"],
-        e["avg_wt"],
-        e["max_wt"],
-        e["avg_wthread_qsize"],
-        e["max_wthread_qsize"],
         e["avg_tps"],
         e["avg_rt"],
         ht.getStdDeviation()/1000.0,
         e["percentiles_rt"]["90.0"],
         e["percentiles_rt"]["99.0"],
         e["max_rt"],
-        e["max_rt_ts"][8:-4].replace("_"," ")
+        e["max_rt_ts"][8:-4].replace("_"," "),
+        e["avg_wthread_qsize"],
+        e["max_wthread_qsize"],
+        e["avg_wt"],
+        e["max_wt"]
         ))
     if sm.max_rt < e["max_rt"]:
         sm.max_rt = e["max_rt"]
