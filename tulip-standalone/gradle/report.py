@@ -55,8 +55,8 @@ table, th, td {
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
-    <th>Max QS</th>
-    <th>Avg QS</th>
+    <th>MQS</th>
+    <th>AQS</th>
     <th>Max WT</th>
     <th>Avg WT</th>
     <th>CPU</th>
@@ -79,8 +79,8 @@ benchmark_columns = """
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
-    <th>Max QS</th>
-    <th>Avg QS</th>
+    <th>MQS</th>
+    <th>AQS</th>
     <th>Max WT</th>
     <th>Avg WT</th>
     <th>CPU</th>
