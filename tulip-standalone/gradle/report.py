@@ -139,7 +139,7 @@ benchmark_empty_row = """
 benchmark_detail_row = """
   <tr>
     <td></td>
-    <td></td>
+    <td>%s</td>
     <td>%d</td>
     <td>%s</td>
     <td>%d</td>
@@ -163,7 +163,7 @@ benchmark_detail_row = """
 benchmark_summary_row = """
   <tr>
     <td></td>
-    <td></td>
+    <td>%s</td>
     <td>%s</td>
     <td><b>%s</b></td>
     <td><b>%d</b></td>
@@ -190,6 +190,8 @@ trailer = """
 </html>
 """
 
+name2s = ""
+
 sm = None
 jh = Histogram(1, 3600*1000*1000, 3)
 fileObj = open(filename)
@@ -204,13 +206,16 @@ def printf(s):
     report_fh.write(s)
 
 def print_global_summary():
-    html = benchmark_summary_row%("",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
+    global name2s
+    html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
     if not print_detail_rows:
         html = html.replace("<b>","")
         html = html.replace("</b>","")
     printf(html)
+    name2s = ""
 
 def print_action_summary():
+    global name2s
     for key in jss.keys():
         smx = jss[key]
         jhx = jhh[key]
@@ -218,11 +223,12 @@ def print_action_summary():
             text = "[%s.%s]"%(key, jb["config"]["static"]["user_actions"][key])
         else:
             text = "[%s]"%(key)
-        html = benchmark_summary_row%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
+        html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
         printf(html)
+        name2s = ""
 
 printf(header.replace("__DESC__", description))
 
@@ -239,30 +245,34 @@ for e in rb:
         jh.reset()
         jhh = {}
         jss = {}
-        printf(benchmark_header%(int(e["scenario_id"]), e["test_name"] + " (u:%d t:%d)"%(e["num_users"],e["num_threads"])))
+        printf(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
+        name2s = "(u:%d t:%d)"%(e["num_users"],e["num_threads"])
     ht = Histogram.fromString(e["histogram_rt"])
     jh.add(ht)
     p_mem = 100.0 * e["jvm_memory_total"] / e["jvm_memory_maximum"]
     p_cpu = e["system_cpu_utilization"]
-    if print_detail_rows: printf(benchmark_detail_row%( \
-        e["row_id"],
-        e["duration"],
-        e["num_actions"],
-        e["num_failed"],
-        e["avg_tps"],
-        e["avg_rt"],
-        ht.getStdDeviation()/1000.0,
-        e["percentiles_rt"]["90.0"],
-        e["percentiles_rt"]["99.0"],
-        e["max_rt"],
-        e["max_rt_ts"][8:-4].replace("_"," "),
-        e["max_wthread_qsize"],
-        e["avg_wthread_qsize"],
-        e["max_wt"],
-        e["avg_wt"],
-        p_cpu,
-        p_mem
-        ))
+    if print_detail_rows:
+        printf(benchmark_detail_row%( \
+            name2s,
+            e["row_id"],
+            e["duration"],
+            e["num_actions"],
+            e["num_failed"],
+            e["avg_tps"],
+            e["avg_rt"],
+            ht.getStdDeviation()/1000.0,
+            e["percentiles_rt"]["90.0"],
+            e["percentiles_rt"]["99.0"],
+            e["max_rt"],
+            e["max_rt_ts"][8:-4].replace("_"," "),
+            e["max_wthread_qsize"],
+            e["avg_wthread_qsize"],
+            e["max_wt"],
+            e["avg_wt"],
+            p_cpu,
+            p_mem
+            ))
+        name2s = ""
     if sm.max_rt < e["max_rt"]:
         sm.max_rt = e["max_rt"]
         sm.max_rt_ts = e["max_rt_ts"]
