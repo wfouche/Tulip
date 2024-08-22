@@ -19,6 +19,8 @@ class Summary:
     duration = 0.0
     max_rt = 0.0
     max_rt_ts = ""
+    mem = 0.0
+    cpu = 0.0
     max_awt = 0.0
     max_wt = 0.0
     avg_qs = 0.0
@@ -46,10 +48,6 @@ table, th, td {
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg WT</th>
-    <th>Max WT</th>
-    <th>Avg QS</th>
-    <th>Max QS</th>
     <th>Avg TPS</th>
     <th>Avg RT</th>
     <th>Stdev</th>
@@ -57,6 +55,12 @@ table, th, td {
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
+    <th>Max QS</th>
+    <th>Avg QS</th>
+    <th>Max WT</th>
+    <th>Avg WT</th>
+    <th>CPU</th>
+    <th>JMM</th>
   </tr>
 """
 
@@ -68,10 +72,6 @@ benchmark_columns = """
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg WT</th>
-    <th>Max WT</th>
-    <th>Avg QS</th>
-    <th>Max QS</th>
     <th>Avg TPS</th>
     <th>Avg RT</th>
     <th>Stdev</th>
@@ -79,6 +79,12 @@ benchmark_columns = """
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
+    <th>Max QS</th>
+    <th>Avg QS</th>
+    <th>Max WT</th>
+    <th>Avg WT</th>
+    <th>CPU</th>
+    <th>JMM</th>
   </tr>
 """
 
@@ -86,6 +92,8 @@ benchmark_header = """
   <tr>
     <td>%d</td>
     <td>%s</td>
+    <td></td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -123,6 +131,8 @@ benchmark_empty_row = """
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
+    <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
 """
 
@@ -134,10 +144,6 @@ benchmark_detail_row = """
     <td>%s</td>
     <td>%d</td>
     <td>%d</td>
-    <td>%.1f ms</td>
-    <td>%.1f ms</td>
-    <td>%.3f</td>
-    <td>%d</td>
     <td>%.3f</td>
     <td>%.3f ms</td>
     <td>%.1f ms</td>
@@ -145,6 +151,12 @@ benchmark_detail_row = """
     <td>%.1f ms</td>
     <td>%.1f ms</td>
     <td>%s</td>
+    <td>%d</td>
+    <td>%.1f</td>
+    <td>%.1f ms</td>
+    <td>%.1f ms</td>
+    <td>%.1f</td>
+    <td>%.1f</td>
   </tr>
 """
 
@@ -156,10 +168,6 @@ benchmark_summary_row = """
     <td><b>%s</b></td>
     <td><b>%d</b></td>
     <td><b>%d</b></td>
-    <td><b>%.1f ms</b></td>
-    <td><b>%.1f ms</b></td>
-    <td><b>%.3f</b></td>
-    <td><b>%d</b></td>
     <td><b>%.3f</b></td>
     <td><b>%.3f ms</b></td>
     <td><b>%.1f ms</b></td>
@@ -167,6 +175,12 @@ benchmark_summary_row = """
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%s</b></td>
+    <td><b>%d</b></td>
+    <td><b>%.1f</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f ms</b></td>
+    <td><b>%.1f</b></td>
+    <td><b>%.1f</b></td>
   </tr>
 """
 
@@ -190,7 +204,7 @@ def printf(s):
     report_fh.write(s)
 
 def print_global_summary():
-    html = benchmark_summary_row%("",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.max_awt,sm.max_wt,sm.avg_qs,sm.max_qs,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "))
+    html = benchmark_summary_row%("",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
     if not print_detail_rows:
         html = html.replace("<b>","")
         html = html.replace("</b>","")
@@ -204,7 +218,7 @@ def print_action_summary():
             text = "[%s.%s]"%(key, jb["config"]["static"]["user_actions"][key])
         else:
             text = "[%s]"%(key)
-        html = benchmark_summary_row%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.max_awt,smx.max_wt,smx.avg_qs,smx.max_qs,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "))
+        html = benchmark_summary_row%(text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -228,22 +242,26 @@ for e in rb:
         printf(benchmark_header%(int(e["scenario_id"]), e["test_name"] + " (u:%d t:%d)"%(e["num_users"],e["num_threads"])))
     ht = Histogram.fromString(e["histogram_rt"])
     jh.add(ht)
+    p_mem = 100.0 * e["jvm_memory_total"] / e["jvm_memory_maximum"]
+    p_cpu = e["system_cpu_utilization"]
     if print_detail_rows: printf(benchmark_detail_row%( \
         e["row_id"],
         e["duration"],
         e["num_actions"],
         e["num_failed"],
-        e["avg_wt"],
-        e["max_wt"],
-        e["avg_wthread_qsize"],
-        e["max_wthread_qsize"],
         e["avg_tps"],
         e["avg_rt"],
         ht.getStdDeviation()/1000.0,
         e["percentiles_rt"]["90.0"],
         e["percentiles_rt"]["99.0"],
         e["max_rt"],
-        e["max_rt_ts"][8:-4].replace("_"," ")
+        e["max_rt_ts"][8:-4].replace("_"," "),
+        e["max_wthread_qsize"],
+        e["avg_wthread_qsize"],
+        e["max_wt"],
+        e["avg_wt"],
+        p_cpu,
+        p_mem
         ))
     if sm.max_rt < e["max_rt"]:
         sm.max_rt = e["max_rt"]
@@ -259,6 +277,10 @@ for e in rb:
         sm.max_awt = e["avg_wt"]
     if sm.max_wt < e["max_wt"]:
         sm.max_wt = e["max_wt"]
+    if sm.mem < p_mem:
+        sm.mem = p_mem
+    if sm.cpu < p_cpu:
+        sm.cpu = p_cpu
 
     # jhh ...
     for key in e["user_actions"].keys():
@@ -295,6 +317,10 @@ for e in rb:
             smx.max_awt = e["avg_wt"]
         if smx.max_wt < e["max_wt"]:
             smx.max_wt = e["max_wt"]
+        if smx.mem < p_mem:
+            smx.mem = p_mem
+        if smx.cpu < p_cpu:
+            smx.cpu = p_cpu
 
 print_action_summary()
 print_global_summary()

@@ -60,7 +60,7 @@ table, th, td {
     <th>Max WT</th>
     <th>Avg WT</th>
     <th>CPU</th>
-    <th>MEM</th>
+    <th>JMM</th>
   </tr>
 """
 
@@ -84,7 +84,7 @@ benchmark_columns = """
     <th>Max WT</th>
     <th>Avg WT</th>
     <th>CPU</th>
-    <th>MEM</th>
+    <th>JMM</th>
   </tr>
 """
 
