@@ -30,6 +30,8 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.system.exitProcess
 import java.util.concurrent.ArrayBlockingQueue
+import javax.management.Attribute
+import javax.management.ObjectName
 
 /*-------------------------------------------------------------------------*/
 
@@ -970,6 +972,29 @@ object Console : Thread() {
     }
 }
 
+fun getLoadValue(counter: String): Double {
+    val mbs = ManagementFactory.getPlatformMBeanServer()
+    val name = ObjectName.getInstance("java.lang:type=OperatingSystem")
+    val list = mbs.getAttributes(name, arrayOf(counter))
+
+    if (list.isEmpty()) return java.lang.Double.NaN
+
+    val att = list[0] as Attribute
+    val value = att.value as Double
+
+    // usually takes a couple of seconds before we get real values
+    return if (value == -1.0) java.lang.Double.NaN else (value * 1000).toInt() / 10.0
+    // returns a percentage value with 1 decimal point precision
+}
+
+fun getProcessCpuLoad(): Double {
+    return getLoadValue("ProcessCpuLoad")
+}
+
+fun getSystemCpuLoad(): Double {
+    return getLoadValue("SystemCpuLoad")
+}
+
 object MonitorSystemCpuLoad: Thread () {
 
     init {
@@ -981,16 +1006,15 @@ object MonitorSystemCpuLoad: Thread () {
     private var maxCpuUtilization = 0.0
 
     override fun run() {
-        val mxbean = ManagementFactory.getOperatingSystemMXBean()
-        val numCpus = mxbean.availableProcessors
         while (true) {
             sleep(2000)
-            val cpuLoad = mxbean.systemLoadAverage
-            var cpuUtilization = 100.0 * (cpuLoad / numCpus)
-            if (cpuUtilization > 100.0) cpuUtilization = 100.0
-            if (maxCpuUtilization < cpuUtilization) {
-                synchronized(this) {
-                    maxCpuUtilization = cpuUtilization
+            var cpuLoad = getSystemCpuLoad()
+            if (cpuLoad != Double.NaN) {
+                if (cpuLoad > 100.0) cpuLoad = 100.0
+                if (maxCpuUtilization < cpuLoad) {
+                    synchronized(this) {
+                        maxCpuUtilization = cpuLoad
+                    }
                 }
             }
             //Console.put("cpu usage = ${cpuUtilization}")
