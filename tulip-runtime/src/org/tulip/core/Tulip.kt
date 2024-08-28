@@ -1009,7 +1009,7 @@ object MonitorSystemCpuLoad: Thread () {
         while (true) {
             sleep(2000)
             var cpuLoad = getSystemCpuLoad()
-            if (cpuLoad != Double.NaN) {
+            if (!cpuLoad.isNaN()) {
                 if (cpuLoad > 100.0) cpuLoad = 100.0
                 if (maxCpuUtilization < cpuLoad) {
                     synchronized(this) {
