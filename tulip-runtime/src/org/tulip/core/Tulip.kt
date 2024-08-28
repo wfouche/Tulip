@@ -7,7 +7,7 @@ package org.tulip.core
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import com.google.gson.annotations.SerializedName
-import io.github.oshai.kotlinlogging.KotlinLogging
+//import io.github.oshai.kotlinlogging.KotlinLogging
 import io.micrometer.core.instrument.Clock
 import io.micrometer.core.instrument.Tag
 import io.micrometer.jmx.JmxConfig
@@ -62,7 +62,7 @@ typealias SPSC_Queue<E> = InformativeBlockingQueue<E>
 /*-------------------------------------------------------------------------*/
 
 // https://github.com/oshai/kotlin-logging
-private val logger = KotlinLogging.logger {}
+//private val logger = KotlinLogging.logger {}
 
 /*-------------------------------------------------------------------------*/
 
@@ -1414,7 +1414,7 @@ private fun runTests(
 fun runTests(userFactory: TulipUserFactory) {
     val actionNames = g_config.static.userActions
     runTests(g_contexts, g_tests, actionNames, userFactory, ::getTest)
-    logger.info { "Done" }
+    //logger.info { "Done" }
 }
 
 /*-------------------------------------------------------------------------*/
