@@ -17,6 +17,7 @@ class Summary:
     num_actions = 0
     num_failed = 0
     duration = 0.0
+    min_rt = 1000000000.0
     max_rt = 0.0
     max_rt_ts = ""
     mem = 0.0
@@ -49,6 +50,7 @@ table, th, td {
     <th>#N</th>
     <th>#F</th>
     <th>Avg TPS</th>
+    <th>Min RT</th>
     <th>Avg RT</th>
     <th>Stdev</th>
     <th>90p RT</th>
@@ -73,6 +75,7 @@ benchmark_columns = """
     <th>#N</th>
     <th>#F</th>
     <th>Avg TPS</th>
+    <th>Min RT</th>
     <th>Avg RT</th>
     <th>Stdev</th>
     <th>90p RT</th>
@@ -92,6 +95,7 @@ benchmark_header = """
   <tr>
     <td>%d</td>
     <td>%s</td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -133,6 +137,7 @@ benchmark_empty_row = """
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
 """
 
@@ -145,6 +150,7 @@ benchmark_detail_row = """
     <td>%d</td>
     <td>%d</td>
     <td>%.3f</td>
+    <td>%.1f ms</td>
     <td>%.3f ms</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
@@ -169,6 +175,7 @@ benchmark_summary_row = """
     <td><b>%d</b></td>
     <td><b>%d</b></td>
     <td><b>%.3f</b></td>
+    <td><b>%.1f ms</b></td>
     <td><b>%.3f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
@@ -207,7 +214,7 @@ def printf(s):
 
 def print_global_summary():
     global name2s
-    html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
+    html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.min_rt,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
     if not print_detail_rows:
         html = html.replace("<b>","")
         html = html.replace("</b>","")
@@ -223,7 +230,7 @@ def print_action_summary():
             text = "[%s.%s]"%(key, jb["config"]["static"]["user_actions"][key])
         else:
             text = "[%s]"%(key)
-        html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
+        html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,smx.min_rt,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -259,6 +266,7 @@ for e in rb:
             e["num_actions"],
             e["num_failed"],
             e["avg_tps"],
+            e["min_rt"],
             e["avg_rt"],
             ht.getStdDeviation()/1000.0,
             e["percentiles_rt"]["90.0"],
@@ -273,6 +281,8 @@ for e in rb:
             p_mem
             ))
         name2s = ""
+    if sm.min_rt > e["min_rt"]:
+        sm.min_rt = e["min_rt"]
     if sm.max_rt < e["max_rt"]:
         sm.max_rt = e["max_rt"]
         sm.max_rt_ts = e["max_rt_ts"]
@@ -312,6 +322,8 @@ for e in rb:
         else:
             smx = jss[key] = Summary()
 
+        if smx.min_rt > ar["min_rt"]:
+            smx.min_rt = ar["min_rt"]
         if smx.max_rt < ar["max_rt"]:
             smx.max_rt = ar["max_rt"]
             smx.max_rt_ts = ar["max_rt_ts"]
