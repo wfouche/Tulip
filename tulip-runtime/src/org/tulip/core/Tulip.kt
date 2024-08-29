@@ -338,7 +338,7 @@ data class BenchmarkConfig(
     val benchmarks: List<ConfigTest> = listOf()
 )
 
-fun initConfig(configFilename: String) {
+fun initConfig(configFilename: String): String {
     initTulip()
     Console.put("")
     Console.put("  config filename = $configFilename")
@@ -379,6 +379,7 @@ fun initConfig(configFilename: String) {
     val wd = System.getProperty("user.dir")
     Console.put("")
     Console.put("  working directory = $wd")
+    return g_config.static.jsonFilename
 }
 
 /*-------------------------------------------------------------------------*/

@@ -1,6 +1,7 @@
 package org.tulip.api;
 
 import org.tulip.core.TulipKt;
+import org.tulip.report.TulipReportKt;
 
 public class TulipApi {
 
@@ -8,8 +9,9 @@ public class TulipApi {
 
     public static final int NUM_ACTIONS = 100;
 
-    public static void runTulip(String configFilename, TulipUserFactory userFactory) {
-        TulipKt.initConfig(configFilename);
+    public static String runTulip(String configFilename, TulipUserFactory userFactory) {
+        String outputFilename = TulipKt.initConfig(configFilename);
         TulipKt.runTests(userFactory);
+        TulipReportKt.createHtmlReport(outputFilename);
     }
 }
