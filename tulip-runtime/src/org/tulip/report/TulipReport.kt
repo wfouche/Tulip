@@ -192,6 +192,9 @@ class Summary:
     max_qs = 0
 
 def createReport(filename):
+
+    print("Report filename = " + filename)
+    
     jhh = {}
     jss = {}
 
@@ -350,7 +353,7 @@ def createReport(filename):
     printf(trailer)
 
     report_fh.close()
-""".trimIndent()
+"""
 
 fun createHtmlReport(outputFilename: String) {
     PythonInterpreter().use { pyInterp ->
