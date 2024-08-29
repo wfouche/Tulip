@@ -9,7 +9,7 @@ dependencies:
   - org.slf4j:slf4j-simple:2.0.16
   - io.github.oshai:kotlin-logging-jvm:7.0.0
   - org.hdrhistogram:HdrHistogram:2.2.2
-  - com.fasterxml.jackson.core:jackson-databind:2.17.2
+  - org.python:jython-standalone:2.7.4
 
 settings:
   kotlin:
