@@ -6,4 +6,5 @@ popd
 
 ../../gradlew run --args="--config benchmark_config.json"
 
-./report.sh
+echo ""
+w3m -dump -cols 200 benchmark_report.html
