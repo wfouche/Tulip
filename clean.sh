@@ -4,6 +4,10 @@ rm -f -r .gradle
 rm -f -r .idea
 rm -f -r .kotlin
 
-rm -f -r build
+pushd ./tulip-runtime
+source clean.sh
+popd
 
-rm -f tulip_results.json
+pushd ./tulip-benchmarks
+source clean.sh
+popd
