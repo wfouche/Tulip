@@ -193,7 +193,7 @@ class Summary:
 
 def createReport(filename):
 
-    print("Report filename = " + filename)
+    print("\nOutput filename = " + filename)
     
     jhh = {}
     jss = {}
@@ -212,6 +212,8 @@ def createReport(filename):
 
     report_fn = jb["config"]["static"]["report_filename"]
     report_fh = open(report_fn, "w+")
+
+    print("Report filename = " + report_fn)
 
     def printf(s):
         report_fh.write(s)
