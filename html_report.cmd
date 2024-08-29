@@ -1,5 +1,4 @@
 @echo off
-pushd .\reports
-call .\report.cmd
+pushd .\tulip-benchmarks
 .\benchmark_report.html
 popd
