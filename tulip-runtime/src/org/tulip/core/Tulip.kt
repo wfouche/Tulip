@@ -91,7 +91,7 @@ private var testSuite: List<TestProfile>? = null
 
 private var newUser: TulipUserFactory? = null
 
-public var actionNames: Map<Int, String> = emptyMap()
+var actionNames: Map<Int, String> = emptyMap()
 
 private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
@@ -287,7 +287,7 @@ fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
 
 /*-------------------------------------------------------------------------*/
 
-public var g_config = BenchmarkConfig()
+var g_config = BenchmarkConfig()
 
 private val g_contexts = mutableListOf<RuntimeContext>()
 
@@ -992,9 +992,9 @@ fun getLoadValue(counter: String): Double {
     // returns a percentage value with 1 decimal point precision
 }
 
-fun getProcessCpuLoad(): Double {
-    return getLoadValue("ProcessCpuLoad")
-}
+//fun getProcessCpuLoad(): Double {
+//    return getLoadValue("ProcessCpuLoad")
+//}
 
 fun getSystemCpuLoad(): Double {
     return getLoadValue("SystemCpuLoad")
