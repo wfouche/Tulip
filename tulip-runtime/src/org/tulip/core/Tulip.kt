@@ -750,7 +750,7 @@ private object DataCollector {
 
             val r = actionStats[NUM_ACTIONS].r
 
-            var json = "{" + "\"attributes\": {\"type\": \"data\"},"
+            var json = "{"
 
             json += "\"scenario_name\": \"$TULIP_SCENARIO_NAME\", "
             json += "\"scenario_id\": $TULIP_SCENARIO_ID, "
@@ -817,9 +817,13 @@ private object DataCollector {
                         //val jsonString = "${g_config}"
                         write("{  ")
                         newLine()
-                        write("\"config\": ${jsonString}")
+                        write("  \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
                         newLine()
-                        write(", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\", \"results\":[${json}")
+                        write(", \"config\": ${jsonString}")
+                        newLine()
+                        write(", \"results\":[")
+                        newLine()
+                        write(" ${json}")
                     }
                     else -> {
                         write(",${json}")
