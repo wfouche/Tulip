@@ -2,6 +2,7 @@ application {
     // Java 21 - https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector.html
     applicationDefaultJvmArgs = listOf(
 
+        // -server or -client
         "-server",
 
         // Create a 2 GB regions of Large Pages
@@ -20,6 +21,7 @@ application {
         // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
         "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
 
+        // VisualVM
         // "-Dcom.sun.management.jmxremote.port=3333",
         // "-Dcom.sun.management.jmxremote.ssl=false",
         // "-Dcom.sun.management.jmxremote.authenticate=false"
