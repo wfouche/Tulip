@@ -601,7 +601,7 @@ private class ActionStats {
     }
 
     @OptIn(ExperimentalEncodingApi::class)
-    fun saveStatsJson(actionId: Int): String {
+    fun toJson(actionId: Int): String {
         var results = ""
 
         // Skip actionId = -1
@@ -788,7 +788,7 @@ private object DataCollector {
 
             json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
 
-            json += actionStats[NUM_ACTIONS].saveStatsJson(-1)
+            json += actionStats[NUM_ACTIONS].toJson(-1)
 
             json += ", \"user_actions\": {"
 
@@ -799,7 +799,7 @@ private object DataCollector {
                         if (t != "") {
                             t += ","
                         }
-                        t += "\"${index}\": {" + data.saveStatsJson(index) + "}"
+                        t += "\"${index}\": {" + data.toJson(index) + "}"
                     }
                 }
             }
