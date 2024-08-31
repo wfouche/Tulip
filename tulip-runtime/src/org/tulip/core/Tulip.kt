@@ -1391,12 +1391,12 @@ private fun runTulip(
 /*-------------------------------------------------------------------------*/
 
 private fun runTests(
-    contexts: List<RuntimeContext>,
-    tests: List<TestProfile>,
-    actionNames: Map<Int, String>,
     userFactory: TulipUserFactory,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
+    val contexts = g_contexts
+    val tests = g_tests
+    val actionNames = g_config.static.userActions
     // Remove the previous JSON results file (if it exists)
     val filename = g_tests[0].filename
     val file = java.io.File(filename)
@@ -1417,8 +1417,7 @@ private fun runTests(
 }
 
 fun runTests(userFactory: TulipUserFactory) {
-    val actionNames = g_config.static.userActions
-    runTests(g_contexts, g_tests, actionNames, userFactory, ::getTest)
+    runTests(userFactory, ::getTest)
     //logger.info { "Done" }
 }
 
