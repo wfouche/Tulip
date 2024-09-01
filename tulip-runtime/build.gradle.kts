@@ -9,5 +9,5 @@ group = "org.tulip"
 version = "2.0.0-SNAPSHOT"
 
 plugins {
-    id("org.jreleaser").version("1.13.1")
+    id("org.jreleaser").version("1.14.0")
 }
