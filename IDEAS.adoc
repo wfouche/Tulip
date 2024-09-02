@@ -150,7 +150,11 @@ Create a Docker container of a Tulip benchmark application using Docker Compose
 
 * https://docs.docker.com/compose/
 
-== Tulip Runtime Library
+== [DONE] [.line-through]#Tulip Runtime Library - local Maven#
+
+Create a tulip-runtime-jvm.jar library and publish it to Maven local.
+
+== Tulip Runtime Library - Maven Central
 
 Create a Maven Central hosted tulip-core.jar runtime library that can be imported by benchmark applications
 
@@ -463,3 +467,7 @@ Use Grazie Pro to write better documentation:
 == Github Benchmark Actions
 
 * https://github.com/benchmark-action/github-action-benchmark
+
+== w3m vs lynx
+
+Currently using w3m to display HTML report to text console.  Consider using lynx instead,
