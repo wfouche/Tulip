@@ -95,7 +95,7 @@ nanoseconds.
 
 == [DONE] [.line-through]#Runtime Configuration#
 
-Add `--config` parameter to specify which `config.json` file to use.
+Add `--config` parameter to specify which `config.jsonc` file to use.
 
 * https://github.com/Kotlin/kotlinx-cli
 
@@ -139,7 +139,7 @@ Build a native (exe) using GraalVM of a Tulip benchmark application
 ----
 $ ./gradlew nativeCompile
 
-$ ./build/native/nativeCompile/tulip -c ./config.json
+$ ./build/native/nativeCompile/tulip -c ./config.jsonc
 ----
 
 * https://graalvm.github.io/native-build-tools/latest/gradle-plugin.html

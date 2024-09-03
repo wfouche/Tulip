@@ -4,4 +4,4 @@
 # Add missing GCC libraries
 #sudo apt-get install build-essential libz-dev zlib1g-dev
 
-jbang --native --native-option=--no-fallback --native-option=--verbose Benchmark03.kt --config=./user/http/config.json
+jbang --native --native-option=--no-fallback --native-option=--verbose Benchmark03.kt --config=./user/http/config.jsonc

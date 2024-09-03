@@ -4,7 +4,7 @@ pushd ../../
 ./publish.sh
 popd
 
-../../gradlew run --args="--config benchmark_config.json"
+../../gradlew run --args="--config benchmark_config.jsonc"
 
 echo ""
 #lynx -dump -width 200 benchmark_report.html
