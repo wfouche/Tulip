@@ -116,10 +116,12 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     private fun createRequest(name: String): HttpRequest {
         val id = userId + 1
+        //val token = "mytoken1234"
         val url: String = this.getUserParamValue("url")
         val request:HttpRequest = HttpRequest.newBuilder()
             .uri(URI("${url}/${name}/${id}"))
             .GET()
+            //.header("Authorization", "Bearer " + token)
             .build()
         return request
     }
