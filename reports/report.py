@@ -187,13 +187,18 @@ class Summary:
     max_qs = 0
 
 def createReport(filename):
+
+    print("\nOutput filename = " + filename)
+
     jhh = {}
     jss = {}
 
     print_detail_rows = True
 
     global name2s
+    global name2s_list
     name2s = ""
+    name2s_list = []
 
     sm = None
     jh = Histogram(1, 3600*1000*1000, 3)
@@ -205,20 +210,26 @@ def createReport(filename):
     report_fn = jb["config"]["static"]["report_filename"]
     report_fh = open(report_fn, "w+")
 
+    print("Report filename = " + report_fn)
+
     def printf(s):
         report_fh.write(s)
 
     def print_global_summary():
         global name2s
+        global name2s_list
         html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.min_rt,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
         printf(html)
-        name2s = ""
+        if len(name2s_list) > 0:
+            name2s = name2s_list[0]
+            del name2s_list[0]
 
     def print_action_summary():
         global name2s
+        global name2s_list
         for key in jss.keys():
             smx = jss[key]
             jhx = jhh[key]
@@ -231,7 +242,9 @@ def createReport(filename):
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
             printf(html)
-            name2s = ""
+            if len(name2s_list) > 0:
+                name2s = name2s_list[0]
+                del name2s_list[0]
 
     printf(header.replace("__DESC__", description))
 
@@ -249,7 +262,9 @@ def createReport(filename):
             jhh = {}
             jss = {}
             printf(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
-            name2s = "(u:%d t:%d)"%(e["num_users"],e["num_threads"])
+            name2s_list = ["u:%d"%(e["num_users"]), "t:%d"%(e["num_threads"]), ""]
+            name2s = name2s_list[0]
+            del name2s_list[0]
         ht = Histogram.fromString(e["histogram_rt"])
         jh.add(ht)
         p_mem = 100.0 * e["jvm_memory_total"] / e["jvm_memory_maximum"]
@@ -276,7 +291,9 @@ def createReport(filename):
                 p_cpu,
                 p_mem
                 ))
-            name2s = ""
+            if len(name2s_list) > 0:
+                name2s = name2s_list[0]
+                del name2s_list[0]
         if sm.min_rt > e["min_rt"]:
             sm.min_rt = e["min_rt"]
         if sm.max_rt < e["max_rt"]:
