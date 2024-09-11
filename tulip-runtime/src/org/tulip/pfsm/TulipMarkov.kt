@@ -12,7 +12,6 @@ data class Edge (
 class PFSM() {
 
     private val matrix = Array(100, { i -> Array(1000, { j -> 0 }) })
-    private var cid: Int = 0
 
     fun add (actionId: Int, eList: List<Edge>) {
         val pList = mutableListOf<Int>()
@@ -33,17 +32,13 @@ class PFSM() {
         }
     }
 
-    fun next(): Int {
+    fun next(cid: Int): Int {
         val idx = ThreadLocalRandom.current().nextInt(1000)
-        cid = matrix[cid][idx]
-        if (cid == 0) {
-            cid = matrix[cid][idx]
+        var nid = matrix[cid][idx]
+        if (nid == 0) {
+            nid = matrix[nid][idx]
         }
-        return cid
-    }
-
-    fun reset() {
-        cid = 0
+        return nid
     }
 
 }

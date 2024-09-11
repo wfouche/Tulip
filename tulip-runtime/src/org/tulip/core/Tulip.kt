@@ -32,6 +32,7 @@ import kotlin.system.exitProcess
 import java.util.concurrent.ArrayBlockingQueue
 import javax.management.Attribute
 import javax.management.ObjectName
+import kotlin.math.abs
 
 /*-------------------------------------------------------------------------*/
 
@@ -937,7 +938,14 @@ private class UserThread(private val threadId: Int) : Thread() {
                 //
                 task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
                 task.serviceTimeNanos = elapsedTimeNanos {
-                    if (u!!.processAction(task.actionId)) task.status = 1 else task.status = 0
+                    if (task.actionId == -1) {
+                        val actionId = u!!.processEvent()
+                        if (actionId > 0) task.status = 1 else task.status = 0
+                        task.actionId = abs(actionId)
+                    }
+                    else {
+                        if (u!!.processAction(task.actionId)) task.status = 1 else task.status = 0
+                    }
                 }
 
                 task.rspQueue!!.put(task)

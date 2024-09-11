@@ -4,7 +4,11 @@ import org.tulip.core.Console
 import org.tulip.core.actionNames
 import org.tulip.core.g_config
 
+import org.tulip.pfsm.PFSM
+
 open class TulipUser(val userId: Int, val threadId: Int) {
+
+    private var cid: Int = 0
 
     private val map = arrayOf(
         ::start,
@@ -219,6 +223,16 @@ open class TulipUser(val userId: Int, val threadId: Int) {
         }
     }
 
+    open fun processEvent(): Int {
+        cid = pfsm.next(cid)
+        val ok: Boolean = processAction(cid)
+        return if (ok) cid else -cid
+    }
+
+    open fun reset() {
+        cid = 0
+    }
+
     open fun getUserParamValue(paramName: String): String {
         var s: String? = g_config.static.userParams[paramName]
         if (s == null) s = ""
@@ -227,6 +241,10 @@ open class TulipUser(val userId: Int, val threadId: Int) {
 
     open fun getActionName(actionId: Int): String {
         return if (actionNames.containsKey(actionId)) actionNames[actionId]!! else "action${actionId}"
+    }
+
+    companion object {
+        val pfsm = PFSM()
     }
 
 }
