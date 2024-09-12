@@ -937,15 +937,12 @@ private class UserThread(private val threadId: Int) : Thread() {
                 // Also calculate the elapsed time in microseconds.
                 //
                 task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
+                if (task.actionId == -1) {
+                    // Use Markov Chain to determine next action to perform.
+                    task.actionId = u!!.nextAction()
+                }
                 task.serviceTimeNanos = elapsedTimeNanos {
-                    if (task.actionId == -1) {
-                        val actionId = u!!.processEvent()
-                        if (actionId > 0) task.status = 1 else task.status = 0
-                        task.actionId = abs(actionId)
-                    }
-                    else {
-                        if (u!!.processAction(task.actionId)) task.status = 1 else task.status = 0
-                    }
+                    if (u!!.processAction(task.actionId)) task.status = 1 else task.status = 0
                 }
 
                 task.rspQueue!!.put(task)

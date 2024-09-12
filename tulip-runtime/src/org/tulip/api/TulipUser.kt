@@ -223,10 +223,9 @@ open class TulipUser(val userId: Int, val threadId: Int) {
         }
     }
 
-    open fun processEvent(): Int {
+    open fun nextAction(): Int {
         cid = pfsm.next(cid)
-        val ok: Boolean = processAction(cid)
-        return if (ok) cid else -cid
+        return cid
     }
 
     open fun reset() {
