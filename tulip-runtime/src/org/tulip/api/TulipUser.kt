@@ -4,7 +4,7 @@ import org.tulip.core.Console
 import org.tulip.core.actionNames
 import org.tulip.core.g_config
 
-import org.tulip.pfsm.PFSM
+import org.tulip.pfsm.MarkovChain
 
 open class TulipUser(val userId: Int, val threadId: Int) {
 
@@ -243,7 +243,7 @@ open class TulipUser(val userId: Int, val threadId: Int) {
     }
 
     companion object {
-        val pfsm = PFSM()
+        val pfsm = MarkovChain()
     }
 
 }

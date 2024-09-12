@@ -9,7 +9,7 @@ data class Edge (
     val weight: Int
 )
 
-class PFSM() {
+class MarkovChain() {
 
     private val matrix = Array(100, { i -> Array(1000, { j -> 0 }) })
 
