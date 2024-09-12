@@ -4,11 +4,7 @@ import org.tulip.core.Console
 import org.tulip.core.actionNames
 import org.tulip.core.g_config
 
-import org.tulip.pfsm.MarkovChain
-
 open class TulipUser(val userId: Int, val threadId: Int) {
-
-    private var cid: Int = 0
 
     private val map = arrayOf(
         ::start,
@@ -224,12 +220,7 @@ open class TulipUser(val userId: Int, val threadId: Int) {
     }
 
     open fun nextAction(): Int {
-        cid = pfsm.next(cid)
-        return cid
-    }
-
-    open fun reset() {
-        cid = 0
+        return -1
     }
 
     open fun getUserParamValue(paramName: String): String {
@@ -240,10 +231,6 @@ open class TulipUser(val userId: Int, val threadId: Int) {
 
     open fun getActionName(actionId: Int): String {
         return if (actionNames.containsKey(actionId)) actionNames[actionId]!! else "action${actionId}"
-    }
-
-    companion object {
-        val pfsm = MarkovChain()
     }
 
 }
