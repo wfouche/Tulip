@@ -5,7 +5,7 @@ import org.tulip.report.TulipReportKt;
 
 public class TulipApi {
 
-    public static final String VERSION_STRING = "2.0.0-beta7";
+    public static final String VERSION_STRING = "2.0.0-beta8";
 
     public static final int NUM_ACTIONS = 100;
 
