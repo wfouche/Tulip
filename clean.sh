@@ -11,3 +11,7 @@ popd
 pushd ./tulip-benchmarks
 source clean.sh
 popd
+
+pushd ./tulip-standalone
+source clean.sh
+popd
