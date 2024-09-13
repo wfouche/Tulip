@@ -1,5 +1,3 @@
-rootProject.name = "Tulip"
-
 pluginManagement {
     repositories {
         mavenCentral()
