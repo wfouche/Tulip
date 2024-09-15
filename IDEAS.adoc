@@ -471,3 +471,9 @@ Use Grazie Pro to write better documentation:
 == w3m vs lynx
 
 Currently using w3m to display HTML report to text console.  Consider using lynx instead,
+
+== Dokka and Mermaid
+
+Enable mermaid diagram plugin for Dokka
+
+* https://github.com/glureau/dokka-mermaid
