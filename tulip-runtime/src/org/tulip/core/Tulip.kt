@@ -937,9 +937,9 @@ private class UserThread(private val threadId: Int) : Thread() {
                 // Also calculate the elapsed time in microseconds.
                 //
                 task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
-                if (task.actionId == -1) {
+                if (task.actionId < 0) {
                     // Use Markov Chain to determine next action to perform.
-                    task.actionId = u!!.nextAction()
+                    task.actionId = u!!.nextAction(task.actionId)
                 }
                 task.serviceTimeNanos = elapsedTimeNanos {
                     if (u!!.processAction(task.actionId)) task.status = 1 else task.status = 0

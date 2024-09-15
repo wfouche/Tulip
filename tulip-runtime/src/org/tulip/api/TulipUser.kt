@@ -219,8 +219,8 @@ open class TulipUser(val userId: Int, val threadId: Int) {
         }
     }
 
-    open fun nextAction(): Int {
-        return -1
+    open fun nextAction(actionId: Int): Int {
+        return actionId
     }
 
     open fun getUserParamValue(paramName: String): String {
