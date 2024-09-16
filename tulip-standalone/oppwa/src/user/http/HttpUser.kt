@@ -13,6 +13,7 @@ import kotlinx.serialization.*
 import kotlinx.serialization.json.*
 import org.tulip.pfsm.Edge
 import org.tulip.pfsm.MarkovChain
+import java.lang.Exception
 
 /*-------------------------------------------------------------------------*/
 
@@ -20,10 +21,18 @@ private val client = HttpClient.newHttpClient()
 
 /*-------------------------------------------------------------------------*/
 
+enum class State(val state:Int) {
+    IDLE(0), // Idle
+    PA(1),   // Auth
+    CP(2),   // Comp
+    RF(3),   // Refund
+    DB(4)    // Debit
+}
+
 // https://transform.tools/json-to-kotlin
 
 @Serializable
-data class Response11(
+data class AuthResponse(
     val id: String,
     val paymentType: String,
     val paymentBrand: String,
@@ -68,31 +77,23 @@ data class Risk(
 )
 
 /*-------------------------------------------------------------------------*/
+
 @Serializable
-data class Response12(
+data class CompResponse(
     val id: String,
     val referencedId: String,
     val paymentType: String,
     val amount: String,
     val currency: String,
     val descriptor: String,
-    val result: Result12,
-    val resultDetails: ResultDetails12,
+    val result: Result,
+    val resultDetails: ResultDetails,
     val buildNumber: String,
     val timestamp: String,
     val ndc: String,
     val source: String,
     val paymentMethod: String,
     val shortId: String,
-)
-@Serializable
-data class Result12(
-    val code: String,
-    val description: String,
-)
-@Serializable
-data class ResultDetails12(
-    val clearingInstituteName: String,
 )
 
 /*-------------------------------------------------------------------------*/
@@ -105,7 +106,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-    private lateinit var rsp11: Response11
+    private var id: String = ""
 
     // ----------------------------------------------------------------- //
 
@@ -138,11 +139,12 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             .POST(HttpRequest.BodyPublishers.ofString(body))
             .build()
 
+        id = ""
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
-        rsp11 = Json.decodeFromString<Response11>(response.body())
         if (response.statusCode() == 200) {
-            if (rsp11.result.code.split(".")[0] == "000") {
+            val rsp = Json.decodeFromString<AuthResponse>(response.body())
+            if (rsp.result.code.split(".")[0] == "000") {
+                id = rsp.id
                 return true
             }
         }
@@ -162,16 +164,16 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg="
 
         val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${rsp11.id}"))
+            .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${id}"))
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
             .POST(HttpRequest.BodyPublishers.ofString(body))
             .build()
 
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        val rsp12 = Json.decodeFromString<Response12>(response.body())
         if (response.statusCode() == 200) {
-            if (rsp12.result.code.split(".")[0] == "000") {
+            val rsp = Json.decodeFromString<CompResponse>(response.body())
+            if (rsp.result.code.split(".")[0] == "000") {
                 return true
             }
         }
@@ -191,16 +193,16 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg="
 
         val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${rsp11.id}"))
+            .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${id}"))
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
             .POST(HttpRequest.BodyPublishers.ofString(body))
             .build()
 
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        val rsp13 = Json.decodeFromString<Response12>(response.body())
         if (response.statusCode() == 200) {
-            if (rsp13.result.code.split(".")[0] == "000") {
+            val rsp = Json.decodeFromString<CompResponse>(response.body())
+            if (rsp.result.code.split(".")[0] == "000") {
                 return true
             }
         }
@@ -234,9 +236,11 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
 
-        rsp11 = Json.decodeFromString<Response11>(response.body())
+        id = ""
         if (response.statusCode() == 200) {
-            if (rsp11.result.code.split(".")[0] == "000") {
+            val rsp = Json.decodeFromString<AuthResponse>(response.body())
+            if (rsp.result.code.split(".")[0] == "000") {
+                id = rsp.id
                 return true
             }
         }
@@ -251,8 +255,24 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun nextAction(): Int {
-        cid = pfsm.next(cid)
+    override fun nextAction(workflowId: Int): Int {
+        // 0 => {1:PA or 4:DB}
+        // 1:PA => {2:CP}
+        // 2:CP => {3:RF or 0}
+        // 3:RF => {0}
+        // 4:DB => {3:RF, or 0}
+
+        val nid = pfsm.next(cid)
+        // PA(1) -> CP(2)
+        if (State.PA.equals(cid) && State.CP.equals(nid) && id == "") {
+            // Skip CP(2), if PA(1) failed; id == ""
+            cid = pfsm.next(State.IDLE.ordinal)
+        // DB(4) -> RF(3)
+        } else if (State.DB.equals(cid) && State.RF.equals(nid) && id == "") {
+            cid = pfsm.next(State.IDLE.ordinal)
+        } else {
+            cid = nid
+        }
         return cid
     }
 
@@ -263,27 +283,31 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
         init {
             pfsm.apply {
-                add(0, listOf(
-                    // PA
-                    Edge(1, 500),
-                    // DB
-                    Edge(4, 500)
+                add(State.IDLE.ordinal, listOf(
+                    // PA - Credit Card
+                    Edge(State.PA.ordinal, 500),
+                    // DB - Debit Card
+                    Edge(State.DB.ordinal, 500)
                 ))
-                add(1, listOf(
-                    // CP
-                    Edge(2, 1000)
+                add(State.PA.ordinal, listOf(
+                    // CP - Credit Card
+                    Edge(State.CP.ordinal, 1000)
                 ))
-                add(2, listOf(
-                    // RF
-                    Edge(3, 200),
+                add(State.CP.ordinal, listOf(
+                    // RF - Credit Card
+                    Edge(State.RF.ordinal, 200),
                     // ..
-                    Edge(0, 800)
+                    Edge(State.IDLE.ordinal, 800)
                 ))
-                add(4, listOf(
-                    // RF
-                    Edge(3, 200),
+                add(State.RF.ordinal, listOf(
+                    // Debit or Credit Card
+                    Edge(State.IDLE.ordinal, 1000)
+                ))
+                add(State.DB.ordinal, listOf(
+                    // RF - Debit Card
+                    Edge(State.RF.ordinal, 200),
                     // ...
-                    Edge(0, 800)
+                    Edge(State.IDLE.ordinal, 800)
                 ))
             }
         }
