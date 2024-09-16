@@ -234,9 +234,8 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             .POST(HttpRequest.BodyPublishers.ofString(body))
             .build()
 
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
         id = ""
+        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
         if (response.statusCode() == 200) {
             val rsp = Json.decodeFromString<AuthResponse>(response.body())
             if (rsp.result.code.split(".")[0] == "000") {
