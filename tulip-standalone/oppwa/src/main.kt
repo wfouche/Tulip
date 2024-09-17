@@ -36,10 +36,16 @@ private class UserFactory00: TulipUserFactory() {
 /*-------------------------------------------------------------------------*/
 
 private class TulipCli00 : CliktCommand() {
-    private val configOpt by option("--config").default("config.jsonc")
+    private val configOpt by option("--config").default("")
+    private val resultOpt by option("--result").default("")
     override fun run() {
-        echo(banner00)
-        TulipApi.runTulip(configOpt, UserFactory00())
+        if (configOpt != "") {
+            echo(banner00)
+            TulipApi.runTulip(configOpt, UserFactory00())
+        } else if (resultOpt != "") {
+	    echo(resultOpt)
+            TulipApi.createHtmlReport(resultOpt)
+        }
     }
 }
 
