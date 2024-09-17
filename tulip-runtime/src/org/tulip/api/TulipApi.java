@@ -22,6 +22,10 @@ public class TulipApi {
     public static void runTulip(String configFilename, TulipUserFactory userFactory) {
         String outputFilename = TulipKt.initConfig(configFilename);
         TulipKt.runTests(userFactory);
+        createHtmlReport(outputFilename);
+    }
+
+    public static void createHtmlReport(String outputFilename) {
         TulipReportKt.createHtmlReport(outputFilename);
     }
 }
