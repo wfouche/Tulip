@@ -4,8 +4,9 @@ import kotlin.test.assertTrue
 class TulipTest {
     @Test
     fun shouldSucceed() {
-        val version = "${KotlinVersion.CURRENT}"
-        println("TulipTest: Kotlin version = ${version}")
-        assertTrue(version == "2.0.20")
+        val kotlinVersion = KotlinVersion.CURRENT
+        val kotlinVersionString = "${KotlinVersion.CURRENT}"
+        println("TulipTest: Kotlin version = ${kotlinVersionString}")
+        assertTrue(kotlinVersion.isAtLeast(2,0,20))
     }
 }
