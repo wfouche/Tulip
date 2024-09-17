@@ -9,11 +9,11 @@ import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
 import org.tulip.pfsm.Edge
 import org.tulip.pfsm.MarkovChain
 import java.lang.Exception
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 
 /*-------------------------------------------------------------------------*/
 

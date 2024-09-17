@@ -8,6 +8,8 @@
 #
 # https://gradle.org/releases/
 #
+# https://github.com/Kotlin/kotlinx.serialization - 1.7.2 requries Kotlin 2.0.20
+#
 GRADLE_VERSION=8.6
 
 ./gradlew wrapper --gradle-version $GRADLE_VERSION
