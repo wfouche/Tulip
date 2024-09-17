@@ -1,2 +1,2 @@
-call .\gradlew :tulip-runtime:jvmTest
-call .\gradlew :tulip-runtime:publishToMavenLocal
+call .\gradlew -q :tulip-runtime:jvmTest
+call .\gradlew -q :tulip-runtime:publishToMavenLocal
