@@ -1,6 +1,7 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
+//DEPS com.github.ajalt.clikt:clikt-jvm:5.0.0
+//DEPS org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.2
 //DEPS org.tulip:tulip-runtime-jvm:1.0.0-SNAPSHOT
-//DEPS com.github.ajalt.clikt:clikt-jvm:4.4.0
 //SOURCES HttpUser.kt
 
 /*-------------------------------------------------------------------------*/
@@ -30,7 +31,7 @@ class UserFactory: TulipUserFactory() {
 class TulipCli : CliktCommand() {
     private val configOpt by option("--config").default("config.json")
     override fun run() {
-        echo(rg.tulip.api.TulipApi.VERSION_BANNER)
+        echo(org.tulip.api.TulipApi.VERSION_BANNER)
         TulipApi.runTulip(configOpt, UserFactory())
     }
 }
