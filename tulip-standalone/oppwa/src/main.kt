@@ -10,19 +10,6 @@ import org.tulip.api.TulipUserFactory
 
 /*-------------------------------------------------------------------------*/
 
-// https://devops.datenkollektiv.de/banner.txt/index.html
-// <standard>
-private const val banner00 = """                                       
-  _____      _ _         _   ___  
- |_   _|   _| (_)_ __   / | / _ \ 
-   | || | | | | | '_ \  | || | | |
-   | || |_| | | | |_) | | || |_| |
-   |_| \__,_|_|_| .__/  |_(_)___/ 
-                |_|               
-"""
-
-/*-------------------------------------------------------------------------*/
-
 private class UserFactory00: TulipUserFactory() {
 
     override fun getUser(userId: Int, className: String, threadId: Int): TulipUser {
@@ -40,7 +27,7 @@ private class TulipCli00 : CliktCommand() {
     private val resultOpt by option("--result").default("")
     override fun run() {
         if (configOpt != "") {
-            echo(banner00)
+            echo(rg.tulip.api.TulipApi.VERSION_BANNER)
             TulipApi.runTulip(configOpt, UserFactory00())
         } else if (resultOpt != "") {
 	    echo(resultOpt)

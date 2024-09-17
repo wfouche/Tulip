@@ -23,9 +23,16 @@ class UserFactory: TulipUserFactory() {
 /*-------------------------------------------------------------------------*/
 
 class TulipCli : CliktCommand() {
-    private val configOpt by option("--config").default("config.json")
+    private val configOpt by option("--config").default("")
+    private val resultOpt by option("--result").default("")
     override fun run() {
-        TulipApi.runTulip(configOpt, UserFactory())
+        if (configOpt != "") {
+            echo(org.tulip.api.TulipApi.VERSION_BANNER)
+            TulipApi.runTulip(configOpt, UserFactory())
+        } else if (resultOpt != "") {
+            echo(resultOpt)
+            TulipApi.createHtmlReport(resultOpt)
+        }
     }
 }
 

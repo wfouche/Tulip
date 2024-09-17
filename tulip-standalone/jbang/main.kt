@@ -30,6 +30,7 @@ class UserFactory: TulipUserFactory() {
 class TulipCli : CliktCommand() {
     private val configOpt by option("--config").default("config.json")
     override fun run() {
+        echo(rg.tulip.api.TulipApi.VERSION_BANNER)
         TulipApi.runTulip(configOpt, UserFactory())
     }
 }
