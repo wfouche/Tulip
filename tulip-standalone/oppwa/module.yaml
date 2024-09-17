@@ -1,8 +1,7 @@
 product: jvm/app
 
 dependencies:
-  - com.github.ajalt.clikt:clikt-jvm:4.4.0
-  - commons-cli:commons-cli:1.8.0
+  - com.github.ajalt.clikt:clikt-jvm:5.0.0
   - org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.2
   - org.tulip:tulip-runtime-jvm:1.0.0-SNAPSHOT
 

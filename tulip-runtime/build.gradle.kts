@@ -10,4 +10,5 @@ version = "1.0.0-SNAPSHOT"
 
 plugins {
     id("org.jreleaser").version("1.14.0")
+    id("kotlinx-serialization")
 }
