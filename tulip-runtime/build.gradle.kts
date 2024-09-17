@@ -6,7 +6,7 @@
  */
 
 group = "org.tulip"
-version = "2.0.0-SNAPSHOT"
+version = "1.0.0-SNAPSHOT"
 
 plugins {
     id("org.jreleaser").version("1.14.0")
