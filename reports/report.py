@@ -4,7 +4,7 @@ import json
 import sys
 import org.HdrHistogram.Histogram as Histogram
 
-header = """<!DOCTYPE html>
+header = '''<!DOCTYPE html>
 <html>
 <style>
 table, th, td {
@@ -38,9 +38,9 @@ table, th, td {
     <th>CPU</th>
     <th>JMM</th>
   </tr>
-"""
+'''
 
-benchmark_columns = """
+benchmark_columns = '''
   <tr>
     <th>SID</th>
     <th>Name</th>
@@ -63,9 +63,9 @@ benchmark_columns = """
     <th>CPU</th>
     <th>JMM</th>
   </tr>
-"""
+'''
 
-benchmark_header = """
+benchmark_header = '''
   <tr>
     <td>%d</td>
     <td>%s</td>
@@ -88,9 +88,9 @@ benchmark_header = """
     <td></td>
     <td></td>
   </tr>
-"""
+'''
 
-benchmark_empty_row = """
+benchmark_empty_row = '''
   <tr>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
@@ -113,9 +113,9 @@ benchmark_empty_row = """
     <td>&nbsp;</td>
     <td>&nbsp;</td>
   </tr>
-"""
+'''
 
-benchmark_detail_row = """
+benchmark_detail_row = '''
   <tr>
     <td></td>
     <td>%s</td>
@@ -138,9 +138,9 @@ benchmark_detail_row = """
     <td>%.1f</td>
     <td>%.1f</td>
   </tr>
-"""
+'''
 
-benchmark_summary_row = """
+benchmark_summary_row = '''
   <tr>
     <td></td>
     <td>%s</td>
@@ -163,13 +163,13 @@ benchmark_summary_row = """
     <td><b>%.1f</b></td>
     <td><b>%.1f</b></td>
   </tr>
-"""
+'''
 
-trailer = """
+trailer = '''
 </table>
 </body>
 </html>
-"""
+'''
 
 class Summary:
     num_rows = 0
