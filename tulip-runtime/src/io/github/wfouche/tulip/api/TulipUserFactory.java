@@ -1,4 +1,4 @@
-package org.tulip.api;
+package io.github.wfouche.tulip.api;
 
 public abstract class TulipUserFactory {
 

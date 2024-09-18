@@ -1,4 +1,4 @@
-package org.tulip.report
+package io.github.wfouche.tulip.report
 
 import org.python.util.PythonInterpreter
 

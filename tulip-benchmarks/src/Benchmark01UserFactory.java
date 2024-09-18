@@ -1,5 +1,5 @@
-import org.tulip.api.TulipUserFactory;
-import org.tulip.api.TulipUser;
+import io.github.wfouche.tulip.api.TulipUserFactory;
+import io.github.wfouche.tulip.api.TulipUser;
 
 public class Benchmark01UserFactory extends TulipUserFactory {
     @Override

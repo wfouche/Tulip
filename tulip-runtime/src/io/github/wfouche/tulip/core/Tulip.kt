@@ -1,6 +1,6 @@
 /*-------------------------------------------------------------------------*/
 
-package org.tulip.core
+package io.github.wfouche.tulip.core
 
 /*-------------------------------------------------------------------------*/
 
@@ -14,9 +14,9 @@ import io.micrometer.jmx.JmxConfig
 import io.micrometer.jmx.JmxMeterRegistry
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
-import org.tulip.api.TulipApi
-import org.tulip.api.TulipUserFactory
-import org.tulip.api.TulipUser
+import io.github.wfouche.tulip.api.TulipApi
+import io.github.wfouche.tulip.api.TulipUserFactory
+import io.github.wfouche.tulip.api.TulipUser
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.lang.management.ManagementFactory

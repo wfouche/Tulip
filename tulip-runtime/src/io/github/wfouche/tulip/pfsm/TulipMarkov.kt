@@ -1,6 +1,6 @@
-package org.tulip.pfsm
+package io.github.wfouche.tulip.pfsm
 
-import org.tulip.core.Console
+import io.github.wfouche.tulip.core.Console
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.system.exitProcess
 

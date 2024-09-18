@@ -1,18 +1,18 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
 //DEPS com.github.ajalt.clikt:clikt-jvm:5.0.0
 //DEPS org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.2
-//DEPS org.tulip:tulip-runtime-jvm:1.0.0-SNAPSHOT
+//DEPS io.github.wfouche.tulip:tulip-runtime-jvm:1.0.0-SNAPSHOT
 //SOURCES HttpUser.kt
 
 /*-------------------------------------------------------------------------*/
 
-import org.tulip.api.TulipUser
+import io.github.wfouche.tulip.api.TulipUser
 import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 
-import org.tulip.api.TulipApi
-import org.tulip.api.TulipUserFactory
+import io.github.wfouche.tulip.api.TulipApi
+import io.github.wfouche.tulip.api.TulipUserFactory
 
 /*-------------------------------------------------------------------------*/
 

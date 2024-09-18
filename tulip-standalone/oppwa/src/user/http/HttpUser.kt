@@ -2,15 +2,15 @@ package user.http
 
 /*-------------------------------------------------------------------------*/
 
-import org.tulip.api.TulipUser
-import org.tulip.core.Console
-import org.tulip.core.delayMillisRandom
+import io.github.wfouche.tulip.api.TulipUser
+import io.github.wfouche.tulip.core.Console
+import io.github.wfouche.tulip.core.delayMillisRandom
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
-import org.tulip.pfsm.Edge
-import org.tulip.pfsm.MarkovChain
+import io.github.wfouche.tulip.pfsm.Edge
+import io.github.wfouche.tulip.pfsm.MarkovChain
 import java.lang.Exception
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*

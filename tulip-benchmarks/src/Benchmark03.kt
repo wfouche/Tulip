@@ -7,9 +7,9 @@
 /*-------------------------------------------------------------------------*/
 
 import org.apache.commons.cli.*
-import org.tulip.api.TulipApi
-import org.tulip.api.TulipUser
-import org.tulip.api.TulipUserFactory
+import io.github.wfouche.tulip.api.TulipApi
+import io.github.wfouche.tulip.api.TulipUser
+import io.github.wfouche.tulip.api.TulipUserFactory
 
 /*-------------------------------------------------------------------------*/
 

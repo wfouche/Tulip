@@ -5,7 +5,7 @@
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.9/userguide/building_java_projects.html in the Gradle documentation.
  */
 
-group = "org.tulip"
+group = "io.github.wfouche.tulip"
 version = "1.0.0-SNAPSHOT"
 
 plugins {

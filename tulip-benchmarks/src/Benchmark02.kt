@@ -5,13 +5,13 @@
 
 /*-------------------------------------------------------------------------*/
 
-import org.tulip.api.TulipUser
+import io.github.wfouche.tulip.api.TulipUser
 import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 
-import org.tulip.api.TulipApi
-import org.tulip.api.TulipUserFactory
+import io.github.wfouche.tulip.api.TulipApi
+import io.github.wfouche.tulip.api.TulipUserFactory
 
 /*-------------------------------------------------------------------------*/
 

@@ -1,7 +1,7 @@
-package org.tulip.api;
+package io.github.wfouche.tulip.api;
 
-import org.tulip.core.TulipKt;
-import org.tulip.report.TulipReportKt;
+import io.github.wfouche.tulip.core.TulipKt;
+import io.github.wfouche.tulip.report.TulipReportKt;
 
 public class TulipApi {
 

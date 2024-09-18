@@ -1,8 +1,8 @@
-package org.tulip.api
+package io.github.wfouche.tulip.api
 
-import org.tulip.core.Console
-import org.tulip.core.actionNames
-import org.tulip.core.g_config
+import io.github.wfouche.tulip.core.Console
+import io.github.wfouche.tulip.core.actionNames
+import io.github.wfouche.tulip.core.g_config
 
 open class TulipUser(val userId: Int, val threadId: Int) {
 
