@@ -7,12 +7,12 @@ public class TulipApi {
 
     public static final String VERSION_STRING = "0.1.0-beta10";
     public static final String VERSION_BANNER = """                                       
-  _____      _ _         _   ___  
- |_   _|   _| (_)_ __   / | / _ \\ 
-   | || | | | | | '_ \\  | || | | |
-   | || |_| | | | |_) | | || |_| |
-   |_| \\__,_|_|_| .__/  |_(_)___/ 
-                |_|               
+  _____      _ _          ___   _\s
+ |_   _|   _| (_)_ __    / _ \\ / |
+   | || | | | | | '_ \\  | | | || |
+   | || |_| | | | |_) | | |_| || |
+   |_| \\__,_|_|_| .__/   \\___(_)_|
+                |_|              \s
 """;
 // https://devops.datenkollektiv.de/banner.txt/index.html
 // <standard>
