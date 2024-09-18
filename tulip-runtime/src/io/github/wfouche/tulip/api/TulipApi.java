@@ -5,7 +5,7 @@ import io.github.wfouche.tulip.report.TulipReportKt;
 
 public class TulipApi {
 
-    public static final String VERSION_STRING = "1.0.0-beta9";
+    public static final String VERSION_STRING = "0.1.0-beta10";
     public static final String VERSION_BANNER = """                                       
   _____      _ _         _   ___  
  |_   _|   _| (_)_ __   / | / _ \\ 

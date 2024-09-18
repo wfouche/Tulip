@@ -1,7 +1,7 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
 //DEPS com.github.ajalt.clikt:clikt-jvm:5.0.0
 //DEPS org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.2
-//DEPS io.github.wfouche.tulip:tulip-runtime-jvm:1.0.0-SNAPSHOT
+//DEPS io.github.wfouche.tulip:tulip-runtime-jvm:0.1.0-SNAPSHOT
 //SOURCES HttpUser.kt
 
 /*-------------------------------------------------------------------------*/
