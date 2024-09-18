@@ -27,7 +27,6 @@ class TulipCli : CliktCommand() {
     private val resultOpt by option("--result").default("")
     override fun run() {
         if (configOpt != "") {
-            echo(org.tulip.api.TulipApi.VERSION_BANNER)
             TulipApi.runTulip(configOpt, UserFactory())
         } else if (resultOpt != "") {
             echo(resultOpt)

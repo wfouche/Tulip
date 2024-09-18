@@ -33,7 +33,6 @@ private class TulipCli02 : CliktCommand() {
     private val resultOpt by option("--result")
     private val reportOpt by option("--report")
     override fun run() {
-        echo(org.tulip.api.TulipApi.VERSION_BANNER)
         TulipApi.runTulip(configOpt, UserFactory02())
     }
 }
