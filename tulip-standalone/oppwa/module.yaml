@@ -2,8 +2,8 @@ product: jvm/app
 
 dependencies:
   - com.github.ajalt.clikt:clikt-jvm:5.0.0
-  - org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.2
-  - io.github.wfouche.tulip:tulip-runtime-jvm:0.1.0-SNAPSHOT
+  - org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3
+  - io.github.wfouche.tulip:tulip-runtime:0.1.0-SNAPSHOT
 
 settings:
   kotlin:

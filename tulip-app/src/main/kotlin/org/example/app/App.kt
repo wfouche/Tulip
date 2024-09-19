@@ -1,7 +1,6 @@
-///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS com.github.ajalt.clikt:clikt-jvm:5.0.0
-//DEPS io.github.wfouche.tulip:tulip-runtime:0.1.0-SNAPSHOT
-//SOURCES HttpUser.kt
+/*-------------------------------------------------------------------------*/
+
+package org.example.app
 
 /*-------------------------------------------------------------------------*/
 
@@ -15,11 +14,11 @@ import io.github.wfouche.tulip.api.TulipUserFactory
 
 /*-------------------------------------------------------------------------*/
 
-class UserFactory: TulipUserFactory() {
+private class UserFactory00: TulipUserFactory() {
 
     override fun getUser(userId: Int, className: String, threadId: Int): TulipUser {
         return when (className) {
-            "user.http.HttpUser" -> HttpUser(userId, threadId)
+            "user.http.HttpUser" -> org.example.user.HttpUser(userId, threadId)
             else -> throw Exception("Unknown user class name provided - $className")
         }
     }
@@ -27,15 +26,15 @@ class UserFactory: TulipUserFactory() {
 
 /*-------------------------------------------------------------------------*/
 
-class TulipCli : CliktCommand() {
-    private val configOpt by option("--config").default("config.json")
+private class TulipCli00 : CliktCommand() {
+    private val configOpt by option("--config").default("benchmark_config.jsonc")
     override fun run() {
-        TulipApi.runTulip(configOpt, UserFactory())
+        TulipApi.runTulip(configOpt, UserFactory00())
     }
 }
 
 /*-------------------------------------------------------------------------*/
 
-fun main(args: Array<String>) = TulipCli().main(args)
+fun main(args: Array<String>) = TulipCli00().main(args)
 
 /*-------------------------------------------------------------------------*/
