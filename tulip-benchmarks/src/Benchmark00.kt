@@ -24,9 +24,7 @@ private class UserFactory00: TulipUserFactory() {
 /*-------------------------------------------------------------------------*/
 
 private class TulipCli00 : CliktCommand() {
-    private val configOpt by option("--config").default("config.jsonc")
-    private val resultOpt by option("--result")
-    private val reportOpt by option("--report")
+    private val configOpt by option("--config").default("")
     override fun run() {
         TulipApi.runTulip(configOpt, UserFactory00())
     }

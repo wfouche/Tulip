@@ -1,6 +1,7 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS org.tulip:tulip-runtime-jvm:2.0.0-SNAPSHOT
-//DEPS com.github.ajalt.clikt:clikt-jvm:4.4.0
+//DEPS org.tulip:tulip-runtime-jvm:0.1.0-SNAPSHOT
+//DEPS com.github.ajalt.clikt:clikt-jvm:5.0.0
+//DEPS org.slf4j:slf4j-nop:2.0.13
 //SOURCES user/http/HttpUser.kt user/http/HttpUser2.java
 
 /*-------------------------------------------------------------------------*/
@@ -29,9 +30,7 @@ private class UserFactory02: TulipUserFactory() {
 /*-------------------------------------------------------------------------*/
 
 private class TulipCli02 : CliktCommand() {
-    private val configOpt by option("--config").default("config.jsonc")
-    private val resultOpt by option("--result")
-    private val reportOpt by option("--report")
+    private val configOpt by option("--config").default("")
     override fun run() {
         TulipApi.runTulip(configOpt, UserFactory02())
     }
