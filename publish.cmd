@@ -1,2 +1,3 @@
-call .\gradlew -q :tulip-runtime:jvmTest
-call .\gradlew -q :tulip-runtime:publishToMavenLocal
+call .\gradlew :tulip-runtime:jvmTest
+call .\gradlew :tulip-runtime:publishToMavenLocal
+dir /s %USERPROFILE%\.m2\tulip-runtime-jvm*.jar
