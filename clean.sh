@@ -8,7 +8,7 @@ pushd ./tulip-runtime
 source clean.sh
 popd
 
-pushd ./tulip-benchmarks
+pushd ./tulip-app
 source clean.sh
 popd
 
