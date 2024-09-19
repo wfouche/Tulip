@@ -1,1 +1,0 @@
-jbang run helloworld.java

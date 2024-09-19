@@ -1,1 +1,0 @@
-jbang --native helloworld.java
