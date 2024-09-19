@@ -4,11 +4,99 @@
  * This generated file contains a sample Kotlin library project to get you started.
  * For more details on building Java & JVM projects, please refer to https://docs.gradle.org/8.9/userguide/building_java_projects.html in the Gradle documentation.
  */
+// import com.android.build.gradle.internal.tasks.factory.dependsOn
+// import org. jreleaser. model. Active
 
 group = "io.github.wfouche.tulip"
 version = "0.1.0-SNAPSHOT"
 
 plugins {
+    //id("maven-publish")
     id("org.jreleaser").version("1.14.0")
+    //id("signing")
     id("kotlinx-serialization")
 }
+
+/*
+publishing{
+    publications {
+        create<MavenPublication>("Maven") {
+            from(components["java"])
+            groupId = "io.github.wfouche.tulip"
+            artifactId = "tulip-runtime"
+            description = "Tulip load testing runtime"
+        }
+        withType<MavenPublication> {
+            pom {
+                packaging = "jar"
+                name.set("tulip-runtime")
+                description.set("Tulip")
+                url.set("https://github.com/wfouche/Tulip/")
+                inceptionYear.set("2019")
+                licenses {
+                    license {
+                        name.set("Apache License Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("wfouche")
+                        name.set("Werner Fouché")
+                        email.set("werner.fouche@gmail.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git@github.com:wfouche/Tulip.git")
+                    developerConnection.set("scm:git:ssh:git@github.com:wfouche/Tulip.git")
+                    url.set("https://github.com/wfouche/Tulip")
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url = layout.buildDirectory.dir("staging-deploy").get().asFile.toURI()
+        }
+    }
+}
+
+java {
+    withJavadocJar()
+    //withSourcesJar()
+}
+
+tasks.jar{
+    enabled = true
+    // Remove `plain` postfix from jar file name
+    archiveClassifier.set("")
+}
+
+jreleaser {
+    project {
+        copyright.set("Werner Fouché")
+    }
+    gitRootSearch.set(true)
+    signing {
+        active.set(Active.ALWAYS)
+        armored.set(true)
+    }
+    deploy {
+        maven {
+            nexus2 {
+                create("maven-central") {
+                    active.set(Active.ALWAYS)
+                    url.set("https://s01.oss.sonatype.org/service/local")
+                    closeRepository.set(true)
+                    releaseRepository.set(true)
+                    stagingRepositories.add("build/staging-deploy")
+                }
+            }
+        }
+    }
+}
+
+tasks.named("publishJvmPublicationToMavenRepository").dependsOn("jar")
+tasks.named("generateMetadataFileForJvmPublication").dependsOn("jar")
+
+ */
