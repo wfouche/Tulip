@@ -342,6 +342,9 @@ data class BenchmarkConfig(
 fun initConfig(configFilename: String): String {
     initTulip()
     Console.put("")
+    val wd = System.getProperty("user.dir")
+    Console.put("  working directory = $wd")
+    Console.put("")
     Console.put("  config filename = $configFilename")
     val gson = GsonBuilder().setPrettyPrinting().create()
     val sf = java.io.File(configFilename).readText()
@@ -377,9 +380,6 @@ fun initConfig(configFilename: String): String {
     }
     Console.put("  output filename = ${g_config.static.jsonFilename}")
     Console.put("  report filename = ${g_config.static.htmlFilename}")
-    val wd = System.getProperty("user.dir")
-    Console.put("")
-    Console.put("  working directory = $wd")
     return g_config.static.jsonFilename
 }
 
