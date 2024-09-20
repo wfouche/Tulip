@@ -25,6 +25,7 @@ version = "0.1.0-SNAPSHOT"
 
 // https://dev.to/tschuehly/how-to-publish-a-kotlinjava-spring-boot-library-with-gradle-to-maven-central-complete-guide-402a
 // https://jreleaser.org/guide/latest/examples/maven/staging-artifacts.html
+// $ ./gradlew publish    # Remove SNAPSHOT and then publish, output to build/staging-deploy
 publishing {
     publications {
         create<MavenPublication>("Tulip") {
