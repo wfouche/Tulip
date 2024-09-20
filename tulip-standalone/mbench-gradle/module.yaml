@@ -8,4 +8,5 @@ settings:
   kotlin:
     languageVersion: 2.0
   jvm:
+    mainClass: AppKt
     release: 21
