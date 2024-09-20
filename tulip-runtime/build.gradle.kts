@@ -23,17 +23,48 @@ dependencies {
 group = "io.github.wfouche.tulip"
 version = "0.1.0-SNAPSHOT"
 
+// https://dev.to/tschuehly/how-to-publish-a-kotlinjava-spring-boot-library-with-gradle-to-maven-central-complete-guide-402a
+// https://jreleaser.org/guide/latest/examples/maven/staging-artifacts.html
 publishing {
     publications {
-        create<MavenPublication>("myLibrary") {
+        create<MavenPublication>("Tulip") {
             from(components["java"])
+            groupId = "io.github.wfouche.tulip"
+            artifactId = "tulip-runtime"
+            description = "Tulip load testing runtime"
+        }
+        withType<MavenPublication> {
+            pom {
+                packaging = "jar"
+                name.set("tulip-runtime")
+                description.set("Tulip load testing runtime")
+                url.set("https://github.com/wfouche/Tulip/")
+                inceptionYear.set("2023")
+                licenses {
+                    license {
+                        name.set("Apache License, Version 2.0")
+                        url.set("https://www.apache.org/licenses/LICENSE-2.0")
+                    }
+                }
+                developers {
+                    developer {
+                        id.set("wfouche")
+                        name.set("Werner Fouché")
+                        email.set("werner.fouche@gmail.com")
+                    }
+                }
+                scm {
+                    connection.set("scm:git:git@github.com:wfouche/Tulip.git")
+                    developerConnection.set("scm:git:ssh:git@github.com:wfouche/Tulip.git")
+                    url.set("https://github.com/wfouche/Tulip")
+                }
+            }
         }
     }
 
     repositories {
         maven {
-            name = "myRepo"
-            url = uri(layout.buildDirectory.dir("repo"))
+            url = uri(layout.buildDirectory.dir("staging-deploy"))
         }
     }
 }
