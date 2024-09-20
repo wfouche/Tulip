@@ -1,1 +1,1 @@
-./build_and_run.sh --args="--config ./src/user/http/config.jsonc"
+./build_and_run.sh --args="--config benchmark_config.jsonc"
