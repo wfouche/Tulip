@@ -1,4 +1,4 @@
-= Tulip (The Ultimate Load Injection Program)
+= Tulip
 :sectnums:
 :toc:
 
