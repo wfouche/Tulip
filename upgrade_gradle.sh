@@ -14,10 +14,10 @@ GRADLE_VERSION=8.10.1
 
 ./gradlew wrapper --gradle-version $GRADLE_VERSION
 
-pushd tulip-standalone/gradle
+pushd tulip-standalone/mbench-gradle
 ./gradlew wrapper --gradle-version $GRADLE_VERSION
 popd
 
-pushd tulip-standalone/oppwa
+pushd tulip-standalone/oppwa-gradle
 ./gradlew wrapper --gradle-version $GRADLE_VERSION
 popd
