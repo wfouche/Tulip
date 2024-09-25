@@ -214,7 +214,7 @@ open class TulipUser(val userId: Int, val threadId: Int) {
         return try {
             map[actionId]()
         } catch (e: Exception) {
-            Console.put("userId: ${userId}, actionId: ${actionId}, threadId: ${threadId}, " + e.toString())
+            Console.put("actionId: ${actionId}, userId: ${userId}, threadId: ${threadId}, " + e.toString())
             false
         }
     }
