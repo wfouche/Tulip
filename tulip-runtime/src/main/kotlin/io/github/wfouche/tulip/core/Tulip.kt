@@ -1255,7 +1255,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 
         DataCollector.clearStats()
         tsBegin = java.time.LocalDateTime.now().format(formatter)
-        Console.put("\n${testPhase} run ${runId}: begin (${tsBegin})")
+        Console.put("\n${testPhase} run ${runId} of ${runIdMax+1}: begin (${tsBegin})")
 
         timeMillisStart = timeMillisEnd
         timeMillisEnd = timeMillisStart + durationMillis
