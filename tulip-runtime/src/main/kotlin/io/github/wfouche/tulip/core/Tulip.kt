@@ -67,7 +67,7 @@ typealias SPSC_Queue<E> = InformativeBlockingQueue<E>
 
 /*-------------------------------------------------------------------------*/
 
-private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss.SSS")
+private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss")
 
 //
 // Arrays of user objects and user actions.
@@ -1255,7 +1255,9 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 
         DataCollector.clearStats()
         tsBegin = java.time.LocalDateTime.now().format(formatter)
+        val tsEndPredicted = java.time.LocalDateTime.now().plusSeconds(durationMillis/1000).format(formatter)
         Console.put("\n${testPhase} run ${runId} of ${runIdMax+1}: begin (${tsBegin})")
+        Console.put("${testPhase} run ${runId} of ${runIdMax+1}:       (${tsEndPredicted})")
 
         timeMillisStart = timeMillisEnd
         timeMillisEnd = timeMillisStart + durationMillis
@@ -1298,7 +1300,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         }
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
-        Console.put("$testPhase run ${runId}: end   (${tsEnd})")
+        Console.put("$testPhase run ${runId} of ${runIdMax+1}: end   (${tsEnd})")
 
         elapsedTimeNanos {
             DataCollector.createSummary(
