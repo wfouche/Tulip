@@ -218,7 +218,7 @@ def createReport(filename):
     def print_global_summary():
         global name2s
         global name2s_list
-        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.min_rt,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
+        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=sm.duration)),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.min_rt,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:-4].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -237,7 +237,7 @@ def createReport(filename):
                 text = "[%s.%s]"%(key, jb["config"]["static"]["user_actions"][key])
             else:
                 text = "[%s]"%(key)
-            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,smx.min_rt,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
+            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=sm.duration)),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,smx.min_rt,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:-4].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -273,7 +273,7 @@ def createReport(filename):
             printf(benchmark_detail_row%( \
                 name2s,
                 e["row_id"],
-                e["duration"],
+                str(datetime.timedelta(seconds=e["duration"])),
                 e["num_actions"],
                 e["num_failed"],
                 e["avg_tps"],
