@@ -111,7 +111,7 @@ scoop install extras/wingetui
 git clone https://github.com/wfouche/Tulip.git
 cd  Tulip
 sdk env install
-./go_bench.sh
+./gradlew run
 ----
 
 === MacOS
@@ -120,7 +120,7 @@ sdk env install
 git clone https://github.com/wfouche/Tulip.git
 cd  Tulip
 sdk env install
-go_bench.sh
+./gradlew run
 ----
 
 === Windows
@@ -128,7 +128,7 @@ go_bench.sh
 ----
 git clone https://github.com/wfouche/Tulip.git
 cd  Tulip
-go_bench.cmd
+gradlew run
 ----
 
 == Example Benchmark Reports
@@ -531,8 +531,8 @@ $ ./publish.sh
 This benchmark retrieves the tulip-runtime-jvm.jar file from the local Maven cache.
 
 ----
-$ cd tulip-standalone/gradle
-$ ./go_bench.sh
+$ cd tulip-standalone/mbench-gradle
+$ ./run_bench.sh
 ----
 
 == Appendix
