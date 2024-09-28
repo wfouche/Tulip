@@ -404,7 +404,7 @@ private data class ActionSummary(
 
     var histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
 
-    var durationSeconds: Int = 0,
+    var durationSeconds: Double = 0.0,
 
     var aps: Double = 0.0,
     var art: Double = 0.0,
@@ -470,10 +470,10 @@ private class ActionStats {
         r.numActions = numActions
         r.numSuccess = numSuccess
 
-        r.durationSeconds = durationMillis.toInt() / 1000
+        r.durationSeconds = durationMillis.toDouble() / 1000.0
 
         // actions per second (aps)
-        r.aps = numActions / r.durationSeconds.toDouble()
+        r.aps = numActions / r.durationSeconds
 
         // average response time (art) in milliseconds
         r.art = histogram.mean / 1000.0
