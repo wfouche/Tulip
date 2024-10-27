@@ -272,7 +272,7 @@ def createReport(filename):
         if print_detail_rows:
             printf(benchmark_detail_row%( \
                 name2s,
-                e["row_id"],
+                e["row_id"]+1,
                 str(datetime.timedelta(seconds=int(e["duration"]))),
                 e["num_actions"],
                 e["num_failed"],
