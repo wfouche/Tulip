@@ -1256,8 +1256,8 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         DataCollector.clearStats()
         tsBegin = java.time.LocalDateTime.now().format(formatter)
         val tsEndPredicted = java.time.LocalDateTime.now().plusSeconds(durationMillis/1000).format(formatter)
-        Console.put("\n${testPhase} run ${runId} of ${runIdMax+1}: begin (${tsBegin})")
-        Console.put("${testPhase} run ${runId} of ${runIdMax+1}:       (${tsEndPredicted})")
+        Console.put("\n${testPhase} run ${runId+1} of ${runIdMax+1}: begin (${tsBegin})")
+        Console.put("${testPhase} run ${runId+1} of ${runIdMax+1}:       (${tsEndPredicted})")
 
         timeMillisStart = timeMillisEnd
         timeMillisEnd = timeMillisStart + durationMillis
@@ -1300,7 +1300,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         }
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
-        Console.put("$testPhase run ${runId} of ${runIdMax+1}: end   (${tsEnd})")
+        Console.put("$testPhase run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})")
 
         elapsedTimeNanos {
             DataCollector.createSummary(
