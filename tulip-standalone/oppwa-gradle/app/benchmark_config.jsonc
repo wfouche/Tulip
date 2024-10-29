@@ -3,7 +3,7 @@
         "description": "OPPWA",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
-        "user_class": "user.http.HttpUser",
+        "user_class": "org.example.HttpUser",
         "user_actions": {
             "1": "PA",
             "2": "CP",
