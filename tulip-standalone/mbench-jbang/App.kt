@@ -15,22 +15,10 @@ import io.github.wfouche.tulip.api.TulipUserFactory
 
 /*-------------------------------------------------------------------------*/
 
-class UserFactory: TulipUserFactory() {
-
-    override fun getUser(userId: Int, className: String, threadId: Int): TulipUser {
-        return when (className) {
-            "user.http.HttpUser" -> HttpUser(userId, threadId)
-            else -> throw Exception("Unknown user class name provided - $className")
-        }
-    }
-}
-
-/*-------------------------------------------------------------------------*/
-
 class TulipCli : CliktCommand() {
     private val configOpt by option("--config").default("config.json")
     override fun run() {
-        TulipApi.runTulip(configOpt, UserFactory())
+        TulipApi.runTulip(configOpt, TulipUserFactory())
     }
 }
 
