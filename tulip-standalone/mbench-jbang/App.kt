@@ -1,5 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS com.github.ajalt.clikt:clikt-jvm:5.0.0
+//DEPS com.github.ajalt.clikt:clikt-jvm:5.0.1
 //DEPS io.github.wfouche.tulip:tulip-runtime:0.1.0-SNAPSHOT
 //SOURCES HttpUser.kt
 

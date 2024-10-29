@@ -4,7 +4,7 @@
 [versions]
 guava = "33.3.0-jre"
 junit-jupiter-engine = "5.11.0"
-clikt-jvm = "5.0.0"
+clikt-jvm = "5.0.1"
 kotlinx-serialization-json = "1.7.3"
 tulip-runtime = "0.1.0-SNAPSHOT"
 
