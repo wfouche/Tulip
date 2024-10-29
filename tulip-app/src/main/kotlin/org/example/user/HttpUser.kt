@@ -163,7 +163,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
 //    companion object {
 //        init {
-//            //Console.put("Loading .... Kotlin class ... HttpUser")
+//            //TulipConsole.put("Loading .... Kotlin class ... HttpUser")
 //        }
 //    }
 
