@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 
 import io.github.wfouche.tulip.core.Console
-import io.github.wfouche.tulip.core.delayMillisRandom
+import io.github.wfouche.tulip.api.TulipUtils
 import io.github.wfouche.tulip.api.TulipUser
 import java.net.URI
 import java.net.http.HttpClient
@@ -47,13 +47,13 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun action1(): Boolean {
         // 6 ms delay (average)
-        delayMillisRandom(0, 12)
+        TulipUtils.delayMillisRandom(0, 12)
         return true
     }
 
     override fun action2(): Boolean {
         // 14 ms delay (average)
-        delayMillisRandom(0, 28)
+        TulipUtils.delayMillisRandom(0, 28)
         return true
     }
 

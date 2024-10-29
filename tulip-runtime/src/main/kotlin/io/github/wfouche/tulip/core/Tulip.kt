@@ -973,6 +973,7 @@ object Console : Thread() {
         }
     }
 
+    @JvmStatic
     fun put(s: String) {
         put(mutableListOf(s))
     }

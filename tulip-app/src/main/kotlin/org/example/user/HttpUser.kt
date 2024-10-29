@@ -2,10 +2,9 @@ package org.example.user
 
 /*-------------------------------------------------------------------------*/
 
-import io.github.wfouche.tulip.core.Console
-import io.github.wfouche.tulip.core.delayMillisRandom
-import io.github.wfouche.tulip.api.TulipUser
+import io.github.wfouche.tulip.api.TulipConsole
 import io.github.wfouche.tulip.api.TulipUtils
+import io.github.wfouche.tulip.api.TulipUser
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
@@ -42,7 +41,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun start(): Boolean {
         val actionId = 0
-        Console.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
+        TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
         return true
     }
 
@@ -88,7 +87,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun action8(): Boolean {
         val actionId = 8
-        Console.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
+        TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
         return true
     }
 
@@ -134,8 +133,8 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
         val success = (response.statusCode() == 200)
         if (!success) {
-            Console.put("statusCode = ${response.statusCode()}")
-            Console.put("response = ${response.body()}")
+            TulipConsole.put("statusCode = ${response.statusCode()}")
+            TulipConsole.put("response = ${response.body()}")
         }
         return success
     }
@@ -143,7 +142,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun stop(): Boolean {
-        Console.put("  Terminate: UserId = $userId")
+        TulipConsole.put("  Terminate: UserId = $userId")
         Thread.sleep(100)
         return true
     }
