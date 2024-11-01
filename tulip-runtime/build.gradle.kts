@@ -7,7 +7,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.51.0"
     id("buildlogic.kotlin-library-conventions")
     `maven-publish`
-    id("org.jreleaser") version "1.14.0"
+    id("org.jreleaser") version "1.15.0"
 }
 
 dependencies {
