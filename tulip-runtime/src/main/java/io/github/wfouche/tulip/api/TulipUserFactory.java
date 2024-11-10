@@ -10,13 +10,9 @@ public class TulipUserFactory {
             Class<?> loadedClass = Class.forName(className);
             Constructor<?> ctor=loadedClass.getConstructor(int.class, int.class);
             return (TulipUser) ctor.newInstance(userId, threadId);
-        } catch (ClassNotFoundException | NoSuchMethodException e) {
-            throw new RuntimeException(e);
-        } catch (InvocationTargetException e) {
-            throw new RuntimeException(e);
-        } catch (InstantiationException e) {
-            throw new RuntimeException(e);
-        } catch (IllegalAccessException e) {
+        } catch (ClassNotFoundException | NoSuchMethodException |
+                 IllegalAccessException | InvocationTargetException |
+                 InstantiationException e) {
             throw new RuntimeException(e);
         }
     }
