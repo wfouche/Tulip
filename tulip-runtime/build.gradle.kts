@@ -11,7 +11,7 @@ plugins {
 }
 
 dependencies {
-    implementation("io.micrometer:micrometer-registry-jmx:1.13.6")
+    implementation("io.micrometer:micrometer-registry-jmx:1.14.0")
     implementation("com.google.code.gson:gson:2.11.0")
     implementation("org.slf4j:slf4j-api:2.0.16")
     implementation("org.slf4j:slf4j-simple:2.0.16")
