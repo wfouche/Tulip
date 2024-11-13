@@ -1,7 +1,7 @@
 /*-------------------------------------------------------------------------*/
 
-import io.github.wfouche.tulip.core.Console
-import io.github.wfouche.tulip.core.delayMillisRandom
+import io.github.wfouche.tulip.api.TulipConsole
+import io.github.wfouche.tulip.api.TulipUtils
 import io.github.wfouche.tulip.api.TulipUser
 import java.net.URI
 import java.net.http.HttpClient
@@ -39,7 +39,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun start(): Boolean {
         val actionId = 0
-        Console.put("  $userId -> $actionId -> ${getActionName(actionId)}")
+        TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)}")
         return true
     }
 
@@ -47,13 +47,13 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun action1(): Boolean {
         // 6 ms delay (average)
-        delayMillisRandom(0, 12)
+        TulipUtils.delayMillisRandom(0, 12)
         return true
     }
 
     override fun action2(): Boolean {
         // 14 ms delay (average)
-        delayMillisRandom(0, 28)
+        TulipUtils.delayMillisRandom(0, 28)
         return true
     }
 
@@ -83,7 +83,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun action8(): Boolean {
         val actionId = 8
-        Console.put("  $userId -> $actionId -> ${getActionName(actionId)}")
+        TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)}")
         return true
     }
 
@@ -96,14 +96,14 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun action10(): Boolean {
-        Thread.sleep(10)
+        TulipUtils.delayMillisFixed(10)
         return true
     }
 
     // ----------------------------------------------------------------- //
 
     override fun stop(): Boolean {
-        Console.put("  Terminate: UserId = $userId")
+        TulipConsole.put("  Terminate: UserId = $userId")
         //Thread.sleep(100)
         return true
     }
