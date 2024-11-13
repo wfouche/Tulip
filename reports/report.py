@@ -283,7 +283,7 @@ def createReport(filename):
                 e["percentiles_rt"]["90.0"],
                 e["percentiles_rt"]["99.0"],
                 e["max_rt"],
-                e["max_rt_ts"][8].replace("_"," "),
+                e["max_rt_ts"][8:].replace("_"," "),
                 e["max_wthread_qsize"],
                 e["avg_wthread_qsize"],
                 e["max_wt"],
