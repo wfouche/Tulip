@@ -29,7 +29,7 @@ import java.util.concurrent.atomic.AtomicInteger
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.system.exitProcess
-import java.util.concurrent.ArrayBlockingQueue
+import java.util.concurrent.LinkedBlockingQueue
 import javax.management.Attribute
 import javax.management.ObjectName
 import kotlin.math.abs
@@ -44,16 +44,13 @@ private const val histogramNumberOfSignificantValueDigits=3
 
 /*-------------------------------------------------------------------------*/
 
-class InformativeBlockingQueue<E> : ArrayBlockingQueue<E> {
+class InformativeBlockingQueue<E> : LinkedBlockingQueue<E> {
     val capacity: Int
 
-    constructor(capacity: Int) : super(capacity, false) {
+    constructor(capacity: Int) : super(capacity) {
         this.capacity = capacity
     }
 
-    constructor(capacity: Int, fair: Boolean) : super(capacity, fair) {
-        this.capacity = capacity
-    }
 }
 
 typealias Java_Queue<E> = InformativeBlockingQueue<E>
