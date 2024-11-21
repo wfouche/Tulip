@@ -1370,7 +1370,7 @@ private fun runTulip(
     runtimeInit(contextId, context, tests, actionNames, userFactory)
 
     Console.put("======================================================================")
-    Console.put("Scenario: ${context.name}")
+    Console.put("Context: ${context.name}")
     Console.put("======================================================================")
     Console.put("")
     Console.put("  NUM_USERS = $MAX_NUM_USERS")
