@@ -22,7 +22,7 @@ table, th, td {
 
 <table style="width:100%">
   <tr>
-    <th>SID</th>
+    <th>CID</th>
     <th>Name</th>
     <th>RID</th>
     <th>Duration</th>
@@ -47,7 +47,7 @@ table, th, td {
 
 benchmark_columns = '''
   <tr>
-    <th>SID</th>
+    <th>CID</th>
     <th>Name</th>
     <th>RID</th>
     <th>Duration</th>
