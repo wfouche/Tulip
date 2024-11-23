@@ -8,16 +8,17 @@ plugins {
     id("buildlogic.kotlin-library-conventions")
     `maven-publish`
     id("org.jreleaser") version "1.15.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
 }
 
 dependencies {
     implementation("io.micrometer:micrometer-registry-jmx:1.14.1")
-    implementation("com.google.code.gson:gson:2.11.0")
     implementation("org.slf4j:slf4j-api:2.0.16")
     implementation("org.slf4j:slf4j-simple:2.0.16")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.0")
     implementation("org.hdrhistogram:HdrHistogram:2.2.2")
     implementation("org.python:jython-standalone:2.7.4")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 }
 
 group = "io.github.wfouche.tulip"

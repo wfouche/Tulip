@@ -4,9 +4,6 @@ package io.github.wfouche.tulip.core
 
 /*-------------------------------------------------------------------------*/
 
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
-import com.google.gson.annotations.SerializedName
 //import io.github.oshai.kotlinlogging.KotlinLogging
 import io.micrometer.core.instrument.Clock
 import io.micrometer.core.instrument.Tag
@@ -34,6 +31,8 @@ import java.util.concurrent.LinkedBlockingQueue
 import javax.management.Attribute
 import javax.management.ObjectName
 import kotlin.math.abs
+import kotlinx.serialization.*
+import kotlinx.serialization.json.*
 
 /*-------------------------------------------------------------------------*/
 
@@ -289,43 +288,49 @@ private val g_tests = mutableListOf<TestProfile>()
 
 /*-------------------------------------------------------------------------*/
 
+@Serializable
 data class ConfigContext(
     val name: String = "",
     val enabled: Boolean = false,
-    @SerializedName("num_users") val numUsers: Int = 0,
-    @SerializedName("num_threads") val numThreads: Int = 0
+    @SerialName("num_users") val numUsers: Int = 0,
+    @SerialName("num_threads") val numThreads: Int = 0
 )
 
+@Serializable
 data class ConfigDuration(
-    @SerializedName("prewarmup_duration") val startupDuration: Long = 0,
-    @SerializedName("warmup_duration") val warmupDuration: Long = 0,
-    @SerializedName("benchmark_duration") val mainDuration: Long = 0,
-    @SerializedName("benchmark_duration_repeat_count") val mainDurationRepeatCount: Int = 1
+    @SerialName("prewarmup_duration") val startupDuration: Long = 0,
+    @SerialName("warmup_duration") val warmupDuration: Long = 0,
+    @SerialName("benchmark_duration") val mainDuration: Long = 0,
+    @SerialName("benchmark_duration_repeat_count") val mainDurationRepeatCount: Int = 1
 )
 
+@Serializable
 data class ConfigAction(
     val id: Int,
     val weight: Int = 0
 )
 
+@Serializable
 data class ConfigTest(
     val name: String,
     val enabled: Boolean = false,
-    val time: ConfigDuration,
-    @SerializedName("throughput_rate") val throughputRate: Double = 0.0,
-    @SerializedName("work_in_progress") val workInProgress: Int = 0,
+    val time: ConfigDuration = ConfigDuration(),
+    @SerialName("throughput_rate") val throughputRate: Double = 0.0,
+    @SerialName("work_in_progress") val workInProgress: Int = 0,
     val actions: List<ConfigAction> = listOf()
 )
 
+@Serializable
 data class StaticConfig(
-    @SerializedName("description") val description: String = "",
-    @SerializedName("output_filename") val jsonFilename: String = "",
-    @SerializedName("report_filename") val htmlFilename: String = "",
-    @SerializedName("user_class") val userClass: String = "",
-    @SerializedName("user_params") val userParams: Map<String,String> = mapOf(),
-    @SerializedName("user_actions") val userActions: Map<Int,String> = mapOf()
+    @SerialName("description") val description: String = "",
+    @SerialName("output_filename") val jsonFilename: String = "",
+    @SerialName("report_filename") val htmlFilename: String = "",
+    @SerialName("user_class") val userClass: String = "",
+    @SerialName("user_params") val userParams: Map<String,String> = mapOf(),
+    @SerialName("user_actions") val userActions: Map<Int,String> = mapOf()
 )
 
+@Serializable
 data class BenchmarkConfig(
     val static: StaticConfig = StaticConfig(),
     val contexts: List<ConfigContext> = listOf(),
@@ -339,14 +344,8 @@ fun initConfig(configFilename: String): String {
     Console.put("  working directory = $wd")
     Console.put("")
     Console.put("  config filename = $configFilename")
-    val gson = GsonBuilder().setPrettyPrinting().create()
     val sf = java.io.File(configFilename).readText()
-    g_config = gson.fromJson(sf, BenchmarkConfig::class.java)
-    if (false) {
-        val json = gson.toJson(g_config)
-        println(json)
-        println("$g_config")
-    }
+    g_config= Json.decodeFromString<BenchmarkConfig>(sf)
     for (e: ConfigContext in g_config.contexts) {
         //println("${e.name}")
         if (e.enabled) {
@@ -517,9 +516,7 @@ private class ActionStats {
         val output = mutableListOf("")
 
         if (printMap) {
-            val gson = Gson()
-            val latencyMap: MutableMap<Long, Long> = mutableMapOf()
-            output.add("latencyMap = " + gson.toJson(latencyMap).toString())
+            output.add("latencyMap = {}")
             output.add("")
         }
         if (actionId != NUM_ACTIONS) {
@@ -809,8 +806,9 @@ private object DataCollector {
             val bw = BufferedWriter(fw).apply {
                 when (fileWriteId) {
                     0 -> {
-                        val gson = GsonBuilder().setPrettyPrinting().create()
-                        val jsonString = gson.toJson(g_config)
+                        //val gson = GsonBuilder().setPrettyPrinting().create()
+                        //val jsonString = gson.toJson(g_config)
+                        val jsonString = Json.encodeToString(g_config)
                         //val jsonString = "${g_config}"
                         write("{  ")
                         newLine()
