@@ -40,14 +40,14 @@
         {
             "name": "Init",
             "enabled": true,
+            "throughput_rate": 0.0,
+            "work_in_progress": -1,
             "time": {
                 "prewarmup_duration": 0,
                 "warmup_duration": 0,
                 "benchmark_duration": 0,
                 "benchmark_duration_repeat_count": 1
             },
-            "throughput_rate": 0.0,
-            "work_in_progress": 1,
             "actions": [
                 {
                     "id": 0
@@ -60,14 +60,14 @@
         {
             "name": "Max TPS-a",
             "enabled": true,
+            "throughput_rate": 0.0,
+            "work_in_progress": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
                 "benchmark_duration_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "work_in_progress": -1,
             "actions": [
                 {
                     "id": 9
@@ -77,15 +77,32 @@
         {
             "name": "Max TPS-b",
             "enabled": true,
+            "throughput_rate": 1000000.0,
+            "work_in_progress": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
                 "benchmark_duration_repeat_count": 3
             },
-            "throughput_rate": 1000000.0,
-            "work_in_progress": -1,
             "actions": [
+                {
+                    "id": 9
+                }
+            ]
+        },
+        {
+            "name": "Max TPS-c",
+            "enabled": true,
+            "throughput_rate": 250000.0,
+            "work_in_progress": 4,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 3
+            },
+           "actions": [
                 {
                     "id": 9
                 }
@@ -94,14 +111,14 @@
         {
             "name": "Fixed TPS-a",
             "enabled": true,
+            "throughput_rate": 50.0,
+            "work_in_progress": 1,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_duration_repeat_count": 4
             },
-            "throughput_rate": 100.0,
-            "work_in_progress": 0,
             "actions": [
                 {
                     "id": 1,
@@ -116,14 +133,14 @@
         {
             "name": "Fixed TPS-b",
             "enabled": true,
+            "throughput_rate": 50.0,
+            "work_in_progress": 1,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_duration_repeat_count": 4
             },
-            "throughput_rate": 100.0,
-            "work_in_progress": 0,
             "actions": [
                 {
                     "id": 10
@@ -133,14 +150,14 @@
         {
             "name": "HTTP-a",
             "enabled": true,
+            "throughput_rate": 0.0,
+            "work_in_progress": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_duration_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "work_in_progress": -1,
             "actions": [
                 {
                     "id": 3
@@ -162,14 +179,14 @@
         {
             "name": "HTTP-b",
             "enabled": true,
+            "throughput_rate": 1250.0,
+            "work_in_progress": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_duration_repeat_count": 3
             },
-            "throughput_rate": 1250.0,
-            "work_in_progress": 0,
             "actions": [
                 {
                     "id": 3
@@ -191,14 +208,14 @@
         {
             "name": "Shutdown",
             "enabled": true,
+            "throughput_rate": 0.0,
+            "work_in_progress": -1,
             "time": {
                 "prewarmup_duration": 0,
                 "warmup_duration": 0,
                 "benchmark_duration": 0,
                 "benchmark_duration_repeat_count": 1
             },
-            "throughput_rate": 0.0,
-            "work_in_progress": 1,
             "actions": [
                 {
                     "id": 99

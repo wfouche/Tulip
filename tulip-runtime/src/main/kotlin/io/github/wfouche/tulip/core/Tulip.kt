@@ -23,6 +23,7 @@ import java.lang.management.ManagementFactory
 import java.nio.ByteBuffer
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -44,12 +45,7 @@ private const val histogramNumberOfSignificantValueDigits=3
 
 /*-------------------------------------------------------------------------*/
 
-class InformativeBlockingQueue<E> : LinkedBlockingQueue<E> {
-    val capacity: Int
-
-    constructor(capacity: Int) : super(capacity) {
-        this.capacity = capacity
-    }
+class InformativeBlockingQueue<E>(val capacity: Int) : LinkedBlockingQueue<E>(capacity) {
 
 }
 
@@ -1045,10 +1041,10 @@ private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<In
     val list: MutableList<Int> = mutableListOf()
     test.queueLengths.forEach { queueLength ->
         list.add(
-            when (queueLength) {
-                0 -> context.numThreads * 2
-                -1 -> context.numThreads * USER_THREAD_QSIZE
-                else -> queueLength
+            when {
+                queueLength == 0 -> context.numThreads * USER_THREAD_QSIZE  // 11
+                queueLength >  1 -> context.numThreads * queueLength        // Actions per Thread
+                else -> abs(queueLength)                                    // Actions across all Threads
             }
         )
     }
