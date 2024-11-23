@@ -359,7 +359,10 @@ fun initConfig(configFilename: String): String {
         val v = TestProfile(
             enabled = e.enabled,
             name = e.name,
-            duration = Duration(e.time.startupDuration, e.time.warmupDuration, e.time.mainDuration, e.time.mainDurationRepeatCount, TimeUnit.SECONDS),
+            duration = if (e.time == null)
+                Duration(0,0,0, 1, TimeUnit.SECONDS)
+            else
+                Duration(e.time.startupDuration, e.time.warmupDuration, e.time.mainDuration, e.time.mainDurationRepeatCount, TimeUnit.SECONDS),
             arrivalRate = e.throughputRate,
             queueLengths = listOf(e.workInProgress),
             actions = mutableListOf<Action>().apply {

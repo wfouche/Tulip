@@ -42,12 +42,6 @@
             "enabled": true,
             "throughput_rate": 0.0,
             "work_in_progress": -1,
-            "time": {
-                "prewarmup_duration": 0,
-                "warmup_duration": 0,
-                "benchmark_duration": 0,
-                "benchmark_duration_repeat_count": 1
-            },
             "actions": [
                 {
                     "id": 0
@@ -210,12 +204,6 @@
             "enabled": true,
             "throughput_rate": 0.0,
             "work_in_progress": -1,
-            "time": {
-                "prewarmup_duration": 0,
-                "warmup_duration": 0,
-                "benchmark_duration": 0,
-                "benchmark_duration_repeat_count": 1
-            },
             "actions": [
                 {
                     "id": 99
