@@ -25,7 +25,7 @@ import io.github.wfouche.tulip.api.TulipUserFactory
 /*-------------------------------------------------------------------------*/
 
 private class TulipCli00 : CliktCommand() {
-    private val configOpt by option("--config").default("benchmark_config.jsonc")
+    private val configOpt by option("--config").default("benchmark_config.json")
     private val resultOpt by option("--result").default("benchmark_output.json")
     override fun run() {
         if (configOpt != "") {
