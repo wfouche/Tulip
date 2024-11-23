@@ -313,7 +313,7 @@ data class ConfigAction(
 @Serializable
 data class ConfigTest(
     val name: String,
-    val enabled: Boolean = false,
+    val enabled: Boolean = true,
     val time: ConfigDuration = ConfigDuration(),
     @SerialName("throughput_rate") val throughputRate: Double = 0.0,
     @SerialName("work_in_progress") val workInProgress: Int = 0,
