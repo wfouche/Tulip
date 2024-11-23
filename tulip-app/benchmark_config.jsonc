@@ -39,9 +39,6 @@
     "benchmarks": [
         {
             "name": "Init",
-            "enabled": true,
-            "throughput_rate": 0.0,
-            "work_in_progress": -1,
             "actions": [
                 {
                     "id": 0
@@ -201,9 +198,6 @@
         },
         {
             "name": "Shutdown",
-            "enabled": true,
-            "throughput_rate": 0.0,
-            "work_in_progress": -1,
             "actions": [
                 {
                     "id": 99
