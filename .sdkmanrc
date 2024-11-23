@@ -11,4 +11,4 @@ java=21.0.5-amzn
 gradle=8.10.2
 
 # JBang
-jbang=0.120.4
+jbang=0.121.0
