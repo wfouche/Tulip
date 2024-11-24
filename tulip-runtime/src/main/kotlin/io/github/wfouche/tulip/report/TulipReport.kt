@@ -272,7 +272,7 @@ def createReport(filename):
             del name2s_list[0]
         ht = Histogram.fromString(e["histogram_rt"])
         jh.add(ht)
-        p_mem = 100.0 * e["jvm_memory_total"] / e["jvm_memory_maximum"]
+        p_mem = 100.0 * e["jvm_memory_used"] / e["jvm_memory_maximum"]
         p_cpu = e["system_cpu_utilization"]
         if print_detail_rows:
             printf(benchmark_detail_row%( \
