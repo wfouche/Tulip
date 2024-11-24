@@ -35,7 +35,8 @@ application {
 
         // "-XX:+UseParallelGC",
         // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
-        "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
+        // "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
+        "-XX:+UseZGC", "-XX:+ZGenerational",
 
         // VisualVM
         // "-Dcom.sun.management.jmxremote.port=3333",
