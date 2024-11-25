@@ -1,0 +1,20 @@
+= ADR 000 - ADR Template
+:sectnums:
+:toc: left
+
+// ADR: Architectural Decision Record
+//
+// https://bool.dev/blog/detail/architecture-documentation-best-practice
+
+== Status
+
+//  Proposed, Accepted, Rejected, Deprecated, Superseded,
+
+Proposed
+
+== Context
+
+== Decision
+
+== Consequences
+
