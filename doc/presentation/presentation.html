@@ -529,12 +529,12 @@ public class RedisUser extends TulipUser {
 
 }</code></pre></div></div></div></section></section>
 <section id="_tulip_user_actions_scheduler"><h2>Tulip User Actions Scheduler</h2><div class="slide-content"><div class="dlist"><dl><dt class="hdlist1">Stateless Interactions - randomized</dt><dd><div class="ulist"><ul><li><p>Actions can be executed in any order</p></li></ul></div></dd><dt class="hdlist1">Stateful Interactions - workflows</dt><dd><div class="ulist"><ul><li><p>Actions have to be executed in a specific order (shared state)</p></li></ul></div></dd></dl></div></div></section>
-<section><section id="_a_1_stateless_interactions"><h2>[A.1] Stateless Interactions</h2><div class="slide-content"><div class="ulist"><ul><li><p>Actions can be executed in any order</p></li><li><p>Execution order is randomized based on specified distribution / weight</p><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
+<section><section id="_a_stateless_interactions"><h2>[A] Stateless Interactions</h2><div class="slide-content"><div class="ulist"><ul><li><p>Actions can be executed in any order</p></li><li><p>Execution order is randomized based on specified distribution / weight</p><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
    "actions": [
         { "id": 1, "weight": 25},
         { "id": 2, "weight": 75}
     ]
-}</code></pre></div></div></li><li><p>JSONPlaceholder comes with a set of 6 common resources:</p><div class="ulist"><ul><li><p>/posts	100 posts</p></li><li><p>/comments	500 comments</p></li><li><p>&#8230;&#8203;</p></li></ul></div></li></ul></div></div></section><section id="_a_2_stateless_interactions"><h2>[A.2] Stateless Interactions</h2><div class="slide-content"><div class="ulist"><ul><li><p>Execution order is sequential, if distribution / weight not specified</p><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
+}</code></pre></div></div></li><li><p>JSONPlaceholder comes with a set of 6 common resources:</p><div class="ulist"><ul><li><p>/posts	100 posts</p></li><li><p>/comments	500 comments</p></li><li><p>&#8230;&#8203;</p></li></ul></div></li></ul></div></div></section><section id="_a_stateless_interactions_2"><h2>[A] Stateless Interactions</h2><div class="slide-content"><div class="ulist"><ul><li><p>Execution order is sequential, if distribution / weight not specified</p><div class="listingblock"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
    "actions": [
         { "id": 1},
         { "id": 2}

@@ -224,7 +224,7 @@ Stateless Interactions - randomized::
 Stateful Interactions - workflows::
 * Actions have to be executed in a specific order (shared state)
 
-== [A.1] Stateless Interactions
+== [A] Stateless Interactions
 
 * Actions can be executed in any order
 * Execution order is randomized based on specified distribution / weight
@@ -245,7 +245,7 @@ Stateful Interactions - workflows::
 ** /comments	500 comments
 ** ...
 
-=== [A.2] Stateless Interactions
+=== [A] Stateless Interactions
 
 * Execution order is sequential, if distribution / weight not specified
 +
