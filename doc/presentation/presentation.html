@@ -540,14 +540,17 @@ public class RedisUser extends TulipUser {
         { "id": 2}
     ]
 }</code></pre></div></div></li></ul></div></div></section></section>
-<section><section id="_b_stateful_interactions"><h2>[B] Stateful Interactions</h2><div class="slide-content"><div class="imageblock stretch kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNptj7EKwjAQhvc8xdFRaElqEekgBDrYrdiKgzgEjVAspjQH4tubXmyJ2Gz5vv8ufxi22GnYI_ZHqwc4meFx78yLMXDHokIN0UGr2zsCZaGsQi6v2JonCFKSL6jUK7Gg1qSaullwGbnClzivLhDHO_d2DjWqAYmWFUHJc-DJhpDkc44n2xAVI0l_5sSIMh8ShFyVHETiv-Euf8smFmwr5tA0-N3vSo9tTc8-i-5SyQ==" alt="diag03" height="100%"></div></div></section><section id="_b_stateful_interactions_2" class="columns"><h2>[B] Stateful Interactions</h2><div class="slide-content"><div class="imageblock column kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNptj7EKwjAQhvc8xdFRaElqEekgBDrYrdiKgzgEjVAspjQH4tubXmyJ2Gz5vv8ufxi22GnYI_ZHqwc4meFx78yLMXDHokIN0UGr2zsCZaGsQi6v2JonCFKSL6jUK7Gg1qSaullwGbnClzivLhDHO_d2DjWqAYmWFUHJc-DJhpDkc44n2xAVI0l_5sSIMh8ShFyVHETiv-Euf8smFmwr5tA0-N3vSo9tTc8-i-5SyQ==" alt="diag03"></div>
+<section><section id="_b_stateful_interactions"><h2>[B] Stateful Interactions</h2><div class="slide-content"><div class="imageblock stretch kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNptj7EKwjAQhvc8xdFRSElqEekgBLJ0K7bgIA5BIxSLKe2B-PYmF1sqNlu-77_LH4YtdhYGOyI3fSvh5IbHvXMvxsCfEQ1aSI7W3N4JmBHKasnVFVv3BElKiRWVRSVX1JZUUzcrLienY4nz5gKcH_zbBdRoBiRaVgSVKECkO0JKzDmR7pdIB5L9zMmA8hiShHyVAmQav-Evf8smttim59A0-N3vS4e2rmcfsDJS4A==" alt="diag03" height="100%"></div></div></section><section id="_b_stateful_interactions_2" class="columns"><h2>[B] Stateful Interactions</h2><div class="slide-content"><div class="imageblock column kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNptj7EKwjAQhvc8xdFRSElqEekgBLJ0K7bgIA5BIxSLKe2B-PYmF1sqNlu-77_LH4YtdhYGOyI3fSvh5IbHvXMvxsCfEQ1aSI7W3N4JmBHKasnVFVv3BElKiRWVRSVX1JZUUzcrLienY4nz5gKcH_zbBdRoBiRaVgSVKECkO0JKzDmR7pdIB5L9zMmA8hiShHyVAmQav-Evf8smttim59A0-N3vS4e2rmcfsDJS4A==" alt="diag03"></div>
 <div class="listingblock column"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
-    "actions_workflow": {
-        "0": {"1": 0.6, "2": 0.4},
-        "1": {"0": 0.8, "4": 0.2},
-        "2": {"3": 1.0},
-        "3": {"0": 0.8, "4": 0.2},
-        "4": {"0": 1.0}
+    "workflows": {
+        "rest-api1": {
+            "-": {"1": 0.6, "2": 0.4},
+            "1": {"-": 0.8, "4": 0.2},
+            "2": {"3": 1.0},
+            "3": {"-": 0.8, "4": 0.2},
+            "4": {"-": 1.0}
+            "*": {"-": 1.0}
+        }
     }
 }</code></pre></div></div></div></section></section>
 <section><section id="_benchmark_config"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
@@ -572,13 +575,17 @@ public class RedisUser extends TulipUser {
             "4": "HTTP-REFD",
             "99": "stop"
         },
-        "action_workflow": {
-            "0": {"1": 0.6, "2": 0.4},
-            "1": {"0": 0.8, "4": 0.2},
-            "2": {"3": 1.0},
-            "3": {"0": 0.8, "4": 0.2},
-            "4": {"0": 1.0},
-    },
+        "workflows": {
+            "rest-api1": {
+                "-": {"1": 0.6, "2": 0.4},
+                "1": {"-": 0.8, "4": 0.2},
+                "2": {"3": 1.0},
+                "3": {"-": 0.8, "4": 0.2},
+                "4": {"-": 1.0}
+                "*": {"-": 1.0}
+            }
+        }
+    }
     "contexts": [],
     "benchmarks": []
 }</code></pre></div></div></div></section><section id="_benchmark_config_3"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
@@ -599,6 +606,33 @@ public class RedisUser extends TulipUser {
     ],
     "benchmarks": []
 }</code></pre></div></div></div></section><section id="_benchmark_config_4"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
+    "static": {},
+    "contexts": [],
+    "benchmarks": [
+        {
+            "name": "Init", "enabled": true,
+            "actions": [ { "id": 0 } ]
+            },
+        },
+        {
+            "name": "Fixed TPS-a", "enabled": true,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 4
+            },
+            "throughput_rate": 100.0,
+            "work_in_progress": 0,
+            "workflow": "rest-api1"
+        },
+        {
+            "name": "Shutdown", "enabled": true,
+            "actions": [ { "id": 99 } ]
+            },
+        },
+    ]
+}</code></pre></div></div></div></section><section id="_benchmark_config_5"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
     "static": {},
     "contexts": [],
     "benchmarks": [

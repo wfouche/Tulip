@@ -266,7 +266,7 @@ Stateful Interactions - workflows::
 ....
 @startuml
 
-title HttpUser Workflow
+title rest-api1 Workflow
 
     state "Ready" as IP
     state "Action 1" as A0
@@ -296,7 +296,7 @@ title HttpUser Workflow
 ....
 @startuml
 
-title HttpUser Workflow
+title rest-api1 Workflow
 
     state "Ready" as IP
     state "Action 1" as A0
@@ -322,12 +322,15 @@ title HttpUser Workflow
 [source,json,linenums]
 ----
 {
-    "actions_workflow": {
-        "0": {"1": 0.6, "2": 0.4},
-        "1": {"0": 0.8, "4": 0.2},
-        "2": {"3": 1.0},
-        "3": {"0": 0.8, "4": 0.2},
-        "4": {"0": 1.0}
+    "workflows": {
+        "rest-api1": {
+            "-": {"1": 0.6, "2": 0.4},
+            "1": {"-": 0.8, "4": 0.2},
+            "2": {"3": 1.0},
+            "3": {"-": 0.8, "4": 0.2},
+            "4": {"-": 1.0}
+            "*": {"-": 1.0}
+        }
     }
 }
 ----
@@ -367,13 +370,17 @@ title HttpUser Workflow
             "4": "HTTP-REFD",
             "99": "stop"
         },
-        "action_workflow": {
-            "0": {"1": 0.6, "2": 0.4},
-            "1": {"0": 0.8, "4": 0.2},
-            "2": {"3": 1.0},
-            "3": {"0": 0.8, "4": 0.2},
-            "4": {"0": 1.0},
-    },
+        "workflows": {
+            "rest-api1": {
+                "-": {"1": 0.6, "2": 0.4},
+                "1": {"-": 0.8, "4": 0.2},
+                "2": {"3": 1.0},
+                "3": {"-": 0.8, "4": 0.2},
+                "4": {"-": 1.0}
+                "*": {"-": 1.0}
+            }
+        }
+    }
     "contexts": [],
     "benchmarks": []
 }
@@ -401,6 +408,41 @@ title HttpUser Workflow
         }
     ],
     "benchmarks": []
+}
+----
+
+=== Benchmark Config
+
+[.stretch]
+[source,json,linenums]
+----
+{
+    "static": {},
+    "contexts": [],
+    "benchmarks": [
+        {
+            "name": "Init", "enabled": true,
+            "actions": [ { "id": 0 } ]
+            },
+        },
+        {
+            "name": "Fixed TPS-a", "enabled": true,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_duration_repeat_count": 4
+            },
+            "throughput_rate": 100.0,
+            "work_in_progress": 0,
+            "workflow": "rest-api1"
+        },
+        {
+            "name": "Shutdown", "enabled": true,
+            "actions": [ { "id": 99 } ]
+            },
+        },
+    ]
 }
 ----
 
