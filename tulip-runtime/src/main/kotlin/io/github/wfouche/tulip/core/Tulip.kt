@@ -317,7 +317,8 @@ data class ConfigTest(
     val time: ConfigDuration = ConfigDuration(),
     @SerialName("throughput_rate") val throughputRate: Double = 0.0,
     @SerialName("worker_thread_qsize") val workInProgress: Int = 0,
-    val actions: List<ConfigAction> = listOf()
+    val actions: List<ConfigAction> = listOf(),
+    val workflow: String = ""
 )
 
 @Serializable
@@ -327,7 +328,8 @@ data class StaticConfig(
     @SerialName("report_filename") val htmlFilename: String = "",
     @SerialName("user_class") val userClass: String = "",
     @SerialName("user_params") val userParams: Map<String,String> = mapOf(),
-    @SerialName("user_actions") val userActions: Map<Int,String> = mapOf()
+    @SerialName("user_actions") val userActions: Map<Int,String> = mapOf(),
+    @SerialName("workflows") val workflows: Map<String,Map<String,Map<String,Double>>> = mapOf()
 )
 
 @Serializable

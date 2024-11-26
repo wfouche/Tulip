@@ -20,6 +20,57 @@
             "8": "login",
             "9": "noop",
             "10": "DELAY-10ms"
+        },
+        "workflows": {
+            "rest-api1": {
+                "-": {
+                    "1": 0.6,
+                    "2": 0.4
+                },
+                "1": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "2": {
+                    "3": 1.0
+                },
+                "3": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "4": {
+                    "-": 1.0
+                }
+            },
+            "rest-api2": {
+                "-": {
+                    "1": 0.6,
+                    "2": 0.4
+                },
+                "1": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "2": {
+                    "3": 1.0
+                },
+                "3": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "*": {
+                    "-": 1.0
+                }
+            },
+            "random": {
+                "-": {
+                    "1": 0.25,
+                    "2": 0.75
+                },
+                "*": {
+                    "-": 1.0
+                }
+            }
         }
     },
     "contexts": [
@@ -195,6 +246,19 @@
                     "id": 7
                 }
             ]
+        },
+        {
+            "name": "HTTP-c",
+            "enabled": false,
+            "throughput_rate": 1250.0,
+            "worker_thread_qsize": 0,
+            "time": {
+                "prewarmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "workflow": "rest-api1"
         },
         {
             "name": "Shutdown",
