@@ -266,7 +266,7 @@ Stateful Interactions - workflows::
 ....
 @startuml
 
-title rest-api1 Workflow
+title rest-api1
 
     state "Ready" as IP
     state "Action 1" as A0
@@ -296,7 +296,7 @@ title rest-api1 Workflow
 ....
 @startuml
 
-title rest-api1 Workflow
+title rest-api1
 
     state "Ready" as IP
     state "Action 1" as A0
