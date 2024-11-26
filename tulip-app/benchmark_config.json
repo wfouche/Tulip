@@ -52,7 +52,7 @@
             "name": "Max TPS-a",
             "enabled": true,
             "throughput_rate": 0.0,
-            "work_in_progress": 0,
+            "worker_thread_qsize": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 30,
@@ -69,7 +69,7 @@
             "name": "Max TPS-b",
             "enabled": true,
             "throughput_rate": 1000000.0,
-            "work_in_progress": 0,
+            "worker_thread_qsize": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 30,
@@ -86,7 +86,7 @@
             "name": "Max TPS-c",
             "enabled": true,
             "throughput_rate": 250000.0,
-            "work_in_progress": 4,
+            "worker_thread_qsize": 4,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 30,
@@ -103,7 +103,7 @@
             "name": "Fixed TPS-a",
             "enabled": true,
             "throughput_rate": 50.0,
-            "work_in_progress": 1,
+            "worker_thread_qsize": 1,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
@@ -125,7 +125,7 @@
             "name": "Fixed TPS-b",
             "enabled": true,
             "throughput_rate": 50.0,
-            "work_in_progress": 1,
+            "worker_thread_qsize": 1,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
@@ -142,7 +142,7 @@
             "name": "HTTP-a",
             "enabled": true,
             "throughput_rate": 0.0,
-            "work_in_progress": 0,
+            "worker_thread_qsize": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
@@ -171,7 +171,7 @@
             "name": "HTTP-b",
             "enabled": true,
             "throughput_rate": 1250.0,
-            "work_in_progress": 0,
+            "worker_thread_qsize": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,

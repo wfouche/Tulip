@@ -30,7 +30,7 @@
             "name": "Max TPS",
             "enabled": true,
             "throughput_rate": 0.0,
-            "work_in_progress": 0,
+            "worker_thread_qsize": 0,
             "time": {
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
