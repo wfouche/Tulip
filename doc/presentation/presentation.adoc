@@ -431,10 +431,10 @@ title rest-api1
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 4
+                "benchmark_repeat_count": 4
             },
             "throughput_rate": 100.0,
-            "work_in_progress": 0,
+            "worker_thread_qsize": 0,
             "workflow": "rest-api1"
         },
         {
@@ -466,10 +466,10 @@ title rest-api1
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 4
+                "benchmark_repeat_count": 4
             },
             "throughput_rate": 100.0,
-            "work_in_progress": 0,
+            "worker_thread_qsize": 0,
             "actions": [
                 { "id": 1, "weight": 25},
                 { "id": 2, "weight": 75}
