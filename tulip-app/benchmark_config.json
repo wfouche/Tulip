@@ -57,7 +57,7 @@
                 "prewarmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
             "actions": [
                 {
@@ -74,7 +74,7 @@
                 "prewarmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
             "actions": [
                 {
@@ -91,7 +91,7 @@
                 "prewarmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
            "actions": [
                 {
@@ -108,7 +108,7 @@
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 4
+                "benchmark_repeat_count": 4
             },
             "actions": [
                 {
@@ -130,7 +130,7 @@
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 4
+                "benchmark_repeat_count": 4
             },
             "actions": [
                 {
@@ -147,7 +147,7 @@
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
             "actions": [
                 {
@@ -176,7 +176,7 @@
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
             "actions": [
                 {

@@ -301,7 +301,7 @@ data class ConfigDuration(
     @SerialName("prewarmup_duration") val startupDuration: Long = 0,
     @SerialName("warmup_duration") val warmupDuration: Long = 0,
     @SerialName("benchmark_duration") val mainDuration: Long = 0,
-    @SerialName("benchmark_duration_repeat_count") val mainDurationRepeatCount: Int = 1
+    @SerialName("benchmark_repeat_count") val mainDurationRepeatCount: Int = 1
 )
 
 @Serializable

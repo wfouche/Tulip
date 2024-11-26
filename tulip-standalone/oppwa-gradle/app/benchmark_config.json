@@ -35,7 +35,7 @@
                 "prewarmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 4
+                "benchmark_repeat_count": 4
             },
             "actions": [
                 {
