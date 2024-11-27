@@ -436,7 +436,7 @@ ul.byline li + li {
 
    public User(int userId, int threadId)
 
-   boolean start()   { return true; } <b>(1)</b>
+   boolean onStart()   { return true; } <b>(1)</b>
    boolean action1() { return true; }
    boolean action2() { return true; }
    boolean action3() { return true; }
@@ -445,20 +445,20 @@ ul.byline li + li {
    boolean action6() { return true; }
    boolean action7() { return true; }
    boolean action8() { return true; }
-   boolean stop()    { return true; } <b>(2)</b>
+   boolean onStop()    { return true; } <b>(2)</b>
 
 }</code></pre></div></div>
 <div class="colist arabic"><ol><li><p>Initialize or restore object state</p></li><li><p>(Optionally) Save object state</p></li></ol></div></div></section><section id="_abstract_user_class_3"><h2>Abstract User Class</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-line-numbers="" data-lang="java">open class TulipUser(val userId: Int, val threadId: Int) {
 
     private val map = arrayOf(
-        ::start,
+        ::onStart,
         ::action1,
         ...
         ::action98,
-        ::stop
+        ::onStop
     )
 
-    open fun start(): Boolean = false
+    open fun onStart(): Boolean = false
 
     open fun action1(): Boolean = false
     open fun action2(): Boolean = false
@@ -467,7 +467,7 @@ ul.byline li + li {
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
 
-    open fun stop(): Boolean = false
+    open fun onStop(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
         return try {
@@ -485,7 +485,7 @@ ul.byline li + li {
       super(userId, threadId);
    }
 
-   public boolean start() {
+   public boolean onStart() {
       ...
    }
 
@@ -496,7 +496,7 @@ ul.byline li + li {
       ...
    }
    ...
-   public boolean stop() {
+   public boolean onStop() {
       ...
    }
 }</code></pre></div></div></div></section><section id="_concrete_user_class_2"><h2>Concrete User Class</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-line-numbers="" data-lang="java">public class HtmlUser extends TulipUser {

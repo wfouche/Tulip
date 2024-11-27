@@ -97,7 +97,7 @@ public abstract class TulipUser {
 
    public User(int userId, int threadId)
 
-   boolean start()   { return true; } <1>
+   boolean onStart()   { return true; } <1>
    boolean action1() { return true; } 
    boolean action2() { return true; } 
    boolean action3() { return true; } 
@@ -106,7 +106,7 @@ public abstract class TulipUser {
    boolean action6() { return true; } 
    boolean action7() { return true; } 
    boolean action8() { return true; } 
-   boolean stop()    { return true; } <2>
+   boolean onStop()    { return true; } <2>
 
 }
 ----
@@ -121,14 +121,14 @@ public abstract class TulipUser {
 open class TulipUser(val userId: Int, val threadId: Int) {
 
     private val map = arrayOf(
-        ::start,
+        ::onStart,
         ::action1,
         ...
         ::action98,
-        ::stop
+        ::onStop
     )
 
-    open fun start(): Boolean = false
+    open fun onStart(): Boolean = false
 
     open fun action1(): Boolean = false
     open fun action2(): Boolean = false
@@ -137,7 +137,7 @@ open class TulipUser(val userId: Int, val threadId: Int) {
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
 
-    open fun stop(): Boolean = false
+    open fun onStop(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
         return try {
@@ -163,7 +163,7 @@ public class HttpUser extends TulipUser {
       super(userId, threadId);
    }
 
-   public boolean start() {
+   public boolean onStart() {
       ...
    }
 
@@ -174,7 +174,7 @@ public class HttpUser extends TulipUser {
       ...
    }
    ...
-   public boolean stop() {
+   public boolean onStop() {
       ...
    }
 }
