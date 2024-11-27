@@ -517,8 +517,8 @@ private class ActionStats {
         val output = mutableListOf("")
 
         if (printMap) {
-            output.add("latencyMap = {}")
-            output.add("")
+//            output.add("latencyMap = {}")
+//            output.add("")
         }
         if (actionId != NUM_ACTIONS) {
             output.add("  action_id = ${r.actionId}")
