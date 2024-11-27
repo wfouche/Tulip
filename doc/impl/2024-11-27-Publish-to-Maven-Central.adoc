@@ -1,0 +1,9 @@
+= Publish to Maven Central
+:sectnums:
+
+== Notes
+
+2024-11-27::
+
+* [x] Changed version from 0.1.0-SNAPSHOT to 0.1.1
+* ...

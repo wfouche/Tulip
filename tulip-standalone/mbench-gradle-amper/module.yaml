@@ -2,7 +2,7 @@ product: jvm/app
 
 dependencies:
   - com.github.ajalt.clikt:clikt-jvm:5.0.1
-  - io.github.wfouche.tulip:tulip-runtime:0.1.0-SNAPSHOT
+  - io.github.wfouche.tulip:tulip-runtime:0.1.1
 
 settings:
   kotlin:
