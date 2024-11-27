@@ -18,7 +18,7 @@ table, th, td {
 </style>
 <body>
 
-<h2>Benchmark Report __DESC__</h2>
+<h2>Tulip Report __DESC__</h2>
 
 <table style="width:100%">
   <tr>
