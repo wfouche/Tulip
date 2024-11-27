@@ -115,7 +115,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     }
 
     // ----------------------------------------------------------------- //
-
+    // https://docs.oppwa.com/integrations/server-to-server#syncPayment
     override fun action1(): Boolean {
         val map = mapOf(
             "entityId"          to "8a8294174b7ecb28014b9699220015ca",
