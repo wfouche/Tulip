@@ -11,18 +11,18 @@ public class TulipApi {
     /**
      * The version string of the Tulip API.
      */
-    public static final String VERSION_STRING = "0.1.1";
+    public static final String VERSION_STRING = "2.0.0";
 
     /**
      * A banner displaying the Tulip logo in ASCII art.
      */
     public static final String VERSION_BANNER = """                                       
-  _____      _ _          ___   _   ___ \s
- |_   _|   _| (_)_ __    / _ \\ / | / _ \\\s
-   | || | | | | | '_ \\  | | | || || | | |
-   | || |_| | | | |_) | | |_| || || |_| |
-   |_| \\__,_|_|_| .__/   \\___(_)_(_)___/\s
-                |_|                     \s
+ _____      _ _         ____    ___   ___ \s
+|_   _|   _| (_)_ __   |___ \\  / _ \\ / _ \\\s
+  | || | | | | | '_ \\    __) || | | | | | |
+  | || |_| | | | |_) |  / __/ | |_| | |_| |
+  |_| \\__,_|_|_| .__/  |_____(_)___(_)___/\s
+               |_|                        \s
 """;
     // https://devops.datenkollektiv.de/banner.txt/index.html
     // <standard>

@@ -22,7 +22,7 @@ dependencies {
 }
 
 group = "io.github.wfouche.tulip"
-version = "0.1.1"
+version = "2.0.0"
 
 // https://dev.to/tschuehly/how-to-publish-a-kotlinjava-spring-boot-library-with-gradle-to-maven-central-complete-guide-402a
 // https://jreleaser.org/guide/latest/examples/maven/staging-artifacts.html
