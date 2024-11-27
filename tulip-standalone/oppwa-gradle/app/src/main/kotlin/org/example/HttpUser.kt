@@ -214,12 +214,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     override fun action4(): Boolean {
         val map = mapOf(
             "entityId"          to "8a8294174b7ecb28014b9699220015ca",
-            "amount"            to "92.00",        val map = mapOf(
-            "entityId"          to "8a8294174b7ecb28014b9699220015ca",
             "amount"            to "92.00",
-            "currency"          to "EUR",
-            "paymentType"       to "RF")
-        val body: String = map.entries.joinToString("&")
             "currency"          to "EUR",
             "paymentBrand"      to "VISA",
             "paymentType"       to "DB",
