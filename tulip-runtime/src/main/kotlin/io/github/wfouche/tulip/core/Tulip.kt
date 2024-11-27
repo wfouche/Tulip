@@ -1209,8 +1209,12 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         }
         drainRspQueue()
         val timeMillisEnd: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
-        val durationMillis: Int = (timeMillisEnd - timeMillisStart).toInt()
+        var durationMillis: Int = (timeMillisEnd - timeMillisStart).toInt()
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
+
+        if (durationMillis == 0) {
+            durationMillis = 1
+        }
 
         elapsedTimeNanos {
             DataCollector.createSummary(
