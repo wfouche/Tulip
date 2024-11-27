@@ -11,6 +11,7 @@
             "0": "onStart",
             "1": "DELAY-10ms",
             "2": "DELAY-20ms",
+            "3": "NOP",
             "99": "onStop"
         }
     },
@@ -36,7 +37,7 @@
             ]
         },
         {
-            "name": "Maximum TPS",
+            "name": "Maximum Rate",
             "time": {
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
@@ -50,7 +51,7 @@
             ]
         },
         {
-            "name": "Fixed TPS",
+            "name": "Fixed Rate",
             "time": {
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
@@ -61,6 +62,19 @@
             "actions": [
                 {"id": 1, "weight": 90},
                 {"id": 2, "weight": 10}
+            ]
+        },
+        {
+            "name": "NOP",
+            "time": {
+                "pre_warmup_duration": 5,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "actions": [
+                {"id": 3}
             ]
         },
         {
