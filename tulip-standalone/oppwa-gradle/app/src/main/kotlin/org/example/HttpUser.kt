@@ -104,9 +104,9 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     private var cid: Int = 0
 
-    // ----------------------------------------------------------------- //
-
     private var id: String = ""
+
+    private val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8ZmY0b1UhZSVlckI9YUJzQj82KyU="
 
     // ----------------------------------------------------------------- //
 
@@ -130,8 +130,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "card.cvv"          to "123")
         val body: String = map.entries.joinToString("&")
 
-        val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg="
-
         val request:HttpRequest = HttpRequest.newBuilder()
             .uri(URI.create("https://eu-test.oppwa.com/v1/payments"))
             .header("Authorization", "Bearer " + token)
@@ -141,6 +139,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
         id = ""
         val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+        // Console.put(response.body())
         if (response.statusCode() == 200) {
             val rsp = Json.decodeFromString<AuthResponse>(response.body())
             if (rsp.result.code.split(".")[0] == "000") {
@@ -160,8 +159,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "currency"          to "EUR",
             "paymentType"       to "CP")
         val body: String = map.entries.joinToString("&")
-
-        val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg="
 
         val request:HttpRequest = HttpRequest.newBuilder()
             .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${id}"))
@@ -189,8 +186,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "currency"          to "EUR",
             "paymentType"       to "RF")
         val body: String = map.entries.joinToString("&")
-
-        val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg="
 
         val request:HttpRequest = HttpRequest.newBuilder()
             .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${id}"))
@@ -224,8 +219,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "card.expiryYear"   to "2034",
             "card.cvv"          to "123")
         val body: String = map.entries.joinToString("&")
-
-        val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg="
 
         val request:HttpRequest = HttpRequest.newBuilder()
             .uri(URI.create("https://eu-test.oppwa.com/v1/payments"))

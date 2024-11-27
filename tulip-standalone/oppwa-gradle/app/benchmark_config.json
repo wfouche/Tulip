@@ -15,8 +15,8 @@
         {
             "name": "Scenario-1",
             "enabled": true,
-            "num_users": 100,
-            "num_threads": 20
+            "num_users": 16,
+            "num_threads": 2
         },
         {
             "name": "Scenario-2",
