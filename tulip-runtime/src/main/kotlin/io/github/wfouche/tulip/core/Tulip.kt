@@ -566,13 +566,13 @@ private class ActionStats {
             output.add("  free memory (jvm)    = ${"%,d".format(Locale.US, fm)}")
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
-            output.add("")
-            val awqs: Double = wthread_queue_stats.mean
-            val mwqs: Long = wthread_queue_stats.maxValue
-            output.add("  avg wkr thrd qsize = ${"%.3f".format(Locale.US, awqs)}")
-            output.add("  max wkr thrd qsize = ${"%,d".format(Locale.US, mwqs)}")
-            output.add("  average wait time  = ${"%.3f".format(Locale.US, r.awt)} ms")
-            output.add("  maximum wait time  = ${"%.3f".format(Locale.US, r.maxWt)} ms")
+//            output.add("")
+//            val awqs: Double = wthread_queue_stats.mean
+//            val mwqs: Long = wthread_queue_stats.maxValue
+//            output.add("  avg wkr thrd qsize = ${"%.3f".format(Locale.US, awqs)}")
+//            output.add("  max wkr thrd qsize = ${"%,d".format(Locale.US, mwqs)}")
+//            output.add("  average wait time  = ${"%.3f".format(Locale.US, r.awt)} ms")
+//            output.add("  maximum wait time  = ${"%.3f".format(Locale.US, r.maxWt)} ms")
 
             mg_rt_avg?.set(r.art.toInt())
             mg_rt_max?.set(r.maxRt.toInt())
