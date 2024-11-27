@@ -1,6 +1,24 @@
 = Publish to Maven Central
 :sectnums:
 
+== Source Code
+
+* [x] Add JavaDoc comments to API Java classes
+* ...
+
+== Maven Central
+
+. Navigate to Maven Central
+** https://central.sonatype.com/
+. Login as ...
+** werner.fouche@gmail.com
+. View namespaces
+** https://central.sonatype.com/publishing/namespaces
+
+== Github
+
+* [~] Publish release
+
 == Notes
 
 2024-11-27::

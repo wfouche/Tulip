@@ -20,7 +20,6 @@ import java.lang.management.ManagementFactory
 import java.nio.ByteBuffer
 import java.time.format.DateTimeFormatter
 import java.util.*
-import java.util.concurrent.ArrayBlockingQueue
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -1395,7 +1394,7 @@ private fun runTulip(
 
 /*-------------------------------------------------------------------------*/
 
-private fun runTests(
+private fun runBenchmarks(
     userFactory: TulipUserFactory,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
@@ -1421,8 +1420,8 @@ private fun runTests(
     DataCollector.closeStatsJson(filename)
 }
 
-fun runTests(userFactory: TulipUserFactory) {
-    runTests(userFactory, ::getTest)
+fun runBenchmarks(userFactory: TulipUserFactory) {
+    runBenchmarks(userFactory, ::getTest)
     //logger.info { "Done" }
 }
 
