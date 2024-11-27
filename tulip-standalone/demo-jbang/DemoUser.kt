@@ -16,6 +16,10 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         return true
     }
 
+    override fun action3(): Boolean {
+        return true
+    }
+
     override fun onStop(): Boolean {
         return true
     }
