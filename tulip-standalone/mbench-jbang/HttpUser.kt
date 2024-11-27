@@ -37,7 +37,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     private val requestPhotos = createRequest("photos")
     private val requestTodos = createRequest("todos")
 
-    override fun start(): Boolean {
+    override fun onStart(): Boolean {
         val actionId = 0
         TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)}")
         return true
@@ -102,7 +102,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun stop(): Boolean {
+    override fun onStop(): Boolean {
         TulipConsole.put("  Terminate: UserId = $userId")
         //Thread.sleep(100)
         return true

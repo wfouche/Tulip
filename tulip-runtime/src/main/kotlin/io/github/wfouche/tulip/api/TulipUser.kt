@@ -7,7 +7,7 @@ import io.github.wfouche.tulip.core.g_config
 open class TulipUser(val userId: Int, val threadId: Int) {
 
     private val map = arrayOf(
-        ::start,
+        ::onStart,
         ::action1,
         ::action2,
         ::action3,
@@ -106,10 +106,10 @@ open class TulipUser(val userId: Int, val threadId: Int) {
         ::action96,
         ::action97,
         ::action98,
-        ::stop
+        ::onStop
     )
 
-    open fun start(): Boolean = false
+    open fun onStart(): Boolean = false
     open fun action1(): Boolean = false
     open fun action2(): Boolean = false
     open fun action3(): Boolean = false
@@ -208,7 +208,7 @@ open class TulipUser(val userId: Int, val threadId: Int) {
     open fun action96(): Boolean = false
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
-    open fun stop(): Boolean = false
+    open fun onStop(): Boolean = false
 
     open fun processAction(actionId: Int): Boolean {
         return try {

@@ -26,7 +26,7 @@ public class HttpUser extends TulipUser {
         this.userId = userId;
     }
 
-    public boolean start() {
+    public boolean onStart() {
         var actionId = 0;
         return true;
     }
@@ -89,7 +89,7 @@ public class HttpUser extends TulipUser {
 
     // ----------------------------------------------------------------- //
 
-    public boolean stop() {
+    public boolean onStop() {
         //Thread.sleep(100)
         return true;
     }
