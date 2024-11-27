@@ -315,7 +315,7 @@ data class ConfigTest(
     val enabled: Boolean = true,
     val time: ConfigDuration = ConfigDuration(),
     @SerialName("throughput_rate") val throughputRate: Double = 0.0,
-    @SerialName("worker_thread_qsize") val workInProgress: Int = 0,
+    @SerialName("worker_thread_queue_size") val workInProgress: Int = 0,
     val actions: List<ConfigAction> = listOf(),
     val workflow: String = ""
 )

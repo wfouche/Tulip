@@ -103,7 +103,7 @@
             "name": "Max TPS-a",
             "enabled": true,
             "throughput_rate": 0.0,
-            "worker_thread_qsize": 0,
+            "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
@@ -120,7 +120,7 @@
             "name": "Max TPS-b",
             "enabled": true,
             "throughput_rate": 1000000.0,
-            "worker_thread_qsize": 0,
+            "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
@@ -137,7 +137,7 @@
             "name": "Max TPS-c",
             "enabled": true,
             "throughput_rate": 250000.0,
-            "worker_thread_qsize": 4,
+            "worker_thread_queue_size": 4,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
@@ -154,7 +154,7 @@
             "name": "Fixed TPS-a",
             "enabled": true,
             "throughput_rate": 50.0,
-            "worker_thread_qsize": 1,
+            "worker_thread_queue_size": 1,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
@@ -176,7 +176,7 @@
             "name": "Fixed TPS-b",
             "enabled": true,
             "throughput_rate": 50.0,
-            "worker_thread_qsize": 1,
+            "worker_thread_queue_size": 1,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
@@ -193,7 +193,7 @@
             "name": "HTTP-a",
             "enabled": true,
             "throughput_rate": 0.0,
-            "worker_thread_qsize": 0,
+            "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
@@ -222,7 +222,7 @@
             "name": "HTTP-b",
             "enabled": true,
             "throughput_rate": 1250.0,
-            "worker_thread_qsize": 0,
+            "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
@@ -251,7 +251,7 @@
             "name": "HTTP-c",
             "enabled": false,
             "throughput_rate": 1250.0,
-            "worker_thread_qsize": 0,
+            "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
