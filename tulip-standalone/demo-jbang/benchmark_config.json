@@ -38,7 +38,7 @@
         {
             "name": "Maximum TPS",
             "time": {
-                "prewarmup_duration": 5,
+                "pre_warmup_duration": 5,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
@@ -52,7 +52,7 @@
         {
             "name": "Fixed TPS",
             "time": {
-                "prewarmup_duration": 5,
+                "pre_warmup_duration": 5,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3

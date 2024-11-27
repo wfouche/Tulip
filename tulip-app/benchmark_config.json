@@ -105,7 +105,7 @@
             "throughput_rate": 0.0,
             "worker_thread_qsize": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
@@ -122,7 +122,7 @@
             "throughput_rate": 1000000.0,
             "worker_thread_qsize": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
@@ -139,7 +139,7 @@
             "throughput_rate": 250000.0,
             "worker_thread_qsize": 4,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
@@ -156,7 +156,7 @@
             "throughput_rate": 50.0,
             "worker_thread_qsize": 1,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 4
@@ -178,7 +178,7 @@
             "throughput_rate": 50.0,
             "worker_thread_qsize": 1,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 4
@@ -195,7 +195,7 @@
             "throughput_rate": 0.0,
             "worker_thread_qsize": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
@@ -224,7 +224,7 @@
             "throughput_rate": 1250.0,
             "worker_thread_qsize": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
@@ -253,7 +253,7 @@
             "throughput_rate": 1250.0,
             "worker_thread_qsize": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3

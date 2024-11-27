@@ -297,7 +297,7 @@ data class ConfigContext(
 
 @Serializable
 data class ConfigDuration(
-    @SerialName("prewarmup_duration") val startupDuration: Long = 0,
+    @SerialName("pre_warmup_duration") val startupDuration: Long = 0,
     @SerialName("warmup_duration") val warmupDuration: Long = 0,
     @SerialName("benchmark_duration") val mainDuration: Long = 0,
     @SerialName("benchmark_repeat_count") val mainDurationRepeatCount: Int = 1
@@ -584,7 +584,7 @@ private class ActionStats {
             mg_benchmark_tps?.set(r.aps.toInt())
             mg_benchmark_dur?.set(r.durationSeconds.toInt())
             var phaseId = 0
-            if (r.testPhase == "Prewarmup") phaseId = 0
+            if (r.testPhase == "Pre-Warmup") phaseId = 0
             if (r.testPhase == "Warmup") phaseId = 1
             if (r.testPhase == "Benchmark") phaseId = 2
 
@@ -1328,7 +1328,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
     // on the first set, i.e., with index 0.
     //
     if (indexUserProfile == 0) {
-        assignTasks(testCase.duration.startupDurationMillis, "Prewarmup", 0, 0, 0.0)
+        assignTasks(testCase.duration.startupDurationMillis, "Pre-Warmup", 0, 0, 0.0)
     }
 
     // Ramp-up
