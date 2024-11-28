@@ -4,7 +4,7 @@ import io.github.wfouche.tulip.core.Console
 import io.github.wfouche.tulip.core.actionNames
 import io.github.wfouche.tulip.core.g_config
 
-open class TulipUser(val userId: Int, val threadId: Int) {
+abstract class TulipUser(val userId: Int, val threadId: Int) {
 
     private val map = arrayOf(
         ::onStart,
@@ -109,7 +109,7 @@ open class TulipUser(val userId: Int, val threadId: Int) {
         ::onStop
     )
 
-    open fun onStart(): Boolean = false
+    abstract fun onStart(): Boolean
     open fun action1(): Boolean = false
     open fun action2(): Boolean = false
     open fun action3(): Boolean = false
@@ -208,7 +208,7 @@ open class TulipUser(val userId: Int, val threadId: Int) {
     open fun action96(): Boolean = false
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
-    open fun onStop(): Boolean = false
+    abstract fun onStop(): Boolean
 
     open fun processAction(actionId: Int): Boolean {
         return try {
