@@ -99,7 +99,7 @@ private val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",   "max")), A
 private val mg_rt_min = registry.gauge("Tulip", listOf(Tag.of("rt",   "min")), AtomicInteger(0))
 
 private val mg_benchmark_id  = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "id")),       AtomicInteger(0))
-private val mg_benchmark_tps = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "tps")),      AtomicInteger(0))
+private val mg_benchmark_aps = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "aps")),      AtomicInteger(0))
 private val mg_benchmark_dur = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "duration")), AtomicInteger(0))
 private val mg_benchmark_phs = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
 private val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
@@ -581,7 +581,7 @@ private class ActionStats {
             mg_num_actions?.set(r.numActions)
             mg_num_failed?.set(r.numActions - r.numSuccess)
 
-            mg_benchmark_tps?.set(r.aps.toInt())
+            mg_benchmark_aps?.set(r.aps.toInt())
             mg_benchmark_dur?.set(r.durationSeconds.toInt())
             var phaseId = 0
             if (r.testPhase == "Pre-Warmup") phaseId = 0
@@ -606,7 +606,7 @@ private class ActionStats {
         }
 
         results += ", \"num_actions\": ${numActions}, \"num_failed\": ${numActions - numSuccess}"
-        results += ", \"avg_tps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
+        results += ", \"avg_aps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
 
         results += ", \"percentiles_rt\": {"
         var t = ""
@@ -860,7 +860,7 @@ private object DataCollector {
 //            .increment()
 //
 //        Counter.builder("Tulip")
-//            .tags("action", "tps")
+//            .tags("action", "aps")
 //            .register(registry)
 //            .increment()
     }

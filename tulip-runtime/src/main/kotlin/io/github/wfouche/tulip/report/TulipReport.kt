@@ -281,7 +281,7 @@ def createReport(filename):
                 str(datetime.timedelta(seconds=int(e["duration"]))),
                 e["num_actions"],
                 e["num_failed"],
-                e["avg_tps"],
+                e["avg_aps"],
                 e["min_rt"],
                 e["avg_rt"],
                 ht.getStdDeviation()/1000.0,
