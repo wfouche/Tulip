@@ -3,7 +3,16 @@ package io.github.wfouche.tulip.api;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+/**
+ * TulipUserFactory create user objects from the class name
+ * specified in the benchmark configuration file.
+ */
 public class TulipUserFactory {
+
+    /**
+     * Public constructor
+     */
+    public TulipUserFactory() {}
     /**
      * Creates and returns a TulipUser instance based on the provided parameters.
      * This method uses reflection to dynamically instantiate a class that implements TulipUser.

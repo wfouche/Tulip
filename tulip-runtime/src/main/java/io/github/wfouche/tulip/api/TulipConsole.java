@@ -2,7 +2,15 @@ package io.github.wfouche.tulip.api;
 
 import io.github.wfouche.tulip.core.Console;
 
+/**
+ * API class to access Tulip's Console object.
+ */
 public class TulipConsole {
+
+    /**
+     * Private constructor
+     */
+    TulipConsole() { }
 
     /**
      * Outputs a string to the Tulip console.

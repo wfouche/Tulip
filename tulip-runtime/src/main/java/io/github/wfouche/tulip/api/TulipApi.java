@@ -12,12 +12,19 @@ import io.leego.banana.Font;
 public class TulipApi {
 
     /**
+     * Private constructor
+     */
+    TulipApi() { }
+
+    /**
      * The version string of the Tulip API.
      */
     public static final String VERSION_STRING = "2.0.0";
 
     /**
      * A banner displaying the Tulip logo in ASCII art.
+     *
+     * @return The multi-line banner string
      */
     public static String getVersionBanner() {
         return BananaUtils.bananaify("Tulip 2.0", Font.STANDARD);
