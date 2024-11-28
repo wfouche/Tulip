@@ -6,6 +6,5 @@ export JBANG_JAVA_OPTIONS="-server -Xms2048m -Xmx2048m -XX:+UseZGC -XX:+ZGenerat
 jbang --java 21 --enable-preview App.java
 
 echo ""
-#lynx -dump -width 200 benchmark_report.html
-w3m -dump -cols 200 benchmark_report.html
+lynx -dump -width 200 benchmark_report.html
 
