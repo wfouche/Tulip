@@ -1353,7 +1353,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 /*-------------------------------------------------------------------------*/
 
 private fun initTulip() {
-    Console.put(TulipApi.VERSION_BANNER)
+    Console.put(TulipApi.getVersionBanner())
     Console.put("Tulip $VERSION_STRING (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
 }
 

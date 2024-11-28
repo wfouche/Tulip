@@ -2,6 +2,9 @@ package io.github.wfouche.tulip.api;
 
 import io.github.wfouche.tulip.core.TulipKt;
 import io.github.wfouche.tulip.report.TulipReportKt;
+import io.leego.banana.BananaUtils;
+import io.leego.banana.Font;
+
 
 /**
  * The TulipApi class provides the main interface for running Tulip benchmarks and generating reports.
@@ -16,16 +19,9 @@ public class TulipApi {
     /**
      * A banner displaying the Tulip logo in ASCII art.
      */
-    public static final String VERSION_BANNER = """                                       
-  _____      _ _         ____    ___ \s
- |_   _|   _| (_)_ __   |___ \\  / _ \\\s
-   | || | | | | | '_ \\    __) || | | |
-   | || |_| | | | |_) |  / __/ | |_| |
-   |_| \\__,_|_|_| .__/  |_____(_)___/\s
-                |_|                  \s
-""";
-    // https://devops.datenkollektiv.de/banner.txt/index.html
-    // <standard>
+    public static String getVersionBanner() {
+        return BananaUtils.bananaify("Tulip 2.0", Font.STANDARD);
+    }
 
     /**
      * The number of unique actions available in the benchmarking process.

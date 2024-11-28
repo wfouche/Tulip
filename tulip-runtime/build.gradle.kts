@@ -19,6 +19,8 @@ dependencies {
     implementation("org.hdrhistogram:HdrHistogram:2.2.2")
     implementation("org.python:jython-standalone:2.7.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
+    implementation("io.leego:banana:2.1.0")
+
 }
 
 group = "io.github.wfouche.tulip"
