@@ -17,12 +17,12 @@ public class TulipApi {
      * A banner displaying the Tulip logo in ASCII art.
      */
     public static final String VERSION_BANNER = """                                       
- _____      _ _         ____    ___   ___ \s
-|_   _|   _| (_)_ __   |___ \\  / _ \\ / _ \\\s
-  | || | | | | | '_ \\    __) || | | | | | |
-  | || |_| | | | |_) |  / __/ | |_| | |_| |
-  |_| \\__,_|_|_| .__/  |_____(_)___(_)___/\s
-               |_|                        \s
+  _____      _ _         ____    ___ \s
+ |_   _|   _| (_)_ __   |___ \\  / _ \\\s
+   | || | | | | | '_ \\    __) || | | |
+   | || |_| | | | |_) |  / __/ | |_| |
+   |_| \\__,_|_|_| .__/  |_____(_)___/\s
+                |_|                  \s
 """;
     // https://devops.datenkollektiv.de/banner.txt/index.html
     // <standard>
