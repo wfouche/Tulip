@@ -27,7 +27,9 @@ public class TulipApi {
      * @return The multi-line banner string
      */
     public static String getVersionBanner() {
-        return BananaUtils.bananaify("Tulip 2.0", Font.STANDARD);
+        int idx = VERSION_STRING.lastIndexOf(".");
+        String text = "Tulip " + VERSION_STRING.substring(0, idx);
+        return BananaUtils.bananaify(text, Font.STANDARD);
     }
 
     /**
