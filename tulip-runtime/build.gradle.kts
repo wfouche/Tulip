@@ -33,9 +33,7 @@ version = "2.0.0"
 // https://dev.to/tschuehly/how-to-publish-a-kotlinjava-spring-boot-library-with-gradle-to-maven-central-complete-guide-402a
 // https://jreleaser.org/guide/latest/examples/maven/staging-artifacts.html
 //
-// $ ./gradlew publish    # Remove SNAPSHOT and then publish, output to build/staging-deploy
-//
-// $  ./gradlew jreleaserDeploy
+// $ ./gradlew publish    # Remove SNAPSHOT and then publish, output to tulip-runtime/build/staging-deploy
 //
 publishing {
     publications {
