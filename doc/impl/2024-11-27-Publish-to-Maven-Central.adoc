@@ -1,10 +1,11 @@
 = Publish to Maven Central
 :sectnums:
+:toc: left
 
 == Source Code
 
 * [x] Add JavaDoc comments to API Java classes
-* ...
+* [x] Clean up config, code and reports.
 
 == Maven Central
 
@@ -24,7 +25,10 @@ https://github.com/wfouche/Tulip
 
 == Notes
 
+2024-11-28::
+
+* [x] Changed version from 0.1.1 to 2.0.0
+
 2024-11-27::
 
 * [x] Changed version from 0.1.0-SNAPSHOT to 0.1.1
-* ...

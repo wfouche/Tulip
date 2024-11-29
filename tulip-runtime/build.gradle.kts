@@ -11,6 +11,11 @@ plugins {
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
 }
 
+java {
+    withJavadocJar()
+    withSourcesJar()
+}
+
 dependencies {
     implementation("io.micrometer:micrometer-registry-jmx:1.14.1")
     implementation("org.slf4j:slf4j-api:2.0.16")
@@ -20,7 +25,6 @@ dependencies {
     implementation("org.python:jython-standalone:2.7.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("io.leego:banana:2.1.0")
-
 }
 
 group = "io.github.wfouche.tulip"
@@ -39,15 +43,15 @@ publishing {
             from(components["java"])
             groupId = "io.github.wfouche.tulip"
             artifactId = "tulip-runtime"
-            description = "Tulip load testing runtime"
+            description = "Tulip runtime library"
         }
         withType<MavenPublication> {
             pom {
                 packaging = "jar"
                 name.set("tulip-runtime")
-                description.set("Tulip load testing runtime")
+                description.set("Tulip runtime library")
                 url.set("https://github.com/wfouche/Tulip/")
-                inceptionYear.set("2023")
+                inceptionYear.set("2020")
                 licenses {
                     license {
                         name.set("Apache License, Version 2.0")
@@ -75,11 +79,6 @@ publishing {
             url = uri(layout.buildDirectory.dir("staging-deploy"))
         }
     }
-}
-
-java {
-    withJavadocJar()
-    withSourcesJar()
 }
 
 jreleaser {
