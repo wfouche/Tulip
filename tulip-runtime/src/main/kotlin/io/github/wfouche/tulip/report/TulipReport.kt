@@ -18,7 +18,7 @@ table, th, td {
 </style>
 <body>
 
-<h2>Tulip Report __DESC__</h2>
+<h2>__DESC__</h2>
 
 <table style="width:100%">
   <tr>
@@ -209,7 +209,8 @@ def createReport(filename):
     jh = Histogram(1, 3600*1000*1000, 3)
     fileObj = open(filename)
     jb = json.load(fileObj)
-    description = "/ " + jb["config"]["static"]["description"] + " / " + jb["timestamp"].replace("_", " ")
+    version = jb['version']
+    description = 'Tulip ' + version +  " / " + jb["config"]["static"]["description"] + " / " + jb["timestamp"].replace("_", " ")
     rb = jb["results"]
 
     report_fn = jb["config"]["static"]["report_filename"]

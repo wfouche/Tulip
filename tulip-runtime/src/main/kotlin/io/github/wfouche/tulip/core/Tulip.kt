@@ -813,7 +813,9 @@ private object DataCollector {
                         //val jsonString = "${g_config}"
                         write("{  ")
                         newLine()
-                        write("  \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
+                        write("  \"version\": \"${TulipApi.VERSION_STRING}\"")
+                        newLine()
+                        write(", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
                         newLine()
                         write(", \"config\": ${jsonString}")
                         newLine()
