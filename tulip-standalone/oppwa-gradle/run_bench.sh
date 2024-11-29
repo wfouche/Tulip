@@ -1,2 +1,2 @@
 ./gradlew run --args="--config=benchmark_config.json"
-lynx -dump -width 200 benchmark_report.html
+lynx -dump -width 200 app/benchmark_report.html
