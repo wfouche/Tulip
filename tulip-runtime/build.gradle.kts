@@ -78,30 +78,3 @@ publishing {
         }
     }
 }
-
-jreleaser {
-    project {
-        copyright.set("Werner Fouché")
-    }
-    gitRootSearch.set(true)
-    signing {
-        active.set(Active.ALWAYS)
-        armored.set(true)
-    }
-    deploy {
-        maven {
-            nexus2 {
-                create("maven-central") {
-                    active.set(Active.ALWAYS)
-                    url.set("https://s01.oss.sonatype.org/service/local")
-                    snapshotUrl.set("https://s01.oss.sonatype.org/content/repositories/snapshots/")
-                    closeRepository.set(false)
-                    releaseRepository.set(false)
-                    stagingRepositories.add("build/staging-deploy")
-                }
-
-            }
-        }
-    }
-
-}
