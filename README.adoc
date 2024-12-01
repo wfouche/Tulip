@@ -149,7 +149,7 @@ cd  Tulip
 
 [source,text,options=nowrap]
 ----
-Benchmark Report / Micro-benchmarks / 2024-09-28 21:47:16
+Tulip 2.0.0 / Micro-benchmarks / 2024-09-28 21:47:16
 
 SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    Avg RT   Stdev   90p RT   99p RT   Max RT  Max RTT MQS AQS Max WT  Avg WT CPU  JMM
 0   Init
@@ -228,7 +228,7 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
 
 [source,text,options=nowrap]
 ----
-Benchmark Report / Micro-benchmarks / 2024-09-28 21:24:21
+Tulip 2.0.0 / Micro-benchmarks / 2024-09-28 21:24:21
 
 SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    Avg RT    Stdev   90p RT   99p RT   Max RT  Max RTT MQS AQS  Max WT    Avg WT  CPU  JMM
 0   Init
