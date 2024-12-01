@@ -16,14 +16,16 @@
 . View namespaces
 ** https://central.sonatype.com/publishing/namespaces
 
-== Maven Test Publish
+== Maven Publish
+
+=== Maven Test Publish
 
 [spirce,bash]
 ----
 $ ./00-maven-test-publish.sh
 ----
 
-[%nowrap,bash]
+[source,bash]
 ----
 tulip-runtime/build/staging-deploy
 tulip-runtime/build/staging-deploy/io
@@ -34,35 +36,35 @@ tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime
 tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/maven-metadata.xml
 tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/maven-metadata.xml.sha1
 tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.module.sha1
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-javadoc.jar.md5
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-sources.jar.sha256
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-javadoc.jar
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-sources.jar.md5
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.pom.sha512
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-sources.jar.sha512
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.module
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.jar.sha1
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.module.sha256
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.jar.sha512
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.jar
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-javadoc.jar.sha512
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-javadoc.jar.sha256
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.jar.md5
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.module.md5
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.jar.sha256
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.module.sha512
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-sources.jar
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.pom
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-sources.jar.sha1
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.pom.md5
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0-javadoc.jar.sha1
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.pom.sha1
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/2.0.0/tulip-runtime-2.0.0.pom.sha256
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/maven-metadata.xml.sha512
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/maven-metadata.xml.md5
-tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/maven-metadata.xml.sha256
 ----
+
+=== Maven Release Publish
+
+Maven Central::
+
+* https://central.sonatype.com/publishing/deployments
+
+* https://central.sonatype.org/publish-ea/publish-ea-guide/
+
+Documentation::
+
+* https://central.sonatype.org/publish/requirements/
+
+* https://jreleaser.org/guide/latest/examples/maven/maven-central.html
+
+* https://medium.com/@cristurean.marius.ovidiu/how-to-publish-your-own-kotlin-multiplatform-library-to-mavencentral-4bc02c8e109d
+
+* https://maciejwalkowiak.com/blog/publish-java-library-maven-central/
+
+* https://dev.to/tschuehly/how-to-publish-a-kotlinjava-spring-boot-library-with-gradle-to-maven-central-complete-guide-402a
+
+Gradle::
+
+* https://github.com/tschuehly/spring-view-component/blob/master/jte/build.gradle.kts
+
+Categories::
+
+* https://mvnrepository.com/open-source/load-testing
 
 == Github
 
