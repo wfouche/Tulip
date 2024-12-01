@@ -310,14 +310,13 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
 [source,json]
 ----
 {
-     "static": {
+    "static": {
         "description": "Micro-benchmarks",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
-        "user_class": "user.http.HttpUser",
+        "user_class": "org.example.user.HttpUser",
         "user_params": {
             "url": "https://jsonplaceholder.typicode.com",
-            "urlx": "http://localhost:7070"
         },
         "user_actions": {
             "0": "start",
@@ -330,8 +329,58 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
             "7": "HTTP-todos",
             "8": "login",
             "9": "noop",
-            "10": "DELAY-10ms",
-            "99": "stop"
+            "10": "DELAY-10ms"
+        },
+        "workflows": {
+            "rest-api1": {
+                "-": {
+                    "1": 0.6,
+                    "2": 0.4
+                },
+                "1": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "2": {
+                    "3": 1.0
+                },
+                "3": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "4": {
+                    "-": 1.0
+                }
+            },
+            "rest-api2": {
+                "-": {
+                    "1": 0.6,
+                    "2": 0.4
+                },
+                "1": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "2": {
+                    "3": 1.0
+                },
+                "3": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "*": {
+                    "-": 1.0
+                }
+            },
+            "random": {
+                "-": {
+                    "1": 0.25,
+                    "2": 0.75
+                },
+                "*": {
+                    "-": 1.0
+                }
+            }
         }
     },
     "contexts": [
@@ -351,15 +400,6 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
     "benchmarks": [
         {
             "name": "Init",
-            "enabled": true,
-            "time": {
-                "prewarmup_duration": 0,
-                "warmup_duration": 0,
-                "benchmark_duration": 0,
-                "benchmark_duration_repeat_count": 1
-            },
-            "throughput_rate": 0.0,
-            "work_in_progress": 1,
             "actions": [
                 {
                     "id": 0
@@ -372,14 +412,14 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
         {
             "name": "Max TPS-a",
             "enabled": true,
+            "throughput_rate": 0.0,
+            "worker_thread_queue_size": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "work_in_progress": -1,
             "actions": [
                 {
                     "id": 9
@@ -389,15 +429,32 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
         {
             "name": "Max TPS-b",
             "enabled": true,
+            "throughput_rate": 1000000.0,
+            "worker_thread_queue_size": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
-            "throughput_rate": 1000000.0,
-            "work_in_progress": -1,
             "actions": [
+                {
+                    "id": 9
+                }
+            ]
+        },
+        {
+            "name": "Max TPS-c",
+            "enabled": true,
+            "throughput_rate": 250000.0,
+            "worker_thread_queue_size": 4,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+           "actions": [
                 {
                     "id": 9
                 }
@@ -406,14 +463,14 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
         {
             "name": "Fixed TPS-a",
             "enabled": true,
+            "throughput_rate": 50.0,
+            "worker_thread_queue_size": 1,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 4
+                "benchmark_repeat_count": 4
             },
-            "throughput_rate": 100.0,
-            "work_in_progress": 0,
             "actions": [
                 {
                     "id": 1,
@@ -428,14 +485,14 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
         {
             "name": "Fixed TPS-b",
             "enabled": true,
+            "throughput_rate": 50.0,
+            "worker_thread_queue_size": 1,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 4
+                "benchmark_repeat_count": 4
             },
-            "throughput_rate": 100.0,
-            "work_in_progress": 0,
             "actions": [
                 {
                     "id": 10
@@ -445,14 +502,14 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
         {
             "name": "HTTP-a",
             "enabled": true,
+            "throughput_rate": 0.0,
+            "worker_thread_queue_size": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "work_in_progress": -1,
             "actions": [
                 {
                     "id": 3
@@ -474,14 +531,14 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
         {
             "name": "HTTP-b",
             "enabled": true,
+            "throughput_rate": 1250.0,
+            "worker_thread_queue_size": 0,
             "time": {
-                "prewarmup_duration": 15,
+                "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_duration_repeat_count": 3
+                "benchmark_repeat_count": 3
             },
-            "throughput_rate": 1250.0,
-            "work_in_progress": 0,
             "actions": [
                 {
                     "id": 3
@@ -501,16 +558,20 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
             ]
         },
         {
-            "name": "Shutdown",
-            "enabled": true,
+            "name": "HTTP-c",
+            "enabled": false,
+            "throughput_rate": 1250.0,
+            "worker_thread_queue_size": 0,
             "time": {
-                "prewarmup_duration": 0,
-                "warmup_duration": 0,
-                "benchmark_duration": 0,
-                "benchmark_duration_repeat_count": 1
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "work_in_progress": 1,
+            "workflow": "rest-api1"
+        },
+        {
+            "name": "Shutdown",
             "actions": [
                 {
                     "id": 99
