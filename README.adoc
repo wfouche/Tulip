@@ -95,6 +95,11 @@ scoop bucket add java
 scoop install microsoft21-jdk
 ----
 
+Install JBang
+----
+scoop install jbang
+----
+
 (Optionally) Install WinGetUI (aka UniGetUI) to apply future updates to the installed applications
 ----
 scoop bucket add extras
