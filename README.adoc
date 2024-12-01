@@ -2,6 +2,10 @@
 :sectnums:
 :toc:
 
+== Documentation
+
+Visit https://wfouche.github.io/Tulip/
+
 == Dependencies
 
 Install Git and JDK21 before building Tulip from source.
