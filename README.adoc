@@ -319,7 +319,7 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
             "url": "https://jsonplaceholder.typicode.com",
         },
         "user_actions": {
-            "0": "start",
+            "0": "onStart",
             "1": "DELAY-6ms",
             "2": "DELAY-14ms",
             "3": "HTTP-posts",
@@ -327,60 +327,10 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
             "5": "HTTP-albums",
             "6": "HTTP-photos",
             "7": "HTTP-todos",
-            "8": "login",
-            "9": "noop",
-            "10": "DELAY-10ms"
-        },
-        "workflows": {
-            "rest-api1": {
-                "-": {
-                    "1": 0.6,
-                    "2": 0.4
-                },
-                "1": {
-                    "-": 0.8,
-                    "4": 0.2
-                },
-                "2": {
-                    "3": 1.0
-                },
-                "3": {
-                    "-": 0.8,
-                    "4": 0.2
-                },
-                "4": {
-                    "-": 1.0
-                }
-            },
-            "rest-api2": {
-                "-": {
-                    "1": 0.6,
-                    "2": 0.4
-                },
-                "1": {
-                    "-": 0.8,
-                    "4": 0.2
-                },
-                "2": {
-                    "3": 1.0
-                },
-                "3": {
-                    "-": 0.8,
-                    "4": 0.2
-                },
-                "*": {
-                    "-": 1.0
-                }
-            },
-            "random": {
-                "-": {
-                    "1": 0.25,
-                    "2": 0.75
-                },
-                "*": {
-                    "-": 1.0
-                }
-            }
+            "8": "Login",
+            "9": "NOOP",
+            "10": "DELAY-10ms",
+            "99": "onStop"
         }
     },
     "contexts": [
