@@ -18,7 +18,7 @@ jobs:
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - name: Publish package to local staging directory
-        run: ./gradlew :tulip-runtime:publish
+        run: ./gradlew :tulip-runtime:publish --stacktrace
       - name: Publish package to maven central
         env:
           JRELEASER_NEXUS2_USERNAME: ${{ secrets.JRELEASER_NEXUS2_USERNAME }}
@@ -27,4 +27,4 @@ jobs:
           JRELEASER_GPG_SECRET_KEY: ${{ secrets.JRELEASER_GPG_SECRET_KEY }}
           JRELEASER_GPG_PUBLIC_KEY: ${{ secrets.JRELEASER_GPG_PUBLIC_KEY }}
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: ./gradlew :tulip-runtime:jreleaserDeploy -DaltDeploymentRepository=local::file:./tulip-runtime/build/staging-deploy
+        run: ./gradlew :tulip-runtime:jreleaserDeploy -DaltDeploymentRepository=local::file:./tulip-runtime/build/staging-deploy --stacktrace
