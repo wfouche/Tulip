@@ -525,17 +525,17 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
 
 === Publish Tulip Runtime
 
-Build the Tulip runtime (tulip-runtime-jvm.jar) and publish it to the local Maven ~/.m2 folder.
+Build the Tulip runtime (tulip-runtime-2.0.0.jar) and publish it to the local Maven ~/.m2 folder.
 
 .Linux
 ----
-$ ./publish.sh
+$ ./publishToMavenLocal.sh
 ----
 
 .Command output
 ----
-~/.m2/repository/org/tulip/tulip-runtime-jvm/0.1.0-SNAPSHOT/tulip-runtime-jvm-0.1.0-SNAPSHOT-sources.jar
-~/.m2/repository/org/tulip/tulip-runtime-jvm/0.1.0-SNAPSHOT/tulip-runtime-jvm-0.1.0-SNAPSHOT.jar
+~/.m2/repository/org/tulip/tulip-runtime-jvm/2.0.0/tulip-runtime-jvm-2.0.0-sources.jar
+~/.m2/repository/org/tulip/tulip-runtime-jvm/2.0.0/tulip-runtime-jvm-2.0.0.jar
 ----
 
 === Standalone Gradle / Kotlin benchmark
