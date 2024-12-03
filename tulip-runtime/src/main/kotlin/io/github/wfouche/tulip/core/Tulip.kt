@@ -35,7 +35,7 @@ import kotlinx.serialization.json.*
 
 /*-------------------------------------------------------------------------*/
 
-const val VERSION_STRING = TulipApi.VERSION_STRING
+const val VERSION = TulipApi.VERSION
 
 const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 
@@ -813,7 +813,7 @@ private object DataCollector {
                         //val jsonString = "${g_config}"
                         write("{  ")
                         newLine()
-                        write("  \"version\": \"${TulipApi.VERSION_STRING}\"")
+                        write("  \"version\": \"${VERSION}\"")
                         newLine()
                         write(", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
                         newLine()
@@ -1356,7 +1356,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 
 private fun initTulip() {
     Console.put(TulipApi.getVersionBanner())
-    Console.put("Tulip $VERSION_STRING (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
+    Console.put("Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
 }
 
 /*-------------------------------------------------------------------------*/

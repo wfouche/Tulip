@@ -19,7 +19,7 @@ public class TulipApi {
     /**
      * The version string of the Tulip API.
      */
-    public static final String VERSION_STRING = "2.0.0";
+    public static final String VERSION = "2.0.0";
 
     /**
      * A banner displaying the Tulip logo in ASCII art.
@@ -27,8 +27,8 @@ public class TulipApi {
      * @return The multi-line banner string
      */
     public static String getVersionBanner() {
-        int idx = VERSION_STRING.lastIndexOf(".");
-        String text = "Tulip " + VERSION_STRING.substring(0, idx);
+        int idx = VERSION.lastIndexOf(".");
+        String text = "Tulip " + VERSION.substring(0, idx);
         return BananaUtils.bananaify(text, Font.STANDARD);
     }
 
