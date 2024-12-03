@@ -6,6 +6,8 @@
 
 Visit https://wfouche.github.io/Tulip/
 
+image::tulip_logo.svg[width=128]
+
 == Dependencies
 
 Install Git and JDK21 before building Tulip from source.
