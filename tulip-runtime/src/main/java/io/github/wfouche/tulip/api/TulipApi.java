@@ -19,7 +19,7 @@ public class TulipApi {
     /**
      * The version string of the Tulip API.
      */
-    public static final String VERSION = "2.0.0";
+    public static final String VERSION = "2.0.1-dev";
 
     /**
      * A banner displaying the Tulip logo in ASCII art.

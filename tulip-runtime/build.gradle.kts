@@ -3,6 +3,9 @@
  */
 import org.jreleaser.model.Active
 
+group = "io.github.wfouche.tulip"
+version = "2.0.1-dev"
+
 plugins {
     id("com.github.ben-manes.versions") version "0.51.0"
     id("buildlogic.kotlin-library-conventions")
@@ -26,9 +29,6 @@ dependencies {
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("io.leego:banana:2.1.0")
 }
-
-group = "io.github.wfouche.tulip"
-version = "2.0.0"
 
 // https://dev.to/tschuehly/how-to-publish-a-kotlinjava-spring-boot-library-with-gradle-to-maven-central-complete-guide-402a
 // https://jreleaser.org/guide/latest/examples/maven/staging-artifacts.html
