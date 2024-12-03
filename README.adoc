@@ -4,7 +4,7 @@
 
 == Documentation
 
-Visit https://wfouche.github.io/Tulip/
+https://wfouche.github.io/Tulip/
 
 image::tulip_logo.svg[width=128]
 
@@ -318,7 +318,7 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
         "report_filename": "benchmark_report.html",
         "user_class": "org.example.user.HttpUser",
         "user_params": {
-            "url": "https://jsonplaceholder.typicode.com",
+            "url": "https://jsonplaceholder.typicode.com"
         },
         "user_actions": {
             "0": "onStart",
