@@ -1,0 +1,56 @@
+= How Tulip is released
+:sectnums:
+
+== Tulip Version
+
+Update the Tulip version in the following files:
+
+. File tulip-runtime/src/main/java/.../api/TulipApi.java
+** public static final String VERSION = "**2.0.0**";
+
+. File tulip-runtime/build.gradle.kts
+** version = "**2.0.0**"
+
+. File 00-maven-test-publish.cmd
+** set version=**2.0.0**
+
+. File 00-maven-test-publish.sh
+** export version="**2.0.0**"
+
+Submit the changes to Git and push to Github.
+
+== Build Maven Artifacts
+
+Run one of the following scripts one Windows or Linux. It will create a ZIP architeve of signed artifacts to be uploaded to Maven Central.
+
+Linux::
+
+[source,bash]
+----
+00-maven-test-publish.sh
+----
+
+Windows::
+
+[source,cmd]
+----
+00-maven-test-publish.cmd
+----
+
+File **tulip-runtime-<version>.zip** fill be created in folder:
+
+* tulip-runtime/build/staging-deploy
+
+== Upload Maven Artifacts
+
+Login to https://central.sonatype.com/ and select *Publish* to update ZIP file **tulip-runtime-<version>.zip** to the Maven Central staging area for validation.
+
+image::images/image-maven-central-1.png[]
+
+== Publish Maven Artifacts
+
+Once a new release has been uploaded to Maven Central, it can either be dropped or published.  If you drop the release, then you can fix an issue and build a new release and upload it again.
+
+Publishing the release is done by clicking on the **Publish** button. This is an irreversible step.
+
+image::images/image-maven-central-2.png[]

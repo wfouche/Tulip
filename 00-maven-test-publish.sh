@@ -3,7 +3,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk env
 
 # Tulip version
-export tver="2.0.0"
+export version="2.0.0"
 
 # Remove staging folder
 rm -f -r tulip-runtime/build/staging-deploy
@@ -12,17 +12,17 @@ rm -f -r tulip-runtime/build/staging-deploy
 ./gradlew publish
 
 # Sign the artifacts
-pushd ./tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/$tver
-gpg -ab tulip-runtime-$tver-javadoc.jar
-gpg -ab tulip-runtime-$tver-sources.jar
-gpg -ab tulip-runtime-$tver.jar
-gpg -ab tulip-runtime-$tver.module
-gpg -ab tulip-runtime-$tver.pom
+pushd ./tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/$version
+gpg -ab tulip-runtime-$version-javadoc.jar
+gpg -ab tulip-runtime-$version-sources.jar
+gpg -ab tulip-runtime-$version.jar
+gpg -ab tulip-runtime-$version.module
+gpg -ab tulip-runtime-$version.pom
 popd
 
 # ZIP the files to be uploaded to Maven Central
 pushd ./tulip-runtime/build/staging-deploy
-zip -r tulip-runtime-$tver.zip io
+zip -r tulip-runtime-$version.zip io
 popd
 
 
