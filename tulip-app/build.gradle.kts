@@ -30,8 +30,8 @@ application {
         //
         // "-XX:+UseLargePages",
 
-        "-Xms2048m",
-        "-Xmx2048m",
+        // "-Xms2048m",
+        "-Xmx1024m",
 
         // "-XX:+UseParallelGC",
         // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",

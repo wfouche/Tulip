@@ -30,3 +30,5 @@ jobs:
         run: ./gradlew :tulip-runtime:jreleaserDeploy --dryrun -DaltDeploymentRepository=local::file:./tulip-runtime/build/staging-deploy --stacktrace
       - name: List all Maven Artifacts
         run: find ./tulip-runtime/build/staging-deploy -print | sort
+      - name: Run Tulip test benchmark at 100 TPS
+        run: ./gradlew -q :tulip-app:run --args="--config benchmark_config_test.json"
