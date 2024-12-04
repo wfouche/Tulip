@@ -15,6 +15,8 @@ jobs:
         with:
           java-version: '21.0.5'
           distribution: 'temurin'
+      - name: Install lynx
+        run: sudo apt-get -y install lynx
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - name: Publish package to local staging directory
@@ -32,3 +34,5 @@ jobs:
         run: find ./tulip-runtime/build/staging-deploy -print | sort
       - name: Run Tulip test benchmark at 100 TPS
         run: ./gradlew -q :tulip-app:run --args="--config benchmark_config_test.json"
+      - name: Display the Tulip HTML report
+        run: lynx -dump -width 200 ./tulip-app/benchmark_report.html
