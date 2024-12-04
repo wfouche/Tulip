@@ -559,6 +559,8 @@ $ cd tulip-standalone/mbench-gradle-amper
 $ ./run_bench.sh
 ----
 
+image::image-tulip-console-2.png[]
+
 ==== Windows
 
 ----
