@@ -11,10 +11,10 @@ Update the Tulip version in the following files:
 . File tulip-runtime/build.gradle.kts
 ** version = "**2.0.0**"
 
-. File build-maven-artifacts.cmd
+. File buildMavenArtifacts.cmd
 ** set version=**2.0.0**
 
-. File build-maven-artifacts.sh
+. File buildMavenArtifacts.sh
 ** export version="**2.0.0**"
 
 Submit the changes to Git and push to Github.
@@ -27,14 +27,14 @@ Linux::
 
 [source,bash]
 ----
-build-maven-artifacts.sh
+buildMavenArtifacts.sh
 ----
 
 Windows::
 
 [source,cmd]
 ----
-build-maven-artifacts.md
+buildMavenArtifacts.cmd
 ----
 
 File **tulip-runtime-<version>.zip** fill be created in folder:
