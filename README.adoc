@@ -536,29 +536,52 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
 
 == Running Standalone Benchmarks
 
-=== Publish Tulip Runtime
+=== Maven Central
 
-Build the Tulip runtime (tulip-runtime-2.0.0.jar) and publish it to the local Maven ~/.m2 folder.
+The standalone benchmarks retrieve the tulip-runtime.jar from Maven Central.
 
-.Linux
+.Maven (xml)
+[source,xml]
 ----
-$ ./publishToMavenLocal.sh
-----
-
-.Command output
-----
-~/.m2/repository/org/tulip/tulip-runtime-jvm/2.0.0/tulip-runtime-jvm-2.0.0-javadoc.jar
-~/.m2/repository/org/tulip/tulip-runtime-jvm/2.0.0/tulip-runtime-jvm-2.0.0-sources.jar
-~/.m2/repository/org/tulip/tulip-runtime-jvm/2.0.0/tulip-runtime-jvm-2.0.0.jar
+<dependency>
+    <groupId>io.github.wfouche.tulip</groupId>
+    <artifactId>tulip-runtime</artifactId>
+    <version>2.0.0</version>
+</dependency>
 ----
 
-=== Standalone Gradle / Kotlin benchmark
+=== Demo benchmark using Gradle
 
-This benchmark retrieves the tulip-runtime-jvm.jar file from the local Maven cache.
+==== Linux or MacOS
 
 ----
-$ cd tulip-standalone/mbench-gradle
+$ cd tulip-standalone/mbench-gradle-amper
 $ ./run_bench.sh
+----
+
+==== Windows
+
+----
+$ cd tulip-standalone\mbench-gradle-amper
+$ .\run_bench.cmd
+----
+
+image::image-tulip-console-1.png[]
+
+=== Demo benchmark using JBang
+
+
+.Linux or MacOS
+----
+$ cd tulip-standalone/demo-jbang
+$ ./run_bench.sh
+----
+
+==== Windows
+
+----
+$ cd tulip-standalone\demo-jbang
+$ .\run_bench.cmd
 ----
 
 == Appendix
