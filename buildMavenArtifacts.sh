@@ -26,4 +26,4 @@ zip -r tulip-runtime-$version.zip io
 popd
 
 
-find tulip-runtime/build/staging-deploy -print
+find tulip-runtime/build/staging-deploy -print | sort
