@@ -17,6 +17,7 @@ import io.github.wfouche.tulip.api.TulipUser
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.lang.management.ManagementFactory
+import com.sun.management.OperatingSystemMXBean
 import java.nio.ByteBuffer
 import java.time.format.DateTimeFormatter
 import java.util.*
@@ -980,29 +981,6 @@ object Console : Thread() {
     }
 }
 
-fun getLoadValue(counter: String): Double {
-    val mbs = ManagementFactory.getPlatformMBeanServer()
-    val name = ObjectName.getInstance("java.lang:type=OperatingSystem")
-    val list = mbs.getAttributes(name, arrayOf(counter))
-
-    if (list.isEmpty()) return java.lang.Double.NaN
-
-    val att = list[0] as Attribute
-    val value = att.value as Double
-
-    // usually takes a couple of seconds before we get real values
-    return if (value == -1.0) java.lang.Double.NaN else (value * 1000).toInt() / 10.0
-    // returns a percentage value with 1 decimal point precision
-}
-
-//fun getProcessCpuLoad(): Double {
-//    return getLoadValue("ProcessCpuLoad")
-//}
-
-fun getSystemCpuLoad(): Double {
-    return getLoadValue("SystemCpuLoad")
-}
-
 object MonitorSystemCpuLoad: Thread () {
 
     init {
@@ -1011,21 +989,20 @@ object MonitorSystemCpuLoad: Thread () {
         start()
     }
 
-    private var maxCpuUtilization = 0.0
+    private var maxCpuUtilization: Double = 0.0
 
     override fun run() {
+        val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
+        var cpuLoad: Double = osBean.getCpuLoad()
         while (true) {
             sleep(2000)
-            var cpuLoad = getSystemCpuLoad()
-            if (!cpuLoad.isNaN()) {
-                if (cpuLoad > 100.0) cpuLoad = 100.0
+            cpuLoad = osBean.getCpuLoad()
+            synchronized(this) {
                 if (maxCpuUtilization < cpuLoad) {
-                    synchronized(this) {
-                        maxCpuUtilization = cpuLoad
-                    }
+                    maxCpuUtilization = cpuLoad
                 }
             }
-            //Console.put("cpu usage = ${cpuUtilization}")
+            //Console.put("cpu usage = ${maxCpuUtilization}")
         }
     }
 
@@ -1035,7 +1012,7 @@ object MonitorSystemCpuLoad: Thread () {
             cpuUtilization = maxCpuUtilization
             maxCpuUtilization = 0.0
         }
-        return cpuUtilization
+        return cpuUtilization * 100.0
     }
 }
 
