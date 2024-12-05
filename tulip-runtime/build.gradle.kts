@@ -44,14 +44,14 @@ publishing {
             from(components["java"])
             groupId = "io.github.wfouche.tulip"
             artifactId = "tulip-runtime"
-            description = "Tulip runtime library"
+            description = "Tulip Runtime"
         }
         withType<MavenPublication> {
             pom {
                 packaging = "jar"
                 name.set("tulip-runtime")
-                description.set("Tulip runtime library")
-                url.set("https://github.com/wfouche/Tulip/")
+                description.set("Tulip Runtime")
+                url.set("https://wfouche.github.io/Tulip")
                 inceptionYear.set("2020")
                 licenses {
                     license {
