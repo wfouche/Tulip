@@ -1,11 +1,14 @@
 package org.example
 
 import io.github.wfouche.tulip.api.TulipUser
-import io.github.wfouche.tulip.api.TulipUtils
+import io.github.wfouche.tulip.api.TulipConsole
 
 class DemoUser(val userId: Int, val threadId: Int) extends TulipUser(userId, threadId) {
 
-  override def onStart(): Boolean = true
+  override def onStart(): Boolean = {
+    TulipConsole.put("ScalaDemoUser " + userId)
+    true
+  }
 
   override def action1(): Boolean = {
     Thread.sleep(10)
