@@ -2,9 +2,9 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-guava = "33.2.1-jre"
 junit = "4.13.2"
+tulip-runtime = "2.0.0"
 
 [libraries]
-guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit = { module = "junit:junit", version.ref = "junit" }
+tulip-runtime = { module = "io.github.wfouche.tulip:tulip-runtime", version.ref = "tulip-runtime" }
