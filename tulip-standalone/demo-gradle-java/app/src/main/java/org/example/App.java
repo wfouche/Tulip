@@ -1,7 +1,6 @@
 package org.example;
 
-import io.github.wfouche.tulip.api.TulipApi;
-import io.github.wfouche.tulip.api.TulipUserFactory;
+import io.github.wfouche.tulip.api.*;
 
 public class App {
     public static void main(String[] args) {
