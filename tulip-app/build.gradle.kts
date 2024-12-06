@@ -7,7 +7,7 @@ plugins {
 }
 
 dependencies {
-    implementation("com.github.ajalt.clikt:clikt-jvm:5.0.1")
+    implementation("com.github.ajalt.clikt:clikt-jvm:5.0.2")
     implementation(project(":tulip-runtime"))
 }
 
