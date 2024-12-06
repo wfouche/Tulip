@@ -32,7 +32,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = 'App'
+    mainClass = 'org.example.App'
     applicationDefaultJvmArgs = [
         // -server or -client
         "-server",

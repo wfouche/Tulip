@@ -1,5 +1,6 @@
-/*-------------------------------------------------------------------------*/
+package org.example;
 
+import io.github.wfouche.tulip.api.TulipConsole;
 import io.github.wfouche.tulip.api.TulipUser;
 import io.github.wfouche.tulip.api.TulipUtils;
 
@@ -10,6 +11,7 @@ public class DemoUser extends TulipUser {
     }
 
     public boolean onStart() {
+        TulipConsole.put("JavaDemoUser " + getUserId());
         return true;
     }
 
