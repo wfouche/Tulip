@@ -3,7 +3,7 @@
         "description": "Demo Benchmark",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
-        "user_class": "DemoUser",
+        "user_class": "org.example.DemoUser",
         "user_params": {
             "url": "http://localhost:7070"
         },

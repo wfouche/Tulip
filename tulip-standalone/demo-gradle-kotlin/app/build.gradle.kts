@@ -41,7 +41,7 @@ java {
 
 application {
     // Define the main class for the app
-    mainClass = "AppKt"
+    mainClass = "org.example.AppKt"
 
     // Java 21 - https://docs.oracle.com/en/java/javase/21/gctuning/z-garbage-collector.html
     applicationDefaultJvmArgs = listOf(
