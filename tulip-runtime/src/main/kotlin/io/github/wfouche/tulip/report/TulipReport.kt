@@ -18,7 +18,7 @@ table, th, td {
 </style>
 <body>
 
-<h2>__DESC__</h2>
+<h2><a href="https://wfouche.github.io/Tulip">__DESC1__</a> / __DESC2__</h2>
 
 <table style="width:100%">
   <tr>
@@ -210,7 +210,8 @@ def createReport(filename):
     fileObj = open(filename)
     jb = json.load(fileObj)
     version = jb['version']
-    description = 'Tulip ' + version +  " / " + jb["config"]["static"]["description"] + " / " + jb["timestamp"].replace("_", " ")
+    desc1 = 'Tulip ' + version
+    desc2 = jb["config"]["static"]["description"] + " / " + jb["timestamp"].replace("_", " ")
     rb = jb["results"]
 
     report_fn = jb["config"]["static"]["report_filename"]
@@ -252,7 +253,7 @@ def createReport(filename):
                 name2s = name2s_list[0]
                 del name2s_list[0]
 
-    printf(header.replace("__DESC__", description))
+    printf(header.replace("__DESC1__", desc1).replace("__DESC2__", desc2))
 
     prev_row_id = 0
     for e in rb:
