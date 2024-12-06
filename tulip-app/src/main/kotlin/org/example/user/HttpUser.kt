@@ -42,6 +42,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     override fun onStart(): Boolean {
         val actionId = 0
         TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
+        //TulipConsole.put(listOf("a", "b"))
         return true
     }
 
