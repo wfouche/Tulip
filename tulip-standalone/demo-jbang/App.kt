@@ -6,7 +6,5 @@
 import io.github.wfouche.tulip.api.*
 
 fun main(args: Array<String>) {
-    TulipApi.runTulip(
-        "benchmark_config.json",
-        TulipUserFactory())
+    TulipApi.runTulip("benchmark_config.json", TulipUserFactory())
 }
