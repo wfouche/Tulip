@@ -32,6 +32,9 @@ dependencies {
 
     // Need scala-xml at test runtime
     testRuntimeOnly libs.scala.xml.v2.v13
+
+    // Tulip runtime
+    implementation libs.tulip.runtime
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -44,4 +47,29 @@ java {
 application {
     // Define the main class for the application.
     mainClass = 'org.example.App'
+    applicationDefaultJvmArgs = [
+            // -server or -client
+            "-server",
+
+            // Create a 2 GB regions of Large Pages
+            //
+            // $ ls /sys/kernel/mm/hugepages/
+            //   hugepages-1048576kB  hugepages-2048kB
+            // // # Reserve 2 GB of RAM
+            // $ echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
+            //
+            // "-XX:+UseLargePages",
+
+            "-Xms2048m",
+            "-Xmx2048m",
+
+            // "-XX:+UseParallelGC",
+            // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
+            "-XX:+UseZGC", "-XX:+ZGenerational",
+
+            // VisualVM
+            // "-Dcom.sun.management.jmxremote.port=3333",
+            // "-Dcom.sun.management.jmxremote.ssl=false",
+            // "-Dcom.sun.management.jmxremote.authenticate=false"
+    ]
 }
