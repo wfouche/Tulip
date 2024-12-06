@@ -29,6 +29,8 @@ dependencies {
 
     // This dependency is used by the application.
     implementation(libs.guava)
+    implementation(libs.tulip.runtime)
+    implementation(libs.clikt.jvm)
 }
 
 // Apply a specific Java toolchain to ease working on different environments.
@@ -40,7 +42,7 @@ java {
 
 application {
     // Define the main class for the application.
-    mainClass = "org.example.AppKt"
+    mainClass = "AppKt"
 }
 
 tasks.named<Test>("test") {

@@ -4,10 +4,14 @@
 [versions]
 guava = "33.2.1-jre"
 junit-jupiter-engine = "5.10.3"
+tulip-runtime = "2.0.0"
+clikt-jvm = "5.0.1"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
+tulip-runtime = { module = "io.github.wfouche.tulip:tulip-runtime", version.ref = "tulip-runtime" }
+clikt-jvm = { module = "com.github.ajalt.clikt:clikt-jvm", version.ref = "clikt-jvm"}
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.0.0" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.0.21" }
