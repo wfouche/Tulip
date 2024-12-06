@@ -976,6 +976,7 @@ object Console : Thread() {
         put(mutableListOf(s))
     }
 
+    @JvmStatic
     fun put(list: MutableList<String>) {
         q.put(list)
     }
