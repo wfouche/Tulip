@@ -1,15 +1,91 @@
 = Changelog
+:toc: left
 
 All notable changes to this project will be documented in this file.
 
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
-= [v2.0.0] - 2024-12-01
+== [v2.0.1] - 2024-12-08
 
-* Tulip has been in development for five years. This is the first public release of the Tulip load testing framework. Tulip is now available on Maven Central at:
+=== TulipApi
 
- https://central.sonatype.com/namespace/io.github.wfouche.tulip
+* The `runTulip` method can now be invoked without providing a `TulipUserFactory` object. In special cases this might still be needed, so the old way of invoking Tulip continues to be supported.
++
+.Simplified
+[source,java]
+----
+package org.example;
+
+import io.github.wfouche.tulip.api.*;
+
+public class App {
+    public static void main(String[] args) {
+        TulipApi.runTulip("./benchmark_config.json");
+    }
+}
+----
++
+.Original
+[source,java]
+----
+package org.example;
+
+import io.github.wfouche.tulip.api.*;
+
+public class App {
+    public static void main(String[] args) {
+        TulipApi.runTulip("./benchmark_config.json", new TulipUserFactory());
+    }
+}
+----
+
+=== TulipConsole
+
+* Implemented method `put (List<String> list)` to print a list of Strings to the Tulip console (thread-safe output device).
+
+=== Release Information
+
+Tulip is now available on Maven Central at:
+
+* https://central.sonatype.com/namespace/io.github.wfouche.tulip
++
+.Maven (xml)
+[source,xml]
+----
+<dependency>
+    <groupId>io.github.wfouche.tulip</groupId>
+    <artifactId>tulip-runtime</artifactId>
+    <version>2.0.1</version>
+</dependency>
+----
++
+.Gradle (Groovy)
+[source,groovy]
+----
+implementation 'io.github.wfouche.tulip:tulip-runtime:2.0.1'
+----
++
+.Gradle (kts)
+[source,kotlin]
+----
+implementation("io.github.wfouche.tulip:tulip-runtime:2.0.1")
+----
+
+
+* Documentation:
+
+** https://wfouche.github.io/Tulip/
+
+== [v2.0.0] - 2024-12-01
+
+Tulip has been in development for five years. This is the first public release of the Tulip load testing framework.
+
+=== Release Information
+
+Tulip is now available on Maven Central at:
+
+* https://central.sonatype.com/namespace/io.github.wfouche.tulip
 +
 .Maven (xml)
 [source,xml]
