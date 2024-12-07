@@ -51,6 +51,19 @@ public class TulipApi {
     }
 
     /**
+     * Runs the Tulip benchmarking process.
+     * This method initializes the configuration, runs the benchmarks, and creates an HTML report.
+     *
+     * @param configFilename The name of the configuration file to be used for initialization.
+     */
+    public static void runTulip(String configFilename) {
+        String outputFilename = TulipKt.initConfig(configFilename);
+        TulipUserFactory userFactory = new TulipUserFactory();
+        TulipKt.runBenchmarks(userFactory);
+        createHtmlReport(outputFilename);
+    }
+
+    /**
      * Creates an HTML report from the benchmarking output.
      *
      * @param outputFilename The name of the output file containing the benchmarking results.
