@@ -6,7 +6,7 @@
 
 https://wfouche.github.io/Tulip/
 
-image::tulip_logo.svg[width=128]
+image::tulip_logo.jpg[width=128]
 
 == Dependencies
 
