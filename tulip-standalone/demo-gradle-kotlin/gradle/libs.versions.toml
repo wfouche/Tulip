@@ -4,7 +4,7 @@
 [versions]
 junit-jupiter-engine = "5.10.3"
 tulip-runtime = "2.0.1"
-clikt-jvm = "5.0.2"
+clikt-jvm = "5.0.1"
 
 [libraries]
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }

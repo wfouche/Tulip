@@ -29,7 +29,7 @@ private class TulipCli00 : CliktCommand() {
     private val resultOpt by option("--result").default("")
     override fun run() {
         if (configOpt != "") {
-            TulipApi.runTulip(configOpt, TulipUserFactory())
+            TulipApi.runTulip(configOpt)
         } else if (resultOpt != "") {
 	        echo(resultOpt)
             TulipApi.createHtmlReport(resultOpt)
