@@ -568,7 +568,8 @@ private class ActionStats {
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
             output.add("")
-            output.add("  process cpu time = ${"%.3f".format(Locale.US, DataCollector.cpuTime/1000000000.0)} seconds, used ${"%.3f".format(Locale.US, DataCollector.cpuTime/1000000000.0/r.durationSeconds)} cores")
+            output.add("  process cpu time = ${"%.3f".format(Locale.US, DataCollector.cpuTime/1000000000.0)} seconds")
+            output.add("  number of cores  = ${"%.3f".format(Locale.US, DataCollector.cpuTime/1000000000.0/r.durationSeconds)} cores")
 //            output.add("")
 //            val awqs: Double = wthread_queue_stats.mean
 //            val mwqs: Long = wthread_queue_stats.maxValue
