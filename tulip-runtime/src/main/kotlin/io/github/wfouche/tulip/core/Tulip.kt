@@ -421,6 +421,7 @@ private data class ActionSummary(
 
     //var avgCpuSystem: Double = 0.0,
     //var avgCpuProcess: Double = 0.0
+    var processCpuTime: Long = 0
 )
 
 /*-------------------------------------------------------------------------*/
@@ -452,7 +453,8 @@ private class ActionStats {
         tsBegin: String,
         tsEnd: String,
         testPhase: String,
-        runId: Int
+        runId: Int,
+        cpuTime: Long
     ) {
         r.actionId = actionId
 
@@ -513,6 +515,9 @@ private class ActionStats {
         //    // average system CPU load.
         //    // r.avgCpuSystem = 0.0
         //}
+        if (actionId == NUM_ACTIONS) {
+            r.processCpuTime = cpuTime
+        }
 
     }
 
@@ -520,7 +525,7 @@ private class ActionStats {
 
         val output = mutableListOf("")
 
-        if (DataCollector.cpuTime == 0L) {
+        if (r.processCpuTime == 0L) {
             // Init, or Shutdown -> TPS inaccurate, so set to 0.0
             //r.aps = 0.0
             //This is not a complete solution, breaks the report
@@ -533,14 +538,14 @@ private class ActionStats {
         output.add("  num_actions = ${r.numActions}")
         output.add("  num_failed  = ${r.numActions - r.numSuccess}")
         output.add("")
-        output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
-        if (DataCollector.cpuTime == 0L) {
+        if (r.processCpuTime == 0L) {
             // Init, or Shutdown
             output.add("  duration of actions (in seconds)               = ${r.durationSeconds} seconds")
         } else {
             // Benchmark
             output.add("  duration of benchmark (in seconds)             = ${r.durationSeconds} seconds")
         }
+        output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
         output.add("")
         output.add("  average latency     (response time)  (millis)  = ${"%.3f".format(Locale.US, r.art)} ms")
         output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)} ms")
@@ -581,7 +586,7 @@ private class ActionStats {
             output.add("  total memory (jvm)   = ${"%.3f".format(Locale.US, tm/gb1)} GB")
             output.add("  maximum memory (jvm) = ${"%.3f".format(Locale.US, mm/gb1)} GB")
             output.add("")
-            val cpu_time_secs: Double = DataCollector.cpuTime/1000000000.0
+            val cpu_time_secs: Double = r.processCpuTime/1000000000.0
             output.add("  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
             val cpu_cores_used: Double = cpu_time_secs / r.durationSeconds
             output.add("  num cores used       = ${"%.3f".format(Locale.US, cpu_cores_used)} cores")
@@ -695,7 +700,6 @@ private class ActionStats {
 private object DataCollector {
     private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
-    var cpuTime: Long = 0
 
     // val a = arrayOf<Array<ActionStats>>()
     // init {
@@ -714,9 +718,8 @@ private object DataCollector {
         tsEnd: String,
         testPhase: String,
         runId: Int,
-        cpuTime: Long = 0
+        cpuTime: Long
     ) {
-        this.cpuTime = cpuTime
         actionStats[NUM_ACTIONS].createSummary(
             NUM_ACTIONS,
             durationMillis,
@@ -727,7 +730,8 @@ private object DataCollector {
             tsBegin,
             tsEnd,
             testPhase,
-            runId
+            runId,
+            cpuTime
         )
         actionStats.forEachIndexed { index, data ->
             if (data.numActions > 0) {
@@ -742,7 +746,8 @@ private object DataCollector {
                         tsBegin,
                         tsEnd,
                         testPhase,
-                        -1
+                        -1,
+                        0L
                     )
                 }
             }
@@ -899,7 +904,6 @@ private object DataCollector {
         }
         waitTimeMicrosHistogram.reset()
         wthread_queue_stats.reset()
-        cpuTime = 0
     }
 }
 
