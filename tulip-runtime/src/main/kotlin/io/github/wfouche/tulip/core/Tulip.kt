@@ -569,12 +569,12 @@ private class ActionStats {
             output.add("  maximum memory (jvm) = ${"%.3f".format(Locale.US, mm/gb1)} GB")
             output.add("")
             val cpu_time_secs: Double = DataCollector.cpuTime/1000000000.0
-            output.add("  cpu time (process)  = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
+            output.add("  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
             val cpu_cores_used: Double = cpu_time_secs / r.durationSeconds
-            output.add("  num cores used      = ${"%.3f".format(Locale.US, cpu_cores_used)} cores")
+            output.add("  num cores used       = ${"%.3f".format(Locale.US, cpu_cores_used)} cores")
             var p_cpu_usage: Double = 100.0 * cpu_cores_used / NUM_CORES
             if (p_cpu_usage > 100.0) p_cpu_usage = 100.0
-            output.add("  avg cpu utilization = ${"%.1f".format(Locale.US, p_cpu_usage)} %")
+            output.add("  avg cpu utilization  = ${"%.1f".format(Locale.US, p_cpu_usage)} %")
 
 //            output.add("")
 //            val awqs: Double = wthread_queue_stats.mean
