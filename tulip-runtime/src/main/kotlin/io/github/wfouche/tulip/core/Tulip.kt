@@ -4,34 +4,34 @@ package io.github.wfouche.tulip.core
 
 /*-------------------------------------------------------------------------*/
 
-//import io.github.oshai.kotlinlogging.KotlinLogging
+import com.sun.management.OperatingSystemMXBean
+import io.github.wfouche.tulip.api.TulipApi
+import io.github.wfouche.tulip.api.TulipUser
+import io.github.wfouche.tulip.api.TulipUserFactory
 import io.micrometer.core.instrument.Clock
 import io.micrometer.core.instrument.Tag
 import io.micrometer.jmx.JmxConfig
 import io.micrometer.jmx.JmxMeterRegistry
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
-import io.github.wfouche.tulip.api.TulipApi
-import io.github.wfouche.tulip.api.TulipUserFactory
-import io.github.wfouche.tulip.api.TulipUser
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.lang.management.ManagementFactory
-import com.sun.management.OperatingSystemMXBean
 import java.nio.ByteBuffer
 import java.time.format.DateTimeFormatter
 import java.util.*
+import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.system.exitProcess
-import java.util.concurrent.LinkedBlockingQueue
 import kotlin.math.abs
-import kotlinx.serialization.*
-import kotlinx.serialization.json.*
-import oshi.hardware.CentralProcessor
+import kotlin.system.exitProcess
 
 /*-------------------------------------------------------------------------*/
 
@@ -520,6 +520,11 @@ private class ActionStats {
 
         val output = mutableListOf("")
 
+        if (DataCollector.cpuTime == 0L) {
+            // Init, or Shutdown -> TPS inaccurate, so set to 0.0
+            r.aps = 0.0
+        }
+
         if (actionId != NUM_ACTIONS) {
             output.add("  action_id = ${r.actionId}")
         }
@@ -527,7 +532,13 @@ private class ActionStats {
         output.add("  num_failed  = ${r.numActions - r.numSuccess}")
         output.add("")
         output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
-        output.add("  duration of benchmark (in seconds)             = ${r.durationSeconds} seconds")
+        if (DataCollector.cpuTime == 0L) {
+            // Init, or Shutdown
+            output.add("  duration of actions (in seconds)               = ${r.durationSeconds} seconds")
+        } else {
+            // Benchmark
+            output.add("  duration of benchmark (in seconds)             = ${r.durationSeconds} seconds")
+        }
         output.add("")
         output.add("  average latency     (response time)  (millis)  = ${"%.3f".format(Locale.US, r.art)} ms")
         output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)} ms")
