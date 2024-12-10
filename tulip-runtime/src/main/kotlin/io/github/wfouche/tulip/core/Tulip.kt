@@ -31,6 +31,7 @@ import java.util.concurrent.LinkedBlockingQueue
 import kotlin.math.abs
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
+import oshi.hardware.CentralProcessor
 
 /*-------------------------------------------------------------------------*/
 
@@ -58,6 +59,10 @@ typealias SPSC_Queue<E> = InformativeBlockingQueue<E>
 /*-------------------------------------------------------------------------*/
 
 private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss")
+
+// CPU info via oshi-core
+
+private val NUM_CORES = oshi.SystemInfo().hardware.processor.physicalProcessorCount
 
 //
 // Arrays of user objects and user actions.
@@ -1371,6 +1376,7 @@ private fun runTulip(
     Console.put("  NUM_USERS = $MAX_NUM_USERS")
     Console.put("  NUM_THREADS = $MAX_NUM_THREADS")
     Console.put("  NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
+    Console.put("  NUM_CORES = ${NUM_CORES}")
     if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {
         Console.put("")
         Console.put("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
