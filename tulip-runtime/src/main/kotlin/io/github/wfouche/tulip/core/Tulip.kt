@@ -421,7 +421,9 @@ private data class ActionSummary(
 
     //var avgCpuSystem: Double = 0.0,
     //var avgCpuProcess: Double = 0.0
-    var processCpuTime: Long = 0
+    var processCpuTime: Long = 0,
+    var processCpuCores: Double = 0.0,
+    var processCpuUtilization: Double = 0.0
 )
 
 /*-------------------------------------------------------------------------*/
@@ -588,11 +590,11 @@ private class ActionStats {
             output.add("")
             val cpu_time_secs: Double = r.processCpuTime/1000000000.0
             output.add("  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
-            val cpu_cores_used: Double = cpu_time_secs / r.durationSeconds
-            output.add("  num cores used       = ${"%.3f".format(Locale.US, cpu_cores_used)} cores")
-            var p_cpu_usage: Double = 100.0 * cpu_cores_used / NUM_CORES
-            if (p_cpu_usage > 100.0) p_cpu_usage = 100.0
-            output.add("  avg cpu utilization  = ${"%.1f".format(Locale.US, p_cpu_usage)}%")
+            r.processCpuCores = cpu_time_secs / r.durationSeconds
+            output.add("  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores")
+            r.processCpuUtilization = 100.0 * r.processCpuCores / NUM_CORES
+            if (r.processCpuUtilization > 100.0) r.processCpuUtilization = 100.0
+            output.add("  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}%")
 
 //            output.add("")
 //            val awqs: Double = wthread_queue_stats.mean
@@ -805,7 +807,9 @@ private object DataCollector {
             json += "\"jvm_memory_total\": $tm, "
             json += "\"jvm_memory_maximum\": $mm, "
 
-            json += "\"system_cpu_utilization\": ${MonitorSystemCpuLoad.getCpuUtilization()}"
+            json += "\"process_cpu_utilization\": ${r.processCpuUtilization}, "
+            json += "\"process_cpu_cores\": ${r.processCpuCores}, "
+            json += "\"process_cpu_time_ns\": ${r.processCpuTime}"
 
             val awqs: Double = wthread_queue_stats.mean
             val mwqs: Long = wthread_queue_stats.maxValue
