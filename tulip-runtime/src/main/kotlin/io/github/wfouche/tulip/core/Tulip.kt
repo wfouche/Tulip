@@ -567,8 +567,14 @@ private class ActionStats {
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
             output.add("")
-            output.add("  process cpu time = ${"%.3f".format(Locale.US, DataCollector.cpuTime/1000000000.0)} seconds")
-            output.add("  number of cores  = ${"%.3f".format(Locale.US, DataCollector.cpuTime/1000000000.0/r.durationSeconds)} cores")
+            val cpu_time_secs: Double = DataCollector.cpuTime/1000000000.0
+            output.add("  cpu time (process)  = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
+            val cpu_cores_used: Double = cpu_time_secs / r.durationSeconds
+            output.add("  num cores used      = ${"%.3f".format(Locale.US, cpu_cores_used)} cores")
+            var p_cpu_usage: Double = 100.0 * cpu_cores_used / NUM_CORES
+            if (p_cpu_usage > 100.0) p_cpu_usage = 100.0
+            output.add("  avg cpu utilization = ${"%.1f".format(Locale.US, p_cpu_usage)} %")
+
 //            output.add("")
 //            val awqs: Double = wthread_queue_stats.mean
 //            val mwqs: Long = wthread_queue_stats.maxValue
@@ -1373,10 +1379,10 @@ private fun runTulip(
     Console.put("Context: ${context.name}")
     Console.put("======================================================================")
     Console.put("")
+    Console.put("  NUM_CORES = ${NUM_CORES}")
     Console.put("  NUM_USERS = $MAX_NUM_USERS")
     Console.put("  NUM_THREADS = $MAX_NUM_THREADS")
     Console.put("  NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
-    Console.put("  NUM_CORES = ${NUM_CORES}")
     if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {
         Console.put("")
         Console.put("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
