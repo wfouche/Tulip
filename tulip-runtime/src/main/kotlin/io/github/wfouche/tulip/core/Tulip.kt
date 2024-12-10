@@ -41,6 +41,8 @@ const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 
 private const val histogramNumberOfSignificantValueDigits=3
 
+private val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
+
 /*-------------------------------------------------------------------------*/
 
 class InformativeBlockingQueue<E>(val capacity: Int) : LinkedBlockingQueue<E>(capacity) {
@@ -593,7 +595,8 @@ private class ActionStats {
             r.processCpuCores = cpu_time_secs / r.durationSeconds
             output.add("  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores")
             r.processCpuUtilization = 100.0 * r.processCpuCores / NUM_CORES
-            if (r.processCpuUtilization > 100.0) r.processCpuUtilization = 100.0
+            //if (r.processCpuUtilization > 100.0) r.processCpuUtilization = 100.0
+            //support > 100.0 utilization due to hyper-threading
             output.add("  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}%")
 
 //            output.add("")
@@ -1021,7 +1024,8 @@ object MonitorSystemCpuLoad: Thread () {
     init {
         isDaemon = true
         name = "cpu-load-monitor-thread"
-        start()
+        //start()
+        //Disabled, not required anymore
     }
 
     private var maxCpuUtilization: Double = 0.0
@@ -1050,10 +1054,6 @@ object MonitorSystemCpuLoad: Thread () {
         return cpuUtilization * 100.0
     }
 
-    fun getProcessCpuTime(): Long {
-        val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
-        return osBean.processCpuTime
-    }
 }
 
 /*-------------------------------------------------------------------------*/
@@ -1189,6 +1189,10 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         rspQueueInitialized = false
     }
 
+    fun getProcessCpuTime(): Long {
+        return osBean.processCpuTime
+    }
+
     fun startTask(uid: Int, aid: Int, rateGovernor: RateGovernor?) {
         // Limit the number of active users.
         val task: Task = rspQueue.take()
@@ -1222,7 +1226,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
         }
 
-        cpuTime = 0 //MonitorSystemCpuLoad.getProcessCpuTime()
+        cpuTime = 0 //getProcessCpuTime()
         for (aid in actionList) {
             for (uid in userList) {
                 startTask(uid, aid, rateGovernor)
@@ -1236,7 +1240,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         if (durationMillis == 0) {
             durationMillis = 1
         }
-        cpuTime = 0 //MonitorSystemCpuLoad.getProcessCpuTime() - cpuTime
+        cpuTime = 0 //getProcessCpuTime() - cpuTime
 
         elapsedTimeNanos {
             DataCollector.createSummary(
@@ -1305,7 +1309,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         var vTime: Double = rTime
         // New rate control logic - end
 
-        cpuTime = MonitorSystemCpuLoad.getProcessCpuTime()
+        cpuTime = getProcessCpuTime()
         while (rTime < endTimeNanos) {
             // Pick a random user object to assign a task to.
             val uid = userList.random()
@@ -1323,7 +1327,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             rTime = System.nanoTime().toDouble()
         }
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
-        cpuTime = MonitorSystemCpuLoad.getProcessCpuTime() - cpuTime
+        cpuTime = getProcessCpuTime() - cpuTime
 
         Console.put("$testPhase (${testCase.name}), run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})")
 
