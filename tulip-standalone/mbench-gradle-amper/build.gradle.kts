@@ -1,5 +1,6 @@
 plugins {
     id("kotlinx-serialization")
+    id("com.github.ben-manes.versions") version "0.51.0"
 }
 
 application {
