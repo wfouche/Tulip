@@ -28,8 +28,6 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.system.exitProcess
 import java.util.concurrent.LinkedBlockingQueue
-import javax.management.Attribute
-import javax.management.ObjectName
 import kotlin.math.abs
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
@@ -513,14 +511,10 @@ private class ActionStats {
 
     }
 
-    fun printStats(actionId: Int, printMap: Boolean = false) {
+    fun printStats(actionId: Int) {
 
         val output = mutableListOf("")
 
-        if (printMap) {
-//            output.add("latencyMap = {}")
-//            output.add("")
-        }
         if (actionId != NUM_ACTIONS) {
             output.add("  action_id = ${r.actionId}")
         }
@@ -730,17 +724,17 @@ private object DataCollector {
         }
     }
 
-    fun printStats(printMap: Boolean = false ,printDetails: Boolean = false) {
-        actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS, printMap)
-        if (printDetails) {
-            actionStats.forEachIndexed { index, data ->
-                if (data.numActions > 0) {
-                    if (index != NUM_ACTIONS) {
-                        data.printStats(index, false)
-                    }
-                }
-            }
-        }
+    fun printStats() {
+        actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
+//        if (printDetails) {
+//            actionStats.forEachIndexed { index, data ->
+//                if (data.numActions > 0) {
+//                    if (index != NUM_ACTIONS) {
+//                        data.printStats(index)
+//                    }
+//                }
+//            }
+//        }
     }
 
     fun saveStatsJson(filename: String) {
@@ -1223,7 +1217,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
                 "Benchmark",
                 0,
                 cpuTime)
-            DataCollector.printStats(true)
+            DataCollector.printStats()
             DataCollector.saveStatsJson(testCase.filename)
         }
         //Console.put("Init: Duration spend in stats processing = ${durationNanos2}")
@@ -1313,7 +1307,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
                 runId,
                 cpuTime
             )
-            DataCollector.printStats(false)
+            DataCollector.printStats()
             if (testPhase == "Benchmark") {
                 DataCollector.saveStatsJson(testCase.filename)
             }
