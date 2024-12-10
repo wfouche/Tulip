@@ -522,7 +522,9 @@ private class ActionStats {
 
         if (DataCollector.cpuTime == 0L) {
             // Init, or Shutdown -> TPS inaccurate, so set to 0.0
-            r.aps = 0.0
+            //r.aps = 0.0
+            //This is not a complete solution, breaks the report
+            //Disabled for now.
         }
 
         if (actionId != NUM_ACTIONS) {
