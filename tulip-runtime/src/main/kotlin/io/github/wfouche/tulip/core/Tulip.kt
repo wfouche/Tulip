@@ -567,6 +567,8 @@ private class ActionStats {
             output.add("  free memory (jvm)    = ${"%,d".format(Locale.US, fm)}")
             output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
             output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
+            output.add("")
+            output.add("  process cpu time = ${"%.3f".format(Locale.US, DataCollector.cpuTime/1000000000.0)} seconds, used ${"%.3f".format(Locale.US, DataCollector.cpuTime/1000000000.0/r.durationSeconds)} cores")
 //            output.add("")
 //            val awqs: Double = wthread_queue_stats.mean
 //            val mwqs: Long = wthread_queue_stats.maxValue
@@ -673,6 +675,7 @@ private class ActionStats {
 private object DataCollector {
     private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
+    var cpuTime: Long = 0
 
     // val a = arrayOf<Array<ActionStats>>()
     // init {
@@ -690,8 +693,10 @@ private object DataCollector {
         tsBegin: String,
         tsEnd: String,
         testPhase: String,
-        runId: Int
+        runId: Int,
+        cpuTime: Long = 0
     ) {
+        this.cpuTime = cpuTime
         actionStats[NUM_ACTIONS].createSummary(
             NUM_ACTIONS,
             durationMillis,
@@ -874,6 +879,7 @@ private object DataCollector {
         }
         waitTimeMicrosHistogram.reset()
         wthread_queue_stats.reset()
+        cpuTime = 0
     }
 }
 
@@ -997,7 +1003,7 @@ object MonitorSystemCpuLoad: Thread () {
         var cpuLoad: Double = osBean.getCpuLoad()
         while (true) {
             sleep(2000)
-            cpuLoad = osBean.getCpuLoad()
+            cpuLoad = osBean.cpuLoad
             synchronized(this) {
                 if (maxCpuUtilization < cpuLoad) {
                     maxCpuUtilization = cpuLoad
@@ -1014,6 +1020,11 @@ object MonitorSystemCpuLoad: Thread () {
             maxCpuUtilization = 0.0
         }
         return cpuUtilization * 100.0
+    }
+
+    fun getProcessCpuTime(): Long {
+        val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
+        return osBean.processCpuTime
     }
 }
 
@@ -1080,6 +1091,7 @@ private fun createActionGenerator(list: List<Int>): Iterator<Int> {
 /*-------------------------------------------------------------------------*/
 
 private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
+    var cpuTime: Long = 0
     var tsBegin = java.time.LocalDateTime.now().format(formatter)
     val output = mutableListOf("")
     output.add("======================================================================")
@@ -1182,6 +1194,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
         }
 
+        cpuTime = 0 //MonitorSystemCpuLoad.getProcessCpuTime()
         for (aid in actionList) {
             for (uid in userList) {
                 startTask(uid, aid, rateGovernor)
@@ -1195,6 +1208,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         if (durationMillis == 0) {
             durationMillis = 1
         }
+        cpuTime = 0 //MonitorSystemCpuLoad.getProcessCpuTime() - cpuTime
 
         elapsedTimeNanos {
             DataCollector.createSummary(
@@ -1206,7 +1220,8 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
                 tsBegin,
                 tsEnd,
                 "Benchmark",
-                0)
+                0,
+                cpuTime)
             DataCollector.printStats(true)
             DataCollector.saveStatsJson(testCase.filename)
         }
@@ -1262,6 +1277,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         var vTime: Double = rTime
         // New rate control logic - end
 
+        cpuTime = MonitorSystemCpuLoad.getProcessCpuTime()
         while (rTime < endTimeNanos) {
             // Pick a random user object to assign a task to.
             val uid = userList.random()
@@ -1279,6 +1295,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             rTime = System.nanoTime().toDouble()
         }
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
+        cpuTime = MonitorSystemCpuLoad.getProcessCpuTime() - cpuTime
 
         Console.put("$testPhase (${testCase.name}), run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})")
 
@@ -1292,7 +1309,8 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
                 tsBegin,
                 tsEnd,
                 testPhase,
-                runId
+                runId,
+                cpuTime
             )
             DataCollector.printStats(false)
             if (testPhase == "Benchmark") {
