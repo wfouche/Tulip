@@ -1025,7 +1025,7 @@ private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<In
         list.add(
             when {
                 queueLength == 0 -> context.numThreads * USER_THREAD_QSIZE  // 11
-                queueLength >  1 -> context.numThreads * queueLength        // Actions per Thread
+                queueLength >  0 -> context.numThreads * queueLength        // Actions per Thread
                 else -> abs(queueLength)                                    // Actions across all Threads
             }
         )
