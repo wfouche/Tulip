@@ -988,7 +988,7 @@ object Console : Thread() {
         start()
     }
 
-    private var q = Java_Queue<MutableList<String>>(10)
+    private var q = Java_Queue<MutableList<String>>(100)
 
     override fun run() {
         while (true) {
