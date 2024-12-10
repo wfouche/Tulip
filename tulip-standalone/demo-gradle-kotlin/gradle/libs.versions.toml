@@ -2,9 +2,9 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-junit-jupiter-engine = "5.10.3"
+junit-jupiter-engine = "5.11.3"
 tulip-runtime = "2.0.1"
-clikt-jvm = "5.0.1"
+clikt-jvm = "5.0.2"
 
 [libraries]
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
@@ -12,4 +12,4 @@ tulip-runtime = { module = "io.github.wfouche.tulip:tulip-runtime", version.ref 
 clikt-jvm = { module = "com.github.ajalt.clikt:clikt-jvm", version.ref = "clikt-jvm"}
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.0.21" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.1.0" }
