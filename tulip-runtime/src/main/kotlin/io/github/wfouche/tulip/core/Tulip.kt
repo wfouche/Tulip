@@ -574,7 +574,7 @@ private class ActionStats {
             output.add("  num cores used       = ${"%.3f".format(Locale.US, cpu_cores_used)} cores")
             var p_cpu_usage: Double = 100.0 * cpu_cores_used / NUM_CORES
             if (p_cpu_usage > 100.0) p_cpu_usage = 100.0
-            output.add("  avg cpu utilization  = ${"%.1f".format(Locale.US, p_cpu_usage)} %")
+            output.add("  avg cpu utilization  = ${"%.1f".format(Locale.US, p_cpu_usage)}%")
 
 //            output.add("")
 //            val awqs: Double = wthread_queue_stats.mean
