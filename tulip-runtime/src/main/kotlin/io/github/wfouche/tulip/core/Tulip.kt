@@ -562,10 +562,11 @@ private class ActionStats {
             //mg_cpu_system?.set(r.avgCpuSystem.toInt())
 
             output.add("")
-            output.add("  memory used (jvm)    = ${"%,d".format(Locale.US, tm - fm)}")
-            output.add("  free memory (jvm)    = ${"%,d".format(Locale.US, fm)}")
-            output.add("  total memory (jvm)   = ${"%,d".format(Locale.US, tm)}")
-            output.add("  maximum memory (jvm) = ${"%,d".format(Locale.US, mm)}")
+            val gb1 = 1073741824.0
+            output.add("  memory used (jvm)    = ${"%.3f".format(Locale.US, (tm - fm)/gb1)} GB")
+            output.add("  free memory (jvm)    = ${"%.3f".format(Locale.US, fm/gb1)} GB")
+            output.add("  total memory (jvm)   = ${"%.3f".format(Locale.US, tm/gb1)} GB")
+            output.add("  maximum memory (jvm) = ${"%.3f".format(Locale.US, mm/gb1)} GB")
             output.add("")
             val cpu_time_secs: Double = DataCollector.cpuTime/1000000000.0
             output.add("  cpu time (process)  = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
