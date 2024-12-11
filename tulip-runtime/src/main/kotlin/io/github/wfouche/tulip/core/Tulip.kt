@@ -42,7 +42,7 @@ const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 private const val histogramNumberOfSignificantValueDigits=3
 
 private val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
-private val isWindows: Boolean = System.getProperty("os.name").toLowerCase().contains("windows")
+private val isWindows: Boolean = System.getProperty("os.name").lowercase().contains("windows")
 
 /*-------------------------------------------------------------------------*/
 
