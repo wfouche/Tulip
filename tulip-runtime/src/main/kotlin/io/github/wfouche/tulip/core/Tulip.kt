@@ -42,6 +42,7 @@ const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 private const val histogramNumberOfSignificantValueDigits=3
 
 private val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
+private val isWindows: Boolean = System.getProperty("os.name").toLowerCase().contains("windows")
 
 /*-------------------------------------------------------------------------*/
 
@@ -593,6 +594,10 @@ private class ActionStats {
             val cpu_time_secs: Double = r.processCpuTime/1000000000.0
             output.add("  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
             r.processCpuCores = cpu_time_secs / r.durationSeconds
+            if (isWindows) {
+                // Windows CPU time already reported per core
+                r.processCpuCores = r.processCpuCores * NUM_CORES
+            }
             output.add("  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores")
             r.processCpuUtilization = 100.0 * r.processCpuCores / NUM_CORES
             //if (r.processCpuUtilization > 100.0) r.processCpuUtilization = 100.0
