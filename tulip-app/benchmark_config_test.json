@@ -37,8 +37,22 @@
             ]
         },
         {
+            "name": "NOP",
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 5,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "actions": [
+                {"id": 3}
+            ]
+        },
+        {
             "name": "Maximum Rate",
-            "enabled": false,
+            "enabled": true,
             "time": {
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
@@ -53,6 +67,7 @@
         },
         {
             "name": "Fixed Rate",
+            "enabled": true,
             "time": {
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
@@ -63,20 +78,6 @@
             "actions": [
                 {"id": 1, "weight": 90},
                 {"id": 2, "weight": 10}
-            ]
-        },
-        {
-            "name": "NOP",
-            "enabled": false,
-            "time": {
-                "pre_warmup_duration": 5,
-                "warmup_duration": 10,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
-            },
-            "throughput_rate": 0.0,
-            "actions": [
-                {"id": 3}
             ]
         },
         {
