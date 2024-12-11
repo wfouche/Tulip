@@ -18,7 +18,7 @@ table, th, td {
 </style>
 <body>
 
-<h2><a href="https://wfouche.github.io/Tulip">__DESC1__</a> / __DESC2__</h2>
+<h2>__DESC1__ / __DESC2__</h2>
 
 <table style="width:100%">
   <tr>
