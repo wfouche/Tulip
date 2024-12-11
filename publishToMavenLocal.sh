@@ -2,6 +2,10 @@
 source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk env
 
+# Clean
+find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
+rm -f -r ~/.m2/repository/io/github/wfouche/tulip/tulip-runtime
+
 # Publish tulip-runtime.jar to local Maven
 ./gradlew :tulip-runtime:publishToMavenLocal
 
