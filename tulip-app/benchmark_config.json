@@ -5,8 +5,8 @@
         "report_filename": "benchmark_report.html",
         "user_class": "org.example.user.HttpUser",
         "user_params": {
-            "url": "https://jsonplaceholder.typicode.com",
-            "urlx": "http://localhost:7070",
+            "urlx": "https://jsonplaceholder.typicode.com",
+            "url": "http://localhost:7070",
             "debug": false,
             "http_port": 7070
         },
