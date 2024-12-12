@@ -224,8 +224,15 @@ abstract class TulipUser(val userId: Int, val threadId: Int) {
     }
 
     open fun getUserParamValue(paramName: String): String {
-        var s: String? = g_config.static.userParams[paramName]
-        if (s == null) s = ""
+        val o: kotlinx.serialization.json.JsonPrimitive? = g_config.static.userParams[paramName]
+        if (o == null) {
+            return ""
+        }
+        var s = o.toString()    // s = '"value"', the double quotes must be removed
+        if (o.isString) {
+            // s = '"value"', the double quotes must be removed
+            s = s.substring(1,s.length-1)
+        }
         return s
     }
 

@@ -43,6 +43,13 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         val actionId = 0
         TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
         //TulipConsole.put(listOf("a", "b"))
+        if (userId == 0) {
+            var s = ""
+            s = "debug: " + getUserParamValue("debug")
+            TulipConsole.put(s)
+            s = "http_port: " + getUserParamValue("http_port")
+            TulipConsole.put(s)
+        }
         return true
     }
 

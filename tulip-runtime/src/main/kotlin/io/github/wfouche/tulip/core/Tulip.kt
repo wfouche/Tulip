@@ -16,6 +16,7 @@ import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonPrimitive
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
 import java.io.BufferedWriter
@@ -333,7 +334,7 @@ data class StaticConfig(
     @SerialName("output_filename") val jsonFilename: String = "",
     @SerialName("report_filename") val htmlFilename: String = "",
     @SerialName("user_class") val userClass: String = "",
-    @SerialName("user_params") val userParams: Map<String,String> = mapOf(),
+    @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
     @SerialName("user_actions") val userActions: Map<Int,String> = mapOf(),
     @SerialName("workflows") val workflows: Map<String,Map<String,Map<String,Double>>> = mapOf()
 )
