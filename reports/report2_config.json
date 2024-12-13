@@ -1,0 +1,277 @@
+{
+    "static": {
+        "description": "Micro-benchmarks",
+        "output_filename": "benchmark_output.json",
+        "report_filename": "benchmark_report.html",
+        "user_class": "org.example.user.HttpUser",
+        "user_params": {
+            "urlx": "https://jsonplaceholder.typicode.com",
+            "url": "http://localhost:7070",
+            "debug": false,
+            "http_port": 7070
+        },
+        "user_actions": {
+            "0": "start",
+            "1": "DELAY-6ms",
+            "2": "DELAY-14ms",
+            "3": "HTTP-posts",
+            "4": "HTTP-comments",
+            "5": "HTTP-albums",
+            "6": "HTTP-photos",
+            "7": "HTTP-todos",
+            "8": "login",
+            "9": "noop",
+            "10": "DELAY-10ms"
+        },
+        "workflows": {
+            "rest-api1": {
+                "-": {
+                    "1": 0.6,
+                    "2": 0.4
+                },
+                "1": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "2": {
+                    "3": 1.0
+                },
+                "3": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "4": {
+                    "-": 1.0
+                }
+            },
+            "rest-api2": {
+                "-": {
+                    "1": 0.6,
+                    "2": 0.4
+                },
+                "1": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "2": {
+                    "3": 1.0
+                },
+                "3": {
+                    "-": 0.8,
+                    "4": 0.2
+                },
+                "4": {
+                    "-": 1.0
+                }
+            },
+            "random": {
+                "-": {
+                    "1": 0.25,
+                    "2": 0.75
+                },
+                "1": {
+                    "-": 1.0
+                },
+                "2": {
+                    "-": 1.0
+                }
+            }
+        }
+    },
+    "contexts": [
+        {
+            "name": "Scenario-1",
+            "enabled": true,
+            "num_users": 16,
+            "num_threads": 2
+        },
+        {
+            "name": "Scenario-2",
+            "enabled": false,
+            "num_users": 32,
+            "num_threads": 4
+        }
+    ],
+    "benchmarks": [
+        {
+            "name": "Init",
+            "actions": [
+                {
+                    "id": 0
+                },
+                {
+                    "id": 8
+                }
+            ]
+        },
+        {
+            "name": "Max TPS-a",
+            "enabled": true,
+            "throughput_rate": 0.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "actions": [
+                {
+                    "id": 9
+                }
+            ]
+        },
+        {
+            "name": "Max TPS-b",
+            "enabled": true,
+            "throughput_rate": 1000000.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "actions": [
+                {
+                    "id": 9
+                }
+            ]
+        },
+        {
+            "name": "Max TPS-c",
+            "enabled": true,
+            "throughput_rate": 250000.0,
+            "worker_thread_queue_size": 4,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+           "actions": [
+                {
+                    "id": 9
+                }
+            ]
+        },
+        {
+            "name": "Fixed TPS-a",
+            "enabled": true,
+            "throughput_rate": 50.0,
+            "worker_thread_queue_size": 1,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 4
+            },
+            "actions": [
+                {
+                    "id": 1,
+                    "weight": 25
+                },
+                {
+                    "id": 2,
+                    "weight": 75
+                }
+            ]
+        },
+        {
+            "name": "Fixed TPS-b",
+            "enabled": true,
+            "throughput_rate": 50.0,
+            "worker_thread_queue_size": 1,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 4
+            },
+            "actions": [
+                {
+                    "id": 10
+                }
+            ]
+        },
+        {
+            "name": "HTTP-a",
+            "enabled": true,
+            "throughput_rate": 0.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "actions": [
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                }
+            ]
+        },
+        {
+            "name": "HTTP-b",
+            "enabled": true,
+            "throughput_rate": 1250.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "actions": [
+                {
+                    "id": 3
+                },
+                {
+                    "id": 4
+                },
+                {
+                    "id": 5
+                },
+                {
+                    "id": 6
+                },
+                {
+                    "id": 7
+                }
+            ]
+        },
+        {
+            "name": "HTTP-c",
+            "enabled": false,
+            "throughput_rate": 1250.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "workflow": "rest-api1"
+        },
+        {
+            "name": "Shutdown",
+            "actions": [
+                {
+                    "id": 99
+                }
+            ]
+        }
+    ]
+}
