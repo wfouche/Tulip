@@ -47,9 +47,8 @@ private val isWindows: Boolean = System.getProperty("os.name").lowercase().conta
 
 /*-------------------------------------------------------------------------*/
 
-class InformativeBlockingQueue<E>(val capacity: Int) : LinkedBlockingQueue<E>(capacity) {
-
-}
+class InformativeBlockingQueue<E>(val capacity: Int) :
+    LinkedBlockingQueue<E>(capacity) { }
 
 typealias Java_Queue<E> = InformativeBlockingQueue<E>
 typealias MPSC_Queue<E> = InformativeBlockingQueue<E>
