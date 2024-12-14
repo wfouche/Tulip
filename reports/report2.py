@@ -104,10 +104,24 @@ def createReport(filename):
     # Context Data
     printf("\n")
     printf("== Contexts\n")
+    for c in jb['contexts']:
+        printf('.%s'%(c["name"]) + '\n')
+        printf('[%header,cols="1a,2a"]\n')
+        printf("|===\n")
+        printf("| id | value\n")
+        if "enabled" in c.keys():
+            printf('| *enabled* | %s\n'%(c["enabled"]))
+        printf('| *num_users*   | %d\n'%(c["num_users"]))
+        printf('| *num_threads* | %d\n'%(c["num_threads"]))
+        printf("|===\n")
 
     # Benchmarks Data
     printf("\n")
     printf("== Benchmarks\n")
+    printf('[%header,cols="1a,2a"]\n')
+    printf("|===\n")
+    printf("| id | value\n")
+    printf("|===\n")
 
     print("Report filename = " + report_fn)
 
