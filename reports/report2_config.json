@@ -81,7 +81,6 @@
     "contexts": [
         {
             "name": "Context1",
-            "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },

@@ -104,24 +104,38 @@ def createReport(filename):
     # Context Data
     printf("\n")
     printf("== Contexts\n")
+    printf('[%header,cols="1a,2a"]\n')
+    printf("|===\n")
+    printf("| id | value\n")
+
     for c in jb['contexts']:
-        printf('.%s'%(c["name"]) + '\n')
+        printf('| %s'%(c["name"]) + '\n')
+        printf('| \n')
         printf('[%header,cols="1a,2a"]\n')
-        printf("|===\n")
-        printf("| id | value\n")
+        printf('!===\n')
+        printf('! id ! value \n')
+        printf('! *num_users*   ! %d\n'%(c["num_users"]))
+        printf('! *num_threads* ! %d\n'%(c["num_threads"]))
         if "enabled" in c.keys():
-            printf('| *enabled* | %s\n'%(c["enabled"]))
-        printf('| *num_users*   | %d\n'%(c["num_users"]))
-        printf('| *num_threads* | %d\n'%(c["num_threads"]))
-        printf("|===\n")
+            printf('! *enabled* ! %s\n'%(c["enabled"]))
+        else:
+            printf('! *enabled* ! True\n')
+        printf("!===\n")
+    printf("|===")
 
     # Benchmarks Data
     printf("\n")
     printf("== Benchmarks\n")
-    printf('[%header,cols="1a,2a"]\n')
-    printf("|===\n")
-    printf("| id | value\n")
-    printf("|===\n")
+    for b in jb['benchmarks']:
+        printf('=== %s'%(b["name"]) + '\n')
+        printf('[%header,cols="1a,2a"]\n')
+        printf("|===\n")
+        printf("| id | value\n")
+        if "enabled" in b.keys():
+            printf('| *enabled* | %s\n'%(b["enabled"]))
+        else:
+            printf('| *enabled* | True\n')
+        printf("|===\n")
 
     print("Report filename = " + report_fn)
 
