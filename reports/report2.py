@@ -131,10 +131,38 @@ def createReport(filename):
         printf('[%header,cols="1a,2a"]\n')
         printf("|===\n")
         printf("| id | value\n")
+        # enabled
         if "enabled" in b.keys():
             printf('| *enabled* | %s\n'%(b["enabled"]))
         else:
             printf('| *enabled* | True\n')
+        # throughput_rate
+        if "throughput_rate" in b.keys():
+            printf('| *throughput_rate* | %.1f\n'%(b["throughput_rate"]))
+        else:
+            printf('| *throughput_rate* | 0.0\n')
+        # worker_thread_queue_size
+        if "worker_thread_queue_size" in b.keys():
+            printf('| *worker_thread_queue_size* | %d\n'%(b["worker_thread_queue_size"]))
+        else:
+            printf('| *worker_thread_queue_size* | 0\n')
+        # workflow
+        if "workflow" in b.keys():
+            printf('| *workflow* | %s\n'%(b["workflow"]))
+        elif "actions" in b.keys():
+            printf('| *actions* \n')
+            printf('| \n')
+            printf('[%header,cols="1a,2a"]\n')
+            printf('!===\n')
+            printf('! id ! weight \n')
+            for a in b["actions"]:
+                printf('! %d\n'%(a["id"]))
+                if "weight" in a.keys():
+                    printf('! %d \n'%(a["weight"]))
+                else:
+                    printf('! - \n')
+            printf('!===\n')
+
         printf("|===\n")
 
     print("Report filename = " + report_fn)
