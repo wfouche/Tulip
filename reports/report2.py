@@ -53,6 +53,9 @@ def createReport(filename):
             printf("\n")
             printf("=== " + "%s\n"%(wn))
             printf("\n")
+            printf('[%noheader,cols="1a,1a"]\n')
+            printf('|===\n')
+            printf('|')
             printf("[plantuml,wfd%d,svg]"%(diagId) + '\n')
             printf('----\n')
             printf('@startuml\n')
@@ -76,9 +79,14 @@ def createReport(filename):
                     nid = name_to_id(k)
                     fv = jb['workflows'][wn][sname][k]
                     printf('A%d --> A%d: %.3f\n'%(mid,nid,fv))
-
             printf('@enduml\n')
             printf('----\n')
+            printf('| \n')
+            printf('[source,json]\n')
+            printf('----\n')
+            printf('%s\n'%(json.dumps(jb['workflows'][wn], indent=4)))
+            printf('----\n')
+            printf('|===\n')
 
     print("\nConfig filename = " + filename)
 
