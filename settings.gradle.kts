@@ -11,4 +11,4 @@
 //}
 
 rootProject.name = "Tulip"
-include("tulip-app", "tulip-runtime")
+include("tulip-main", "tulip-runtime")

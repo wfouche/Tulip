@@ -9,9 +9,9 @@ rm -f -r ./bin ./build
 
 param1="$1"
 if [[ "$param1" == "" ]]; then
-   ./gradlew -q :tulip-app:run
+   ./gradlew -q :tulip-main:run
 else
-   ./gradlew -q :tulip-app:run "$param1"
+   ./gradlew -q :tulip-main:run "$param1"
 fi
 
 ./gradlew -q --stop

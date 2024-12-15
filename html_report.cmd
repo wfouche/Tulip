@@ -1,4 +1,4 @@
 @echo off
-pushd .\tulip-app
+pushd .\tulip-main
 .\benchmark_report.html
 popd
