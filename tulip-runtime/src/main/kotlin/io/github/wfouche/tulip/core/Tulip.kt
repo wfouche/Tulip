@@ -328,21 +328,21 @@ data class ConfigTest(
 )
 
 @Serializable
-data class StaticConfig(
+data class ActionsConfig(
     @SerialName("description") val description: String = "",
     @SerialName("output_filename") val jsonFilename: String = "",
     @SerialName("report_filename") val htmlFilename: String = "",
     @SerialName("user_class") val userClass: String = "",
     @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
-    @SerialName("user_actions") val userActions: Map<Int,String> = mapOf(),
-    @SerialName("workflows") val workflows: Map<String,Map<String,Map<String,Double>>> = mapOf()
+    @SerialName("user_actions") val userActions: Map<Int,String> = mapOf()
 )
 
 @Serializable
 data class BenchmarkConfig(
-    val static: StaticConfig = StaticConfig(),
+    val actions: ActionsConfig = ActionsConfig(),
     val contexts: List<ConfigContext> = listOf(),
-    val benchmarks: List<ConfigTest> = listOf()
+    val benchmarks: List<ConfigTest> = listOf(),
+    val workflows: Map<String,Map<String,Map<String,Double>>> = mapOf()
 )
 
 fun initConfig(configFilename: String): String {
@@ -377,13 +377,13 @@ fun initConfig(configFilename: String): String {
                     this.add(Action(a.id, a.weight))
                 }
             },
-            filename = g_config.static.jsonFilename,
+            filename = g_config.actions.jsonFilename,
         )
         g_tests.add(v)
     }
-    Console.put("  output filename = ${g_config.static.jsonFilename}")
-    Console.put("  report filename = ${g_config.static.htmlFilename}")
-    return g_config.static.jsonFilename
+    Console.put("  output filename = ${g_config.actions.jsonFilename}")
+    Console.put("  report filename = ${g_config.actions.htmlFilename}")
+    return g_config.actions.jsonFilename
 }
 
 /*-------------------------------------------------------------------------*/
@@ -967,7 +967,7 @@ private class UserThread(private val threadId: Int) : Thread() {
                 //
                 var u = userObjects!![task.userId]
                 if (u == null) {
-                    u = newUser!!.getUser(task.userId, g_config.static.userClass, threadId)
+                    u = newUser!!.getUser(task.userId, g_config.actions.userClass, threadId)
                     userObjects!![task.userId] = u
                 }
 
@@ -1440,7 +1440,7 @@ private fun runBenchmarks(
 ) {
     val contexts = g_contexts
     val tests = g_tests
-    val actionNames = g_config.static.userActions
+    val actionNames = g_config.actions.userActions
     // Remove the previous JSON results file (if it exists)
     val filename = g_tests[0].filename
     val file = java.io.File(filename)
