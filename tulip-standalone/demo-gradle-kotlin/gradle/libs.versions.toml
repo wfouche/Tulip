@@ -3,7 +3,7 @@
 
 [versions]
 junit-jupiter-engine = "5.11.3"
-tulip-runtime = "2.0.1"
+tulip-runtime = "2.0.2"
 clikt-jvm = "5.0.2"
 
 [libraries]

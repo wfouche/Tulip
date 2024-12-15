@@ -1,5 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.github.wfouche.tulip:tulip-runtime:2.0.1
+//DEPS io.github.wfouche.tulip:tulip-runtime:2.0.2
 //SOURCES HttpUser.java
 
 import io.github.wfouche.tulip.api.TulipApi;
