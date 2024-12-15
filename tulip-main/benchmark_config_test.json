@@ -1,5 +1,5 @@
 {
-    "static": {
+    "actions": {
         "description": "Demo Benchmark",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
