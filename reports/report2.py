@@ -50,10 +50,11 @@ def createReport(filename):
         #print(jb["workflows"].keys())
         for wn in jb["workflows"].keys():
             diagId += 1
+            printf("\n")
             printf("=== " + "%s\n"%(wn))
             printf("\n")
             printf("[plantuml,wfd%d,svg]"%(diagId) + '\n')
-            printf('....\n')
+            printf('----\n')
             printf('@startuml\n')
             #printf('title %s\n'%(wn))
             for sname in jb['workflows'][wn].keys():
@@ -77,7 +78,7 @@ def createReport(filename):
                     printf('A%d --> A%d: %.3f\n'%(mid,nid,fv))
 
             printf('@enduml\n')
-            printf('....\n')
+            printf('----\n')
 
     print("\nConfig filename = " + filename)
 
@@ -100,33 +101,13 @@ def createReport(filename):
         printf("| " + jb['actions'][e] + '\n')
     printf("|===" + '\n')
 
-    # Context Data
-    printf("\n")
-    printf("== Contexts\n")
-    printf('[%header,cols="1a,2a"]\n')
-    printf("|===\n")
-    printf("| id | value\n")
-
-    for c in jb['contexts']:
-        printf('| %s'%(c["name"]) + '\n')
-        printf('| \n')
-        printf('[%header,cols="1a,2a"]\n')
-        printf('!===\n')
-        printf('! id ! value \n')
-        printf('! *num_users*   ! %d\n'%(c["num_users"]))
-        printf('! *num_threads* ! %d\n'%(c["num_threads"]))
-        if "enabled" in c.keys():
-            printf('! *enabled* ! %s\n'%(c["enabled"]))
-        else:
-            printf('! *enabled* ! True\n')
-        printf("!===\n")
-    printf("|===")
-
     # Benchmarks Data
     printf("\n")
     printf("== Benchmarks\n")
     for b in jb['benchmarks']:
+        printf("\n")
         printf('=== %s'%(b["name"]) + '\n')
+        printf("\n")
         printf('[%header,cols="1a,2a"]\n')
         printf("|===\n")
         printf("| id | value\n")
@@ -163,6 +144,29 @@ def createReport(filename):
             printf('!===\n')
 
         printf("|===\n")
+
+    # Context Data
+    printf("\n")
+    printf("== Contexts\n")
+    printf("\n")
+    printf('[%header,cols="1a,2a"]\n')
+    printf("|===\n")
+    printf("| id | value\n")
+
+    for c in jb['contexts']:
+        printf('| %s'%(c["name"]) + '\n')
+        printf('| \n')
+        printf('[%header,cols="1a,2a"]\n')
+        printf('!===\n')
+        printf('! id ! value \n')
+        printf('! *num_users*   ! %d\n'%(c["num_users"]))
+        printf('! *num_threads* ! %d\n'%(c["num_threads"]))
+        if "enabled" in c.keys():
+            printf('! *enabled* ! %s\n'%(c["enabled"]))
+        else:
+            printf('! *enabled* ! True\n')
+        printf("!===\n")
+    printf("|===\n")
 
     # Workflows
     printf("\n")
