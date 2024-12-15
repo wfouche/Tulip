@@ -55,7 +55,7 @@ def createReport(filename):
             printf("[plantuml,wfd%d,svg]"%(diagId) + '\n')
             printf('....\n')
             printf('@startuml\n')
-            printf('title %s\n'%(wn))
+            #printf('title %s\n'%(wn))
             for sname in jb['workflows'][wn].keys():
                 if sname in ['-']:
                     printf('state "-" as A0\n')
