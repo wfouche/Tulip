@@ -12,7 +12,7 @@ header = """= Tulip Configuration Report
 __CONFIG_FILENAME__
 ====
 
-== Static Data
+== Actions
 
 [%header,cols="1a,2a"]
 |===
@@ -30,9 +30,9 @@ def createReport(filename):
         printf('[%header,cols="1a,2a"]\n')
         printf('!===\n')
         printf('! id ! value \n')
-        for k in jb['static'][e].keys():
+        for k in jb['actions'][e].keys():
             printf('! *' + k + '* ')
-            printf('! ' + str(jb['static'][e][k]) + '\n')
+            printf('! ' + str(jb['actions'][e][k]) + '\n')
         printf('!===\n')
 
     def generate_workflow(e):
@@ -42,19 +42,21 @@ def createReport(filename):
                 return 0
             return int(s)
         def action_name(s):
-            if s in jb['static']['user_actions'].keys():
-                return jb['static']['user_actions'][s]
+            if s in jb['actions']['user_actions'].keys():
+                return jb['actions']['user_actions'][s]
             return '<unknown>'
 
-        for wn in jb['static'][e].keys():
+        #print(jb.keys())
+        #print(jb["workflows"].keys())
+        for wn in jb["workflows"].keys():
             diagId += 1
-            printf("| *" + e + "[%s]*\n"%(wn))
-            printf("|\n")
+            printf("=== " + "%s\n"%(wn))
+            printf("\n")
             printf("[plantuml,wfd%d,svg]"%(diagId) + '\n')
             printf('....\n')
             printf('@startuml\n')
             printf('title %s\n'%(wn))
-            for sname in jb['static'][e][wn].keys():
+            for sname in jb['workflows'][wn].keys():
                 if sname in ['-']:
                     printf('state "-" as A0\n')
                     continue
@@ -62,16 +64,16 @@ def createReport(filename):
                 printf('state "Action %d" as A%d\n'%(sid,sid))
                 printf('A%d: %s\n'%(sid,action_name(sname)))
                 printf('\n')
-            for sname in jb['static'][e][wn].keys():
+            for sname in jb['workflows'][wn].keys():
                 if sname in ['*']:
                     continue
                 if sname in ['-']:
                     mid = 0
                 else:
                     mid = int(sname)
-                for k in jb['static'][e][wn][sname].keys():
+                for k in jb['workflows'][wn][sname].keys():
                     nid = name_to_id(k)
-                    fv = jb['static'][e][wn][sname][k]
+                    fv = jb['workflows'][wn][sname][k]
                     printf('A%d --> A%d: %.3f\n'%(mid,nid,fv))
 
             printf('@enduml\n')
@@ -88,17 +90,14 @@ def createReport(filename):
     jb = json.load(fileObj)
 
     # Static Data
-    for e in jb['static'].keys():
-        if e in ['workflows']:
-            generate_workflow(e)
-            continue
+    for e in jb['actions'].keys():
         if e in ['user_params', 'user_actions']:
             generate_table(e)
             continue
         # | *description*
         # | Micro-benchmarks
         printf("| *" + e + '*\n')
-        printf("| " + jb['static'][e] + '\n')
+        printf("| " + jb['actions'][e] + '\n')
     printf("|===" + '\n')
 
     # Context Data
@@ -164,6 +163,11 @@ def createReport(filename):
             printf('!===\n')
 
         printf("|===\n")
+
+    # Workflows
+    printf("\n")
+    printf("== Workflows \n")
+    generate_workflow(e)
 
     print("Report filename = " + report_fn)
 
