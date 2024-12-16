@@ -1024,43 +1024,6 @@ object Console : Thread() {
     }
 }
 
-object MonitorSystemCpuLoad: Thread () {
-
-    init {
-        isDaemon = true
-        name = "cpu-load-monitor-thread"
-        //start()
-        //Disabled, not required anymore
-    }
-
-    private var maxCpuUtilization: Double = 0.0
-
-    override fun run() {
-        val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
-        var cpuLoad: Double = osBean.getCpuLoad()
-        while (true) {
-            sleep(2000)
-            cpuLoad = osBean.cpuLoad
-            synchronized(this) {
-                if (maxCpuUtilization < cpuLoad) {
-                    maxCpuUtilization = cpuLoad
-                }
-            }
-            //Console.put("cpu usage = ${maxCpuUtilization}")
-        }
-    }
-
-    fun getCpuUtilization(): Double {
-        val cpuUtilization: Double
-        synchronized(this) {
-            cpuUtilization = maxCpuUtilization
-            maxCpuUtilization = 0.0
-        }
-        return cpuUtilization * 100.0
-    }
-
-}
-
 /*-------------------------------------------------------------------------*/
 
 private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
