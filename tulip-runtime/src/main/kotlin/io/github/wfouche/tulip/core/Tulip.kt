@@ -286,7 +286,7 @@ fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
 
 /*-------------------------------------------------------------------------*/
 
-var g_config = BenchmarkConfig()
+var g_config = TulipConfig()
 
 private val g_contexts = mutableListOf<RuntimeContext>()
 
@@ -338,7 +338,7 @@ data class ActionsConfig(
 )
 
 @Serializable
-data class BenchmarkConfig(
+data class TulipConfig(
     val actions: ActionsConfig = ActionsConfig(),
     val contexts: List<ConfigContext> = listOf(),
     val benchmarks: List<ConfigTest> = listOf(),
@@ -353,7 +353,7 @@ fun initConfig(configFilename: String): String {
     Console.put("")
     Console.put("  config filename = $configFilename")
     val sf = java.io.File(configFilename).readText()
-    g_config= Json.decodeFromString<BenchmarkConfig>(sf)
+    g_config= Json.decodeFromString<TulipConfig>(sf)
     for (e: ConfigContext in g_config.contexts) {
         //println("${e.name}")
         if (e.enabled) {
