@@ -11,7 +11,7 @@
             "http_port": 7070
         },
         "user_actions": {
-            "0": "start",
+            "0": "onStart",
             "1": "DELAY-6ms",
             "2": "DELAY-14ms",
             "3": "HTTP-posts",
@@ -19,13 +19,15 @@
             "5": "HTTP-albums",
             "6": "HTTP-photos",
             "7": "HTTP-todos",
-            "8": "login",
-            "9": "noop",
+            "8": "nop1",
+            "9": "nop2",
             "10": "DELAY-10ms",
             "11": "Pre-Auth",
             "12": "Capture",
             "13": "Refund",
-            "14": "Debit"
+            "14": "Debit",
+            "18": "Login",
+            "99": "onStop"
         }
     },
     "contexts": [
@@ -50,12 +52,12 @@
                     "id": 0
                 },
                 {
-                    "id": 8
+                    "id": 18
                 }
             ]
         },
         {
-            "name": "Max TPS-a",
+            "name": "Max TPS-a1",
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
@@ -72,8 +74,24 @@
             ]
         },
         {
-            "name": "Max TPS-b",
+            "name": "Max TPS-a2",
             "enabled": true,
+            "throughput_rate": 0.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "actions": [
+                { "id": 8, "weight": 50 },
+                { "id": 9, "weight": 50 }
+            ]
+        },
+        {
+            "name": "Max TPS-b",
+            "enabled": false,
             "throughput_rate": 1000000.0,
             "worker_thread_queue_size": 0,
             "time": {
@@ -83,14 +101,13 @@
                 "benchmark_repeat_count": 3
             },
             "actions": [
-                {
-                    "id": 9
-                }
+                { "id": 8, "weight": 50 },
+                { "id": 9, "weight": 50 }
             ]
         },
         {
             "name": "Max TPS-c",
-            "enabled": true,
+            "enabled": false,
             "throughput_rate": 250000.0,
             "worker_thread_queue_size": 4,
             "time": {

@@ -94,8 +94,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun action8(): Boolean {
-        val actionId = 8
-        TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
         return true
     }
 
@@ -145,6 +143,14 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             TulipConsole.put("response = ${response.body()}")
         }
         return success
+    }
+
+    // ----------------------------------------------------------------- //
+
+    override fun action18(): Boolean {
+        val actionId = 18
+        TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
+        return true
     }
 
     // ----------------------------------------------------------------- //
