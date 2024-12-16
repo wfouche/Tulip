@@ -254,14 +254,14 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         // 3:RF => {0}
         // 4:DB => {3:RF, or 0}
 
-        val nid = pfsm.next(cid)
+        val nid = workflow.next(cid)
         // PA(1) -> CP(2)
         if (State.PA.equals(cid) && State.CP.equals(nid) && id == "") {
             // Skip CP(2), if PA(1) failed; id == ""
-            cid = pfsm.next(State.IDLE.ordinal)
+            cid = workflow.next(State.IDLE.ordinal)
         // DB(4) -> RF(3)
         } else if (State.DB.equals(cid) && State.RF.equals(nid) && id == "") {
-            cid = pfsm.next(State.IDLE.ordinal)
+            cid = workflow.next(State.IDLE.ordinal)
         } else {
             cid = nid
         }
@@ -271,10 +271,10 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     companion object {
-        val pfsm = MarkovChain()
+        val workflow = MarkovChain()
 
         init {
-            pfsm.apply {
+            workflow.apply {
                 add(State.IDLE.ordinal, listOf(
                     // PA - Credit Card
                     Edge(State.PA.ordinal, 500),
