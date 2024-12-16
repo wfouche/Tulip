@@ -7,8 +7,7 @@ import io.github.wfouche.tulip.core.g_workflow
 
 abstract class TulipUser(val userId: Int, val threadId: Int) {
 
-    public var aid: Int = 0
-    public var aid_status: Boolean = true
+    private var aid: Int = 0
 
     private val map = arrayOf(
         ::onStart,
@@ -224,12 +223,7 @@ abstract class TulipUser(val userId: Int, val threadId: Int) {
     }
 
     open fun nextAction(workflowId: Int): Int {
-        if (aid_status == false) {
-            aid = 0
-            aid_status = true
-        }
-        val aid = g_workflow!!.next(aid)
-        //Console.put("($userId) a:$aid to a:$nid with ${g_workflow!!.name}")
+        aid = g_workflow!!.next(aid)
         return aid
     }
 
