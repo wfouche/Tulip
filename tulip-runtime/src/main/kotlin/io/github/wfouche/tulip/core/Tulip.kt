@@ -31,6 +31,7 @@ import java.util.concurrent.LinkedBlockingQueue
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
+import kotlin.collections.mutableListOf
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.math.abs
@@ -93,6 +94,7 @@ private var testSuite: List<TestProfile>? = null
 private var newUser: TulipUserFactory? = null
 
 var actionNames: Map<Int, String> = emptyMap()
+var workflows: Map<String,Edge> = emptyMap()
 
 private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
@@ -389,7 +391,7 @@ fun initConfig(configFilename: String): String {
         for (an in g_config.workflows[wn]!!.keys) {
             //Console.put("  aid = $an")
             val an_id = if (an == "-") 0 else an.toInt()
-            var list: MutableList<Edge> = mutableListOf()
+            var list = mutableListOf<Edge>()
             for (da in g_config.workflows[wn]!![an]!!.keys) {
                 val da_id = if (da == "-") 0 else da.toInt()
                 val weight = (g_config.workflows[wn]!![an]!![da]!!.toDouble()*1000).toInt()
@@ -398,9 +400,12 @@ fun initConfig(configFilename: String): String {
             }
             mc.add(an_id, list)
         }
+        // register workflow
+        workflows = workflows.plus(Pair(wn,mc)) as Map<String, Edge>
     }
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
+    //Console.put("${workflows.keys}")
     return g_config.actions.jsonFilename
 }
 
