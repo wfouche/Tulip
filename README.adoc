@@ -1,6 +1,7 @@
 = Tulip
 :sectnums:
 :toc:
+:imagesdir: images
 
 == Documentation
 
@@ -574,6 +575,14 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
     }
 }
 ----
+
+=== Configuration Report
+
+==== Workflows
+
+image::image-config-workflow-1.png[]
+
+image::image-config-workflow-2.png[]
 
 == Running Standalone Benchmarks
 
