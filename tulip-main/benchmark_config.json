@@ -22,10 +22,10 @@
             "8": "login",
             "9": "noop",
             "10": "DELAY-10ms",
-            "11": "PA",
-            "12": "CP",
-            "13": "RF",
-            "14": "DB"
+            "11": "Pre-Auth",
+            "12": "Capture",
+            "13": "Refund",
+            "14": "Debit"
         }
     },
     "contexts": [

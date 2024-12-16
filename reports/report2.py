@@ -66,7 +66,7 @@ def createReport(filename):
                     continue
                 sid = int(sname)
                 printf('state "Action %d" as A%d\n'%(sid,sid))
-                printf('A%d: %s\n'%(sid,action_name(sname)))
+                printf('A%d: <%s>\n'%(sid,action_name(sname)))
                 printf('\n')
             for sname in jb['workflows'][wn].keys():
                 if sname in ['*']:
