@@ -1,0 +1,9 @@
+= API Benchmark
+
+== State Diagram
+
+image::Screenshot_20241113_080450.png[]
+
+== Appendix
+
+* https://medium.com/boozt-tech/load-testing-at-boozt-9dd34e13bbdb

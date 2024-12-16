@@ -1,0 +1,47 @@
+{
+    "static": {
+        "description": "OPPWA",
+        "output_filename": "benchmark_output.json",
+        "report_filename": "benchmark_report.html",
+        "user_class": "org.example.HttpUser",
+        "user_actions": {
+            "1": "PA",
+            "2": "CP",
+            "3": "RF",
+            "4": "DB"
+        }
+    },
+    "contexts": [
+        {
+            "name": "Scenario-1",
+            "enabled": true,
+            "num_users": 16,
+            "num_threads": 2
+        },
+        {
+            "name": "Scenario-2",
+            "enabled": false,
+            "num_users": 32,
+            "num_threads": 4
+        }
+    ],
+    "benchmarks": [
+        {
+            "name": "Max TPS",
+            "enabled": true,
+            "throughput_rate": 0.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 4
+            },
+            "actions": [
+                {
+                    "id": -1
+                }
+            ]
+        }
+    ]
+}
