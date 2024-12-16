@@ -312,13 +312,14 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
 [source,json]
 ----
 {
-    "static": {
+    "actions": {
         "description": "Micro-benchmarks",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
         "user_class": "org.example.user.HttpUser",
         "user_params": {
-            "url": "http://localhost",
+            "urlx": "https://jsonplaceholder.typicode.com",
+            "url": "http://localhost:7070",
             "debug": false,
             "http_port": 7070
         },
@@ -331,9 +332,13 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
             "5": "HTTP-albums",
             "6": "HTTP-photos",
             "7": "HTTP-todos",
-            "8": "Login",
-            "9": "NOOP",
+            "8": "login",
+            "9": "noop",
             "10": "DELAY-10ms",
+            "11": "Pre-Auth",
+            "12": "Capture",
+            "13": "Refund",
+            "14": "Debit",
             "99": "onStop"
         }
     },
@@ -532,7 +537,41 @@ SID    Name            RID        Duration    #N     #F   Avg TPS    Min RT    A
                 }
             ]
         }
-    ]
+    ],
+    "workflows": {
+        "payments": {
+            "-": {
+                "11": 0.5,
+                "14": 0.5
+            },
+            "11": {
+                "12": 1.0
+            },
+            "12": {
+                "13": 0.2,
+                "-": 0.8
+            },
+            "13": {
+                "-": 1.0
+            },
+            "14": {
+                "13": 0.2,
+                "-": 0.8
+            }
+        },
+        "random": {
+            "-": {
+                "1": 0.25,
+                "2": 0.75
+            },
+            "1": {
+                "-": 1.0
+            },
+            "2": {
+                "-": 1.0
+            }
+        }
+    }
 }
 ----
 
