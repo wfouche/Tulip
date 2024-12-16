@@ -32,13 +32,13 @@
     },
     "contexts": [
         {
-            "name": "Scenario-1",
+            "name": "Context-0",
             "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },
         {
-            "name": "Scenario-2",
+            "name": "Context-1",
             "enabled": false,
             "num_users": 32,
             "num_threads": 4
@@ -47,6 +47,7 @@
     "benchmarks": [
         {
             "name": "Init",
+            "enabled": true,
             "actions": [
                 {
                     "id": 0
@@ -55,6 +56,19 @@
                     "id": 18
                 }
             ]
+        },
+        {
+            "name": "Max TPS-a0",
+            "enabled": true,
+            "throughput_rate": 0.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 30,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "workflow": "max-tps"
         },
         {
             "name": "Max TPS-a1",
@@ -91,7 +105,7 @@
         },
         {
             "name": "Max TPS-b",
-            "enabled": false,
+            "enabled": true,
             "throughput_rate": 1000000.0,
             "worker_thread_queue_size": 0,
             "time": {
@@ -123,9 +137,22 @@
             ]
         },
         {
-            "name": "Fixed TPS-a",
+            "name": "Fixed TPS-a0",
             "enabled": true,
-            "throughput_rate": 50.0,
+            "throughput_rate": 100.0,
+            "worker_thread_queue_size": 1,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 4
+            },
+            "workflow": "random"
+        },
+        {
+            "name": "Fixed TPS-a1",
+            "enabled": true,
+            "throughput_rate": 100.0,
             "worker_thread_queue_size": 1,
             "time": {
                 "pre_warmup_duration": 15,
@@ -220,20 +247,8 @@
             ]
         },
         {
-            "name": "HTTP-c",
-            "enabled": false,
-            "throughput_rate": 1250.0,
-            "worker_thread_queue_size": 0,
-            "time": {
-                "pre_warmup_duration": 15,
-                "warmup_duration": 15,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
-            },
-            "workflow": "rest-api1"
-        },
-        {
             "name": "Shutdown",
+            "enabled":true,
             "actions": [
                 {
                     "id": 99
@@ -242,24 +257,16 @@
         }
     ],
     "workflows": {
-        "payments": {
+        "max-tps": {
             "-": {
-                "11": 0.5,
-                "14": 0.5
+                "8": 0.50,
+                "9": 0.50
             },
-            "11": {
-                "12": 1.0
-            },
-            "12": {
-                "13": 0.2,
-                "-": 0.8
-            },
-            "13": {
+            "8": {
                 "-": 1.0
             },
-            "14": {
-                "13": 0.2,
-                "-": 0.8
+            "9": {
+                "-": 1.0
             }
         },
         "random": {
