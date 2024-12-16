@@ -3,8 +3,12 @@ package io.github.wfouche.tulip.api
 import io.github.wfouche.tulip.core.Console
 import io.github.wfouche.tulip.core.actionNames
 import io.github.wfouche.tulip.core.g_config
+import io.github.wfouche.tulip.core.g_workflow
 
 abstract class TulipUser(val userId: Int, val threadId: Int) {
+
+    public var aid: Int = 0
+    public var aid_status: Boolean = true
 
     private val map = arrayOf(
         ::onStart,
@@ -220,7 +224,13 @@ abstract class TulipUser(val userId: Int, val threadId: Int) {
     }
 
     open fun nextAction(workflowId: Int): Int {
-        return -1
+        if (aid_status == false) {
+            aid = 0
+            aid_status = true
+        }
+        val aid = g_workflow!!.next(aid)
+        //Console.put("($userId) a:$aid to a:$nid with ${g_workflow!!.name}")
+        return aid
     }
 
     open fun getUserParamValue(paramName: String): String {

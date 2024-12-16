@@ -91,10 +91,14 @@ private var userThreads: Array<UserThread?>? = null //arrayOfNulls<UserThread>(N
 // ...
 private var testSuite: List<TestProfile>? = null
 
+// Markov chain object
+var g_workflow: MarkovChain? = null
+
+// ...
 private var newUser: TulipUserFactory? = null
 
 var actionNames: Map<Int, String> = emptyMap()
-var workflows: Map<String,Edge> = emptyMap()
+var workflows: HashMap<String,MarkovChain> = HashMap<String,MarkovChain>()
 
 private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 
@@ -239,7 +243,10 @@ private data class TestProfile(
     val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0, 99.9),
 
     // Json results filename.
-    val filename: String = ""
+    val filename: String = "",
+
+    // (Optional) Name of the workflow to execute
+    val workflow: String = ""
 )
 
 /*-------------------------------------------------------------------------*/
@@ -377,11 +384,18 @@ fun initConfig(configFilename: String): String {
             arrivalRate = e.throughputRate,
             queueLengths = listOf(e.workInProgress),
             actions = mutableListOf<Action>().apply {
-                for (a: ConfigAction in e.actions) {
-                    this.add(Action(a.id, a.weight))
+                if (e.workflow.isEmpty()) {
+                    // List of actions to execute
+                    for (a: ConfigAction in e.actions) {
+                        this.add(Action(a.id, a.weight))
+                    }
+                } else {
+                    // actionId -1 --> execute workflow
+                    this.add(Action(-1, 0))
                 }
             },
             filename = g_config.actions.jsonFilename,
+            workflow = e.workflow
         )
         g_tests.add(v)
     }
@@ -401,7 +415,7 @@ fun initConfig(configFilename: String): String {
             mc.add(an_id, list)
         }
         // register workflow
-        workflows = workflows.plus(Pair(wn,mc)) as Map<String, Edge>
+        workflows[wn] = mc
     }
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
@@ -1000,12 +1014,18 @@ private class UserThread(private val threadId: Int) : Thread() {
                 // Also calculate the elapsed time in microseconds.
                 //
                 task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
+                var setAidStatus = false
                 if (task.actionId < 0) {
                     // Use Markov Chain to determine next action to perform.
                     task.actionId = u!!.nextAction(task.actionId)
+                    setAidStatus = true
                 }
                 task.serviceTimeNanos = elapsedTimeNanos {
                     if (u!!.processAction(task.actionId)) task.status = 1 else task.status = 0
+
+                    if (setAidStatus) {
+                        u!!.aid_status = if (task.status == 1) true else false
+                    }
                 }
 
                 task.rspQueue!!.put(task)
@@ -1408,10 +1428,16 @@ private fun runTulip(
     testSuite!!.forEachIndexed { indexTestCase, testCase ->
         if (testCase.enabled) {
             val x: TestProfile = getTest(context, testCase)
+            if (x.workflow.isEmpty()) {
+                g_workflow = null
+            } else {
+                g_workflow = workflows[x.workflow]
+            }
             x.queueLengths.forEachIndexed { indexUserProfile, queueLength ->
                 Thread.sleep(5000)
                 runTest(x, contextId, indexTestCase, indexUserProfile, queueLength)
             }
+            g_workflow = null
         }
     }
 
