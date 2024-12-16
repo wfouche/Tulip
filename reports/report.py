@@ -209,10 +209,10 @@ def createReport(filename):
     jb = json.load(fileObj)
     version = jb['version']
     desc1 = 'Tulip ' + version
-    desc2 = jb["config"]["static"]["description"] + " / " + jb["timestamp"].replace("_", " ")
+    desc2 = jb["config"]["actions"]["description"] + " / " + jb["timestamp"].replace("_", " ")
     rb = jb["results"]
 
-    report_fn = jb["config"]["static"]["report_filename"]
+    report_fn = jb["config"]["actions"]["report_filename"]
     report_fh = open(report_fn, "w+")
 
     print("Report filename = " + report_fn)
@@ -238,8 +238,8 @@ def createReport(filename):
         for key in jss.keys():
             smx = jss[key]
             jhx = jhh[key]
-            if jb["config"]["static"]["user_actions"].has_key(key):
-                text = "[%s.%s]"%(key, jb["config"]["static"]["user_actions"][key])
+            if jb["config"]["actions"]["user_actions"].has_key(key):
+                text = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
             else:
                 text = "[%s]"%(key)
             html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,smx.min_rt,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
