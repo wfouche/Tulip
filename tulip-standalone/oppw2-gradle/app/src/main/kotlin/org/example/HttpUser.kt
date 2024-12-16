@@ -102,8 +102,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-    private var cid: Int = 0
-
     private var id: String = ""
 
     private val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8ZmY0b1UhZSVlckI9YUJzQj82KyU="
@@ -243,66 +241,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun onStop(): Boolean {
         return true
-    }
-
-    // ----------------------------------------------------------------- //
-
-    override fun nextAction(workflowId: Int): Int {
-        // 0 => {1:PA or 4:DB}
-        // 1:PA => {2:CP}
-        // 2:CP => {3:RF or 0}
-        // 3:RF => {0}
-        // 4:DB => {3:RF, or 0}
-
-        val nid = workflow.next(cid)
-        // PA(1) -> CP(2)
-        if (State.PA.equals(cid) && State.CP.equals(nid) && id == "") {
-            // Skip CP(2), if PA(1) failed; id == ""
-            cid = workflow.next(State.IDLE.ordinal)
-        // DB(4) -> RF(3)
-        } else if (State.DB.equals(cid) && State.RF.equals(nid) && id == "") {
-            cid = workflow.next(State.IDLE.ordinal)
-        } else {
-            cid = nid
-        }
-        return cid
-    }
-
-    // ----------------------------------------------------------------- //
-
-    companion object {
-        val workflow = MarkovChain()
-
-        init {
-            workflow.apply {
-                add(State.IDLE.ordinal, listOf(
-                    // PA - Credit Card
-                    Edge(State.PA.ordinal, 500),
-                    // DB - Debit Card
-                    Edge(State.DB.ordinal, 500)
-                ))
-                add(State.PA.ordinal, listOf(
-                    // CP - Credit Card
-                    Edge(State.CP.ordinal, 1000)
-                ))
-                add(State.CP.ordinal, listOf(
-                    // RF - Credit Card
-                    Edge(State.RF.ordinal, 200),
-                    // ..
-                    Edge(State.IDLE.ordinal, 800)
-                ))
-                add(State.RF.ordinal, listOf(
-                    // Debit or Credit Card
-                    Edge(State.IDLE.ordinal, 1000)
-                ))
-                add(State.DB.ordinal, listOf(
-                    // RF - Debit Card
-                    Edge(State.RF.ordinal, 200),
-                    // ...
-                    Edge(State.IDLE.ordinal, 800)
-                ))
-            }
-        }
     }
 
     // ----------------------------------------------------------------- //
