@@ -1,6 +1,6 @@
 {
-    "static": {
-        "description": "OPPWA",
+    "actions": {
+        "description": "OPPWA2",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
         "user_class": "org.example.HttpUser",
@@ -37,11 +37,29 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 4
             },
-            "actions": [
-                {
-                    "id": -1
-                }
-            ]
+            "workflow": "payments"
         }
-    ]
+    ],
+    "workflows": {
+        "payments": {
+            "-": {
+                "1": 0.5,
+                "4": 0.5
+            },
+            "1": {
+                "2": 1.0
+            },
+            "2": {
+                "3": 0.2,
+                "-": 0.8
+            },
+            "3": {
+                "-": 1.0
+            },
+            "4": {
+                "3": 0.2,
+                "-": 0.8
+            }
+        }
+    }
 }
