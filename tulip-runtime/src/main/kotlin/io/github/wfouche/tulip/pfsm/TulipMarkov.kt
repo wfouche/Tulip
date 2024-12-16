@@ -9,7 +9,7 @@ data class Edge (
     val weight: Int
 )
 
-class MarkovChain() {
+class MarkovChain(val name: String) {
 
     private val matrix = Array(100, { i -> Array(1000, { j -> 0 }) })
 
@@ -22,9 +22,16 @@ class MarkovChain() {
         }
         pList.shuffle()
         if (pList.size != 1000) {
-            Console.put("error: PFSM:add - probability list size != 1000")
-            Console.put("actionId = ${actionId}")
-            Console.put("eList = ${eList.toString()}")
+            Console.put("")
+            Console.put("=".repeat(75))
+            Console.put("=")
+            Console.put("=  TulipMarkovChain: error, probabilities do not sum to 1.0")
+            Console.put("=    workflow = $name")
+            Console.put("=    actionId = ${actionId}")
+            Console.put("=    list = ${eList}")
+            Console.put("=")
+            Console.put("=".repeat(75))
+            Console.put("")
             exitProcess(1)
         }
         for (i in 1..1000) {

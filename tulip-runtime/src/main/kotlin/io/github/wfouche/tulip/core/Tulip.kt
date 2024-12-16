@@ -8,6 +8,8 @@ import com.sun.management.OperatingSystemMXBean
 import io.github.wfouche.tulip.api.TulipApi
 import io.github.wfouche.tulip.api.TulipUser
 import io.github.wfouche.tulip.api.TulipUserFactory
+import io.github.wfouche.tulip.pfsm.Edge
+import io.github.wfouche.tulip.pfsm.MarkovChain
 import io.micrometer.core.instrument.Clock
 import io.micrometer.core.instrument.Tag
 import io.micrometer.jmx.JmxConfig
@@ -380,6 +382,22 @@ fun initConfig(configFilename: String): String {
             filename = g_config.actions.jsonFilename,
         )
         g_tests.add(v)
+    }
+    for (wn in g_config.workflows.keys) {
+        //Console.put("workflow = $wn")
+        val mc = MarkovChain(wn)
+        for (an in g_config.workflows[wn]!!.keys) {
+            //Console.put("  aid = $an")
+            val an_id = if (an == "-") 0 else an.toInt()
+            var list: MutableList<Edge> = mutableListOf()
+            for (da in g_config.workflows[wn]!![an]!!.keys) {
+                val da_id = if (da == "-") 0 else da.toInt()
+                val weight = (g_config.workflows[wn]!![an]!![da]!!.toDouble()*1000).toInt()
+                //Console.put("    did = $da, weight = $weight")
+                list.add(Edge(da_id, weight))
+            }
+            mc.add(an_id, list)
+        }
     }
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
