@@ -98,7 +98,7 @@ def createReport(filename):
     fileObj = open(filename)
     jb = json.load(fileObj)
 
-    # Static Data
+    # Actions
     for e in jb['actions'].keys():
         if e in ['user_params', 'user_actions']:
             generate_table(e)
@@ -108,6 +108,29 @@ def createReport(filename):
         printf("| *" + e + '*\n')
         printf("| " + jb['actions'][e] + '\n')
     printf("|===" + '\n')
+
+    # Context Data
+    printf("\n")
+    printf("== Contexts\n")
+    printf("\n")
+    printf('[%header,cols="1a,2a"]\n')
+    printf("|===\n")
+    printf("| id | value\n")
+
+    for c in jb['contexts']:
+        printf('| %s'%(c["name"]) + '\n')
+        printf('| \n')
+        printf('[%header,cols="1a,2a"]\n')
+        printf('!===\n')
+        printf('! id ! value \n')
+        printf('! *num_users*   ! %d\n'%(c["num_users"]))
+        printf('! *num_threads* ! %d\n'%(c["num_threads"]))
+        if "enabled" in c.keys():
+            printf('! *enabled* ! %s\n'%(c["enabled"]))
+        else:
+            printf('! *enabled* ! True\n')
+        printf("!===\n")
+    printf("|===\n")
 
     # Benchmarks Data
     printf("\n")
@@ -152,29 +175,6 @@ def createReport(filename):
             printf('!===\n')
 
         printf("|===\n")
-
-    # Context Data
-    printf("\n")
-    printf("== Contexts\n")
-    printf("\n")
-    printf('[%header,cols="1a,2a"]\n')
-    printf("|===\n")
-    printf("| id | value\n")
-
-    for c in jb['contexts']:
-        printf('| %s'%(c["name"]) + '\n')
-        printf('| \n')
-        printf('[%header,cols="1a,2a"]\n')
-        printf('!===\n')
-        printf('! id ! value \n')
-        printf('! *num_users*   ! %d\n'%(c["num_users"]))
-        printf('! *num_threads* ! %d\n'%(c["num_threads"]))
-        if "enabled" in c.keys():
-            printf('! *enabled* ! %s\n'%(c["enabled"]))
-        else:
-            printf('! *enabled* ! True\n')
-        printf("!===\n")
-    printf("|===\n")
 
     # Workflows
     printf("\n")
