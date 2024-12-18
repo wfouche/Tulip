@@ -12,7 +12,7 @@ image::Screenshot_20241121_094554.png[]
 
 == System Under Test
 
-[c4plantuml,diag02,svg]
+[c4plantuml,diag00,svg]
 ....
 @startuml
 !include C4_Container.puml
@@ -262,19 +262,18 @@ Stateful Interactions - workflows::
 == [B] Stateful Interactions
 
 [.stretch]
-[plantuml,diag03,svg]
+[plantuml,diag01,svg]
 ....
 @startuml
 
 title rest-api1
 
-    state "Ready" as IP
+    state "-" as IP
     state "Action 1" as A0
     state "Action 2" as A1
     state "Action 3" as TST
     state "Action 4" as D
 
-    [*] --> IP: Start
     IP --> A0: 0.6
     A0 --> IP: 0.8
     A0 --> D: 0.2
@@ -283,7 +282,6 @@ title rest-api1
     TST --> IP: 0.8
     TST --> D: 0.2
     D --> IP: 1.0
-    IP --> [*]: Stop
 
 @enduml
 ....
@@ -292,19 +290,18 @@ title rest-api1
 === [B] Stateful Interactions
 
 [.column]
-[plantuml,diag03,svg]
+[plantuml,diag02,svg]
 ....
 @startuml
 
 title rest-api1
 
-    state "Ready" as IP
+    state "-" as IP
     state "Action 1" as A0
     state "Action 2" as A1
     state "Action 3" as TST
     state "Action 4" as D
-    
-    [*] --> IP: Start
+
     IP --> A0: 0.6
     A0 --> IP: 0.8
     A0 --> D: 0.2
@@ -313,7 +310,6 @@ title rest-api1
     TST --> IP: 0.8
     TST --> D: 0.2
     D --> IP: 1.0
-    IP --> [*]: Stop
 
 @enduml
 ....
@@ -329,7 +325,6 @@ title rest-api1
             "2": {"3": 1.0},
             "3": {"-": 0.8, "4": 0.2},
             "4": {"-": 1.0}
-            "*": {"-": 1.0}
         }
     }
 }
@@ -341,9 +336,10 @@ title rest-api1
 [source,json,linenums]
 ----
 {
-    "static": {},
+    "actions": {},
     "contexts": [],
-    "benchmarks": []
+    "benchmarks": [],
+    "workflows": []
 }
 ----
 
@@ -353,7 +349,7 @@ title rest-api1
 [source,json,linenums]
 ----
 {
-    "static": {
+    "actions": {
         "description": "Micro-benchmarks",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
@@ -369,20 +365,11 @@ title rest-api1
             "3": "HTTP-COMP",
             "4": "HTTP-REFD",
             "99": "stop"
-        },
-        "workflows": {
-            "rest-api1": {
-                "-": {"1": 0.6, "2": 0.4},
-                "1": {"-": 0.8, "4": 0.2},
-                "2": {"3": 1.0},
-                "3": {"-": 0.8, "4": 0.2},
-                "4": {"-": 1.0}
-                "*": {"-": 1.0}
-            }
         }
     }
     "contexts": [],
-    "benchmarks": []
+    "benchmarks": [],
+    "workflows": []
 }
 ----
 
@@ -392,22 +379,23 @@ title rest-api1
 [source,json,linenums]
 ----
 {
-    "static": {},
+    "actions": {},
     "contexts": [
         {
-            "name": "Scenario-1",
+            "name": "Context-1",
             "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },
         {
-            "name": "Scenario-2",
+            "name": "Context-2",
             "enabled": false,
             "num_users": 32,
             "num_threads": 4
         }
     ],
-    "benchmarks": []
+    "benchmarks": [],
+    "workflows": []
 }
 ----
 
@@ -417,7 +405,7 @@ title rest-api1
 [source,json,linenums]
 ----
 {
-    "static": {},
+    "actions": {},
     "contexts": [],
     "benchmarks": [
         {
@@ -442,7 +430,8 @@ title rest-api1
             "actions": [ { "id": 99 } ]
             },
         },
-    ]
+    ],
+    "workflows": []
 }
 ----
 
@@ -452,7 +441,7 @@ title rest-api1
 [source,json,linenums]
 ----
 {
-    "static": {},
+    "actions": {},
     "contexts": [],
     "benchmarks": [
         {
@@ -480,7 +469,29 @@ title rest-api1
             "actions": [ { "id": 99 } ]
             },
         },
-    ]
+    ],
+    "workflows": []
+}
+----
+
+=== Benchmark Config
+
+[.stretch]
+[source,json,linenums]
+----
+{
+    "actions": {},
+    "contexts": [],
+    "benchmarks": [
+    "workflows": {
+        "rest-api1": {
+            "-": {"1": 0.6, "2": 0.4},
+            "1": {"-": 0.8, "4": 0.2},
+            "2": {"3": 1.0},
+            "3": {"-": 0.8, "4": 0.2},
+            "4": {"-": 1.0}
+        }
+    }
 }
 ----
 
@@ -514,7 +525,7 @@ end split
 == Tulip Threads / User Objects
 
 [.stretch]
-[plantuml,diag,svg]
+[plantuml,diag04,svg]
 ----
 @startmindmap
 * Main-Thread
@@ -678,7 +689,7 @@ https://x.com/gunnarmorling/status/1850492919926391015
 
 == Enterprise Software Deployment
 
-[c4plantuml,diag02,svg]
+[c4plantuml,diag05,svg]
 ....
 @startuml
 !include C4_Container.puml

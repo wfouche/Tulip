@@ -416,7 +416,7 @@ ul.byline li + li {
 </style></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title"><h1>Tulip</h1><h2>Performance Testing Toolkit</h2><p class="byline">
   <span class="author">Werner Fouché, &lt;werner.fouche@gmail.com&gt;</span>
   </p></section><section id="_when_to_do_performance_testing"><h2>When to do Performance Testing?</h2><div class="slide-content"><div class="imageblock stretch"><img src="Screenshot_20241121_094554.png" alt="Screenshot 20241121 094554" height="100%"></div></div></section>
-<section id="_system_under_test"><h2>System Under Test</h2><div class="slide-content"><div class="imageblock kroki"><img src="https://kroki.io/c4plantuml/svg/eNqVVNtu2zAMfc9XcNlLBrgtBuwH0iRYW-Ti1enaPRmyzCRCZcmQ5KTBsH8f5fiaFLvkyTohD48OSX0QissiRZh8iSdaOSYUmuu8yORgMB__WD2t4_UqjKer5-XoU40836_v4vns62w5JXDghJNEUGdDKtjWsAw22sC9cmgUOrhl6lWoLURH6zAbDEI0VqsRL6zTGZoAJs3XcAw1DHoDboeQUHYAB-F2kJeJTJYYMM51oZwdko4TdXxLQMrMccQ_E9e5gOEn-DkA-jV6RwdMYpbnFPyMCYzzXArOnNBqSNAD27MAotx48YvvE49NUYo9ySilWUexHDjRoXLAVFrCTd2kvng4JpH9yjYn7mFEf0u8CtkWffW6asSNyF0AY7UtJDMeDo3eixQtMCnfr7IpFPfSmRTuCE6Tk6WRFvaC-RRhgO4LidEHi-ZCUaYTIbGyY1Eeak2TjwG8sIyRE30tIEUmHKZgi8SSlqpn_6LNXog7CYAU94LjubxpMkqZYwmz6NtQfXo10bc59M5OG9JW0B3B4FZYZxiVBqFoKrOyuwHsKDgFVtBUcYMptU8waQM_VGgtSL2lAzp-fWFTwvgrqpR8En5ew_v3x2aqKcy0eT3f_uKPt4SIqfSvZrRnb26EGRMytiVAdLOrBZ2rtfL8a7JelNS0IwvBjbZ642D2xndM0YSdMom2w1kpaFmJU21oh_FsbzvW-hGsOs0JaG7RcRhYogvXtjlo1jUA6oeyrLxva_LgEWXnSWgX88mi9bXv1uswosB-3GmN_hzTG-wy9FQuXqLY7hLdeQZOdPWSV0wl2G97XZDZo-IBPESr5U23eLfkf2XGtxTdCmtHvs_yiCy1sDE6K1-dg6ElpDdJe-aKeHo7qe_pOTt-nI1RRLQW8MqjJUcr5Gzi-hr6eYX1L2xTPlqsw4qouUwv_WLuamN8_k3lzsti3pjzG5giQ2g=" alt="diag02"></div></div></section>
+<section id="_system_under_test"><h2>System Under Test</h2><div class="slide-content"><div class="imageblock kroki"><img src="https://kroki.io/c4plantuml/svg/eNqVVNtu2zAMfc9XcNlLBrgtBuwH0iRYW-Ti1enaPRmyzCRCZcmQ5KTBsH8f5fiaFLvkyTohD48OSX0QissiRZh8iSdaOSYUmuu8yORgMB__WD2t4_UqjKer5-XoU40836_v4vns62w5JXDghJNEUGdDKtjWsAw22sC9cmgUOrhl6lWoLURH6zAbDEI0VqsRL6zTGZoAJs3XcAw1DHoDboeQUHYAB-F2kJeJTJYYMM51oZwdko4TdXxLQMrMccQ_E9e5gOEn-DkA-jV6RwdMYpbnFPyMCYzzXArOnNBqSNAD27MAotx48YvvE49NUYo9ySilWUexHDjRoXLAVFrCTd2kvng4JpH9yjYn7mFEf0u8CtkWffW6asSNyF0AY7UtJDMeDo3eixQtMCnfr7IpFPfSmRTuCE6Tk6WRFvaC-RRhgO4LidEHi-ZCUaYTIbGyY1Eeak2TjwG8sIyRE30tIEUmHKZgi8SSlqpn_6LNXog7CYAU94LjubxpMkqZYwmz6NtQfXo10bc59M5OG9JW0B3B4FZYZxiVBqFoKrOyuwHsKDgFVtBUcYMptU8waQM_VGgtSL2lAzp-fWFTwvgrqpR8En5ew_v3x2aqKcy0eT3f_uKPt4SIqfSvZrRnb26EGRMytiVAdLOrBZ2rtfL8a7JelNS0IwvBjbZ642D2xndM0YSdMom2w1kpaFmJU21oh_FsbzvW-hGsOs0JaG7RcRhYogvXtjlo1jUA6oeyrLxva_LgEWXnSWgX88mi9bXv1uswosB-3GmN_hzTG-wy9FQuXqLY7hLdeQZOdPWSV0wl2G97XZDZo-IBPESr5U23eLfkf2XGtxTdCmtHvs_yiCy1sDE6K1-dg6ElpDdJe-aKeHo7qe_pOTt-nI1RRLQW8MqjJUcr5Gzi-hr6eYX1L2xTPlqsw4qouUwv_WLuamN8_k3lzsti3pjzG5giQ2g=" alt="diag00"></div></div></section>
 <section id="_performance_requirements"><h2>Performance Requirements</h2><div class="slide-content"><div class="ulist"><ul><li><p>Typically created by the Product Manager or Architect(s).</p><div class="ulist"><ul><li><p>Number of simultaneous users</p></li><li><p>Peak sustained throughput rate, and duration (hours)</p></li><li><p>Response times: average, percentile values and maximum</p></li><li><p>Cloud/hardware budget</p></li></ul></div></li></ul></div></div></section>
 <section id="_performance_testing"><h2>Performance Testing</h2><div class="slide-content"><div class="ulist"><ul><li><p>Simulate typical production or special conditions traffic with <strong>virtual users</strong></p></li><li><p>Validate that the application meets <strong>performance requirements</strong></p><div class="ulist"><ul><li><p>Analyze response times</p></li><li><p>Discover performance bottlenecks</p></li><li><p>Size the underlying infrastructure</p></li></ul></div></li><li><p>Reduce cloud hosting costs</p></li></ul></div></div></section>
 <section><section id="_abstract_user_class"><h2>Abstract User Class</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-line-numbers="" data-lang="java">public abstract class TulipUser {
@@ -540,7 +540,7 @@ public class RedisUser extends TulipUser {
         { "id": 2}
     ]
 }</code></pre></div></div></li></ul></div></div></section></section>
-<section><section id="_b_stateful_interactions"><h2>[B] Stateful Interactions</h2><div class="slide-content"><div class="imageblock stretch kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNptj7EKwyAQhnef4shYMGgaSnEoCC7ZQpOtdJDWQShNiLfk7atnE1IaN7_vv_OXoceXg8kF5Hb0kjGIJ6BFB8XV2edcgA3QtFuuH-iHN0hSWuyoKiu5o46k-q7fcTU5k0vcDnfg_BLfVtChnZBo0xLUQoEoT4S0WHOiPG-RSaT6mZMJ1TkkCcUqCmSZvxEvf8sWttlm1tAy-N0fS6e2w8g-8MlPZQ==" alt="diag03" height="100%"></div></div></section><section id="_b_stateful_interactions_2" class="columns"><h2>[B] Stateful Interactions</h2><div class="slide-content"><div class="imageblock column kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNptj7EKwyAQhnef4shYMGgaSnEoCC7ZQpOtdJDWQShNiLfk7atnE1IaN7_vv_OXoceXg8kF5Hb0kjGIJ6BFB8XV2edcgA3QtFuuH-iHN0hSWuyoKiu5o46k-q7fcTU5k0vcDnfg_BLfVtChnZBo0xLUQoEoT4S0WHOiPG-RSaT6mZMJ1TkkCcUqCmSZvxEvf8sWttlm1tAy-N0fS6e2w8g-8MlPZQ==" alt="diag03"></div>
+<section><section id="_b_stateful_interactions"><h2>[B] Stateful Interactions</h2><div class="slide-content"><div class="imageblock stretch kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNptjsEKwyAMhu8-RejdYroyRg8FwYs3YX0BGR6EsZaa92ca2XDM3PJ9yZ8IivQMcIZE0h8RhYBciTwFGOQAPoF1LdMPivsLkJVWHTVVhR11YbXdt46b2Zn6gHUg5ZrzF1DjlZFWjKwr6NYiU8j0s4cFzXUIGeWjC-BYH87NX9iHNWnmO1QW3654Q3s=" alt="diag01" height="100%"></div></div></section><section id="_b_stateful_interactions_2" class="columns"><h2>[B] Stateful Interactions</h2><div class="slide-content"><div class="imageblock column kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNptjsEKwyAMhu8-RejdYroyRg8FwYs3YX0BGR6EsZaa92ca2XDM3PJ9yZ8IivQMcIZE0h8RhYBciTwFGOQAPoF1LdMPivsLkJVWHTVVhR11YbXdt46b2Zn6gHUg5ZrzF1DjlZFWjKwr6NYiU8j0s4cFzXUIGeWjC-BYH87NX9iHNWnmO1QW3654Q3s=" alt="diag02"></div>
 <div class="listingblock column"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
     "workflows": {
         "rest-api1": {
@@ -549,16 +549,16 @@ public class RedisUser extends TulipUser {
             "2": {"3": 1.0},
             "3": {"-": 0.8, "4": 0.2},
             "4": {"-": 1.0}
-            "*": {"-": 1.0}
         }
     }
 }</code></pre></div></div></div></section></section>
 <section><section id="_benchmark_config"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
-    "static": {},
+    "actions": {},
     "contexts": [],
-    "benchmarks": []
+    "benchmarks": [],
+    "workflows": []
 }</code></pre></div></div></div></section><section id="_benchmark_config_2"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
-    "static": {
+    "actions": {
         "description": "Micro-benchmarks",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
@@ -574,39 +574,31 @@ public class RedisUser extends TulipUser {
             "3": "HTTP-COMP",
             "4": "HTTP-REFD",
             "99": "stop"
-        },
-        "workflows": {
-            "rest-api1": {
-                "-": {"1": 0.6, "2": 0.4},
-                "1": {"-": 0.8, "4": 0.2},
-                "2": {"3": 1.0},
-                "3": {"-": 0.8, "4": 0.2},
-                "4": {"-": 1.0}
-                "*": {"-": 1.0}
-            }
         }
     }
     "contexts": [],
-    "benchmarks": []
+    "benchmarks": [],
+    "workflows": []
 }</code></pre></div></div></div></section><section id="_benchmark_config_3"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
-    "static": {},
+    "actions": {},
     "contexts": [
         {
-            "name": "Scenario-1",
+            "name": "Context-1",
             "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },
         {
-            "name": "Scenario-2",
+            "name": "Context-2",
             "enabled": false,
             "num_users": 32,
             "num_threads": 4
         }
     ],
-    "benchmarks": []
+    "benchmarks": [],
+    "workflows": []
 }</code></pre></div></div></div></section><section id="_benchmark_config_4"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
-    "static": {},
+    "actions": {},
     "contexts": [],
     "benchmarks": [
         {
@@ -631,9 +623,10 @@ public class RedisUser extends TulipUser {
             "actions": [ { "id": 99 } ]
             },
         },
-    ]
+    ],
+    "workflows": []
 }</code></pre></div></div></div></section><section id="_benchmark_config_5"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
-    "static": {},
+    "actions": {},
     "contexts": [],
     "benchmarks": [
         {
@@ -661,10 +654,24 @@ public class RedisUser extends TulipUser {
             "actions": [ { "id": 99 } ]
             },
         },
-    ]
+    ],
+    "workflows": []
+}</code></pre></div></div></div></section><section id="_benchmark_config_6"><h2>Benchmark Config</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-json hljs" data-noescape="true" data-line-numbers="" data-lang="json">{
+    "actions": {},
+    "contexts": [],
+    "benchmarks": [
+    "workflows": {
+        "rest-api1": {
+            "-": {"1": 0.6, "2": 0.4},
+            "1": {"-": 0.8, "4": 0.2},
+            "2": {"3": 1.0},
+            "3": {"-": 0.8, "4": 0.2},
+            "4": {"-": 1.0}
+        }
+    }
 }</code></pre></div></div></div></section></section>
 <section id="_benchmark_execution"><h2>Benchmark Execution</h2><div class="slide-content"><div class="imageblock stretch kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNqNzt0KgjAYxvHzXcXAY72ACYHIKkXdmO8giA5me7HBWOEHUVcfVidBUIcP_H_wjBfvJkIpjfcnZy2GQ7xaZtQPiOGG3p-vLBfNutgkZSualIyLoKY3LnxzHboeWSbln6VuuUrKTP3MzX0ekIGuChkr3UBR85fDYOnTEsZ3PNfAU_JxX2iQGt73o6OxOHV-Rqa4FAqSLdRVSh6NH1Ap" alt="diag03" height="100%"></div></div></section>
-<section id="_tulip_threads_user_objects"><h2>Tulip Threads / User Objects</h2><div class="slide-content"><div class="imageblock stretch kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNpzKC5JLCrJzcxLyU0s4NJS8E3MzNMNyShKTUzh0tJSgLB0DYBsLYVQKGWIJGMIETKCUMZIMlAhEwhliiRjDBEyg1DmXA6pQNshLgAAuUMkcA==" alt="diag" height="100%"></div></div></section>
+<section id="_tulip_threads_user_objects"><h2>Tulip Threads / User Objects</h2><div class="slide-content"><div class="imageblock stretch kroki-format-svg kroki"><img src="https://kroki.io/plantuml/svg/eNpzKC5JLCrJzcxLyU0s4NJS8E3MzNMNyShKTUzh0tJSgLB0DYBsLYVQKGWIJGMIETKCUMZIMlAhEwhliiRjDBEyg1DmXA6pQNshLgAAuUMkcA==" alt="diag04" height="100%"></div></div></section>
 <section><section id="_benchmark_app"><h2>Benchmark App</h2><div class="slide-content"><div class="listingblock"><div class="title">App.java</div><div class="content"><pre class="highlightjs highlight"><code class="language-bash hljs" data-noescape="true" data-line-numbers="" data-lang="bash">///usr/bin/env jbang "$0" "$@" ; exit $?
 //DEPS io.github.wfouche.tulip:tulip-runtime:0.1.0-SNAPSHOT
 //SOURCES HttpUser.java
@@ -710,7 +717,7 @@ public class App {
 <section id="_looking_for_something_simpler"><h2>Looking for something simpler &#8230;&#8203;</h2><div class="slide-content"><div class="imageblock"><img src="Screenshot_20241121_151010_a.png" alt="Screenshot 20241121 151010 a"></div>
 <div class="paragraph"><p><a href="https://x.com/gunnarmorling/status/1850492919926391015" class="bare">https://x.com/gunnarmorling/status/1850492919926391015</a></p></div></div></section>
 <section id=""><h2>&nbsp;</h2><div class="slide-content"><div class="dlist"><dl><dt class="hdlist1">[T]he</dt><dt class="hdlist1">[U]ltimate</dt><dt class="hdlist1">[L]oad</dt><dt class="hdlist1">[I]njection</dt><dt class="hdlist1">[P]rogram</dt><dd><p>&nbsp;</p></dd></dl></div></div></section>
-<section id="_enterprise_software_deployment"><h2>Enterprise Software Deployment</h2><div class="slide-content"><div class="imageblock kroki"><img src="https://kroki.io/c4plantuml/svg/eNqVVNtu2zAMfc9XcNlLBrgtBuwH0iRYW-Ti1enaPRmyzCRCZcmQ5KTBsH8f5fiaFLvkyTohD48OSX0QissiRZh8iSdaOSYUmuu8yORgMB__WD2t4_UqjKer5-XoU40836_v4vns62w5JXDghJNEUGdDKtjWsAw22sC9cmgUOrhl6lWoLURH6zAbDEI0VqsRL6zTGZoAJs3XcAw1DHoDboeQUHYAB-F2kJeJTJYYMM51oZwdko4TdXxLQMrMccQ_E9e5gOEn-DkA-jV6RwdMYpbnFPyMCYzzXArOnNBqSNAD27MAotx48YvvE49NUYo9ySilWUexHDjRoXLAVFrCTd2kvng4JpH9yjYn7mFEf0u8CtkWffW6asSNyF0AY7UtJDMeDo3eixQtMCnfr7IpFPfSmRTuCE6Tk6WRFvaC-RRhgO4LidEHi-ZCUaYTIbGyY1Eeak2TjwG8sIyRE30tIEUmHKZgi8SSlqpn_6LNXog7CYAU94LjubxpMkqZYwmz6NtQfXo10bc59M5OG9JW0B3B4FZYZxiVBqFoKrOyuwHsKDgFVtBUcYMptU8waQM_VGgtSL2lAzp-fWFTwvgrqpR8En5ew_v3x2aqKcy0eT3f_uKPt4SIqfSvZrRnb26EGRMytiVAdLOrBZ2rtfL8a7JelNS0IwvBjbZ642D2xndM0YSdMom2w1kpaFmJU21oh_FsbzvW-hGsOs0JaG7RcRhYogvXtjlo1jUA6oeyrLxva_LgEWXnSWgX88mi9bXv1uswosB-3GmN_hzTG-wy9FQuXqLY7hLdeQZOdPWSV0wl2G97XZDZo-IBPESr5U23eLfkf2XGtxTdCmtHvs_yiCy1sDE6K1-dg6ElpDdJe-aKeHo7qe_pOTt-nI1RRLQW8MqjJUcr5Gzi-hr6eYX1L2xTPlqsw4qouUwv_WLuamN8_k3lzsti3pjzG5giQ2g=" alt="diag02"></div></div></section></div></div><script src="node_modules/reveal.js/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+<section id="_enterprise_software_deployment"><h2>Enterprise Software Deployment</h2><div class="slide-content"><div class="imageblock kroki"><img src="https://kroki.io/c4plantuml/svg/eNqVVNtu2zAMfc9XcNlLBrgtBuwH0iRYW-Ti1enaPRmyzCRCZcmQ5KTBsH8f5fiaFLvkyTohD48OSX0QissiRZh8iSdaOSYUmuu8yORgMB__WD2t4_UqjKer5-XoU40836_v4vns62w5JXDghJNEUGdDKtjWsAw22sC9cmgUOrhl6lWoLURH6zAbDEI0VqsRL6zTGZoAJs3XcAw1DHoDboeQUHYAB-F2kJeJTJYYMM51oZwdko4TdXxLQMrMccQ_E9e5gOEn-DkA-jV6RwdMYpbnFPyMCYzzXArOnNBqSNAD27MAotx48YvvE49NUYo9ySilWUexHDjRoXLAVFrCTd2kvng4JpH9yjYn7mFEf0u8CtkWffW6asSNyF0AY7UtJDMeDo3eixQtMCnfr7IpFPfSmRTuCE6Tk6WRFvaC-RRhgO4LidEHi-ZCUaYTIbGyY1Eeak2TjwG8sIyRE30tIEUmHKZgi8SSlqpn_6LNXog7CYAU94LjubxpMkqZYwmz6NtQfXo10bc59M5OG9JW0B3B4FZYZxiVBqFoKrOyuwHsKDgFVtBUcYMptU8waQM_VGgtSL2lAzp-fWFTwvgrqpR8En5ew_v3x2aqKcy0eT3f_uKPt4SIqfSvZrRnb26EGRMytiVAdLOrBZ2rtfL8a7JelNS0IwvBjbZ642D2xndM0YSdMom2w1kpaFmJU21oh_FsbzvW-hGsOs0JaG7RcRhYogvXtjlo1jUA6oeyrLxva_LgEWXnSWgX88mi9bXv1uswosB-3GmN_hzTG-wy9FQuXqLY7hLdeQZOdPWSV0wl2G97XZDZo-IBPESr5U23eLfkf2XGtxTdCmtHvs_yiCy1sDE6K1-dg6ElpDdJe-aKeHo7qe_pOTt-nI1RRLQW8MqjJUcr5Gzi-hr6eYX1L2xTPlqsw4qouUwv_WLuamN8_k3lzsti3pjzG5giQ2g=" alt="diag05"></div></div></section></div></div><script src="node_modules/reveal.js/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;
@@ -1085,12 +1092,18 @@ Reveal.addEventListener('resize', function () {
         var highlightSteps = RevealHighlight.deserializeHighlightSteps( block.getAttribute( 'data-line-numbers' ) );
         if( highlightSteps.length > 1 ) {
 
+          // When rendered with asciidoc, data-fragment index if it exists lies on the listing block element, so we have to lookup
           // If the original code block has a fragment-index,
           // each clone should follow in an incremental sequence
-          var fragmentIndex = parseInt( block.getAttribute( 'data-fragment-index' ), 10 );
+          var preCodeWrapper = block.parentElement;
+          var divContent = preCodeWrapper.parentElement;
+          var listingBlock = divContent.parentElement;
+          var fragmentIndex = parseInt( listingBlock.getAttribute( 'data-fragment-index' ), 10 );
 
           if( typeof fragmentIndex !== 'number' || isNaN( fragmentIndex ) ) {
             fragmentIndex = null;
+          } else {
+            fragmentIndex += 1;
           }
 
           // Generate fragments for all steps except the original block
