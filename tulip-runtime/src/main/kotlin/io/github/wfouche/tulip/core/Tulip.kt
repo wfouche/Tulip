@@ -1109,8 +1109,8 @@ private fun assignTask(task: Task) {
     task.beginQueueTimeNanos = System.nanoTime()
     if (!w.tq.offer(task)) {
         // We know the queue is full, so queue size = queue capacity
-        // No locking required, just reading of property capacity.
         w.tq.put(task)
+        // No locking required, just reading of property capacity.
         wthread_queue_stats.recordValue(w.tq.capacity.toLong())
     } else {
         // Grab a reentrant lock and read the size property.
