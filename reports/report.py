@@ -267,7 +267,10 @@ def createReport(filename):
             jhh = {}
             jss = {}
             printf(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
-            name2s_list = ["u:%d"%(e["num_users"]), "t:%d"%(e["num_threads"]), ""]
+            if len(e["workflow_name"]) > 0:
+                name2s_list = ["w:%s"%(e["workflow_name"]), "u:%d, t:%d"%(e["num_users"],e["num_threads"]), ""]
+            else:
+                name2s_list = [                             "u:%d, t:%d"%(e["num_users"],e["num_threads"]), ""]
             name2s = name2s_list[0]
             del name2s_list[0]
         ht = Histogram.fromString(e["histogram_rt"])

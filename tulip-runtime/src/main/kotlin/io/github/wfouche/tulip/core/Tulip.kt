@@ -825,11 +825,20 @@ private object DataCollector {
 
             var json = "{"
 
+            val workflowName: String
+            if (g_workflow == null) {
+                workflowName = ""
+            } else {
+                workflowName = g_workflow!!.name
+            }
+
             json += "\"scenario_name\": \"$TULIP_SCENARIO_NAME\", "
             json += "\"scenario_id\": $TULIP_SCENARIO_ID, "
             json += "\"num_users\": $MAX_NUM_USERS, "
             json += "\"num_threads\": $MAX_NUM_THREADS, "
             json += "\"queue_length\": ${r.queueLength}, "
+
+            json += "\"workflow_name\": \"$workflowName\", "
 
             json += "\"test_name\": \"${r.testName}\", "
             json += "\"test_id\": ${r.testId}, "
