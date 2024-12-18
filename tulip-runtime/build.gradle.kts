@@ -13,7 +13,7 @@ plugins {
     `maven-publish`
     id("org.jreleaser") version "1.15.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
-    id("org.jetbrains.dokka") version "1.9.20"
+    id("org.jetbrains.dokka") version "2.0.0"
 }
 
 java {
@@ -22,7 +22,7 @@ java {
 }
 
 dependencies {
-    implementation("io.micrometer:micrometer-registry-jmx:1.14.1")
+    implementation("io.micrometer:micrometer-registry-jmx:1.14.2")
     implementation("org.slf4j:slf4j-api:2.0.16")
     implementation("org.slf4j:slf4j-simple:2.0.16")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
