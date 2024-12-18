@@ -39,10 +39,10 @@ table, th, td {
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
-    <th>MQS</th>
     <th>AQS</th>
-    <th>Max WT</th>
-    <th>Avg WT</th>
+    <th>MQS</th>
+    <th>AWT</th>
+    <th>MWT</th>
     <th>CPU</th>
     <th>JMM</th>
   </tr>
@@ -64,10 +64,10 @@ benchmark_columns = '''
     <th>99p RT</th>
     <th>Max RT</th>
     <th>Max RTT</th>
-    <th>MQS</th>
     <th>AQS</th>
-    <th>Max WT</th>
-    <th>Avg WT</th>
+    <th>MQS</th>
+    <th>AWT</th>
+    <th>MWT</th>
     <th>CPU</th>
     <th>JMM</th>
   </tr>
@@ -139,8 +139,8 @@ benchmark_detail_row = '''
     <td>%.1f ms</td>
     <td>%.1f ms</td>
     <td>%s</td>
-    <td>%d</td>
     <td>%.1f</td>
+    <td>%d</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
     <td>%.1f</td>
@@ -164,8 +164,8 @@ benchmark_summary_row = '''
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%s</b></td>
-    <td><b>%d</b></td>
     <td><b>%.1f</b></td>
+    <td><b>%d</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f</b></td>
@@ -228,7 +228,7 @@ def createReport(filename):
     def print_global_summary():
         global name2s
         global name2s_list
-        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.min_rt,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.max_qs,sm.avg_qs,sm.max_wt,sm.max_awt,sm.cpu,sm.mem)
+        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.min_rt,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -247,7 +247,7 @@ def createReport(filename):
                 text = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
             else:
                 text = "[%s]"%(key)
-            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,smx.min_rt,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.max_qs,smx.avg_qs,smx.max_wt,smx.max_awt,smx.cpu,smx.mem)
+            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,smx.min_rt,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -297,10 +297,10 @@ def createReport(filename):
                 e["percentiles_rt"]["99.0"],
                 e["max_rt"],
                 e["max_rt_ts"][8:].replace("_"," "),
-                e["max_wthread_qsize"],
                 e["avg_wthread_qsize"],
-                e["max_wt"],
+                e["max_wthread_qsize"],
                 e["avg_wt"],
+                e["max_wt"],
                 p_cpu,
                 p_mem
                 ))
