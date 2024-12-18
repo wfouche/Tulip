@@ -27,7 +27,7 @@ import java.lang.management.ManagementFactory
 import java.nio.ByteBuffer
 import java.time.format.DateTimeFormatter
 import java.util.*
-import java.util.concurrent.LinkedBlockingQueue
+import java.util.concurrent.LinkedBlockingQueue as BlockingQueue
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
 import java.util.concurrent.atomic.AtomicInteger
@@ -51,7 +51,7 @@ private val isWindows: Boolean = System.getProperty("os.name").lowercase().conta
 /*-------------------------------------------------------------------------*/
 
 class InformativeBlockingQueue<E>(val capacity: Int) :
-    LinkedBlockingQueue<E>(capacity) { }
+    BlockingQueue<E>(capacity) { }
 
 typealias Java_Queue<E> = InformativeBlockingQueue<E>
 typealias MPSC_Queue<E> = InformativeBlockingQueue<E>
@@ -1101,8 +1101,8 @@ private fun assignTask(task: Task) {
     if (!w.tq.offer(task)) {
         // We know the queue is full, so queue size = queue capacity
         // No locking required, just reading of property capacity.
-        wthread_queue_stats.recordValue(w.tq.capacity.toLong())
         w.tq.put(task)
+        wthread_queue_stats.recordValue(w.tq.capacity.toLong())
     } else {
         // Grab a reentrant lock and read the size property.
         wthread_queue_stats.recordValue(w.tq.size.toLong())
