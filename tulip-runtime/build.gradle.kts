@@ -30,7 +30,6 @@ dependencies {
     implementation("org.python:jython-standalone:2.7.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
     implementation("io.leego:banana:2.1.0")
-    implementation("com.github.oshi:oshi-core:6.6.5")
     dokkaPlugin("com.glureau:html-mermaid-dokka-plugin:0.6.0")
 }
 

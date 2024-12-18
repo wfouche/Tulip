@@ -66,10 +66,6 @@ typealias SPSC_Queue<E> = InformativeBlockingQueue<E>
 
 private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH:mm:ss")
 
-// CPU info via oshi-core
-
-private val NUM_CORES = oshi.SystemInfo().hardware.processor.physicalProcessorCount
-
 //
 // Arrays of user objects and user actions.
 //
@@ -631,12 +627,8 @@ private class ActionStats {
             val cpu_time_secs: Double = r.processCpuTime/1000000000.0
             output.add("  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
             r.processCpuCores = cpu_time_secs / r.durationSeconds
-            if (isWindows) {
-                // Windows CPU time already reported per core
-                r.processCpuCores = r.processCpuCores * NUM_CORES
-            }
             output.add("  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores")
-            r.processCpuUtilization = 100.0 * r.processCpuCores / NUM_CORES
+            r.processCpuUtilization = 100.0 * r.processCpuCores
             //if (r.processCpuUtilization > 100.0) r.processCpuUtilization = 100.0
             //support > 100.0 utilization due to hyper-threading
             output.add("  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}%")
@@ -1419,7 +1411,6 @@ private fun runTulip(
     Console.put("Context: ${context.name}")
     Console.put("======================================================================")
     Console.put("")
-    Console.put("  NUM_CORES = ${NUM_CORES}")
     Console.put("  NUM_USERS = $MAX_NUM_USERS")
     Console.put("  NUM_THREADS = $MAX_NUM_THREADS")
     Console.put("  NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
