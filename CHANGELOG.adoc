@@ -8,6 +8,56 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.0.3] - 2024-12-22
+
+=== Release Notes
+
+* Renamed JSON benchmark configuration file section *static* to *actions*
+
+* Implemented runtime support to read workflow definitions and build the corresponding Markov chain matrix from it
+
+* The JSON benchmark configuration file now has four main sections:
+
+** actions
+** contexts
+** benchmarks
+** workflows
+
+* Updated the tulip-main benchmark to use workflow definitions
+
+=== Release Information
+
+Tulip is now available on Maven Central at:
+
+* https://central.sonatype.com/namespace/io.github.wfouche.tulip
++
+.Maven (xml)
+[source,xml]
+----
+<dependency>
+    <groupId>io.github.wfouche.tulip</groupId>
+    <artifactId>tulip-runtime</artifactId>
+    <version>2.0.3</version>
+</dependency>
+----
++
+.Gradle (Groovy)
+[source,groovy]
+----
+implementation 'io.github.wfouche.tulip:tulip-runtime:2.0.3'
+----
++
+.Gradle (kts)
+[source,kotlin]
+----
+implementation("io.github.wfouche.tulip:tulip-runtime:2.0.3")
+----
+
+
+* Documentation:
+
+** https://wfouche.github.io/Tulip/
+
 == [v2.0.2] - 2024-12-15
 
 === Release Notes
