@@ -159,7 +159,11 @@ def createReport(filename):
             printf('| *worker_thread_queue_size* | 0\n')
         # workflow
         if "workflow" in b.keys():
-            printf('| *workflow* | %s\n'%(b["workflow"]))
+            workflow_is_defined = b["workflow"] in jb["workflows"].keys()
+            if workflow_is_defined:
+                printf('| *workflow* | %s\n'%(b["workflow"]))
+            else:
+                printf('| *workflow* | Error, worflow *%s* is not defined\n'%(b["workflow"]))
         elif "actions" in b.keys():
             printf('| *actions* \n')
             printf('| \n')
