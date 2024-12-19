@@ -51,6 +51,7 @@ def createReport(filename):
         for wn in jb["workflows"].keys():
             diagId += 1
             printf("\n")
+            printf("[[%s]]\n"%(wn))
             printf("=== " + "%s\n"%(wn))
             printf("\n")
             printf('[%noheader,cols="1a,1a"]\n')
@@ -161,7 +162,7 @@ def createReport(filename):
         if "workflow" in b.keys():
             workflow_is_defined = b["workflow"] in jb["workflows"].keys()
             if workflow_is_defined:
-                printf('| *workflow* | %s\n'%(b["workflow"]))
+                printf('| *workflow* | <<%s>>\n'%(b["workflow"]))
             else:
                 printf('| *workflow* | Error, worflow *%s* is not defined\n'%(b["workflow"]))
         elif "actions" in b.keys():
