@@ -19,14 +19,9 @@
             "5": "HTTP-albums",
             "6": "HTTP-photos",
             "7": "HTTP-todos",
-            "8": "nop1",
-            "9": "nop2",
+            "8": "Nop1",
+            "9": "Nop2",
             "10": "DELAY-10ms",
-            "11": "Pre-Auth",
-            "12": "Capture",
-            "13": "Refund",
-            "14": "Debit",
-            "18": "Login",
             "99": "onStop"
         }
     },
@@ -49,95 +44,37 @@
             "name": "Init",
             "enabled": true,
             "actions": [
-                {
-                    "id": 0
-                },
-                {
-                    "id": 18
-                }
+                { "id": 0 }
             ]
         },
         {
-            "name": "Max TPS-a0",
+            "name": "Max TPS",
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_duration": 60,
+                "benchmark_repeat_count": 4
             },
             "workflow": "max-tps"
         },
         {
-            "name": "Max TPS-a1",
-            "enabled": true,
-            "throughput_rate": 0.0,
-            "worker_thread_queue_size": 0,
-            "time": {
-                "pre_warmup_duration": 15,
-                "warmup_duration": 30,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
-            },
-            "actions": [
-                {
-                    "id": 9
-                }
-            ]
-        },
-        {
-            "name": "Max TPS-a2",
-            "enabled": true,
-            "throughput_rate": 0.0,
-            "worker_thread_queue_size": 0,
-            "time": {
-                "pre_warmup_duration": 15,
-                "warmup_duration": 30,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
-            },
-            "actions": [
-                { "id": 8, "weight": 50 },
-                { "id": 9, "weight": 50 }
-            ]
-        },
-        {
-            "name": "Max TPS-b",
+            "name": "1m TPS",
             "enabled": true,
             "throughput_rate": 1000000.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_duration": 60,
+                "benchmark_repeat_count": 4
             },
-            "actions": [
-                { "id": 8, "weight": 50 },
-                { "id": 9, "weight": 50 }
-            ]
+            "workflow": "max-tps"
         },
         {
-            "name": "Max TPS-c",
-            "enabled": false,
-            "throughput_rate": 250000.0,
-            "worker_thread_queue_size": 4,
-            "time": {
-                "pre_warmup_duration": 15,
-                "warmup_duration": 30,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
-            },
-           "actions": [
-                {
-                    "id": 9
-                }
-            ]
-        },
-        {
-            "name": "Fixed TPS-a0",
+            "name": "100 TPS ",
             "enabled": true,
             "throughput_rate": 100.0,
             "worker_thread_queue_size": 1,
@@ -150,29 +87,7 @@
             "workflow": "random"
         },
         {
-            "name": "Fixed TPS-a1",
-            "enabled": true,
-            "throughput_rate": 100.0,
-            "worker_thread_queue_size": 1,
-            "time": {
-                "pre_warmup_duration": 15,
-                "warmup_duration": 15,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 4
-            },
-            "actions": [
-                {
-                    "id": 1,
-                    "weight": 25
-                },
-                {
-                    "id": 2,
-                    "weight": 75
-                }
-            ]
-        },
-        {
-            "name": "Fixed TPS-b",
+            "name": "50 TPS",
             "enabled": true,
             "throughput_rate": 50.0,
             "worker_thread_queue_size": 1,
@@ -183,13 +98,11 @@
                 "benchmark_repeat_count": 4
             },
             "actions": [
-                {
-                    "id": 10
-                }
+                { "id": 10 }
             ]
         },
         {
-            "name": "HTTP-a",
+            "name": "HTTP Max TPS",
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
@@ -199,26 +112,10 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "actions": [
-                {
-                    "id": 3
-                },
-                {
-                    "id": 4
-                },
-                {
-                    "id": 5
-                },
-                {
-                    "id": 6
-                },
-                {
-                    "id": 7
-                }
-            ]
+            "workflow": "http"
         },
         {
-            "name": "HTTP-b",
+            "name": "HTTP 1250 TPS",
             "enabled": true,
             "throughput_rate": 1250.0,
             "worker_thread_queue_size": 0,
@@ -228,31 +125,13 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "actions": [
-                {
-                    "id": 3
-                },
-                {
-                    "id": 4
-                },
-                {
-                    "id": 5
-                },
-                {
-                    "id": 6
-                },
-                {
-                    "id": 7
-                }
-            ]
+            "workflow": "http"
         },
         {
             "name": "Shutdown",
             "enabled":true,
             "actions": [
-                {
-                    "id": 99
-                }
+                {"id": 99 }
             ]
         }
     ],
@@ -280,6 +159,14 @@
             "2": {
                 "-": 1.0
             }
+        },
+        "http": {
+            "-": {"3": 1.0},
+            "3": {"4": 1.0},
+            "4": {"5": 1.0},
+            "5": {"6": 1.0},
+            "6": {"7": 1.0},
+            "7": {"-": 1.0}
         }
     }
 }
