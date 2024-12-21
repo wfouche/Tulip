@@ -36,6 +36,7 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.math.abs
 import kotlin.system.exitProcess
+import com.google.gson.JsonParser
 
 /*-------------------------------------------------------------------------*/
 
@@ -359,8 +360,16 @@ fun initConfig(configFilename: String): String {
     Console.put("  working directory = $wd")
     Console.put("")
     Console.put("  config filename = $configFilename")
+
+    // Read JSON file contents into memory
     val sf = java.io.File(configFilename).readText()
-    g_config= Json.decodeFromString<TulipConfig>(sf)
+
+    // Remove all JSONC comments from the JSON
+    val gsonJsonTree = JsonParser.parseString(sf)
+    val jsonWithoutComments = gsonJsonTree.toString()
+
+    // Parse the JSON config using the Kotlin JSON parser
+    g_config= Json.decodeFromString<TulipConfig>(jsonWithoutComments)
     for (e: ConfigContext in g_config.contexts) {
         //println("${e.name}")
         if (e.enabled) {
