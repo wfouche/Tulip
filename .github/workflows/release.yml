@@ -33,6 +33,6 @@ jobs:
       - name: List all Maven Artifacts
         run: find ./tulip-runtime/build/staging-deploy -print | sort
       - name: Run Tulip test benchmark at 100 TPS
-        run: ./gradlew -q :tulip-main:run --args="--config benchmark_config_test.json"
+        run: ./gradlew -q :tulip-main:run --args="--config benchmark_config_test.jsonc"
       - name: Display the Tulip HTML report
         run: w3m -dump -cols 200 ./tulip-main/benchmark_report.html
