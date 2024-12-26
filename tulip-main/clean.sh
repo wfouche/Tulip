@@ -1,1 +1,1 @@
-rm -f -r bin build .jython_cache benchmark_output.json benchmark_report.html
+rm -f -r bin build *.json *.html
