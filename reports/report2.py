@@ -1,7 +1,7 @@
 from __future__ import print_function
 import json
 import sys
-
+import com.google.gson.JsonParser as JsonParser
 
 header = """= Tulip Configuration Report
 :toc: left
@@ -92,13 +92,19 @@ def createReport(filename):
 
     print("\nConfig filename = " + filename)
 
-    report_fn = filename[:-4]+"adoc"
+    # .jsonc -> .adoc
+    report_fn = filename[:-5]+"adoc"
     report_fh = open(report_fn, "w+")
 
     printf(header.replace("__CONFIG_FILENAME__", filename))
 
-    fileObj = open(filename)
-    jb = json.load(fileObj)
+    # Remove all JSONC comments from the JSON
+    sf = open(filename,'r').read()
+    gsonJsonTree = JsonParser.parseString(sf)
+    jsonWithoutComments = gsonJsonTree.toString()
+
+    # Restore JSON from String
+    jb = json.loads(jsonWithoutComments)
 
     # Actions
     for e in jb['actions'].keys():
