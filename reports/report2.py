@@ -2,6 +2,7 @@ from __future__ import print_function
 import json
 import sys
 import com.google.gson.JsonParser as JsonParser
+import os
 
 header = """= Tulip Configuration Report
 :toc: left
@@ -93,7 +94,8 @@ def createReport(filename):
     print("\nConfig filename = " + filename)
 
     # .jsonc -> .adoc
-    report_fn = filename[:-5]+"adoc"
+    f_ext = os.path.splitext(filename)[1]
+    report_fn = filename[:-len(f_ext)]+".adoc"
     report_fh = open(report_fn, "w+")
 
     printf(header.replace("__CONFIG_FILENAME__", filename))
