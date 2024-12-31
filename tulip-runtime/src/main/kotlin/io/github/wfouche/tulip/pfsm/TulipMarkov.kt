@@ -41,11 +41,7 @@ class MarkovChain(val name: String) {
 
     fun next(cid: Int): Int {
         val idx = ThreadLocalRandom.current().nextInt(1000)
-        var nid = matrix[cid][idx]
-        if (nid == 0) {
-            nid = matrix[nid][idx]
-        }
-        return nid
+        return matrix[cid][idx]
     }
 
 }

@@ -224,6 +224,9 @@ abstract class TulipUser(val userId: Int, val threadId: Int) {
 
     open fun nextAction(workflowId: Int): Int {
         aid = g_workflow!!.next(aid)
+        if (aid == 0) {
+            aid = g_workflow!!.next(aid)
+        }
         return aid
     }
 
