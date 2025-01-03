@@ -1,6 +1,6 @@
 # Shell 1 - run JavalinServer
 #
-export JBANG_JAVA_OPTIONS="-server -Xms2048m -Xmx2048m -XX:+UseZGC -XX:+ZGenerational -XX:+UseDynamicNumberOfGCThreads"
+export JBANG_JAVA_OPTIONS="-server -Xms2048m -Xmx2048m -XX:+UseZGC -XX:+ZGenerational"
 
 jbang JavalinServer.java
 

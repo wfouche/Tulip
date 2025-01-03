@@ -1,6 +1,6 @@
 REM Shell 1 - run JavalinServer
 REM
-set JBANG_JAVA_OPTIONS=-server -Xms2048m -Xmx2048m -XX:+UseZGC -XX:+ZGenerational -XX:+UseDynamicNumberOfGCThreads
+set JBANG_JAVA_OPTIONS=-server -Xms2048m -Xmx2048m -XX:+UseZGC -XX:+ZGenerational
 
 jbang JavalinServer.java
 
