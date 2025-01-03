@@ -91,7 +91,7 @@ def createReport(filename):
             printf('----\n')
             printf('|===\n')
 
-    print("\nConfig filename = " + filename)
+    #print("\nConfig filename = " + filename)
 
     # .jsonc -> .adoc
     f_ext = os.path.splitext(filename)[1]
@@ -195,7 +195,7 @@ def createReport(filename):
     printf("== Workflows \n")
     generate_workflow(e)
 
-    print("Report filename = " + report_fn)
+    print("  config report   = " + report_fn)
 
     report_fh.close()
 
