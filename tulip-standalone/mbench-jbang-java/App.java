@@ -6,5 +6,5 @@ import io.github.wfouche.tulip.api.TulipApi;
 import io.github.wfouche.tulip.api.TulipUserFactory;
 
 void main() {
-   TulipApi.runTulip("./benchmark_config.json");
+   TulipApi.runTulip("./benchmark_config.jsonc");
 }

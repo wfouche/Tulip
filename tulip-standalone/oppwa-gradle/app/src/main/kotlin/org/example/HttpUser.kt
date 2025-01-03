@@ -271,7 +271,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     companion object {
-        val workflow = MarkovChain()
+        val workflow = MarkovChain("oppwa")
 
         init {
             workflow.apply {
