@@ -44,7 +44,7 @@ table, th, td {
     <th>AWT</th>
     <th>MWT</th>
     <th>CPU</th>
-    <th>JMM</th>
+    <th>MEM</th>
   </tr>
 '''
 
@@ -69,7 +69,7 @@ benchmark_columns = '''
     <th>AWT</th>
     <th>MWT</th>
     <th>CPU</th>
-    <th>JMM</th>
+    <th>MEM</th>
   </tr>
 '''
 
