@@ -578,13 +578,14 @@ def createReport(filename):
         printf("|===\n")
 
     # Workflows
-    printf("\n")
-    printf("== Workflows \n")
-    generate_workflow(e)
+    if "workflows" in jb.keys():
+        printf("\n")
+        printf("== Workflows \n")
+        generate_workflow(e)
 
     print("  config report   = " + report_fn)
 
-    report_fh.close()    
+    report_fh.close()
 """
 
 fun createConfigReport(configFilename: String) {
