@@ -1,0 +1,1 @@
+del *.json *.html *.adoc
