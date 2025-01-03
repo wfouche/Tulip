@@ -4,7 +4,7 @@ import sys
 import com.google.gson.JsonParser as JsonParser
 import os
 
-header = """= Tulip Configuration Report
+header = '''= Tulip Configuration Report
 :toc: left
 :sectnums:
 
@@ -18,7 +18,7 @@ __CONFIG_FILENAME__
 [%header,cols="1a,2a"]
 |===
 | id | value
-"""
+'''
 
 def createReport(filename):
 

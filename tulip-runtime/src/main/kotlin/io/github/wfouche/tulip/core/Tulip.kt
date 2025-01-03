@@ -37,6 +37,7 @@ import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.math.abs
 import kotlin.system.exitProcess
 import com.google.gson.JsonParser
+import io.github.wfouche.tulip.report.createConfigReport
 
 /*-------------------------------------------------------------------------*/
 
@@ -425,6 +426,9 @@ fun initConfig(configFilename: String): String {
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
     //Console.put("${workflows.keys}")
+
+    createConfigReport(configFilename)
+
     return g_config.actions.jsonFilename
 }
 
