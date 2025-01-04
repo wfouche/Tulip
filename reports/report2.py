@@ -8,10 +8,11 @@ header = '''= Tulip Configuration Report
 :toc: left
 :sectnums:
 
-[NOTE]
-====
-__CONFIG_FILENAME__
-====
+Description::
+  __DESCRIPTION__ 
+
+Filename::
+  __CONFIG_FILENAME__
 
 == Actions
 
@@ -98,8 +99,6 @@ def createReport(filename):
     report_fn = filename[:-len(f_ext)]+".adoc"
     report_fh = open(report_fn, "w+")
 
-    printf(header.replace("__CONFIG_FILENAME__", filename))
-
     # Remove all JSONC comments from the JSON
     sf = open(filename,'r').read()
     gsonJsonTree = JsonParser.parseString(sf)
@@ -107,6 +106,9 @@ def createReport(filename):
 
     # Restore JSON from String
     jb = json.loads(jsonWithoutComments)
+
+    # print header
+    printf(header.replace("__CONFIG_FILENAME__", filename).replace("__DESCRIPTION__", jb['actions']['description']))
 
     # Actions
     for e in jb['actions'].keys():
