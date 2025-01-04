@@ -8,6 +8,14 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.0.5] - 2025-01-05
+
+=== Release Notes
+
+* Created a benchmark configuration report generated from <config-filename>.jsonc as <config-filename>.adoc
+
+* Renamed JMM to MEM in performance report output
+
 == [v2.0.4] - 2024-12-29
 
 === Release Notes
