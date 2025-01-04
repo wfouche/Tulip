@@ -112,49 +112,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-    override fun action11(): Boolean {
-        val map = mapOf(
-            "entityId"          to "8a8294174b7ecb28014b9699220015ca",
-            "amount"            to "92.00",
-            "currency"          to "EUR",
-            "paymentBrand"      to "VISA",
-            "paymentType"       to "PA",
-            "card.number"       to "4200000000000000",
-            "card.holder"       to "Jane Jones",
-            "card.expiryMonth"  to "05",
-            "card.expiryYear"   to "2034",
-            "card.cvv"          to "123")
-        val body: String = map.entries.joinToString("&")
-
-        val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8c3k2S0pzVDg="
-
-        val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("https://eu-test.oppwa.com/v1/payments"))
-            .header("Authorization", "Bearer " + token)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body))
-            .build()
-
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
-        val success = (response.statusCode() == 200)
-        if (!success) {
-            TulipConsole.put("statusCode = ${response.statusCode()}")
-            TulipConsole.put("response = ${response.body()}")
-        }
-        return success
-    }
-
-    // ----------------------------------------------------------------- //
-
-    override fun action18(): Boolean {
-        val actionId = 18
-        TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
-        return true
-    }
-
-    // ----------------------------------------------------------------- //
-
     override fun onStop(): Boolean {
         TulipConsole.put("  Terminate: UserId = $userId")
         Thread.sleep(100)
