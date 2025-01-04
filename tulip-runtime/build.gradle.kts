@@ -55,7 +55,8 @@ publishing {
                 packaging = "jar"
                 name.set("tulip-runtime")
                 description.set("Tulip Runtime")
-                url.set("https://wfouche.github.io/Tulip")
+                // url.set("https://wfouche.github.io/Tulip")
+                url.set("https://github.com/wfouche/Tulip")
                 inceptionYear.set("2020")
                 licenses {
                     license {
