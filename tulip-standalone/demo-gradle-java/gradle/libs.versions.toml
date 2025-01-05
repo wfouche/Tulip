@@ -3,7 +3,7 @@
 
 [versions]
 junit = "4.13.2"
-tulip-runtime = "2.0.4"
+tulip-runtime = "2.0.5"
 
 [libraries]
 junit = { module = "junit:junit", version.ref = "junit" }
