@@ -40,16 +40,15 @@
             "num_threads": 4
         }
     },
-    "benchmarks": [
-        {
-            "name": "Init",
+    // Benchmarks
+    "benchmarks": {
+        "Init": {
             "enabled": true,
             "actions": [
                 { "id": 0 }
             ]
         },
-        {
-            "name": "Max TPS",
+        "Max TPS": {
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
@@ -61,8 +60,7 @@
             },
             "workflow": "max-tps"
         },
-        {
-            "name": "1m TPS",
+        "1m TPS": {
             "enabled": true,
             "throughput_rate": 1000000.0,
             "worker_thread_queue_size": 0,
@@ -74,8 +72,7 @@
             },
             "workflow": "max-tps"
         },
-        {
-            "name": "100 TPS ",
+        "100 TPS": {
             "enabled": true,
             "throughput_rate": 100.0,
             "worker_thread_queue_size": 1,
@@ -87,8 +84,7 @@
             },
             "workflow": "random"
         },
-        {
-            "name": "50 TPS",
+        "50 TPS": {
             "enabled": true,
             "throughput_rate": 50.0,
             "worker_thread_queue_size": 1,
@@ -102,8 +98,7 @@
                 { "id": 10 }
             ]
         },
-        {
-            "name": "HTTP Max TPS",
+        "HTTP Max TPS": {
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
@@ -115,8 +110,7 @@
             },
             "workflow": "http"
         },
-        {
-            "name": "HTTP 1250 TPS",
+        "HTTP 1250 TPS": {
             "enabled": true,
             "throughput_rate": 1250.0,
             "worker_thread_queue_size": 0,
@@ -128,14 +122,13 @@
             },
             "workflow": "http"
         },
-        {
-            "name": "Shutdown",
+        "Shutdown": {
             "enabled":true,
             "actions": [
                 {"id": 99 }
             ]
         }
-    ],
+    },
     "workflows": {
         "max-tps": {
             "-": {

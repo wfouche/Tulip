@@ -535,9 +535,10 @@ def createReport(filename):
     # Benchmarks Data
     printf("\n")
     printf("== Benchmarks\n")
-    for b in jb['benchmarks']:
+    for k in jb['benchmarks'].keys():
+        b = jb['benchmarks'][k]
         printf("\n")
-        printf('=== %s'%(b["name"]) + '\n')
+        printf('=== %s'%(k) + '\n')
         printf("\n")
         printf('[%header,cols="1a,2a"]\n')
         printf("|===\n")

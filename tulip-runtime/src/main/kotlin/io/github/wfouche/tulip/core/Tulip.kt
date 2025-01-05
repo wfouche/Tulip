@@ -326,7 +326,6 @@ data class ConfigAction(
 
 @Serializable
 data class ConfigTest(
-    val name: String,
     val enabled: Boolean = true,
     val time: ConfigDuration = ConfigDuration(),
     @SerialName("throughput_rate") val throughputRate: Double = 0.0,
@@ -349,7 +348,7 @@ data class ActionsConfig(
 data class TulipConfig(
     val actions: ActionsConfig = ActionsConfig(),
     val contexts: Map<String,ConfigContext> = mapOf(),
-    val benchmarks: List<ConfigTest> = listOf(),
+    val benchmarks: Map<String,ConfigTest> = mapOf(),
     val workflows: Map<String,Map<String,Map<String,Double>>> = mapOf()
 )
 
@@ -379,13 +378,13 @@ fun initConfig(configFilename: String): String {
             g_contexts.add(v)
         }
     }
-    for (e: ConfigTest in g_config.benchmarks) {
+    g_config.benchmarks.forEach { (key,e) ->
         //println("${e.name}")
         val v = TestProfile(
             enabled = e.enabled,
-            name = e.name,
+            name = key,
             duration = if (e.time == null)
-                Duration(0,0,0, 1, TimeUnit.SECONDS)
+                Duration(0, 0, 0, 1, TimeUnit.SECONDS)
             else
                 Duration(e.time.startupDuration, e.time.warmupDuration, e.time.mainDuration, e.time.mainDurationRepeatCount, TimeUnit.SECONDS),
             arrivalRate = e.throughputRate,

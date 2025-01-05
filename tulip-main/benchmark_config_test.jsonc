@@ -29,15 +29,13 @@
             "num_threads": 4
         }
     },
-    "benchmarks": [
-        {
-            "name": "Startup",
+    "benchmarks": {
+        "Startup": {
             "actions": [
                 {"id": 0}
             ]
         },
-        {
-            "name": "NOP",
+        "NOP": {
             "enabled": true,
             "time": {
                 "pre_warmup_duration": 5,
@@ -50,8 +48,7 @@
                 {"id": 3}
             ]
         },
-        {
-            "name": "Maximum Rate",
+        "Maximum Rate": {
             "enabled": true,
             "time": {
                 "pre_warmup_duration": 5,
@@ -65,8 +62,7 @@
                 {"id": 2, "weight": 10}
             ]
         },
-        {
-            "name": "Fixed Rate",
+        "Fixed Rate": {
             "enabled": true,
             "time": {
                 "pre_warmup_duration": 5,
@@ -80,11 +76,10 @@
                 {"id": 2, "weight": 10}
             ]
         },
-        {
-            "name": "Shutdown",
+        "Shutdown": {
             "actions": [
                 {"id": 99}
             ]
         }
-    ]
+    }
 }
