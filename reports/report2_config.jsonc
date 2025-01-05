@@ -12,102 +12,83 @@
             "http_port": 7070
         },
         "user_actions": {
-            "0": "start",
+            "0": "onStart",
             "1": "DELAY-6ms",
             "2": "DELAY-14ms",
-            "3": "HTTP-posts",
-            "4": "HTTP-comments",
-            "5": "HTTP-albums",
-            "6": "HTTP-photos",
-            "7": "HTTP-todos",
-            "8": "login",
-            "9": "noop",
+            "3": "r/posts",
+            "4": "r/comments",
+            "5": "r/albums",
+            "6": "r/photos",
+            "7": "r/todos",
+            "8": "Nop1",
+            "9": "Nop2",
             "10": "DELAY-10ms",
-            "11": "Pre-Auth",
-            "12": "Capture",
-            "13": "Refund",
-            "14": "Debit"
+            "99": "onStop"
         }
     },
-    "contexts": [
-        {
-            "name": "Scenario-1",
+    // Contexts
+    "contexts": {
+        // Contexts
+        "Context-0": {
             "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },
-        {
-            "name": "Scenario-2",
+        "Context-1": {
             "enabled": false,
             "num_users": 32,
             "num_threads": 4
         }
-    ],
+    },
     "benchmarks": [
         {
             "name": "Init",
+            "enabled": true,
             "actions": [
-                {
-                    "id": 0
-                },
-                {
-                    "id": 8
-                }
+                { "id": 0 }
             ]
         },
         {
-            "name": "Max TPS-a",
+            "name": "Max TPS",
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_duration": 60,
+                "benchmark_repeat_count": 4
             },
-            "actions": [
-                {
-                    "id": 9
-                }
-            ]
+            "workflow": "max-tps"
         },
         {
-            "name": "Max TPS-b",
+            "name": "1m TPS",
             "enabled": true,
             "throughput_rate": 1000000.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_duration": 60,
+                "benchmark_repeat_count": 4
             },
-            "actions": [
-                {
-                    "id": 9
-                }
-            ]
+            "workflow": "max-tps"
         },
         {
-            "name": "Max TPS-c",
+            "name": "100 TPS ",
             "enabled": true,
-            "throughput_rate": 250000.0,
-            "worker_thread_queue_size": 4,
+            "throughput_rate": 100.0,
+            "worker_thread_queue_size": 1,
             "time": {
                 "pre_warmup_duration": 15,
-                "warmup_duration": 30,
+                "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_repeat_count": 4
             },
-           "actions": [
-                {
-                    "id": 9
-                }
-            ]
+            "workflow": "random"
         },
         {
-            "name": "Fixed TPS-a",
+            "name": "50 TPS",
             "enabled": true,
             "throughput_rate": 50.0,
             "worker_thread_queue_size": 1,
@@ -118,35 +99,11 @@
                 "benchmark_repeat_count": 4
             },
             "actions": [
-                {
-                    "id": 1,
-                    "weight": 25
-                },
-                {
-                    "id": 2,
-                    "weight": 75
-                }
+                { "id": 10 }
             ]
         },
         {
-            "name": "Fixed TPS-b",
-            "enabled": true,
-            "throughput_rate": 50.0,
-            "worker_thread_queue_size": 1,
-            "time": {
-                "pre_warmup_duration": 15,
-                "warmup_duration": 15,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 4
-            },
-            "actions": [
-                {
-                    "id": 10
-                }
-            ]
-        },
-        {
-            "name": "HTTP-a",
+            "name": "HTTP Max TPS",
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
@@ -156,26 +113,10 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "actions": [
-                {
-                    "id": 3
-                },
-                {
-                    "id": 4
-                },
-                {
-                    "id": 5
-                },
-                {
-                    "id": 6
-                },
-                {
-                    "id": 7
-                }
-            ]
+            "workflow": "http"
         },
         {
-            "name": "HTTP-b",
+            "name": "HTTP 1250 TPS",
             "enabled": true,
             "throughput_rate": 1250.0,
             "worker_thread_queue_size": 0,
@@ -185,105 +126,27 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "actions": [
-                {
-                    "id": 3
-                },
-                {
-                    "id": 4
-                },
-                {
-                    "id": 5
-                },
-                {
-                    "id": 6
-                },
-                {
-                    "id": 7
-                }
-            ]
-        },
-        {
-            "name": "HTTP-c",
-            "enabled": false,
-            "throughput_rate": 1250.0,
-            "worker_thread_queue_size": 0,
-            "time": {
-                "pre_warmup_duration": 15,
-                "warmup_duration": 15,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
-            },
-            "workflow": "rest-api1"
+            "workflow": "http"
         },
         {
             "name": "Shutdown",
+            "enabled":true,
             "actions": [
-                {
-                    "id": 99
-                }
+                {"id": 99 }
             ]
         }
     ],
     "workflows": {
-        "rest-api1": {
+        "max-tps": {
             "-": {
-                "1": 0.6,
-                "2": 0.4
+                "8": 0.50,
+                "9": 0.50
             },
-            "1": {
-                "-": 0.8,
-                "4": 0.2
-            },
-            "2": {
-                "3": 1.0
-            },
-            "3": {
-                "-": 0.8,
-                "4": 0.2
-            },
-            "4": {
-                "-": 1.0
-            }
-        },
-        "rest-api2": {
-            "-": {
-                "1": 0.6,
-                "2": 0.4
-            },
-            "1": {
-                "-": 0.8,
-                "4": 0.2
-            },
-            "2": {
-                "3": 1.0
-            },
-            "3": {
-                "-": 0.8,
-                "4": 0.2
-            },
-            "4": {
-                "-": 1.0
-            }
-        },
-        "payments": {
-            "-": {
-                "11": 0.5,
-                "14": 0.5
-            },
-            "11": {
-                "12": 1.0
-            },
-            "12": {
-                "13": 0.2,
-                "-": 0.8
-            },
-            "13": {
+            "8": {
                 "-": 1.0
             },
-            "14": {
-                "13": 0.2,
-                "-": 0.8
+            "9": {
+                "-": 1.0
             }
         },
         "random": {
@@ -297,6 +160,14 @@
             "2": {
                 "-": 1.0
             }
+        },
+        "http": {
+            "-": {"3": 1.0},
+            "3": {"4": 1.0},
+            "4": {"5": 1.0},
+            "5": {"6": 1.0},
+            "6": {"7": 1.0},
+            "7": {"-": 1.0}
         }
     }
 }

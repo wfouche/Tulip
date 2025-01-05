@@ -305,7 +305,6 @@ private val g_tests = mutableListOf<TestProfile>()
 
 @Serializable
 data class ConfigContext(
-    val name: String = "",
     val enabled: Boolean = false,
     @SerialName("num_users") val numUsers: Int = 0,
     @SerialName("num_threads") val numThreads: Int = 0
@@ -349,7 +348,7 @@ data class ActionsConfig(
 @Serializable
 data class TulipConfig(
     val actions: ActionsConfig = ActionsConfig(),
-    val contexts: List<ConfigContext> = listOf(),
+    val contexts: Map<String,ConfigContext> = mapOf(),
     val benchmarks: List<ConfigTest> = listOf(),
     val workflows: Map<String,Map<String,Map<String,Double>>> = mapOf()
 )
@@ -370,11 +369,13 @@ fun initConfig(configFilename: String): String {
     val jsonWithoutComments = gsonJsonTree.toString()
 
     // Parse the JSON config using the Kotlin JSON parser
-    g_config= Json.decodeFromString<TulipConfig>(jsonWithoutComments)
-    for (e: ConfigContext in g_config.contexts) {
-        //println("${e.name}")
+    g_config = Json.decodeFromString<TulipConfig>(jsonWithoutComments)
+    g_config.contexts.forEach { entry ->
+        val k = entry.key
+        //println("${k}")
+        val e = entry.value
         if (e.enabled) {
-            val v = RuntimeContext(e.name, e.numUsers, e.numThreads)
+            val v = RuntimeContext(k, e.numUsers, e.numThreads)
             g_contexts.add(v)
         }
     }

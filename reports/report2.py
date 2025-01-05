@@ -129,8 +129,9 @@ def createReport(filename):
     printf("|===\n")
     printf("| id | value\n")
 
-    for c in jb['contexts']:
-        printf('| %s'%(c["name"]) + '\n')
+    for k in jb['contexts'].keys():
+        c = jb['contexts'][k]
+        printf('| %s'%(k) + '\n')
         printf('| \n')
         printf('[%header,cols="1a,2a"]\n')
         printf('!===\n')

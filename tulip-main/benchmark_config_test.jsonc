@@ -15,20 +15,20 @@
             "99": "onStop"
         }
     },
-    "contexts": [
-        {
-            "name": "Context-1",
+    // Contexts
+    "contexts": {
+        // Contexts
+        "Context-0": {
             "enabled": true,
             "num_users": 4,
             "num_threads": 2
         },
-        {
-            "name": "Context-2",
+        "Context-1": {
             "enabled": false,
             "num_users": 4,
             "num_threads": 4
         }
-    ],
+    },
     "benchmarks": [
         {
             "name": "Startup",

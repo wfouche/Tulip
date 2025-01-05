@@ -27,20 +27,19 @@
         }
     },
     // Contexts
-    "contexts": [ // Contexts
-        {
-            "name": "Context-0",
+    "contexts": {
+        // Contexts
+        "Context-0": {
             "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },
-        {
-            "name": "Context-1",
+        "Context-1": {
             "enabled": false,
             "num_users": 32,
             "num_threads": 4
         }
-    ],
+    },
     "benchmarks": [
         {
             "name": "Init",
