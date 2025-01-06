@@ -35,14 +35,14 @@ Linux::
 
 [source,bash]
 ----
-buildMavenArtifacts.sh
+buildMavenCentralArtifacts.sh
 ----
 
 Windows::
 
 [source,cmd]
 ----
-buildMavenArtifacts.cmd
+buildMavenCentralArtifacts.cmd
 ----
 
 File **tulip-runtime-<version>.zip** fill be created in folder:
