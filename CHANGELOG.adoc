@@ -8,6 +8,61 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.1.0] - 2025-01-06
+
+=== Release Notes
+
+* Changed the contexts configuration section from a JSON array to a JSON map.
++
+[source,json]
+----
+"contexts": {
+    "Context-0": {
+        "enabled": true,
+        "num_users": 16,
+        "num_threads": 2
+    },
+    "Context-1": {
+        "enabled": false,
+        "num_users": 32,
+        "num_threads": 4
+    }
+}
+----
+
+* Changed the benchmarks configuration section from a JSON array to a JSON map.
++
+[source,json]
+----
+"benchmarks": {
+    "Init": {
+        "enabled": true,
+        "actions": [
+            { "id": 0 }
+        ]
+    },
+    "Max TPS": {
+        "enabled": true,
+        "throughput_rate": 0.0,
+        "worker_thread_queue_size": 0,
+        "time": {
+            "pre_warmup_duration": 15,
+            "warmup_duration": 30,
+            "benchmark_duration": 60,
+            "benchmark_repeat_count": 4
+        },
+        "workflow": "max-tps"
+    },
+    "Shutdown": {
+        "enabled":true,
+        "actions": [
+            {"id": 99 }
+        ]
+    }
+}
+----
+
+
 == [v2.0.5] - 2025-01-05
 
 === Release Notes
