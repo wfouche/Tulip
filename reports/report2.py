@@ -3,6 +3,7 @@ import json
 import sys
 import com.google.gson.JsonParser as JsonParser
 import os
+from collections import OrderedDict
 
 header = '''= Tulip Configuration Report
 :toc: left
@@ -105,7 +106,7 @@ def createReport(filename):
     jsonWithoutComments = gsonJsonTree.toString()
 
     # Restore JSON from String
-    jb = json.loads(jsonWithoutComments)
+    jb = json.loads(jsonWithoutComments, object_pairs_hook=OrderedDict)
 
     # print header
     printf(header.replace("__CONFIG_FILENAME__", filename).replace("__DESCRIPTION__", jb['actions']['description']))

@@ -8,6 +8,7 @@ import datetime
 import json
 import sys
 import org.HdrHistogram.Histogram as Histogram
+from collections import OrderedDict
 
 # <h2><a href="https://wfouche.github.io/Tulip">__DESC1__</a> / __DESC2__</h2>
 # <h2>__DESC1__ / __DESC2__</h2>
@@ -211,7 +212,7 @@ def createReport(filename):
     sm = None
     jh = Histogram(1, 3600*1000*1000, 3)
     fileObj = open(filename)
-    jb = json.load(fileObj)
+    jb = json.load(fileObj, object_pairs_hook=OrderedDict)
     version = jb['version']
     desc1 = 'Tulip ' + version
     desc2 = jb["config"]["actions"]["description"] + " / " + jb["timestamp"].replace("_", " ")
@@ -390,6 +391,7 @@ import json
 import sys
 import com.google.gson.JsonParser as JsonParser
 import os
+from collections import OrderedDict
 
 header = '''= Tulip Configuration Report
 :toc: left
@@ -492,7 +494,7 @@ def createReport(filename):
     jsonWithoutComments = gsonJsonTree.toString()
 
     # Restore JSON from String
-    jb = json.loads(jsonWithoutComments)
+    jb = json.loads(jsonWithoutComments, object_pairs_hook=OrderedDict)
 
     # print header
     printf(header.replace("__CONFIG_FILENAME__", filename).replace("__DESCRIPTION__", jb['actions']['description']))

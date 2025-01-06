@@ -3,6 +3,7 @@ import datetime
 import json
 import sys
 import org.HdrHistogram.Histogram as Histogram
+from collections import OrderedDict
 
 # <h2><a href="https://wfouche.github.io/Tulip">__DESC1__</a> / __DESC2__</h2>
 # <h2>__DESC1__ / __DESC2__</h2>
@@ -206,7 +207,7 @@ def createReport(filename):
     sm = None
     jh = Histogram(1, 3600*1000*1000, 3)
     fileObj = open(filename)
-    jb = json.load(fileObj)
+    jb = json.load(fileObj, object_pairs_hook=OrderedDict)
     version = jb['version']
     desc1 = 'Tulip ' + version
     desc2 = jb["config"]["actions"]["description"] + " / " + jb["timestamp"].replace("_", " ")
