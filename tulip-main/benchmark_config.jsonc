@@ -1,5 +1,4 @@
 {
-    // Actions
     "actions": { // Actions
         "description": "Micro-benchmarks",
         "output_filename": "benchmark_output.json",
@@ -26,7 +25,6 @@
             "99": "onStop"
         }
     },
-    // Contexts
     "contexts": {
         // Contexts
         "Context-0": {
@@ -40,7 +38,6 @@
             "num_threads": 4
         }
     },
-    // Benchmarks
     "benchmarks": {
         "Init": {
             "enabled": true,
