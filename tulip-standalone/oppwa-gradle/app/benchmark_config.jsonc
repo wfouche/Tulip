@@ -25,7 +25,6 @@
     },
     "benchmarks": {
         "Max TPS": {
-            "name": "Max TPS",
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
