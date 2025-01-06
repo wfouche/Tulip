@@ -22,23 +22,20 @@
             "10": "DELAY-10ms"
         }
     },
-    "contexts": [
-        {
-            "name": "Scenario-1",
+    "contexts": {
+        "Scenario-1": {
             "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },
-        {
-            "name": "Scenario-2",
+        "Scenario-2": {
             "enabled": false,
             "num_users": 32,
             "num_threads": 4
         }
-    ],
-    "benchmarks": [
-        {
-            "name": "Init",
+    },
+    "benchmarks": {
+        "Init": {
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": -1,
@@ -51,8 +48,7 @@
                 }
             ]
         },
-        {
-            "name": "Max TPS-a",
+        "Max TPS-a": {
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
@@ -68,8 +64,7 @@
                 }
             ]
         },
-        {
-            "name": "Max TPS-b",
+        "Max TPS-b": {
             "enabled": true,
             "throughput_rate": 1000000.0,
             "worker_thread_queue_size": 0,
@@ -85,8 +80,7 @@
                 }
             ]
         },
-        {
-            "name": "Max TPS-c",
+        "Max TPS-c": {
             "enabled": true,
             "throughput_rate": 250000.0,
             "worker_thread_queue_size": 4,
@@ -96,14 +90,13 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-           "actions": [
+            "actions": [
                 {
                     "id": 9
                 }
             ]
         },
-        {
-            "name": "Fixed TPS-a",
+        "Fixed TPS-a": {
             "enabled": true,
             "throughput_rate": 50.0,
             "worker_thread_queue_size": 1,
@@ -124,8 +117,7 @@
                 }
             ]
         },
-        {
-            "name": "Fixed TPS-b",
+        "Fixed TPS-b": {
             "enabled": true,
             "throughput_rate": 50.0,
             "worker_thread_queue_size": 1,
@@ -141,8 +133,7 @@
                 }
             ]
         },
-        {
-            "name": "HTTP-a",
+        "HTTP-a": {
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": 0,
@@ -170,8 +161,7 @@
                 }
             ]
         },
-        {
-            "name": "HTTP-b",
+        "HTTP-b": {
             "enabled": true,
             "throughput_rate": 1250.0,
             "worker_thread_queue_size": 0,
@@ -199,8 +189,7 @@
                 }
             ]
         },
-        {
-            "name": "Shutdown",
+        "Shutdown": {
             "enabled": true,
             "throughput_rate": 0.0,
             "worker_thread_queue_size": -1,
@@ -210,5 +199,5 @@
                 }
             ]
         }
-    ]
+    }
 }

@@ -11,22 +11,20 @@
             "4": "DB"
         }
     },
-    "contexts": [
-        {
-            "name": "Scenario-1",
+    "contexts": {
+        "Context-1": {
             "enabled": true,
             "num_users": 16,
             "num_threads": 2
         },
-        {
-            "name": "Scenario-2",
+        "Context-2": {
             "enabled": false,
             "num_users": 32,
             "num_threads": 4
         }
-    ],
-    "benchmarks": [
-        {
+    },
+    "benchmarks": {
+        "Max TPS": {
             "name": "Max TPS",
             "enabled": true,
             "throughput_rate": 0.0,
@@ -43,5 +41,5 @@
                 }
             ]
         }
-    ]
+    }
 }
