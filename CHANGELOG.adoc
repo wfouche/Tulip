@@ -8,6 +8,12 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.1.1] - 2025-01-07
+
+=== Release Notes
+
+* Preserve the map key order when loading JSON / JSONC configuration data by using an OrderedDict. This update resolves an issue with configuration report.
+
 == [v2.1.0] - 2025-01-06
 
 === Release Notes
