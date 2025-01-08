@@ -396,6 +396,8 @@ from collections import OrderedDict
 header = '''= Tulip Configuration Report
 :toc: left
 :sectnums:
+:diagram-server-url: https://kroki.io/
+:diagram-server-type: kroki_io
 
 Description::
   __DESCRIPTION__ 
