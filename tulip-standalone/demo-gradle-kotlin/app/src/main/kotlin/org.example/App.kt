@@ -1,8 +1,7 @@
 package org.example
 
-import io.github.wfouche.tulip.api.TulipApi
-import io.github.wfouche.tulip.api.TulipUserFactory
+import io.github.wfouche.tulip.api.*
 
 fun main(args: Array<String>) {
-    TulipApi.runTulip("benchmark_config.jsonc", TulipUserFactory())
+    TulipApi.runTulip("benchmark_config.jsonc")
 }

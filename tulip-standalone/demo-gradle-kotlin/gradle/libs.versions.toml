@@ -4,7 +4,7 @@
 [versions]
 junit-jupiter-engine = "5.11.3"
 tulip-runtime = "2.1.1"
-clikt-jvm = "5.0.2"
+clikt-jvm = "5.0.1"
 
 [libraries]
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
@@ -12,4 +12,4 @@ tulip-runtime = { module = "io.github.wfouche.tulip:tulip-runtime", version.ref 
 clikt-jvm = { module = "com.github.ajalt.clikt:clikt-jvm", version.ref = "clikt-jvm"}
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.1.1" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.0.21" }
