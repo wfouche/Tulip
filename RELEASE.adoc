@@ -62,3 +62,20 @@ Once a new release has been uploaded to Maven Central, it can either be dropped 
 Publishing the release is done by clicking on the **Publish** button. This is an irreversible step.
 
 image::images/image-maven-central-2.png[]
+
+[appendix]
+
+== Git Commands
+
+* Sync tags from remote to the local repository
++
+[source,bash]
+----
+$ git fetch --prune --tags
+----
+* Delete a tag in the local repository
++
+[source,bash]
+----
+$ git tag -d v2.0.9
+----
