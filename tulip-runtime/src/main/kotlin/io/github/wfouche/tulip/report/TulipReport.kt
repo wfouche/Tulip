@@ -591,7 +591,7 @@ def createReport(filename):
         printf("== Workflows \n")
         generate_workflow(e)
 
-    print("  config report   = " + report_fn)
+    print("  config report = " + report_fn)
 
     report_fh.close()
 """
