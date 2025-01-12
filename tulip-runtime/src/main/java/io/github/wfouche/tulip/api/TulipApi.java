@@ -189,7 +189,6 @@ public class TulipApi {
             
             import io.github.wfouche.tulip.api.TulipApi;
             
-            // jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             public class App {
                public static void main(String[] args) {
                   TulipApi.runTulip("benchmark_config.jsonc");
