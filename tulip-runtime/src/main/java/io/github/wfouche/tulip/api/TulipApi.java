@@ -264,6 +264,16 @@ public class TulipApi {
         writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
         writeToFile("DemoUser.java", javaUser.stripLeading(), false);
         writeToFile("run_bench.sh", runBenchSh.stripLeading(), false);
+        if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+            // pass
+        } else {
+            try {
+                String[] cmdArray = {"chmod", "u+x", "run_bench.sh"};
+                Runtime.getRuntime().exec(cmdArray);
+            } catch (IOException e) {
+                // pass
+            }
+        }
         writeToFile("run_bench.cmd", runBenchCmd.stripLeading(), false);
     }
 }
