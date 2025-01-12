@@ -99,6 +99,7 @@ public class TulipApi {
                         "1": "DELAY-10ms",
                         "2": "DELAY-20ms",
                         "3": "None",
+                        "4": "Posts",
                         "99": "onStop"
                     }
                 },
@@ -123,6 +124,7 @@ public class TulipApi {
                         ]
                     },
                     "Maximum Rate": {
+                        "enabled": true,
                         "time": {
                             "pre_warmup_duration": 5,
                             "warmup_duration": 10,
@@ -133,6 +135,7 @@ public class TulipApi {
                         "workflow": "random"
                     },
                     "Fixed Rate": {
+                        "enabled": true,
                         "time": {
                             "pre_warmup_duration": 5,
                             "warmup_duration": 10,
@@ -143,6 +146,7 @@ public class TulipApi {
                         "workflow": "random"
                     },
                     "Empty Action": {
+                        "enabled": true,
                         "time": {
                             "pre_warmup_duration": 5,
                             "warmup_duration": 10,
@@ -153,6 +157,21 @@ public class TulipApi {
                         "actions": [
                             {
                                 "id": 3
+                            }
+                        ]
+                    },
+                     "REST": {
+                        "enabled": false,
+                        "time": {
+                            "pre_warmup_duration": 5,
+                            "warmup_duration": 10,
+                            "benchmark_duration": 30,
+                            "benchmark_repeat_count": 3
+                        },
+                        "throughput_rate": 0.0,
+                        "actions": [
+                            {
+                                "id": 4
                             }
                         ]
                     },
@@ -184,6 +203,7 @@ public class TulipApi {
     private static String javaApp = """
             ///usr/bin/env jbang "$0" "$@" ; exit $?
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
+            //DEPS io.rest-assured:rest-assured:5.5.0
             //SOURCES DemoUser.java
             //JAVA 21
             
@@ -211,6 +231,7 @@ public class TulipApi {
 
     private static String javaUser = """
             import io.github.wfouche.tulip.api.*;
+            import static io.restassured.RestAssured.*;
             
             public class DemoUser extends TulipUser {
             
@@ -219,7 +240,9 @@ public class TulipApi {
                 }
             
                 public boolean onStart() {
-                    //TulipConsole.put("JavaDemoUser " + getUserId());
+                    if (getUserId() == 0) {
+                        baseURI = "https://jsonplaceholder.typicode.com";
+                    }
                     return true;
                 }
             
@@ -235,6 +258,21 @@ public class TulipApi {
             
                 public boolean action3() {
                     return true;
+                }
+            
+                public boolean action4() {
+                    boolean rc = true;
+                    try {
+                        given()
+                        .when()
+                            .get("/posts/1")
+                            //.get("/posts/" + Integer.toString(getUserId()+1))
+                        .then()
+                            .statusCode(200);
+                    } catch (java.lang.AssertionError e) {
+                       rc = false;
+                    }
+                    return rc;
                 }
             
                 public boolean onStop() {
