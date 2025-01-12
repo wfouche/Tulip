@@ -258,8 +258,13 @@ public class TulipApi {
             start benchmark_config.html
             """;
 
-    // jbang io.github.wfouche.tulip:tulip-runtime:<version>
+    /**
+     * Create a new Tulip benchmark project with Jbang support for Java
+     *
+     * @param args The name of the programming language to generate a benchmark proj
+     */
     public static void main(String[] args) {
+        // jbang io.github.wfouche.tulip:tulip-runtime:<version>
         System.out.println("Tulip: creating a Java benchmark with JBang support");
         writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
         writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
