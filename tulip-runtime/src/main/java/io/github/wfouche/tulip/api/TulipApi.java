@@ -98,7 +98,7 @@ public class TulipApi {
                         "0": "onStart",
                         "1": "DELAY-10ms",
                         "2": "DELAY-20ms",
-                        "3": "NOP",
+                        "3": "None",
                         "99": "onStop"
                     }
                 },
@@ -130,16 +130,7 @@ public class TulipApi {
                             "benchmark_repeat_count": 3
                         },
                         "throughput_rate": 0.0,
-                        "actions": [
-                            {
-                                "id": 1,
-                                "weight": 90
-                            },
-                            {
-                                "id": 2,
-                                "weight": 10
-                            }
-                        ]
+                        "workflow": "random"
                     },
                     "Fixed Rate": {
                         "time": {
@@ -149,18 +140,9 @@ public class TulipApi {
                             "benchmark_repeat_count": 3
                         },
                         "throughput_rate": 100.0,
-                        "actions": [
-                            {
-                                "id": 1,
-                                "weight": 90
-                            },
-                            {
-                                "id": 2,
-                                "weight": 10
-                            }
-                        ]
+                        "workflow": "random"
                     },
-                    "NOP": {
+                    "None": {
                         "time": {
                             "pre_warmup_duration": 5,
                             "warmup_duration": 10,
@@ -180,6 +162,20 @@ public class TulipApi {
                                 "id": 99
                             }
                         ]
+                    }
+                },
+                "workflows": {
+                    "random": {
+                        "-": {
+                            "1": 0.10,
+                            "2": 0.90
+                        },
+                        "1": {
+                            "-": 1.0
+                        },
+                        "2": {
+                            "-": 1.0
+                        }
                     }
                 }
             }
