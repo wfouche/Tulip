@@ -142,7 +142,7 @@ public class TulipApi {
                         "throughput_rate": 100.0,
                         "workflow": "random"
                     },
-                    "None": {
+                    "Empty Action": {
                         "time": {
                             "pre_warmup_duration": 5,
                             "warmup_duration": 10,
