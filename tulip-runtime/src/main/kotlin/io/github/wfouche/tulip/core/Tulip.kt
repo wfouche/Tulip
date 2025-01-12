@@ -425,8 +425,7 @@ fun initConfig(configFilename: String): String {
     }
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
-    //Console.put("${workflows.keys}")
-
+    Console.put("")
     createConfigReport(configFilename)
 
     return g_config.actions.jsonFilename
