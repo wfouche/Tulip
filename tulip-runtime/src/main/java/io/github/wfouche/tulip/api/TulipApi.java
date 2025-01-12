@@ -5,6 +5,8 @@ import io.github.wfouche.tulip.report.TulipReportKt;
 import io.leego.banana.BananaUtils;
 import io.leego.banana.Font;
 
+import java.io.FileWriter;
+import java.io.IOException;
 
 /**
  * The TulipApi class provides the main interface for running Tulip benchmarks and generating reports.
@@ -70,5 +72,197 @@ public class TulipApi {
      */
     public static void createHtmlReport(String outputFilename) {
         TulipReportKt.createHtmlReport(outputFilename);
+    }
+
+    private static void writeToFile(String path, String content, boolean append) {
+        try (FileWriter fileWriter = new FileWriter(path, append)) {
+            fileWriter.write(content);
+        } catch (IOException e) {
+            // exception handling ...
+        }
+    }
+
+    private static String benchmarkConfig = """
+            {
+                "actions": {
+                    "description": "Demo Benchmark",
+                    "output_filename": "benchmark_output.json",
+                    "report_filename": "benchmark_report.html",
+                    "user_class": "DemoUser",
+                    "user_params": {
+                        "url": "http://localhost:7070",
+                        "tracing": false,
+                        "http_port": 7070
+                    },
+                    "user_actions": {
+                        "0": "onStart",
+                        "1": "DELAY-10ms",
+                        "2": "DELAY-20ms",
+                        "3": "NOP",
+                        "99": "onStop"
+                    }
+                },
+                "contexts": {
+                    "Context-1": {
+                        "enabled": true,
+                        "num_users": 4,
+                        "num_threads": 2
+                    },
+                    "Context-2": {
+                        "enabled": false,
+                        "num_users": 4,
+                        "num_threads": 4
+                    }
+                },
+                "benchmarks": {
+                    "Startup": {
+                        "actions": [
+                            {
+                                "id": 0
+                            }
+                        ]
+                    },
+                    "Maximum Rate": {
+                        "time": {
+                            "pre_warmup_duration": 5,
+                            "warmup_duration": 10,
+                            "benchmark_duration": 30,
+                            "benchmark_repeat_count": 3
+                        },
+                        "throughput_rate": 0.0,
+                        "actions": [
+                            {
+                                "id": 1,
+                                "weight": 90
+                            },
+                            {
+                                "id": 2,
+                                "weight": 10
+                            }
+                        ]
+                    },
+                    "Fixed Rate": {
+                        "time": {
+                            "pre_warmup_duration": 5,
+                            "warmup_duration": 10,
+                            "benchmark_duration": 30,
+                            "benchmark_repeat_count": 3
+                        },
+                        "throughput_rate": 100.0,
+                        "actions": [
+                            {
+                                "id": 1,
+                                "weight": 90
+                            },
+                            {
+                                "id": 2,
+                                "weight": 10
+                            }
+                        ]
+                    },
+                    "NOP": {
+                        "time": {
+                            "pre_warmup_duration": 5,
+                            "warmup_duration": 10,
+                            "benchmark_duration": 30,
+                            "benchmark_repeat_count": 3
+                        },
+                        "throughput_rate": 0.0,
+                        "actions": [
+                            {
+                                "id": 3
+                            }
+                        ]
+                    },
+                    "Shutdown": {
+                        "actions": [
+                            {
+                                "id": 99
+                            }
+                        ]
+                    }
+                }
+            }
+            """;
+
+    private static String javaApp = """
+            ///usr/bin/env jbang "$0" "$@" ; exit $?
+            //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
+            //SOURCES DemoUser.java
+            //JAVA 21
+            //PREVIEW
+            
+            import io.github.wfouche.tulip.api.TulipApi;
+            
+            void main() {
+               TulipApi.runTulip("benchmark_config.jsonc");
+            }
+            """;
+
+    private static String javaUser = """
+            import io.github.wfouche.tulip.api.*;
+            
+            public class DemoUser extends TulipUser {
+            
+                public DemoUser(int userId, int threadId) {
+                    super(userId, threadId);
+                }
+            
+                public boolean onStart() {
+                    //TulipConsole.put("JavaDemoUser " + getUserId());
+                    return true;
+                }
+            
+                public boolean action1() {
+                    try { Thread.sleep(10); } catch (InterruptedException e) { e.printStackTrace(); }
+                    return true;
+                }
+            
+                public boolean action2() {
+                    try { Thread.sleep(20); } catch (InterruptedException e) { e.printStackTrace(); }
+                    return true;
+                }
+            
+                public boolean action3() {
+                    return true;
+                }
+            
+                public boolean onStop() {
+                    return true;
+                }
+            
+            }
+            """;
+
+    private static String runBenchSh = """
+            #!/bin/bash
+            rm -f benchmark_report.html
+            export JBANG_JAVA_OPTIONS="-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
+            jbang run App.java
+            echo ""
+            w3m -dump -cols 205 benchmark_report.html
+            #lynx -dump -width 205 benchmark_report.html
+            jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            """;
+
+    private static String runBenchCmd = """
+            del benchmark_report.html
+            set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
+            call jbang run App.java
+            @echo off
+            echo.
+            REM call w3m.exe -dump -cols 205 benchmark_report.html
+            call benchmark_report.html
+            jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            """;
+
+    // jbang io.github.wfouche.tulip:tulip-runtime:2.1.2-dev
+    public static void main(String[] args) {
+        System.out.println("Tulip: creating a Java benchmark with JBang support");
+        writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
+        writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+        writeToFile("DemoUser.java", javaUser.stripLeading(), false);
+        writeToFile("run_bench.sh", runBenchSh.stripLeading(), false);
+        writeToFile("run_bench.cmd", runBenchCmd.stripLeading(), false);
     }
 }
