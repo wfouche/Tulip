@@ -13,3 +13,7 @@ read -p "Press ENTER to continue ..."
 ./gradlew :tulip-runtime:publishToMavenLocal
 
 find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
+
+echo ""
+echo "jbang io.github.wfouche.tulip:tulip-runtime:<version>"
+
