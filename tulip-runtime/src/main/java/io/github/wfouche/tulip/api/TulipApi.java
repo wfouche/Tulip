@@ -194,6 +194,7 @@ public class TulipApi {
             
             import io.github.wfouche.tulip.api.TulipApi;
             
+            // $ jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             void main() {
                TulipApi.runTulip("benchmark_config.jsonc");
             }
@@ -257,7 +258,7 @@ public class TulipApi {
             start benchmark_config.html
             """;
 
-    // jbang io.github.wfouche.tulip:tulip-runtime:2.1.2-dev
+    // jbang io.github.wfouche.tulip:tulip-runtime:<version>
     public static void main(String[] args) {
         System.out.println("Tulip: creating a Java benchmark with JBang support");
         writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
