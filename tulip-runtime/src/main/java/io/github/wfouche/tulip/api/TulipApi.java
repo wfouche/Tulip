@@ -240,7 +240,7 @@ public class TulipApi {
             echo ""
             w3m -dump -cols 205 benchmark_report.html
             #lynx -dump -width 205 benchmark_report.html
-            jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            #jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
             """;
 
     private static String runBenchCmd = """
