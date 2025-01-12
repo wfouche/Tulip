@@ -5,7 +5,7 @@ import org.jreleaser.model.Active
 import org.jetbrains.dokka.gradle.DokkaTask
 
 group = "io.github.wfouche.tulip"
-version = "2.1.1"
+version = "2.1.2-dev"
 
 plugins {
     id("com.github.ben-manes.versions") version "0.51.0"
@@ -35,6 +35,12 @@ dependencies {
     implementation("com.google.code.gson:gson:2.11.0")
 
     dokkaPlugin("com.glureau:html-mermaid-dokka-plugin:0.6.0")
+}
+
+tasks.jar {
+    manifest {
+        attributes["Main-Class"] = "io.github.wfouche.tulip.api.TulipApi"
+    }
 }
 
 // https://dev.to/tschuehly/how-to-publish-a-kotlinjava-spring-boot-library-with-gradle-to-maven-central-complete-guide-402a
