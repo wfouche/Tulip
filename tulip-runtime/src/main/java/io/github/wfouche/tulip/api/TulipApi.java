@@ -186,13 +186,14 @@ public class TulipApi {
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //SOURCES DemoUser.java
             //JAVA 21
-            //PREVIEW
             
             import io.github.wfouche.tulip.api.TulipApi;
             
-            // $ jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
-            void main() {
-               TulipApi.runTulip("benchmark_config.jsonc");
+            // jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
+            public class App {
+               public static void main(String[] args) {
+                  TulipApi.runTulip("benchmark_config.jsonc");
+               }
             }
             """;
 
