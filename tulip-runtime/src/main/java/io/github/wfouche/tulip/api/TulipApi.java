@@ -298,7 +298,7 @@ public class TulipApi {
             
                 override fun onStart(): Boolean {
                     if (userId == 0) {
-                        baseURI = baseURI = getUserParamValue("baseURI")
+                        baseURI = getUserParamValue("baseURI")
                     }
                     return true
                 }
