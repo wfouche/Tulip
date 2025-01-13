@@ -266,8 +266,8 @@ public class TulipApi {
                     try {
                         given()
                         .when()
-                            .get("/posts/1")
-                            //.get("/posts/" + Integer.toString(getUserId()+1))
+                            //.get("/posts/1")
+                            .get("/posts/" + Integer.toString(getUserId()+1))
                         .then()
                             .statusCode(200);
                     } catch (java.lang.AssertionError e) {
@@ -322,7 +322,8 @@ public class TulipApi {
                     try {
                         given()
                         .When()
-                            .get("/posts/1")
+                            //.get("/posts/1")
+                            .get("/posts/${userId+1}")
                         .then()
                             .statusCode(200)
                     } catch (e: java.lang.AssertionError) {
