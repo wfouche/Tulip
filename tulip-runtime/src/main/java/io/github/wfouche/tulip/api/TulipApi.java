@@ -241,6 +241,7 @@ public class TulipApi {
                 }
             
                 public boolean onStart() {
+                    // Initialize RestAssured only once
                     if (getUserId() == 0) {
                         baseURI = baseURI = getUserParamValue("baseURI");
                     }
@@ -297,6 +298,7 @@ public class TulipApi {
             class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             
                 override fun onStart(): Boolean {
+                    // Initialize RestAssured only once
                     if (userId == 0) {
                         baseURI = getUserParamValue("baseURI")
                     }
