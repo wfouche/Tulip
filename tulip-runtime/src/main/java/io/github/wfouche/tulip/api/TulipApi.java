@@ -145,21 +145,6 @@ public class TulipApi {
                         "throughput_rate": 100.0,
                         "workflow": "random"
                     },
-                    "Empty Action": {
-                        "enabled": true,
-                        "time": {
-                            "pre_warmup_duration": 5,
-                            "warmup_duration": 10,
-                            "benchmark_duration": 30,
-                            "benchmark_repeat_count": 3
-                        },
-                        "throughput_rate": 0.0,
-                        "actions": [
-                            {
-                                "id": 3
-                            }
-                        ]
-                    },
                      "REST": {
                         "enabled": true,
                         "time": {
@@ -172,6 +157,21 @@ public class TulipApi {
                         "actions": [
                             {
                                 "id": 4
+                            }
+                        ]
+                    },
+                    "Empty Action": {
+                        "enabled": true,
+                        "time": {
+                            "pre_warmup_duration": 5,
+                            "warmup_duration": 10,
+                            "benchmark_duration": 30,
+                            "benchmark_repeat_count": 3
+                        },
+                        "throughput_rate": 0.0,
+                        "actions": [
+                            {
+                                "id": 3
                             }
                         ]
                     },
