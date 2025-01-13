@@ -219,6 +219,7 @@ public class TulipApi {
     private static String kotlinApp = """
             ///usr/bin/env jbang "$0" "$@" ; exit $?
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
+            //DEPS io.rest-assured:rest-assured:5.5.0
             //SOURCES DemoUser.kt
             //JAVA 21
             
@@ -284,10 +285,21 @@ public class TulipApi {
 
     private static String kotlinUser = """
             import io.github.wfouche.tulip.api.TulipUser
-        
+            import io.restassured.RestAssured.baseURI
+            import io.restassured.RestAssured.given
+            //import io.restassured.RestAssured.`when`
+            import io.restassured.specification.RequestSpecification
+            
+            fun RequestSpecification.When(): RequestSpecification {
+                return this.`when`()
+            }
+            
             class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             
                 override fun onStart(): Boolean {
+                    if (userId == 0) {
+                        baseURI = "https://jsonplaceholder.typicode.com"
+                    }
                     return true
                 }
             
@@ -303,6 +315,20 @@ public class TulipApi {
             
                 override fun action3(): Boolean {
                     return true
+                }
+            
+                override fun action4(): Boolean {
+                    var rc = true
+                    try {
+                        given()
+                        .When()
+                            .get("/posts/1")
+                        .then()
+                            .statusCode(200)
+                    } catch (e: java.lang.AssertionError) {
+                        rc = false
+                    }
+                    return rc
                 }
             
                 override fun onStop(): Boolean {
