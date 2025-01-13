@@ -90,7 +90,7 @@ public class TulipApi {
                     "report_filename": "benchmark_report.html",
                     "user_class": "DemoUser",
                     "user_params": {
-                        "url": "http://localhost:7070",
+                        "baseURI": "https://jsonplaceholder.typicode.com",
                         "tracing": false,
                         "http_port": 7070
                     },
@@ -242,7 +242,7 @@ public class TulipApi {
             
                 public boolean onStart() {
                     if (getUserId() == 0) {
-                        baseURI = "https://jsonplaceholder.typicode.com";
+                        baseURI = baseURI = getUserParamValue("baseURI");
                     }
                     return true;
                 }
@@ -298,7 +298,7 @@ public class TulipApi {
             
                 override fun onStart(): Boolean {
                     if (userId == 0) {
-                        baseURI = "https://jsonplaceholder.typicode.com"
+                        baseURI = baseURI = getUserParamValue("baseURI")
                     }
                     return true
                 }
