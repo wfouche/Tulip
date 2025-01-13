@@ -88,7 +88,7 @@ public class TulipApi {
                     "description": "Demo Benchmark",
                     "output_filename": "benchmark_output.json",
                     "report_filename": "benchmark_report.html",
-                    "user_class": "DemoUser",
+                    "user_class": "HttpUser",
                     "user_params": {
                         "baseURI": "https://jsonplaceholder.typicode.com",
                         "tracing": false,
@@ -204,7 +204,7 @@ public class TulipApi {
             ///usr/bin/env jbang "$0" "$@" ; exit $?
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //DEPS io.rest-assured:rest-assured:5.5.0
-            //SOURCES DemoUser.java
+            //SOURCES HttpUser.java
             //JAVA 21
             
             import io.github.wfouche.tulip.api.TulipApi;
@@ -220,7 +220,7 @@ public class TulipApi {
             ///usr/bin/env jbang "$0" "$@" ; exit $?
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //DEPS io.rest-assured:rest-assured:5.5.0
-            //SOURCES DemoUser.kt
+            //SOURCES HttpUser.kt
             //JAVA 21
             
             import io.github.wfouche.tulip.api.TulipApi
@@ -234,9 +234,9 @@ public class TulipApi {
             import io.github.wfouche.tulip.api.*;
             import static io.restassured.RestAssured.*;
             
-            public class DemoUser extends TulipUser {
+            public class HttpUser extends TulipUser {
             
-                public DemoUser(int userId, int threadId) {
+                public HttpUser(int userId, int threadId) {
                     super(userId, threadId);
                 }
             
@@ -294,7 +294,7 @@ public class TulipApi {
                 return this.`when`()
             }
             
-            class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
+            class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             
                 override fun onStart(): Boolean {
                     if (userId == 0) {
@@ -410,7 +410,7 @@ public class TulipApi {
         if (lang.equals("Java")) {
             writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
             writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
-            writeToFile("DemoUser.java", javaUser.stripLeading(), false);
+            writeToFile("HttpUser.java", javaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShJava.stripLeading(), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
@@ -428,7 +428,7 @@ public class TulipApi {
         if (lang.equals("Kotlin")) {
             writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
             writeToFile("App.kt", kotlinApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
-            writeToFile("DemoUser.kt", kotlinUser.stripLeading(), false);
+            writeToFile("HttpUser.kt", kotlinUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShKotlin.stripLeading(), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
