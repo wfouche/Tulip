@@ -99,7 +99,7 @@ public class TulipApi {
                         "1": "DELAY-10ms",
                         "2": "DELAY-20ms",
                         "3": "None",
-                        "4": "Posts",
+                        "4": "GET:posts",
                         "99": "onStop"
                     }
                 },
@@ -161,7 +161,7 @@ public class TulipApi {
                         ]
                     },
                      "REST": {
-                        "enabled": false,
+                        "enabled": true,
                         "time": {
                             "pre_warmup_duration": 5,
                             "warmup_duration": 10,
