@@ -94,7 +94,7 @@ public class HttpUser extends TulipUser {
         return true;
     }
 
-    // -------------------------------------------------static---------------- //
+    // ----------------------------------------------------------------- //
 
     private HttpRequest createRequest(String name) {
         try {
