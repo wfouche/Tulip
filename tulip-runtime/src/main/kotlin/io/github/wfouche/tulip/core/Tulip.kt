@@ -368,7 +368,8 @@ fun initConfig(configFilename: String): String {
     val jsonWithoutComments = gsonJsonTree.toString()
 
     // Parse the JSON config using the Kotlin JSON parser
-    g_config = Json.decodeFromString<TulipConfig>(jsonWithoutComments)
+    val json = Json { ignoreUnknownKeys = true }
+    g_config = json.decodeFromString<TulipConfig>(jsonWithoutComments)
     g_config.contexts.forEach { entry ->
         val k = entry.key
         //println("${k}")
