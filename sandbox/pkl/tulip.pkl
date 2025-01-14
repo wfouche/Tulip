@@ -1,3 +1,33 @@
+// ----------------------------------------------------------------------- //
+
+time0 {
+  pre_warmup_duration = 0
+  warmup_duration = 0
+  benchmark_duration = 0
+  benchmark_repeat_count = 1
+}
+
+time1 {
+  pre_warmup_duration = 15
+  warmup_duration = 15
+  benchmark_duration = 30
+  benchmark_repeat_count = 3
+}
+
+// ----------------------------------------------------------------------- //
+
+rate0 {
+  actions_per_second = 0.0
+  worker_thread_queue_size = 0
+}
+
+rate1 {
+  actions_per_second = 100.0
+  worker_thread_queue_size = 0
+}
+
+// ----------------------------------------------------------------------- //
+
 actions {
     description = "Demo Benchmark"
     output_filename = "benchmark_output.json"
@@ -13,46 +43,7 @@ actions {
     }
 }
 
-contexts = new Mapping { 
-  ["Context-1"] { 
-    enabled = true
-    num_users = 4
-    num_threads = 2
-  }
-  ["Context-2"] { 
-    enabled = true
-    num_users = 4
-    num_threads = 4
-  }
-}
-
-benchmarks = new Mapping {
-  ["Init"] {
-    enabled = true
-    action = "onStart"
-  }
-
-  ["Benchmark1"] {
-    enabled = true
-    action = "a1"
-  }
-
-  ["Benchmark2"] {
-    enabled = true
-    action = "a2"
-  }
-
-  ["Benchmark3"] {
-    enabled = true
-    workflow = "max_tps"
-  }
-
-  ["Shutdown"] {
-    enabled = true
-    action = "onStop"
-  }
-
-}
+// ----------------------------------------------------------------------- //
 
 workflows {
   max_tps {
@@ -68,3 +59,55 @@ workflows {
     }
   }
 }
+
+// ----------------------------------------------------------------------- //
+
+benchmarks = new Mapping {
+
+  ["onStart"] {
+    action = "onStart"
+  }
+
+  ["Benchmark1"] {
+    action = "a1"
+    time = (time1)
+    rate = (rate1)
+  }
+
+  ["Benchmark2"] {
+    action = "a2"
+    time = (time1)
+    rate = (rate1)
+  }
+
+  ["Benchmark3"] {
+    workflow = "max_tps"
+    time = (time1)
+    rate = (rate1)
+  }
+
+  ["onStop"] {
+    action = "onStop"
+  }
+
+}
+
+// ----------------------------------------------------------------------- //
+
+contexts = new Mapping {
+
+  ["Context-1"] {
+    enabled = true
+    num_users = 4
+    num_threads = 2
+  }
+
+  ["Context-2"] {
+    enabled = true
+    num_users = 4
+    num_threads = 4
+  }
+
+}
+
+// ----------------------------------------------------------------------- //
