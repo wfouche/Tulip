@@ -349,51 +349,90 @@ public class TulipApi {
             //import io.restassured.RestAssured.`when`
             import io.restassured.specification.RequestSpecification
             
+            import java.net.URI
+            import java.net.http.HttpClient
+            import java.net.http.HttpRequest
+            import java.net.http.HttpResponse
+            
             fun RequestSpecification.When(): RequestSpecification {
                 return this.`when`()
             }
             
             class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             
-                override fun onStart(): Boolean {
-                    // Initialize RestAssured only once
+                init {
                     if (userId == 0) {
                         baseURI = getUserParamValue("baseURI")
                     }
+                }
+            
+                override fun onStart(): Boolean {
                     return true
                 }
             
+                // Action 1: delay 10ms
                 override fun action1(): Boolean {
                     Thread.sleep(10)
                     return true
                 }
             
+                // Action 2: delay 20ms
                 override fun action2(): Boolean {
                     Thread.sleep(20)
                     return true
                 }
             
+                // Action 3: No-op
                 override fun action3(): Boolean {
                     return true
                 }
             
+                // Action 4: GET /posts/{id} using Rest-Assured
                 override fun action4(): Boolean {
-                    var rc = true
-                    try {
+                    return try {
                         given()
-                        .When()
-                            //.get("/posts/1")
-                            .get("/posts/${userId+1}")
-                        .then()
-                            .statusCode(200)
-                    } catch (e: java.lang.AssertionError) {
-                        rc = false
+                            .When()
+                                .get("/posts/${userId + 1}")
+                            .then()
+                                .statusCode(200)
+                        true
+                    } catch (e: AssertionError) {
+                        false
                     }
-                    return rc
+                }
+            
+                // Action 5: GET /posts/{id} using java.net.http.HttpClient
+                override fun action5(): Boolean {
+                    return try {
+                        val response = client.send(httpRequestPosts, HttpResponse.BodyHandlers.ofString())
+                        response.statusCode() == 200
+                    } catch (e: Exception) {
+                        false
+                    }
                 }
             
                 override fun onStop(): Boolean {
                     return true
+                }
+            
+                // Action 5 support data and methods
+                companion object {
+                    private val client = HttpClient.newHttpClient()
+                }
+            
+                private val httpRequestPosts = createHttpRequest("posts")
+            
+                private fun createHttpRequest(name: String): HttpRequest {
+                    return try {
+                        val id = userId + 1
+                        val url = this.getUserParamValue("baseURI")
+                        HttpRequest.newBuilder()
+                            .uri(URI("$url/$name/$id"))
+                            .GET()
+                            .build()
+                    } catch (e: Exception) {
+                        throw RuntimeException(e)
+                    }
                 }
             }
             """;
