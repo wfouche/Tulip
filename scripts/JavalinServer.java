@@ -8,6 +8,7 @@ import io.javalin.Javalin;
 public class JavalinServer {
     public static void main(String[] args) {
         var app = Javalin.create(/*config*/)
+            .get("/", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json"))
             .get("/posts/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
             .get("/comments/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
             .get("/albums/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
@@ -18,6 +19,6 @@ public class JavalinServer {
                 System.out.println(ctx.body());
                 ctx.result("{\"code\": \"OK\"}").contentType("application/json");
             } )
-            .start(7070);
+            .start(7071);
     }
 }

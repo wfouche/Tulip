@@ -7,12 +7,13 @@ import io.javalin.Javalin
 
 public fun main() {
     val app = Javalin.create(/*config*/)
+        .get("/") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
         .get("/posts/{id}") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
         .get("/comments/{id}") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
         .get("/albums/{id}") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
         .get("/photos/{id}") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
         .get("/todos/{id}") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
-        .start(7070)
+        .start(7071)
 }
 // $ ./JavalinServer.kt        # or use command below
 // $ jbang JavalinServer.kt
