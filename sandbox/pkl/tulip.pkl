@@ -1,0 +1,70 @@
+actions {
+    description = "Demo Benchmark"
+    output_filename = "benchmark_output.json"
+    report_filename =  "benchmark_report.html"
+    user_class = "HttpUser"
+    user_params {
+        baseURI = "https://jsonplaceholder.typicode.com"
+        tracing = false
+        http_port = 7071
+    }
+    user_actions {
+       a0 = "Http"
+    }
+}
+
+contexts = new Mapping { 
+  ["Context-1"] { 
+    enabled = true
+    num_users = 4
+    num_threads = 2
+  }
+  ["Context-2"] { 
+    enabled = true
+    num_users = 4
+    num_threads = 4
+  }
+}
+
+benchmarks = new Mapping {
+  ["Init"] {
+    enabled = true
+    action = "onStart"
+  }
+
+  ["Benchmark1"] {
+    enabled = true
+    action = "a1"
+  }
+
+  ["Benchmark2"] {
+    enabled = true
+    action = "a2"
+  }
+
+  ["Benchmark3"] {
+    enabled = true
+    workflow = "max_tps"
+  }
+
+  ["Shutdown"] {
+    enabled = true
+    action = "onStop"
+  }
+
+}
+
+workflows {
+  max_tps {
+    aa {
+      a8 = 0.5
+      a9 = 0.5
+    }
+    a8 {
+      aa = 1.0
+    }
+    a9 {
+      aa = 1.0
+    }
+  }
+}
