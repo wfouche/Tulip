@@ -84,6 +84,7 @@ public class TulipApi {
 
     private static String benchmarkConfig = """
             {
+                // Actions
                 "actions": {
                     "description": "Spring RestClient Benchmark",
                     "output_filename": "benchmark_output.json",
@@ -93,13 +94,14 @@ public class TulipApi {
                         "baseURI": "https://jsonplaceholder.typicode.com"
                     },
                     "user_actions": {
-                        "0": "onStart",
+                        "0": "onStart",  // Init
                         "1": "GET:posts",
                         "2": "GET:comments",
                         "3": "GET:todos",
-                        "99": "onStop"
+                        "99": "onStop"   // Shutdown
                     }
                 },
+                // Workflows using Markov chains
                 "workflows": {
                     "api-user": {
                         "-": {
@@ -117,6 +119,7 @@ public class TulipApi {
                         }
                     }
                 },
+                // Benchmarks
                 "benchmarks": {
                     "onStart": {
                         "scenario_actions": [ {"id": 0} ]
@@ -176,6 +179,7 @@ public class TulipApi {
                         ]
                     }
                 },
+                // Contexts
                 "contexts": {
                     "Context-1": {
                         "enabled": true,
