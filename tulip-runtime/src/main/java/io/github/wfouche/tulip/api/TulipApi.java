@@ -222,7 +222,7 @@ public class TulipApi {
 
     private static String javaUser = """
             import io.github.wfouche.tulip.api.*;
-            
+            import java.util.concurrent.ThreadLocalRandom;
             import org.springframework.web.client.RestClient;
             import org.springframework.web.client.RestClientException;
             
@@ -245,50 +245,50 @@ public class TulipApi {
             
                 // Action 1: GET /posts/{id}
                 public boolean action1() {
-            
-                    boolean rc = true;
+                    boolean rc;
                     try {
-                        String response = restClient.get()
-                          .uri("/posts/{id}", getUserId()+1)
+                        var id = ThreadLocalRandom.current().nextInt(100)+1;
+                        String rsp = restClient.get()
+                          .uri("/posts/{id}", id)
                           .retrieve()
                           .body(String.class);
-                        //System.out.println(response);
+                        rc = (rsp != null && rsp.length() > 2);
                     } catch (RestClientException e) {
                        rc = false;
                     }
-                    return rc;       \s
+                    return rc;
                 }
             
                 // Action 2: GET /comments/{id}
                 public boolean action2() {
-            
-                    boolean rc = true;
+                    boolean rc;
                     try {
-                        String response = restClient.get()
-                            .uri("/comments/{id}", getUserId()+1)
+                        var id = ThreadLocalRandom.current().nextInt(500)+1;
+                        String rsp = restClient.get()
+                            .uri("/comments/{id}", id)
                             .retrieve()
                             .body(String.class);
-                        //System.out.println(response);
+                        rc = (rsp != null && rsp.length() > 2);
                     } catch (RestClientException e) {
                         rc = false;
                     }
-                    return rc;       \s
+                    return rc;
                 }
             
                 // Action 3: GET /todos/{id}
                 public boolean action3() {
-            
-                    boolean rc = true;
+                    boolean rc;
                     try {
-                        String response = restClient.get()
-                            .uri("/todos/{id}", getUserId()+1)
+                        var id = ThreadLocalRandom.current().nextInt(200)+1;
+                        String rsp = restClient.get()
+                            .uri("/todos/{id}", id)
                             .retrieve()
                             .body(String.class);
-                        //System.out.println(response);
+                        rc = (rsp != null && rsp.length() > 2);
                     } catch (RestClientException e) {
                         rc = false;
                     }
-                    return rc;       \s
+                    return rc;
                 }
             
                 // Action 99
@@ -304,6 +304,7 @@ public class TulipApi {
 
     private static String kotlinUser = """
             import io.github.wfouche.tulip.api.*
+            import java.util.concurrent.ThreadLocalRandom
             import org.springframework.web.client.RestClient
             import org.springframework.web.client.RestClientException
             
@@ -322,13 +323,14 @@ public class TulipApi {
             
                 // Action 1: GET /posts/{id}
                 override fun action1(): Boolean {
+                    val id = ThreadLocalRandom.current().nextInt(100)+1
                     return try {
-                        val response = restClient.get()
-                            .uri("/posts/{id}", userId + 1)
+                        val rsp: String? = restClient.get()
+                            .uri("/posts/{id}", id)
                             .retrieve()
                             .body(String::class.java)
-                        // println(response)
-                        true
+                        //Postcondition
+                        (rsp != null && rsp.length > 2)
                     } catch (e: RestClientException) {
                         false
                     }
@@ -336,13 +338,14 @@ public class TulipApi {
             
                 // Action 2: GET /comments/{id}
                 override fun action2(): Boolean {
+                    val id = ThreadLocalRandom.current().nextInt(500)+1
                     return try {
-                        val response = restClient.get()
-                            .uri("/comments/{id}", userId + 1)
+                        val rsp: String? = restClient.get()
+                            .uri("/comments/{id}", id)
                             .retrieve()
                             .body(String::class.java)
-                        // println(response)
-                        true
+                        //Postcondition
+                        (rsp != null && rsp.length > 2)
                     } catch (e: RestClientException) {
                         false
                     }
@@ -350,13 +353,14 @@ public class TulipApi {
             
                 // Action 3: GET /todos/{id}
                 override fun action3(): Boolean {
+                    val id = ThreadLocalRandom.current().nextInt(200)+1
                     return try {
-                        val response = restClient.get()
-                            .uri("/todos/{id}", userId + 1)
+                        val rsp: String? = restClient.get()
+                            .uri("/todos/{id}", id)
                             .retrieve()
                             .body(String::class.java)
-                        // println(response)
-                        true
+                        //Postcondition
+                        (rsp != null && rsp.length > 2)
                     } catch (e: RestClientException) {
                         false
                     }
