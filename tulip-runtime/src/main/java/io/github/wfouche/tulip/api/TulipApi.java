@@ -85,133 +85,102 @@ public class TulipApi {
     private static String benchmarkConfig = """
             {
                 "actions": {
-                    "description": "Demo Benchmark",
+                    "description": "Spring RestClient Benchmark",
                     "output_filename": "benchmark_output.json",
                     "report_filename": "benchmark_report.html",
                     "user_class": "HttpUser",
                     "user_params": {
-                        "baseURI": "https://jsonplaceholder.typicode.com",
-                        "baseURI2": "http://localhost:7071",
-                        "tracing": false,
-                        "http_port": 7071
+                        "baseURI": "https://jsonplaceholder.typicode.com"
                     },
                     "user_actions": {
                         "0": "onStart",
-                        "1": "DELAY-10ms",
-                        "2": "DELAY-20ms",
-                        "3": "No-op",
-                        "4": "GET:posts(RA)",
-                        "5": "GET:posts(HC)",
+                        "1": "GET:posts",
+                        "2": "GET:comments",
+                        "3": "GET:todos",
                         "99": "onStop"
                     }
                 },
-                "contexts": {
-                    "Context-1": {
-                        "enabled": true,
-                        "num_users": 4,
-                        "num_threads": 2
-                    },
-                    "Context-2": {
-                        "enabled": false,
-                        "num_users": 4,
-                        "num_threads": 4
+                "workflows": {
+                    "api-user": {
+                        "-": {
+                            "1": 0.40,
+                            "3": 0.60
+                        },
+                        "1": {
+                            "2": 1.0
+                        },
+                        "2": {
+                            "-": 1.0
+                        },
+                        "3": {
+                            "-": 1.0
+                        }
                     }
                 },
                 "benchmarks": {
-                    "Startup": {
-                        "actions": [
-                            {
-                                "id": 0
-                            }
-                        ]
-                    },
-                    "Maximum Rate": {
-                        "enabled": true,
-                        "time": {
-                            "pre_warmup_duration": 5,
-                            "warmup_duration": 10,
-                            "benchmark_duration": 30,
-                            "benchmark_repeat_count": 3
-                        },
-                        "throughput_rate": 0.0,
-                        "workflow": "random"
-                    },
-                    "Fixed Rate": {
-                        "enabled": true,
-                        "time": {
-                            "pre_warmup_duration": 5,
-                            "warmup_duration": 10,
-                            "benchmark_duration": 30,
-                            "benchmark_repeat_count": 3
-                        },
-                        "throughput_rate": 100.0,
-                        "workflow": "random"
+                    "onStart": {
+                        "scenario_actions": [ {"id": 0} ]
                     },
                      "REST1": {
                         "enabled": true,
                         "time": {
-                            "pre_warmup_duration": 5,
+                            "pre_warmup_duration": 0,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
                             "benchmark_repeat_count": 3
                         },
-                        "throughput_rate": 0.0,
-                        "actions": [
+                        "throughput_rate": 10.0,
+                        "scenario_actions": [
                             {
-                                "id": 4
+                                "id": 1
                             }
                         ]
                     },
-                     "REST2": {
+                    "REST2": {
                         "enabled": true,
                         "time": {
-                            "pre_warmup_duration": 5,
+                            "pre_warmup_duration": 0,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
                             "benchmark_repeat_count": 3
                         },
-                        "throughput_rate": 0.0,
-                        "actions": [
+                        "throughput_rate": 10.0,
+                        "scenario_actions": [
                             {
-                                "id": 5
+                                "id": 1, "weight": 10
+                            },
+                            {
+                                "id": 2, "weight": 40
+                            },
+                            {
+                                "id": 3, "weight": 50
                             }
                         ]
                     },
-                    "Empty Action": {
+                    "REST3": {
                         "enabled": true,
                         "time": {
-                            "pre_warmup_duration": 5,
+                            "pre_warmup_duration": 0,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
                             "benchmark_repeat_count": 3
                         },
-                        "throughput_rate": 0.0,
-                        "actions": [
-                            {
-                                "id": 3
-                            }
-                        ]
+                        "throughput_rate": 10.0,
+                        "scenario_workflow": "api-user"
                     },
-                    "Shutdown": {
-                        "actions": [
+                    "onStop": {
+                        "scenario_actions": [
                             {
                                 "id": 99
                             }
                         ]
                     }
                 },
-                "workflows": {
-                    "random": {
-                        "-": {
-                            "1": 0.90,
-                            "2": 0.10
-                        },
-                        "1": {
-                            "-": 1.0
-                        },
-                        "2": {
-                            "-": 1.0
-                        }
+                "contexts": {
+                    "Context-1": {
+                        "enabled": true,
+                        "num_users": 10,
+                        "num_threads": 2
                     }
                 }
             }
@@ -220,7 +189,7 @@ public class TulipApi {
     private static String javaApp = """
             ///usr/bin/env jbang "$0" "$@" ; exit $?
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
-            //DEPS io.rest-assured:rest-assured:5.5.0
+            //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
             //SOURCES HttpUser.java
             //JAVA 21
             
@@ -250,12 +219,8 @@ public class TulipApi {
     private static String javaUser = """
             import io.github.wfouche.tulip.api.*;
             
-            import static io.restassured.RestAssured.*;
-            
-            import java.net.URI;
-            import java.net.http.HttpClient;
-            import java.net.http.HttpRequest;
-            import java.net.http.HttpResponse;
+            import org.springframework.web.client.RestClient;
+            import org.springframework.web.client.RestClientException;
             
             public class HttpUser extends TulipUser {
             
@@ -264,80 +229,69 @@ public class TulipApi {
                 }
             
                 public boolean onStart() {
-                    // Initialize RestAssured only once
+                    // Initialize the shared restClient instance only once
                     if (getUserId() == 0) {
-                        baseURI = baseURI = getUserParamValue("baseURI");
+                        restClient = RestClient.builder()
+                                        .baseUrl(getUserParamValue("baseURI"))
+                                        .build();
                     }
                     return true;
                 }
             
-                // Action 1: delay 10ms
+                // Action 1: GET /posts/{id}
                 public boolean action1() {
-                    try { Thread.sleep(10); } catch (InterruptedException e) { e.printStackTrace(); }
-                    return true;
-                }
             
-                // Action 2: delay 20ms
-                public boolean action2() {
-                    try { Thread.sleep(20); } catch (InterruptedException e) { e.printStackTrace(); }
-                    return true;
-                }
-            
-                // Action 3: No-op
-                public boolean action3() {
-                    return true;
-                }
-            
-                // Action 4: GET /posts/{id} using Rest-Assured
-                public boolean action4() {
                     boolean rc = true;
                     try {
-                        given()
-                        .when()
-                            .get("/posts/" + Integer.toString(getUserId()+1))
-                        .then()
-                            .statusCode(200);
-                    } catch (java.lang.AssertionError e) {
+                        String response = restClient.get()
+                          .uri("/posts/{id}", getUserId()+1)
+                          .retrieve()
+                          .body(String.class);
+                        //System.out.println(response);
+                    } catch (RestClientException e) {
                        rc = false;
                     }
-                    return rc;
+                    return rc;       \s
                 }
             
-                // Action 5: GET /posts/{id} using java.net.http.HttpClient
-                public boolean action5() {
+                // Action 2: GET /comments/{id}
+                public boolean action2() {
+            
                     boolean rc = true;
                     try {
-                        var response = client.send(httpRequestPosts, HttpResponse.BodyHandlers.ofString());
-                        rc =  (response.statusCode() == 200);
-                    } catch (java.lang.Exception e) {
+                        String response = restClient.get()
+                            .uri("/comments/{id}", getUserId()+1)
+                            .retrieve()
+                            .body(String.class);
+                        //System.out.println(response);
+                    } catch (RestClientException e) {
                         rc = false;
                     }
-                    return rc;
+                    return rc;       \s
+                }
+            
+                // Action 3: GET /todos/{id}
+                public boolean action3() {
+            
+                    boolean rc = true;
+                    try {
+                        String response = restClient.get()
+                            .uri("/todos/{id}", getUserId()+1)
+                            .retrieve()
+                            .body(String.class);
+                        //System.out.println(response);
+                    } catch (RestClientException e) {
+                        rc = false;
+                    }
+                    return rc;       \s
                 }
             
                 public boolean onStop() {
                     return true;
                 }
             
-                // Action 5 support data and methods
-                private static HttpClient client = HttpClient.newHttpClient();
-            
-                private HttpRequest httpRequestPosts = createHttpRequest("posts");
-            
-                private HttpRequest createHttpRequest(String name) {
-                    try {
-                        var id = getUserId() + 1;
-                        var url = this.getUserParamValue("baseURI");
-                        var request = HttpRequest.newBuilder()
-                                .uri(new URI(url + "/" + name + "/" + String.valueOf(id)))
-                                .GET()
-                                .build();
-                        return request;
-                    } catch (java.lang.Exception e) {
-                        throw new RuntimeException(e);
-                    }
-            
-                }
+                // Action 1 support data and methods
+                private static RestClient restClient;
             
             }
             """;
