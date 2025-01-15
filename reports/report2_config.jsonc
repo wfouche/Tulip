@@ -1,4 +1,5 @@
 {
+    // Actions
     "actions": {
         "description": "Spring RestClient Benchmark",
         "output_filename": "benchmark_output.json",
@@ -8,13 +9,14 @@
             "baseURI": "https://jsonplaceholder.typicode.com"
         },
         "user_actions": {
-            "0": "onStart",
+            "0": "onStart",  // Init
             "1": "GET:posts",
             "2": "GET:comments",
             "3": "GET:todos",
-            "99": "onStop"
+            "99": "onStop"   // Shutdown
         }
     },
+    // Workflows using Markov chains
     "workflows": {
         "api-user": {
             "-": {
@@ -32,13 +34,7 @@
             }
         }
     },
-    "contexts": {
-        "Context-1": {
-            "enabled": true,
-            "num_users": 10,
-            "num_threads": 2
-        }
-    },
+    // Benchmarks
     "benchmarks": {
         "onStart": {
             "scenario_actions": [ {"id": 0} ]
@@ -97,6 +93,13 @@
                 }
             ]
         }
+    },
+    // Contexts
+    "contexts": {
+        "Context-1": {
+            "enabled": true,
+            "num_users": 10,
+            "num_threads": 2
+        }
     }
-
 }

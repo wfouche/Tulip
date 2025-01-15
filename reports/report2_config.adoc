@@ -36,8 +36,148 @@ Filename::
 !===
 ! id ! value 
 ! *0* ! onStart
-! *1* ! GET:/posts/{id}
+! *1* ! GET:posts
+! *2* ! GET:comments
+! *3* ! GET:todos
 ! *99* ! onStop
+!===
+|===
+
+== Workflows 
+
+[[api-user]]
+=== api-user
+
+[%header,cols="1a,1a"]
+|===
+| Workflow Diagram | Specification
+|[plantuml,wfd0,svg]
+----
+@startuml
+state "-" as A0
+state "Action 1" as A1
+A1: <GET:posts>
+
+state "Action 2" as A2
+A2: <GET:comments>
+
+state "Action 3" as A3
+A3: <GET:todos>
+
+A0 --> A1: 0.400
+A0 --> A3: 0.600
+A1 --> A2: 1.000
+A2 --> A0: 1.000
+A3 --> A0: 1.000
+@enduml
+----
+| 
+[source,json]
+----
+{
+    "-": {
+        "1": 0.4, 
+        "3": 0.6
+    }, 
+    "1": {
+        "2": 1.0
+    }, 
+    "2": {
+        "-": 1.0
+    }, 
+    "3": {
+        "-": 1.0
+    }
+}
+----
+|===
+
+== Benchmarks
+
+=== onStart
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *throughput_rate* | 0.0
+| *worker_thread_queue_size* | 0
+| *scenario_actions* 
+| 
+[%header,cols="1a,2a"]
+!===
+! id ! weight 
+! 0
+! - 
+!===
+|===
+
+=== REST1
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *throughput_rate* | 10.0
+| *worker_thread_queue_size* | 0
+| *scenario_actions* 
+| 
+[%header,cols="1a,2a"]
+!===
+! id ! weight 
+! 1
+! - 
+!===
+|===
+
+=== REST2
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *throughput_rate* | 10.0
+| *worker_thread_queue_size* | 0
+| *scenario_actions* 
+| 
+[%header,cols="1a,2a"]
+!===
+! id ! weight 
+! 1
+! 10 
+! 2
+! 40 
+! 3
+! 50 
+!===
+|===
+
+=== REST3
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *throughput_rate* | 10.0
+| *worker_thread_queue_size* | 0
+| *scenario_workflow* | <<api-user>>
+|===
+
+=== onStop
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *throughput_rate* | 0.0
+| *worker_thread_queue_size* | 0
+| *scenario_actions* 
+| 
+[%header,cols="1a,2a"]
+!===
+! id ! weight 
+! 99
+! - 
 !===
 |===
 
@@ -51,64 +191,8 @@ Filename::
 [%header,cols="1a,2a"]
 !===
 ! id ! value 
-! *num_users*   ! 4
+! *num_users*   ! 10
 ! *num_threads* ! 2
 ! *enabled* ! True
-!===
-|===
-
-== Benchmarks
-
-=== onStart
-
-[%header,cols="1a,2a"]
-|===
-| id | value
-| *enabled* | True
-| *throughput_rate* | 0.0
-| *worker_thread_queue_size* | 0
-| *actions* 
-| 
-[%header,cols="1a,2a"]
-!===
-! id ! weight 
-! 0
-! - 
-!===
-|===
-
-=== REST
-
-[%header,cols="1a,2a"]
-|===
-| id | value
-| *enabled* | True
-| *throughput_rate* | 0.0
-| *worker_thread_queue_size* | 0
-| *actions* 
-| 
-[%header,cols="1a,2a"]
-!===
-! id ! weight 
-! 1
-! - 
-!===
-|===
-
-=== onStop
-
-[%header,cols="1a,2a"]
-|===
-| id | value
-| *enabled* | True
-| *throughput_rate* | 0.0
-| *worker_thread_queue_size* | 0
-| *actions* 
-| 
-[%header,cols="1a,2a"]
-!===
-! id ! weight 
-! 99
-! - 
 !===
 |===

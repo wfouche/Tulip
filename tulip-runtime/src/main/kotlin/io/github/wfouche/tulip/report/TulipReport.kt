@@ -545,19 +545,19 @@ def createReport(filename):
         else:
             printf('| *worker_thread_queue_size* | 0\n')
         # workflow
-        if "workflow" in b.keys():
-            workflow_is_defined = b["workflow"] in jb["workflows"].keys()
+        if "scenario_workflow" in b.keys():
+            workflow_is_defined = b["scenario_workflow"] in jb["workflows"].keys()
             if workflow_is_defined:
-                printf('| *workflow* | <<%s>>\n'%(b["workflow"]))
+                printf('| *scenario_workflow* | <<%s>>\n'%(b["scenario_workflow"]))
             else:
-                printf('| *workflow* | Error, worflow *%s* is not defined\n'%(b["workflow"]))
-        elif "actions" in b.keys():
-            printf('| *actions* \n')
+                printf('| *scenario_workflow* | Error, scenario_workflow *%s* is not defined\n'%(b["scenario_workflow"]))
+        elif "scenario_actions" in b.keys():
+            printf('| *scenario_actions* \n')
             printf('| \n')
             printf('[%header,cols="1a,2a"]\n')
             printf('!===\n')
             printf('! id ! weight \n')
-            for a in b["actions"]:
+            for a in b["scenario_actions"]:
                 printf('! %d\n'%(a["id"]))
                 if "weight" in a.keys():
                     printf('! %d \n'%(a["weight"]))
