@@ -376,6 +376,7 @@ public class TulipApi {
 
     private static String runBenchShJava = """
             #!/bin/bash
+            # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             rm -f benchmark_report.html
             export JBANG_JAVA_OPTIONS="-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
             jbang run App.java
@@ -386,6 +387,7 @@ public class TulipApi {
             """;
 
     private static String runBenchCmdJava = """
+            REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.java
@@ -393,12 +395,13 @@ public class TulipApi {
             echo.
             REM call w3m.exe -dump -cols 205 benchmark_report.html
             start benchmark_report.html
-            jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
-            start benchmark_config.html
+            REM jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            REM start benchmark_config.html
             """;
 
     private static String runBenchShKotlin = """
             #!/bin/bash
+            # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             rm -f benchmark_report.html
             export JBANG_JAVA_OPTIONS="-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
             jbang run App.kt
@@ -409,6 +412,7 @@ public class TulipApi {
             """;
 
     private static String runBenchCmdKotlin = """
+            REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.kt
@@ -416,8 +420,8 @@ public class TulipApi {
             echo.
             REM call w3m.exe -dump -cols 205 benchmark_report.html
             start benchmark_report.html
-            jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
-            start benchmark_config.html
+            REM jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            REM start benchmark_config.html
             """;
 
     /**
@@ -446,7 +450,7 @@ public class TulipApi {
             writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
             writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.java", javaUser.stripLeading(), false);
-            writeToFile("run_bench.sh", runBenchShJava.stripLeading(), false);
+            writeToFile("run_bench.sh", runBenchShJava.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
             } else {
@@ -457,14 +461,14 @@ public class TulipApi {
                     // pass
                 }
             }
-            writeToFile("run_bench.cmd", runBenchCmdJava.stripLeading(), false);
+            writeToFile("run_bench.cmd", runBenchCmdJava.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
         }
 
         if (lang.equals("Kotlin")) {
             writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
             writeToFile("App.kt", kotlinApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.kt", kotlinUser.stripLeading(), false);
-            writeToFile("run_bench.sh", runBenchShKotlin.stripLeading(), false);
+            writeToFile("run_bench.sh", runBenchShKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
             } else {
@@ -475,7 +479,7 @@ public class TulipApi {
                     // pass
                 }
             }
-            writeToFile("run_bench.cmd", runBenchCmdKotlin.stripLeading(), false);
+            writeToFile("run_bench.cmd", runBenchCmdKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
         }
     }
 }
