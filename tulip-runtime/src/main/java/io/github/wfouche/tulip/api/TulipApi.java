@@ -322,47 +322,44 @@ public class TulipApi {
             
                 // Action 1: GET /posts/{id}
                 override fun action1(): Boolean {
-                    var rc = true
-                    try {
+                    return try {
                         val response = restClient.get()
                             .uri("/posts/{id}", userId + 1)
                             .retrieve()
                             .body(String::class.java)
                         // println(response)
+                        true
                     } catch (e: RestClientException) {
-                        rc = false
+                        false
                     }
-                    return rc
                 }
             
                 // Action 2: GET /comments/{id}
                 override fun action2(): Boolean {
-                    var rc = true
-                    try {
+                    return try {
                         val response = restClient.get()
                             .uri("/comments/{id}", userId + 1)
                             .retrieve()
                             .body(String::class.java)
                         // println(response)
+                        true
                     } catch (e: RestClientException) {
-                        rc = false
+                        false
                     }
-                    return rc
                 }
             
                 // Action 3: GET /todos/{id}
                 override fun action3(): Boolean {
-                    var rc = true
-                    try {
+                    return try {
                         val response = restClient.get()
                             .uri("/todos/{id}", userId + 1)
                             .retrieve()
                             .body(String::class.java)
                         // println(response)
+                        true
                     } catch (e: RestClientException) {
-                        rc = false
+                        false
                     }
-                    return rc
                 }
             
                 // Action 99
