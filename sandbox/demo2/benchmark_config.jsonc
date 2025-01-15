@@ -1,0 +1,132 @@
+{
+    "actions": {
+        "description": "Demo Benchmark",
+        "output_filename": "benchmark_output.json",
+        "report_filename": "benchmark_report.html",
+        "user_class": "HttpUser",
+        "user_params": {
+            "baseURI": "https://jsonplaceholder.typicode.com",
+            "baseURI2": "http://localhost:7071",
+            "tracing": false,
+            "http_port": 7071
+        },
+        "user_actions": {
+            "0": "onStart",
+            "1": "DELAY-10ms",
+            "2": "DELAY-20ms",
+            "3": "No-op",
+            "4": "GET:posts(RA)",
+            "5": "GET:posts(HC)",
+            "99": "onStop"
+        }
+    },
+    "contexts": {
+        "Context-1": {
+            "enabled": true,
+            "num_users": 4,
+            "num_threads": 2
+        },
+        "Context-2": {
+            "enabled": false,
+            "num_users": 4,
+            "num_threads": 4
+        }
+    },
+    "benchmarks": {
+        "Startup": {
+            "actions": [
+                {
+                    "id": 0
+                }
+            ]
+        },
+        "Maximum Rate": {
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 5,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "workflow": "random"
+        },
+        "Fixed Rate": {
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 5,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 100.0,
+            "workflow": "random"
+        },
+         "REST1": {
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 5,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "actions": [
+                {
+                    "id": 4
+                }
+            ]
+        },
+         "REST2": {
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 5,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "actions": [
+                {
+                    "id": 5
+                }
+            ]
+        },
+        "Empty Action": {
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 5,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 0.0,
+            "actions": [
+                {
+                    "id": 3
+                }
+            ]
+        },
+        "Shutdown": {
+            "actions": [
+                {
+                    "id": 99
+                }
+            ]
+        }
+    },
+    "workflows": {
+        "random": {
+            "-": {
+                "1": 0.90,
+                "2": 0.10
+            },
+            "1": {
+                "-": 1.0
+            },
+            "2": {
+                "-": 1.0
+            }
+        }
+    }
+}

@@ -1,0 +1,102 @@
+{
+    "actions": {
+        "description": "Spring RestClient Benchmark",
+        "output_filename": "benchmark_output.json",
+        "report_filename": "benchmark_report.html",
+        "user_class": "HttpUser",
+        "user_params": {
+            "baseURI": "https://jsonplaceholder.typicode.com"
+        },
+        "user_actions": {
+            "0": "onStart",
+            "1": "GET:posts",
+            "2": "GET:comments",
+            "3": "GET:todos",
+            "99": "onStop"
+        }
+    },
+    "workflows": {
+        "api-user": {
+            "-": {
+                "1": 0.40,
+                "3": 0.60
+            },
+            "1": {
+                "2": 1.0
+            },
+            "2": {
+                "-": 1.0
+            },
+            "3": {
+                "-": 1.0
+            }
+        }
+    },
+    "contexts": {
+        "Context-1": {
+            "enabled": true,
+            "num_users": 10,
+            "num_threads": 2
+        }
+    },
+    "benchmarks": {
+        "onStart": {
+            "actions": [ {"id": 0} ]
+        },
+         "REST1": {
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 0,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 10.0,
+            "actions": [
+                {
+                    "id": 1
+                }
+            ]
+        },
+        "REST2": {
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 0,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 10.0,
+            "actions": [
+                {
+                    "id": 1, "weight": 10
+                },
+                {
+                    "id": 2, "weight": 40
+                },
+                {
+                    "id": 3, "weight": 50
+                }
+            ]
+        },
+        "REST3": {
+            "enabled": true,
+            "time": {
+                "pre_warmup_duration": 0,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 3
+            },
+            "throughput_rate": 10.0,
+            "workflow": "api-user"
+        },
+        "onStop": {
+            "actions": [
+                {
+                    "id": 99
+                }
+            ]
+        }
+    }
+
+}
