@@ -124,29 +124,11 @@ def createReport(filename):
         printf("| " + jb['actions'][e] + '\n')
     printf("|===" + '\n')
 
-    # Context Data
-    printf("\n")
-    printf("== Contexts\n")
-    printf("\n")
-    printf('[%header,cols="1a,2a"]\n')
-    printf("|===\n")
-    printf("| id | value\n")
-
-    for k in jb['contexts'].keys():
-        c = jb['contexts'][k]
-        printf('| %s'%(k) + '\n')
-        printf('| \n')
-        printf('[%header,cols="1a,2a"]\n')
-        printf('!===\n')
-        printf('! id ! value \n')
-        printf('! *num_users*   ! %d\n'%(c["num_users"]))
-        printf('! *num_threads* ! %d\n'%(c["num_threads"]))
-        if "enabled" in c.keys():
-            printf('! *enabled* ! %s\n'%(c["enabled"]))
-        else:
-            printf('! *enabled* ! True\n')
-        printf("!===\n")
-    printf("|===\n")
+    # Workflows
+    if "workflows" in jb.keys():
+        printf("\n")
+        printf("== Workflows \n")
+        generate_workflow()
 
     # Benchmarks Data
     printf("\n")
@@ -197,11 +179,29 @@ def createReport(filename):
 
         printf("|===\n")
 
-    # Workflows
-    if "workflows" in jb.keys():
-        printf("\n")
-        printf("== Workflows \n")
-        generate_workflow()
+    # Context Data
+    printf("\n")
+    printf("== Contexts\n")
+    printf("\n")
+    printf('[%header,cols="1a,2a"]\n')
+    printf("|===\n")
+    printf("| id | value\n")
+
+    for k in jb['contexts'].keys():
+        c = jb['contexts'][k]
+        printf('| %s'%(k) + '\n')
+        printf('| \n')
+        printf('[%header,cols="1a,2a"]\n')
+        printf('!===\n')
+        printf('! id ! value \n')
+        printf('! *num_users*   ! %d\n'%(c["num_users"]))
+        printf('! *num_threads* ! %d\n'%(c["num_threads"]))
+        if "enabled" in c.keys():
+            printf('! *enabled* ! %s\n'%(c["enabled"]))
+        else:
+            printf('! *enabled* ! True\n')
+        printf("!===\n")
+    printf("|===\n")
 
     print("  config report = " + report_fn)
 

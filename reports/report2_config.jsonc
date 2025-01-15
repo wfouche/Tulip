@@ -1,85 +1,102 @@
 {
     "actions": {
-        "description": "Demo Benchmark",
+        "description": "Spring RestClient Benchmark",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
-        "user_class": "org.example.user.DemoUser",
+        "user_class": "HttpUser",
         "user_params": {
-            "url": "http://localhost:7070"
+            "baseURI": "https://jsonplaceholder.typicode.com"
         },
         "user_actions": {
             "0": "onStart",
-            "1": "DELAY-10ms",
-            "2": "DELAY-20ms",
-            "3": "NOP",
+            "1": "GET:posts",
+            "2": "GET:comments",
+            "3": "GET:todos",
             "99": "onStop"
         }
     },
-    // Contexts
+    "workflows": {
+        "api-user": {
+            "-": {
+                "1": 0.40,
+                "3": 0.60
+            },
+            "1": {
+                "2": 1.0
+            },
+            "2": {
+                "-": 1.0
+            },
+            "3": {
+                "-": 1.0
+            }
+        }
+    },
     "contexts": {
-        // Contexts
-        "Context-0": {
-            "enabled": true,
-            "num_users": 4,
-            "num_threads": 2
-        },
         "Context-1": {
-            "enabled": false,
-            "num_users": 4,
-            "num_threads": 4
+            "enabled": true,
+            "num_users": 10,
+            "num_threads": 2
         }
     },
     "benchmarks": {
-        "Startup": {
-            "actions": [
-                {"id": 0}
-            ]
+        "onStart": {
+            "scenario_actions": [ {"id": 0} ]
         },
-        "NOP": {
+         "REST1": {
             "enabled": true,
             "time": {
-                "pre_warmup_duration": 5,
+                "pre_warmup_duration": 0,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "actions": [
-                {"id": 3}
+            "throughput_rate": 10.0,
+            "scenario_actions": [
+                {
+                    "id": 1
+                }
             ]
         },
-        "Maximum Rate": {
+        "REST2": {
             "enabled": true,
             "time": {
-                "pre_warmup_duration": 5,
+                "pre_warmup_duration": 0,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "actions": [
-                {"id": 1, "weight": 90},
-                {"id": 2, "weight": 10}
+            "throughput_rate": 10.0,
+            "scenario_actions": [
+                {
+                    "id": 1, "weight": 10
+                },
+                {
+                    "id": 2, "weight": 40
+                },
+                {
+                    "id": 3, "weight": 50
+                }
             ]
         },
-        "Fixed Rate": {
+        "REST3": {
             "enabled": true,
             "time": {
-                "pre_warmup_duration": 5,
+                "pre_warmup_duration": 0,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "throughput_rate": 100.0,
-            "actions": [
-                {"id": 1, "weight": 90},
-                {"id": 2, "weight": 10}
-            ]
+            "throughput_rate": 10.0,
+            "scenario_workflow": "api-user"
         },
-        "Shutdown": {
-            "actions": [
-                {"id": 99}
+        "onStop": {
+            "scenario_actions": [
+                {
+                    "id": 99
+                }
             ]
         }
     }
+
 }
