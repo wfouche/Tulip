@@ -428,7 +428,7 @@ def createReport(filename):
             printf('! ' + str(jb['actions'][e][k]) + '\n')
         printf('!===\n')
 
-    def generate_workflow(e):
+    def generate_workflow():
         diagId = -1
         def name_to_id(s):
             if s in '-':
@@ -589,7 +589,7 @@ def createReport(filename):
     if "workflows" in jb.keys():
         printf("\n")
         printf("== Workflows \n")
-        generate_workflow(e)
+        generate_workflow()
 
     print("  config report = " + report_fn)
 
