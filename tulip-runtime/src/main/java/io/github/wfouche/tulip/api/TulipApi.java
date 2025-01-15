@@ -232,6 +232,7 @@ public class TulipApi {
                     super(userId, threadId);
                 }
             
+                // Action 0
                 public boolean onStart() {
                     // Initialize the shared restClient instance only once
                     if (getUserId() == 0) {
@@ -290,6 +291,7 @@ public class TulipApi {
                     return rc;       \s
                 }
             
+                // Action 99
                 public boolean onStop() {
                     return true;
                 }
