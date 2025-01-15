@@ -33,9 +33,9 @@ table, th, td {
     <th>#N</th>
     <th>#F</th>
     <th>Avg RPS</th>
-    <th>Min RT</th>
     <th>Avg RT</th>
     <th>Stdev</th>
+    <th>Min RT</th>
     <th>90p RT</th>
     <th>99p RT</th>
     <th>Max RT</th>
@@ -58,9 +58,9 @@ benchmark_columns = '''
     <th>#N</th>
     <th>#F</th>
     <th>Avg RPS</th>
-    <th>Min RT</th>
     <th>Avg RT</th>
     <th>Stdev</th>
+    <th>Min RT</th>
     <th>90p RT</th>
     <th>99p RT</th>
     <th>Max RT</th>
@@ -133,8 +133,8 @@ benchmark_detail_row = '''
     <td>%d</td>
     <td>%d</td>
     <td>%.3f</td>
-    <td>%.1f ms</td>
     <td>%.3f ms</td>
+    <td>%.1f ms</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
@@ -158,8 +158,8 @@ benchmark_summary_row = '''
     <td><b>%d</b></td>
     <td><b>%d</b></td>
     <td><b>%.3f</b></td>
-    <td><b>%.1f ms</b></td>
     <td><b>%.3f ms</b></td>
+    <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
@@ -229,7 +229,7 @@ def createReport(filename):
     def print_global_summary():
         global name2s
         global name2s_list
-        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,sm.min_rt,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,sm.cpu,sm.mem)
+        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -248,7 +248,7 @@ def createReport(filename):
                 text = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
             else:
                 text = "[%s]"%(key)
-            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,smx.min_rt,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,smx.cpu,smx.mem)
+            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
