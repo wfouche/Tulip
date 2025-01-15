@@ -8,6 +8,23 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.1.2] - 2025-01-15
+
+=== Release Notes
+
+* Benchmark scenarios are defined either as a group of actions or as a workflow. The following benchmark properties were renamed:
+
+** *actions* renamed to *scenario_actions*
+** *workflow* renamed to *scenario_workflow*
+
+* [EXPERIMENTAL]
+
+** Added support to generate Java or Kotlin example benchmark programs.
+
+*** jbang io.gitub.wfouche.tulip:tulip-runtime:2.1.2  Java
+*** jbang io.gitub.wfouche.tulip:tulip-runtime:2.1.2  Kotlin
+
+
 == [v2.1.1] - 2025-01-07
 
 === Release Notes
