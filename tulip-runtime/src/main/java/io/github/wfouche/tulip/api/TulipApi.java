@@ -234,7 +234,7 @@ public class TulipApi {
             
                 // Action 0
                 public boolean onStart() {
-                    // Initialize the shared restClient instance only once
+                    // Initialize the shared RestClient object only once
                     if (getUserId() == 0) {
                         restClient = RestClient.builder()
                                         .baseUrl(getUserParamValue("baseURI"))
@@ -296,7 +296,7 @@ public class TulipApi {
                     return true;
                 }
             
-                // Shared RestClient instance
+                // RestClient object
                 private static RestClient restClient;
             
             }
