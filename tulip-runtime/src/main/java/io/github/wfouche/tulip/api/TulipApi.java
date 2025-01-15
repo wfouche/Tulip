@@ -377,7 +377,6 @@ public class TulipApi {
             }
             """;
 
-
     private static String runBenchShJava = """
             #!/bin/bash
             rm -f benchmark_report.html
