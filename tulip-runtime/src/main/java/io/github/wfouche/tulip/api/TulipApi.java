@@ -294,7 +294,6 @@ public class TulipApi {
                     return true;
                 }
             
-                // Action 1 support data and methods
                 private static RestClient restClient;
             
             }
