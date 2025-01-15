@@ -296,7 +296,7 @@ public class TulipApi {
                     return true;
                 }
             
-                // Shared restClient instance
+                // Shared RestClient instance
                 private static RestClient restClient;
             
             }
