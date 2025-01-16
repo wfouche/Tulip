@@ -331,10 +331,10 @@ public class TulipApi {
             
                 // Action 1: GET /posts/{id}
                 override fun action1(): Boolean {
-                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(500)+1
+                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(100)+1
                     return try {
                         val rsp: String? = restClient.get()
-                            .uri("/posts/{id}", id)
+                            .uri("/posts/${id}")
                             .retrieve()
                             .body(String::class.java)
                         //Postcondition
@@ -349,7 +349,7 @@ public class TulipApi {
                     val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(500)+1
                     return try {
                         val rsp: String? = restClient.get()
-                            .uri("/comments/{id}", id)
+                            .uri("/comments/${id}")
                             .retrieve()
                             .body(String::class.java)
                         //Postcondition
@@ -361,10 +361,10 @@ public class TulipApi {
             
                 // Action 3: GET /todos/{id}
                 override fun action3(): Boolean {
-                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(500)+1
+                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(200)+1
                     return try {
                         val rsp: String? = restClient.get()
-                            .uri("/todos/{id}", id)
+                            .uri("/todos/${id}")
                             .retrieve()
                             .body(String::class.java)
                         //Postcondition
