@@ -28,7 +28,7 @@ table, th, td {
   <tr>
     <th>CID</th>
     <th>Name</th>
-    <th>RID</th>
+    <th>Run ID</th>
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
@@ -53,7 +53,7 @@ benchmark_columns = '''
   <tr>
     <th>CID</th>
     <th>Name</th>
-    <th>RID</th>
+    <th>Run ID</th>
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
