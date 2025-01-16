@@ -127,27 +127,21 @@ public class TulipApi {
                     },
                      "REST1": {
                         "enabled": true,
-                        "time": {
-                            "pre_warmup_duration": 0,
-                            "warmup_duration": 10,
-                            "benchmark_duration": 30,
-                            "benchmark_repeat_count": 3
-                        },
                         "throughput_rate": 10.0,
                         "scenario_actions": [
                             {
                                 "id": 1
                             }
-                        ]
-                    },
-                    "REST2": {
-                        "enabled": true,
+                        ],
                         "time": {
                             "pre_warmup_duration": 0,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
                             "benchmark_repeat_count": 3
-                        },
+                        }
+                    },
+                    "REST2": {
+                        "enabled": true,
                         "throughput_rate": 10.0,
                         "scenario_actions": [
                             {
@@ -159,18 +153,24 @@ public class TulipApi {
                             {
                                 "id": 3, "weight": 50
                             }
-                        ]
-                    },
-                    "REST3": {
-                        "enabled": true,
+                        ],
                         "time": {
                             "pre_warmup_duration": 0,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
                             "benchmark_repeat_count": 3
-                        },
+                        }
+                    },
+                    "REST3": {
+                        "enabled": true,
                         "throughput_rate": 10.0,
-                        "scenario_workflow": "api-user"
+                        "scenario_workflow": "api-user",
+                        "time": {
+                            "pre_warmup_duration": 0,
+                            "warmup_duration": 10,
+                            "benchmark_duration": 30,
+                            "benchmark_repeat_count": 3
+                        }
                     },
                     "onStop": {
                         "scenario_actions": [
