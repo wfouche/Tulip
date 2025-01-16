@@ -86,7 +86,7 @@ public class TulipApi {
             {
                 // Actions
                 "actions": {
-                    "description": "Spring RestClient Benchmark",
+                    "description": "Spring RestClient Benchmark [__TULIP_LANG__]",
                     "output_filename": "benchmark_output.json",
                     "report_filename": "benchmark_report.html",
                     "user_class": "HttpUser",
@@ -460,7 +460,7 @@ public class TulipApi {
         System.out.println("Tulip: creating a " + lang + " benchmark with JBang support");
 
         if (lang.equals("Java")) {
-            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
+            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
             writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.java", javaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShJava.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
@@ -478,7 +478,7 @@ public class TulipApi {
         }
 
         if (lang.equals("Kotlin")) {
-            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading(), false);
+            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
             writeToFile("App.kt", kotlinApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.kt", kotlinUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
