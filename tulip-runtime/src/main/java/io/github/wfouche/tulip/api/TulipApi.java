@@ -91,7 +91,8 @@ public class TulipApi {
                     "report_filename": "benchmark_report.html",
                     "user_class": "HttpUser",
                     "user_params": {
-                        "baseURI": "https://jsonplaceholder.typicode.com"
+                        "baseURI": "https://jsonplaceholder.typicode.com",
+                        "debug": false
                     },
                     "user_actions": {
                         "0": "onStart",  // Init
@@ -239,6 +240,8 @@ public class TulipApi {
                         restClient = RestClient.builder()
                             .baseUrl(getUserParamValue("baseURI"))
                             .build();
+                        debug = Boolean.valueOf(getUserParamValue("debug"));
+                        System.out.println("debug = " + debug);
                     }
                     return true;
                 }
@@ -247,7 +250,7 @@ public class TulipApi {
                 public boolean action1() {
                     boolean rc;
                     try {
-                        var id = ThreadLocalRandom.current().nextInt(100)+1;
+                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(100)+1;
                         String rsp = restClient.get()
                           .uri("/posts/{id}", id)
                           .retrieve()
@@ -263,7 +266,7 @@ public class TulipApi {
                 public boolean action2() {
                     boolean rc;
                     try {
-                        var id = ThreadLocalRandom.current().nextInt(500)+1;
+                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(500)+1;
                         String rsp = restClient.get()
                             .uri("/comments/{id}", id)
                             .retrieve()
@@ -279,7 +282,7 @@ public class TulipApi {
                 public boolean action3() {
                     boolean rc;
                     try {
-                        var id = ThreadLocalRandom.current().nextInt(200)+1;
+                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(200)+1;
                         String rsp = restClient.get()
                             .uri("/todos/{id}", id)
                             .retrieve()
@@ -299,6 +302,9 @@ public class TulipApi {
                 // RestClient object
                 private static RestClient restClient;
             
+                // Debug flag
+                private static boolean debug = false;
+            
             }
             """;
 
@@ -317,13 +323,15 @@ public class TulipApi {
                         restClient = RestClient.builder()
                             .baseUrl(getUserParamValue("baseURI"))
                             .build()
+                        debug = getUserParamValue("debug").toBoolean()
+                        println("debug = " + debug)
                     }
                     return true
                 }
             
                 // Action 1: GET /posts/{id}
                 override fun action1(): Boolean {
-                    val id = ThreadLocalRandom.current().nextInt(100)+1
+                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(500)+1
                     return try {
                         val rsp: String? = restClient.get()
                             .uri("/posts/{id}", id)
@@ -338,7 +346,7 @@ public class TulipApi {
             
                 // Action 2: GET /comments/{id}
                 override fun action2(): Boolean {
-                    val id = ThreadLocalRandom.current().nextInt(500)+1
+                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(500)+1
                     return try {
                         val rsp: String? = restClient.get()
                             .uri("/comments/{id}", id)
@@ -353,7 +361,7 @@ public class TulipApi {
             
                 // Action 3: GET /todos/{id}
                 override fun action3(): Boolean {
-                    val id = ThreadLocalRandom.current().nextInt(200)+1
+                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(500)+1
                     return try {
                         val rsp: String? = restClient.get()
                             .uri("/todos/{id}", id)
@@ -374,6 +382,7 @@ public class TulipApi {
                 // RestClient object
                 companion object {
                     private lateinit var restClient: RestClient
+                    private var debug: Boolean = false
                 }
             }
             """;
