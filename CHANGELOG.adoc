@@ -17,6 +17,13 @@ and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Version
 ** *actions* renamed to *scenario_actions*
 ** *workflow* renamed to *scenario_workflow*
 
+* Benchmark report
+
+** Renamed TPS to APS (Actions per second)
+** Renamed RID to Run ID
+** Mark failed number of transactions in yellow if greator than 0
+** Mark Avg APS in yellow if the throughput_rate target was not met
+
 * [EXPERIMENTAL]
 
 ** Added support to generate Java or Kotlin example benchmark programs.
