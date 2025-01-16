@@ -237,8 +237,8 @@ public class TulipApi {
                     // Initialize the shared RestClient object only once
                     if (getUserId() == 0) {
                         restClient = RestClient.builder()
-                                        .baseUrl(getUserParamValue("baseURI"))
-                                        .build();
+                            .baseUrl(getUserParamValue("baseURI"))
+                            .build();
                     }
                     return true;
                 }
