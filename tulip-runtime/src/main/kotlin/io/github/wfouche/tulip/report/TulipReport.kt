@@ -230,8 +230,8 @@ def createReport(filename):
     def print_global_summary():
         global name2s
         global name2s_list
-        avg_aps = sm.num_actions/sm.duration
-        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,sm.cpu,sm.mem)
+        avg_aps = 0.0 if sm.cpu == 0.0 else sm.num_actions/sm.duration
+        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -274,7 +274,8 @@ def createReport(filename):
                 text = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
             else:
                 text = "[%s]"%(key)
-            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,smx.num_actions/smx.duration,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,smx.cpu,smx.mem)
+            avg_aps = 0.0 if smx.cpu == 0.0 else smx.num_actions/smx.duration
+            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -324,7 +325,7 @@ def createReport(filename):
                 str(datetime.timedelta(seconds=int(e["duration"]))),
                 e["num_actions"],
                 e["num_failed"],
-                e["avg_aps"],
+                0.0 if p_cpu == 0.0 else e["avg_aps"],
                 e["avg_rt"],
                 ht.getStdDeviation()/1000.0,
                 e["min_rt"],
