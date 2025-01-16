@@ -156,7 +156,7 @@ benchmark_summary_row = '''
     <td>%s</td>
     <td><b>%s</b></td>
     <td><b>%d</b></td>
-    <td><b>%d</b></td>
+    <td><b><tag1>%d</tag1></b></td>
     <td><b>%.3f</b></td>
     <td><b>%.3f ms</b></td>
     <td><b>%.1f ms</b></td>
@@ -233,6 +233,12 @@ def createReport(filename):
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
+        if sm.num_failed > 0:
+            html = html.replace("<tag1>","<mark>")
+            html = html.replace("</tag1>","</mark>")
+        else:
+            html = html.replace("<tag1>","")
+            html = html.replace("</tag1>","")
         printf(html)
         if len(name2s_list) > 0:
             name2s = name2s_list[0]
@@ -252,6 +258,10 @@ def createReport(filename):
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
+            # Remove tag1
+            html = html.replace("<tag1>","")
+            html = html.replace("</tag1>","")
+
             printf(html)
             if len(name2s_list) > 0:
                 name2s = name2s_list[0]
