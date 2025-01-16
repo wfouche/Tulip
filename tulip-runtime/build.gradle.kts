@@ -22,7 +22,7 @@ java {
 }
 
 dependencies {
-    implementation("io.micrometer:micrometer-registry-jmx:1.14.2")
+    implementation("io.micrometer:micrometer-registry-jmx:1.14.3")
     implementation("org.slf4j:slf4j-api:2.0.16")
     implementation("org.slf4j:slf4j-simple:2.0.16")
     implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
