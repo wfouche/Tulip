@@ -152,7 +152,7 @@ benchmark_summary_row = '''
     <td><b>%s</b></td>
     <td><b>%d</b></td>
     <td><b><tag1>%d</tag1></b></td>
-    <td><b>%.3f</b></td>
+    <td><b><tag2>%.3f</tag2></b></td>
     <td><b>%.3f ms</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
@@ -189,6 +189,7 @@ class Summary:
     max_wt = 0.0
     avg_qs = 0.0
     max_qs = 0
+    name = ""
 
 def createReport(filename):
 
@@ -224,16 +225,35 @@ def createReport(filename):
     def print_global_summary():
         global name2s
         global name2s_list
+        avg_aps = sm.num_actions/sm.duration
         html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,sm.num_actions/sm.duration,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
+        # Validation: #F
         if sm.num_failed > 0:
             html = html.replace("<tag1>","<mark>")
             html = html.replace("</tag1>","</mark>")
         else:
             html = html.replace("<tag1>","")
             html = html.replace("</tag1>","")
+        # Validation: Avg_APS
+        print(sm.name)
+        if "throughput_rate" in jb["config"]["benchmarks"][sm.name].keys():
+            target_aps = jb["config"]["benchmarks"][sm.name]["throughput_rate"]
+        else:
+            target_aps = 0.0
+        if target_aps > 0.0:
+            delta_percentage_aps = 100.0*abs(target_aps-avg_aps)/target_aps
+            if delta_percentage_aps > 1.5:
+                html = html.replace("<tag2>","<mark>")
+                html = html.replace("</tag2>","</mark>")
+            else:
+                html = html.replace("<tag2>","")
+                html = html.replace("</tag2>","")
+        else:
+            html = html.replace("<tag2>","")
+            html = html.replace("</tag2>","")
         printf(html)
         if len(name2s_list) > 0:
             name2s = name2s_list[0]
@@ -256,6 +276,9 @@ def createReport(filename):
             # Remove tag1
             html = html.replace("<tag1>","")
             html = html.replace("</tag1>","")
+            # Remove tag2
+            html = html.replace("<tag2>","")
+            html = html.replace("</tag2>","")
 
             printf(html)
             if len(name2s_list) > 0:
@@ -274,6 +297,7 @@ def createReport(filename):
                 printf(benchmark_empty_row)
                 printf(benchmark_columns)
             sm = Summary()
+            sm.name = e["test_name"]
             jh.reset()
             jhh = {}
             jss = {}
