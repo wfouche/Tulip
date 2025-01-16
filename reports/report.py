@@ -27,14 +27,14 @@ table, th, td {
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg APS</th>
-    <th>Avg RT</th>
+    <th>Avg_APS</th>
+    <th>Avg_RT</th>
     <th>Stdev</th>
-    <th>Min RT</th>
-    <th>90p RT</th>
-    <th>99p RT</th>
-    <th>Max RT</th>
-    <th>Max RTT</th>
+    <th>Min_RT</th>
+    <th>90p_RT</th>
+    <th>99p_RT</th>
+    <th>Max_RT</th>
+    <th>Max_RTT</th>
     <th>AQS</th>
     <th>MQS</th>
     <th>AWT</th>
@@ -52,14 +52,14 @@ benchmark_columns = '''
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg APS</th>
-    <th>Avg RT</th>
+    <th>Avg_APS</th>
+    <th>Avg_RT</th>
     <th>Stdev</th>
-    <th>Min RT</th>
-    <th>90p RT</th>
-    <th>99p RT</th>
-    <th>Max RT</th>
-    <th>Max RTT</th>
+    <th>Min_RT</th>
+    <th>90p_RT</th>
+    <th>99p_RT</th>
+    <th>Max_RT</th>
+    <th>Max_RTT</th>
     <th>AQS</th>
     <th>MQS</th>
     <th>AWT</th>
