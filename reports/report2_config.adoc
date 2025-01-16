@@ -222,16 +222,21 @@ A3 --> A0: 1.000
 
 == Contexts
 
+=== Context-1
+
 [%header,cols="1a,2a"]
 |===
-| id | value
-| Context-1
-| 
+| id | value 
+| *num_users*   | 10
+| *num_threads* | 2
+| *enabled* | True
+|===
+=== Context-2
+
 [%header,cols="1a,2a"]
-!===
-! id ! value 
-! *num_users*   ! 10
-! *num_threads* ! 2
-! *enabled* ! True
-!===
+|===
+| id | value 
+| *num_users*   | 50
+| *num_threads* | 5
+| *enabled* | True
 |===

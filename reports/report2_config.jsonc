@@ -100,6 +100,11 @@
             "enabled": true,
             "num_users": 10,
             "num_threads": 2
+        },
+        "Context-2": {
+            "enabled": true,
+            "num_users": 50,
+            "num_threads": 5
         }
     }
 }
