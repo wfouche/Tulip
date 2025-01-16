@@ -176,6 +176,17 @@ def createReport(filename):
                 else:
                     printf('! - \n')
             printf('!===\n')
+        # time
+        if "time" in b.keys():
+            printf('| *time* \n')
+            printf('| \n')
+            printf('[%noheader,cols="2a,1a"]\n')
+            printf('!===\n')
+            #printf('! id ! value \n')
+            for k in b["time"].keys():
+                printf('! *%s*\n'%(k))
+                printf('! %d seconds\n'%(b["time"][k]))
+            printf('!===\n')
 
         printf("|===\n")
 

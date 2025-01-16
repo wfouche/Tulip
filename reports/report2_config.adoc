@@ -128,6 +128,19 @@ A3 --> A0: 1.000
 ! 1
 ! - 
 !===
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 0 seconds
+! *warmup_duration*
+! 10 seconds
+! *benchmark_duration*
+! 30 seconds
+! *benchmark_repeat_count*
+! 3 seconds
+!===
 |===
 
 === REST2
@@ -150,6 +163,19 @@ A3 --> A0: 1.000
 ! 3
 ! 50 
 !===
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 0 seconds
+! *warmup_duration*
+! 10 seconds
+! *benchmark_duration*
+! 30 seconds
+! *benchmark_repeat_count*
+! 3 seconds
+!===
 |===
 
 === REST3
@@ -161,6 +187,19 @@ A3 --> A0: 1.000
 | *throughput_rate* | 10.0
 | *worker_thread_queue_size* | 0
 | *scenario_workflow* | <<api-user>>
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 0 seconds
+! *warmup_duration*
+! 10 seconds
+! *benchmark_duration*
+! 30 seconds
+! *benchmark_repeat_count*
+! 3 seconds
+!===
 |===
 
 === onStop
