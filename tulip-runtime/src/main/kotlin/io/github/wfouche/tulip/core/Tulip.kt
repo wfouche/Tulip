@@ -839,15 +839,15 @@ private object DataCollector {
 
             json += "\"context_name\": \"$TULIP_CONTEXT_NAME\", "
             json += "\"context_id\": $TULIP_CONTEXT_ID, "
+            json += "\"bm_name\": \"${r.testName}\", "
+            json += "\"bm_id\": ${r.testId}, "
+            json += "\"row_id\": ${r.rowId}, "
+
             json += "\"num_users\": $MAX_NUM_USERS, "
             json += "\"num_threads\": $MAX_NUM_THREADS, "
             json += "\"queue_length\": ${r.queueLength}, "
 
             json += "\"workflow_name\": \"$workflowName\", "
-
-            json += "\"test_name\": \"${r.testName}\", "
-            json += "\"test_id\": ${r.testId}, "
-            json += "\"row_id\": ${r.rowId}, "
 
             json += "\"test_begin\": \"${r.testBegin}\", "
             json += "\"test_end\": \"${r.testEnd}\", "

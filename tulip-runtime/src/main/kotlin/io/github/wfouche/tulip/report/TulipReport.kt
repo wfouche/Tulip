@@ -297,11 +297,11 @@ def createReport(filename):
                 printf(benchmark_empty_row)
                 printf(benchmark_columns)
             sm = Summary()
-            sm.name = e["test_name"]
+            sm.name = e["bm_name"]
             jh.reset()
             jhh = {}
             jss = {}
-            printf(benchmark_header%(e["test_name"]))
+            printf(benchmark_header%(e["bm_name"]))
             if len(e["workflow_name"]) > 0:
                 name2s_list = ["c:%d, u:%d, t:%d"%(e["context_id"],e["num_users"],e["num_threads"]), "w:%s"%(e["workflow_name"]), ""]
             else:
