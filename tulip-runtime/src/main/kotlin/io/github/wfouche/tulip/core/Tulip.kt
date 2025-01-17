@@ -72,8 +72,8 @@ private val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("yyyy-MM-
 // Arrays of user objects and user actions.
 //
 
-private var TULIP_SCENARIO_NAME: String = ""
-private var TULIP_SCENARIO_ID: Int = 0
+private var TULIP_CONTEXT_NAME: String = ""
+private var TULIP_CONTEXT_ID: Int = 0
 
 private var MAX_NUM_USERS = 0
 private var MAX_NUM_THREADS = 0
@@ -123,8 +123,8 @@ private val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark"
 /*-------------------------------------------------------------------------*/
 
 private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, userFactory: TulipUserFactory) {
-    TULIP_SCENARIO_ID = contextId
-    TULIP_SCENARIO_NAME = context.name
+    TULIP_CONTEXT_ID = contextId
+    TULIP_CONTEXT_NAME = context.name
 
     MAX_NUM_USERS = context.numUsers
     MAX_NUM_THREADS = context.numThreads
@@ -837,8 +837,8 @@ private object DataCollector {
                 workflowName = g_workflow!!.name
             }
 
-            json += "\"scenario_name\": \"$TULIP_SCENARIO_NAME\", "
-            json += "\"scenario_id\": $TULIP_SCENARIO_ID, "
+            json += "\"context_name\": \"$TULIP_CONTEXT_NAME\", "
+            json += "\"context_id\": $TULIP_CONTEXT_ID, "
             json += "\"num_users\": $MAX_NUM_USERS, "
             json += "\"num_threads\": $MAX_NUM_THREADS, "
             json += "\"queue_length\": ${r.queueLength}, "
