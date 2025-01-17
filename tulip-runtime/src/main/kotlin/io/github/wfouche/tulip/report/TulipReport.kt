@@ -26,8 +26,7 @@ table, th, td {
 
 <table style="width:100%">
   <tr>
-    <th>Cid</th>
-    <th>Name</th>
+    <th>Benchmark</th>
     <th>Run Id</th>
     <th>Duration</th>
     <th>#N</th>
@@ -51,8 +50,7 @@ table, th, td {
 
 benchmark_columns = '''
   <tr>
-    <th>Cid</th>
-    <th>Name</th>
+    <th>Benchmark</th>
     <th>Run Id</th>
     <th>Duration</th>
     <th>#N</th>
@@ -76,7 +74,6 @@ benchmark_columns = '''
 
 benchmark_header = '''
   <tr>
-    <td>%d</td>
     <td>%s</td>
     <td></td>
     <td></td>
@@ -120,13 +117,11 @@ benchmark_empty_row = '''
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-    <td>&nbsp;</td>
   </tr>
 '''
 
 benchmark_detail_row = '''
   <tr>
-    <td></td>
     <td>%s</td>
     <td>%d</td>
     <td>%s</td>
@@ -151,7 +146,6 @@ benchmark_detail_row = '''
 
 benchmark_summary_row = '''
   <tr>
-    <td></td>
     <td>%s</td>
     <td>%s</td>
     <td><b>%s</b></td>
@@ -307,11 +301,11 @@ def createReport(filename):
             jh.reset()
             jhh = {}
             jss = {}
-            printf(benchmark_header%(int(e["scenario_id"]), e["test_name"]))
+            printf(benchmark_header%(e["test_name"]))
             if len(e["workflow_name"]) > 0:
-                name2s_list = ["u:%d, t:%d"%(e["num_users"],e["num_threads"]), "w:%s"%(e["workflow_name"]), ""]
+                name2s_list = ["c:%d, u:%d, t:%d"%(e["scenario_id"],e["num_users"],e["num_threads"]), "w:%s"%(e["workflow_name"]), ""]
             else:
-                name2s_list = ["u:%d, t:%d"%(e["num_users"],e["num_threads"]), ""]
+                name2s_list = ["c:%d, u:%d, t:%d"%(e["scenario_id"],e["num_users"],e["num_threads"]), ""]
             name2s = name2s_list[0]
             del name2s_list[0]
         ht = Histogram.fromString(e["histogram_rt"])
