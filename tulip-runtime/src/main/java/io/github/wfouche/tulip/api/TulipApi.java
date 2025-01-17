@@ -240,10 +240,11 @@ public class TulipApi {
             """;
 
     private static String scalaApp = """
-            //> using dep io.github.wfouche.tulip:tulip-runtime:2.1.2
+            //> using dep io.github.wfouche.tulip:tulip-runtime:2.1.3-dev
             //> using dep org.springframework.boot:spring-boot-starter-web:3.4.1
             //> using javaOpt -server, -Xmx1024m, -XX:+UseZGC, -XX:+ZGenerational
-            
+            //> using repositories m2local
+            //
             // https://yadukrishnan.live/developing-java-applications-with-scala-cli
             // https://www.baeldung.com/scala/scala-cli-intro
             
