@@ -223,6 +223,22 @@ public class TulipApi {
             }
             """;
 
+    private static String groovyApp = """
+            ///usr/bin/env jbang "$0" "$@" ; exit $?
+            //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
+            //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
+            //SOURCES HttpUser.groovy
+            //JAVA 21
+            
+            import io.github.wfouche.tulip.api.TulipApi
+            
+            class App {
+                static void main(String[] args) {
+                    TulipApi.runTulip("benchmark_config.jsonc")
+                }
+            }
+            """;
+
     private static String javaUser = """
             import io.github.wfouche.tulip.api.*;
             import java.util.concurrent.ThreadLocalRandom;
@@ -404,6 +420,99 @@ public class TulipApi {
             }
             """;
 
+    private static String groovyUser = """
+            import io.github.wfouche.tulip.api.*
+            import org.springframework.web.client.RestClient
+            import org.springframework.web.client.RestClientException
+            import org.springframework.http.client.SimpleClientHttpRequestFactory
+            import java.util.concurrent.ThreadLocalRandom
+            
+            class HttpUser extends TulipUser {
+            
+                HttpUser(int userId, int threadId) {
+                    super(userId, threadId)
+                }
+            
+                boolean onStart() {
+                    // Initialize the shared RestClient object only once
+                    if (userId == 0) {
+                        def connectTimeout = getUserParamValue("connectTimeoutMillis") as Integer
+                        def readTimeout = getUserParamValue("readTimeoutMillis") as Integer
+                        def factory = new SimpleClientHttpRequestFactory()
+                        factory.setConnectTimeout(connectTimeout)
+                        factory.setReadTimeout(readTimeout)
+                        restClient = RestClient.builder()
+                            .requestFactory(factory)
+                            .baseUrl(getUserParamValue("baseURI"))
+                            .build()
+                        debug = getUserParamValue("debug") as Boolean
+                        println "debug = $debug"
+                    }
+                    return true
+                }
+            
+                // Action 1: GET /posts/{id}
+                boolean action1() {
+                    boolean rc
+                    try {
+                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(100) + 1
+                        String rsp = restClient.get()
+                            .uri("/posts/${id}")
+                            .retrieve()
+                            .body(String.class)
+                        rc = (rsp != null && rsp.length() > 2)
+                    } catch (RestClientException e) {
+                        rc = false
+                    }
+                    return rc
+                }
+            
+                // Action 2: GET /comments/{id}
+                boolean action2() {
+                    boolean rc
+                    try {
+                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(500) + 1
+                        String rsp = restClient.get()
+                            .uri("/comments/${id}")
+                            .retrieve()
+                            .body(String.class)
+                        rc = (rsp != null && rsp.length() > 2)
+                    } catch (RestClientException e) {
+                        rc = false
+                    }
+                    return rc
+                }
+            
+                // Action 3: GET /todos/{id}
+                boolean action3() {
+                    boolean rc
+                    try {
+                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(200) + 1
+                        String rsp = restClient.get()
+                            .uri("/todos/${id}")
+                            .retrieve()
+                            .body(String.class)
+                        rc = (rsp != null && rsp.length() > 2)
+                    } catch (RestClientException e) {
+                        rc = false
+                    }
+                    return rc
+                }
+            
+                // Action 99
+                boolean onStop() {
+                    return true
+                }
+            
+                // RestClient object
+                static RestClient restClient
+            
+                // Debug flag
+                static boolean debug = false
+            
+            }
+            """;
+
     private static String runBenchShJava = """
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
@@ -456,6 +565,32 @@ public class TulipApi {
             REM start benchmark_config.html
             """;
 
+    private static String runBenchShGroovy = """
+            #!/bin/bash
+            # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
+            rm -f benchmark_report.html
+            export JBANG_JAVA_OPTIONS="-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
+            jbang run App.groovy
+            echo ""
+            #w3m -dump -cols 205 benchmark_report.html
+            lynx -dump -width 205 benchmark_report.html
+            #jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            """;
+
+    private static String runBenchCmdGroovy = """
+            REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
+            del benchmark_report.html
+            set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
+            call jbang run App.groovy
+            @echo off
+            echo.
+            REM call w3m.exe -dump -cols 205 benchmark_report.html
+            REM lynx.exe -dump -width 205 benchmark_report.html
+            start benchmark_report.html
+            REM jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            REM start benchmark_config.html
+            """;
+
     /**
      * Create a new Tulip benchmark project with Jbang support for Java
      *
@@ -470,6 +605,7 @@ public class TulipApi {
         var list = new java.util.ArrayList<String>();
         list.add("Java");
         list.add("Kotlin");
+        list.add("Groovy");
         if (list.contains(lang)) {
             lang = lang;
         } else {
@@ -513,5 +649,24 @@ public class TulipApi {
             }
             writeToFile("run_bench.cmd", runBenchCmdKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
         }
+
+        if (lang.equals("Groovy")) {
+            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
+            writeToFile("App.groovy", groovyApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile("HttpUser.groovy", groovyUser.stripLeading(), false);
+            writeToFile("run_bench.sh", runBenchShGroovy.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                // pass
+            } else {
+                try {
+                    String[] cmdArray = {"chmod", "u+x", "run_bench.sh"};
+                    Runtime.getRuntime().exec(cmdArray);
+                } catch (IOException e) {
+                    // pass
+                }
+            }
+            writeToFile("run_bench.cmd", runBenchCmdGroovy.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+        }
+
     }
 }
