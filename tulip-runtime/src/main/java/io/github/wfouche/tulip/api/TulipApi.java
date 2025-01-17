@@ -92,6 +92,8 @@ public class TulipApi {
                     "user_class": "HttpUser",
                     "user_params": {
                         "baseURI": "https://jsonplaceholder.typicode.com",
+                        "connectTimeoutMillis": 500,
+                        "readTimeoutMillis": 2000,
                         "debug": false
                     },
                     "user_actions": {
@@ -226,6 +228,8 @@ public class TulipApi {
             import java.util.concurrent.ThreadLocalRandom;
             import org.springframework.web.client.RestClient;
             import org.springframework.web.client.RestClientException;
+            import org.springframework.http.client.SimpleClientHttpRequestFactory;
+            import java.time.Duration;
             
             public class HttpUser extends TulipUser {
             
@@ -233,11 +237,16 @@ public class TulipApi {
                     super(userId, threadId);
                 }
             
-                // Action 0
                 public boolean onStart() {
                     // Initialize the shared RestClient object only once
                     if (getUserId() == 0) {
+                        var connectTimeout = Duration.ofMillis(Integer.valueOf(getUserParamValue("connectTimeoutMillis")));
+                        var readTimeout = Duration.ofMillis(Integer.valueOf(getUserParamValue("readTimeoutMillis")));
+                        var factory = new SimpleClientHttpRequestFactory();
+                        factory.setConnectTimeout(connectTimeout);
+                        factory.setReadTimeout(readTimeout);
                         restClient = RestClient.builder()
+                            .requestFactory(factory)
                             .baseUrl(getUserParamValue("baseURI"))
                             .build();
                         debug = Boolean.valueOf(getUserParamValue("debug"));
