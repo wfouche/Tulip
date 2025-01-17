@@ -136,7 +136,7 @@ public class TulipApi {
                             }
                         ],
                         "time": {
-                            "pre_warmup_duration": 0,
+                            "pre_warmup_duration": 30,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
                             "benchmark_repeat_count": 3
@@ -157,7 +157,7 @@ public class TulipApi {
                             }
                         ],
                         "time": {
-                            "pre_warmup_duration": 0,
+                            "pre_warmup_duration": 30,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
                             "benchmark_repeat_count": 3
@@ -168,7 +168,7 @@ public class TulipApi {
                         "throughput_rate": 10.0,
                         "scenario_workflow": "api-user",
                         "time": {
-                            "pre_warmup_duration": 0,
+                            "pre_warmup_duration": 30,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
                             "benchmark_repeat_count": 3
