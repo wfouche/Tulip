@@ -26,7 +26,7 @@ table, th, td {
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg_Aps</th>
+    <th>Aps</th>
     <th>Avg_Rt</th>
     <th>Stdev</th>
     <th>Min_Rt</th>
@@ -50,7 +50,7 @@ benchmark_columns = '''
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg_Aps</th>
+    <th>Aps</th>
     <th>Avg_Rt</th>
     <th>Stdev</th>
     <th>Min_Rt</th>
