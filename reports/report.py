@@ -21,20 +21,20 @@ table, th, td {
 
 <table style="width:100%">
   <tr>
-    <th>CID</th>
+    <th>Cid</th>
     <th>Name</th>
-    <th>Run ID</th>
+    <th>Run Id</th>
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg_APS</th>
-    <th>Avg_RT</th>
+    <th>Avg_Aps</th>
+    <th>Avg_Rt</th>
     <th>Stdev</th>
-    <th>Min_RT</th>
-    <th>90p_RT</th>
-    <th>99p_RT</th>
-    <th>Max_RT</th>
-    <th>Max_RTT</th>
+    <th>Min_Rt</th>
+    <th>90p_Rt</th>
+    <th>99p_Rt</th>
+    <th>Max_Rt</th>
+    <th>Max_Rtt</th>
     <th>AQS</th>
     <th>MQS</th>
     <th>AWT</th>
@@ -46,20 +46,20 @@ table, th, td {
 
 benchmark_columns = '''
   <tr>
-    <th>CID</th>
+    <th>Cid</th>
     <th>Name</th>
-    <th>Run ID</th>
+    <th>Run Id</th>
     <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Avg_APS</th>
-    <th>Avg_RT</th>
+    <th>Avg_Aps</th>
+    <th>Avg_Rt</th>
     <th>Stdev</th>
-    <th>Min_RT</th>
-    <th>90p_RT</th>
-    <th>99p_RT</th>
-    <th>Max_RT</th>
-    <th>Max_RTT</th>
+    <th>Min_Rt</th>
+    <th>90p_Rt</th>
+    <th>99p_Rt</th>
+    <th>Max_Rt</th>
+    <th>Max_Rtt</th>
     <th>AQS</th>
     <th>MQS</th>
     <th>AWT</th>
