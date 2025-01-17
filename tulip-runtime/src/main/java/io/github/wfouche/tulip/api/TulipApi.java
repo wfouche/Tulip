@@ -215,6 +215,7 @@ public class TulipApi {
             //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
             //SOURCES HttpUser.kt
             //JAVA 21
+            //KOTLIN 2.0.21
             
             import io.github.wfouche.tulip.api.TulipApi
             
@@ -228,6 +229,7 @@ public class TulipApi {
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
             //SOURCES HttpUser.groovy
+            //JAVA 21
             //GROOVY 4.0.24
             
             import io.github.wfouche.tulip.api.TulipApi
@@ -240,6 +242,7 @@ public class TulipApi {
             """;
 
     private static String scalaApp = """
+            //> using jvm 21
             //> using dep io.github.wfouche.tulip:tulip-runtime:2.1.3-dev
             //> using dep org.springframework.boot:spring-boot-starter-web:3.4.1
             //> using javaOpt -server, -Xmx1024m, -XX:+UseZGC, -XX:+ZGenerational
