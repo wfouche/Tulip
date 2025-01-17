@@ -303,7 +303,7 @@ def createReport(filename):
             jss = {}
             printf(benchmark_header%(e["bm_name"]))
             if len(e["workflow_name"]) > 0:
-                name2s_list = ["u:%d, t:%d"%(e["num_users"],e["num_threads"]), "c:%d, w:%s"%(e["context_id"],e["workflow_name"]), ""]
+                name2s_list = ["u:%d, t:%d"%(e["num_users"],e["num_threads"]), "w:%s"%(e["workflow_name"]), "c:%d"%(e["context_id"]) ,""]
             else:
                 name2s_list = ["u:%d, t:%d"%(e["num_users"],e["num_threads"]), "c:%d"%(e["context_id"]),""]
             name2s = name2s_list[0]
