@@ -239,6 +239,23 @@ public class TulipApi {
             }
             """;
 
+    private static String scalaApp = """
+            //> using dep io.github.wfouche.tulip:tulip-runtime:2.1.2
+            //> using dep org.springframework.boot:spring-boot-starter-web:3.4.1
+            //> using javaOpt -server, -Xmx1024m, -XX:+UseZGC, -XX:+ZGenerational
+            
+            // https://yadukrishnan.live/developing-java-applications-with-scala-cli
+            // https://www.baeldung.com/scala/scala-cli-intro
+            
+            import io.github.wfouche.tulip.api._
+            
+            object App {
+              def main(args: Array[String]): Unit = {
+                TulipApi.runTulip("benchmark_config.jsonc")
+              }
+            }
+            """;
+
     private static String javaUser = """
             import io.github.wfouche.tulip.api.*;
             import java.util.concurrent.ThreadLocalRandom;
@@ -513,6 +530,34 @@ public class TulipApi {
             }
             """;
 
+    private static String scalaUser = """
+            import io.github.wfouche.tulip.api.TulipUser
+            import io.github.wfouche.tulip.api.TulipConsole
+
+            class HttpUser(val userId: Int, val threadId: Int) extends TulipUser(userId, threadId) {
+
+              override def onStart(): Boolean = {
+                TulipConsole.put("ScalaDemoUser " + userId)
+                true
+              }
+
+              override def action1(): Boolean = {
+                Thread.sleep(10)
+                true
+              }
+
+              override def action2(): Boolean = {
+                Thread.sleep(20)
+                true
+              }
+
+              override def action3(): Boolean = true
+
+              override def onStop(): Boolean = true
+
+            }
+            """;
+
     private static String runBenchShJava = """
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
@@ -591,6 +636,30 @@ public class TulipApi {
             REM start benchmark_config.html
             """;
 
+    private static String runBenchShScala = """
+            #!/bin/bash
+            # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Scala
+            rm -f benchmark_report.html
+            scala-cli App.scala HttpUser.scala
+            echo ""
+            #w3m -dump -cols 205 benchmark_report.html
+            lynx -dump -width 205 benchmark_report.html
+            #jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            """;
+
+    private static String runBenchCmdScala = """
+            REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Scala
+            del benchmark_report.html
+            scala-cli App.scala HttpUser.scala
+            @echo off
+            echo.
+            REM call w3m.exe -dump -cols 205 benchmark_report.html
+            REM lynx.exe -dump -width 205 benchmark_report.html
+            start benchmark_report.html
+            REM jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            REM start benchmark_config.html
+            """;
+
     /**
      * Create a new Tulip benchmark project with Jbang support for Java
      *
@@ -606,6 +675,7 @@ public class TulipApi {
         list.add("Java");
         list.add("Kotlin");
         list.add("Groovy");
+        list.add("Scala");
         if (list.contains(lang)) {
             lang = lang;
         } else {
@@ -666,6 +736,24 @@ public class TulipApi {
                 }
             }
             writeToFile("run_bench.cmd", runBenchCmdGroovy.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+        }
+
+        if (lang.equals("Scala")) {
+            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
+            writeToFile("App.scala", scalaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile("HttpUser.scala", scalaUser.stripLeading(), false);
+            writeToFile("run_bench.sh", runBenchShScala.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            if (System.getProperty("os.name").toLowerCase().contains("windows")) {
+                // pass
+            } else {
+                try {
+                    String[] cmdArray = {"chmod", "u+x", "run_bench.sh"};
+                    Runtime.getRuntime().exec(cmdArray);
+                } catch (IOException e) {
+                    // pass
+                }
+            }
+            writeToFile("run_bench.cmd", runBenchCmdScala.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
         }
 
     }
