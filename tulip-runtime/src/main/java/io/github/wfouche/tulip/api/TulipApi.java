@@ -228,7 +228,7 @@ public class TulipApi {
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
             //SOURCES HttpUser.groovy
-            //JAVA 21
+            //GROOVY 4.0.24
             
             import io.github.wfouche.tulip.api.TulipApi
             
@@ -567,7 +567,7 @@ public class TulipApi {
 
     private static String runBenchShGroovy = """
             #!/bin/bash
-            # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
+            # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             rm -f benchmark_report.html
             export JBANG_JAVA_OPTIONS="-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
             jbang run App.groovy
@@ -578,7 +578,7 @@ public class TulipApi {
             """;
 
     private static String runBenchCmdGroovy = """
-            REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
+            REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.groovy
