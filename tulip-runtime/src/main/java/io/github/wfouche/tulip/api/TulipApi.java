@@ -686,7 +686,11 @@ public class TulipApi {
             lang = "Java";
         }
 
-        System.out.println("Tulip: creating a " + lang + " benchmark with JBang support");
+        if (lang.equals("Scala")) {
+            System.out.println("Tulip: creating a " + lang + " benchmark with Scala-CLI support");
+        } else {
+            System.out.println("Tulip: creating a " + lang + " benchmark with JBang support");
+        }
 
         if (lang.equals("Java")) {
             writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
