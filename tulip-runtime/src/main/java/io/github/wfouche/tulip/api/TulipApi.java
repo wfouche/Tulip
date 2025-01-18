@@ -662,7 +662,7 @@ public class TulipApi {
 
     private static String runBenchCmdJava = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
-            del benchmark_report.html
+            if exist benchmark_report.html del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.java
             @echo off
@@ -688,7 +688,7 @@ public class TulipApi {
 
     private static String runBenchCmdKotlin = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
-            del benchmark_report.html
+            if exist benchmark_report.html del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.kt
             @echo off
@@ -714,7 +714,7 @@ public class TulipApi {
 
     private static String runBenchCmdGroovy = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
-            del benchmark_report.html
+            if exist benchmark_report.html del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.groovy
             @echo off
@@ -739,7 +739,7 @@ public class TulipApi {
 
     private static String runBenchCmdScala = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Scala
-            del benchmark_report.html
+            if exist benchmark_report.html del benchmark_report.html
             scala-cli App.scala HttpUser.scala
             @echo off
             echo.
