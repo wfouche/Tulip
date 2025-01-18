@@ -197,6 +197,9 @@ public class TulipApi {
             ///usr/bin/env jbang "$0" "$@" ; exit $?
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
+            //DEPS org.slf4j:slf4j-api:2.0.16
+            //DEPS ch.qos.logback:logback-core:1.4.14
+            //DEPS ch.qos.logback:logback-classic:1.4.14
             //SOURCES HttpUser.java
             //JAVA 21
             
@@ -213,6 +216,9 @@ public class TulipApi {
             ///usr/bin/env jbang "$0" "$@" ; exit $?
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
+            //DEPS org.slf4j:slf4j-api:2.0.16
+            //DEPS ch.qos.logback:logback-core:1.4.14
+            //DEPS ch.qos.logback:logback-classic:1.4.14
             //SOURCES HttpUser.kt
             //JAVA 21
             //KOTLIN 2.0.21
@@ -228,6 +234,9 @@ public class TulipApi {
             ///usr/bin/env jbang "$0" "$@" ; exit $?
             //DEPS io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
+            //DEPS org.slf4j:slf4j-api:2.0.16
+            //DEPS ch.qos.logback:logback-core:1.4.14
+            //DEPS ch.qos.logback:logback-classic:1.4.14
             //SOURCES HttpUser.groovy
             //JAVA 21
             //GROOVY 4.0.24
@@ -245,6 +254,9 @@ public class TulipApi {
             //> using jvm 21
             //> using dep io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__
             //> using dep org.springframework.boot:spring-boot-starter-web:3.4.1
+            //> using dep org.slf4j:slf4j-api:2.0.16
+            //> using dep ch.qos.logback:logback-core:1.4.14
+            //> using dep ch.qos.logback:logback-classic:1.4.14
             //> using javaOpt -server, -Xmx1024m, -XX:+UseZGC, -XX:+ZGenerational
             //> using repositories m2local
             
