@@ -290,6 +290,7 @@ public class TulipApi {
                 public boolean onStart() {
                     // Initialize the shared RestClient object only once
                     if (getUserId() == 0) {
+                        logger.info("Java");
                         logger.info("Initializing static data");
                         var connectTimeout = Integer.valueOf(getUserParamValue("connectTimeoutMillis"));
                         var readTimeout = Integer.valueOf(getUserParamValue("readTimeoutMillis"));
@@ -386,6 +387,7 @@ public class TulipApi {
                 override fun onStart(): Boolean {
                     // Initialize the shared RestClient object only once
                     if (userId == 0) {
+                        logger.info("Kotlin")
                         logger.info("Initializing static data")
                         val connectTimeout = getUserParamValue("connectTimeoutMillis").toInt()
                         val readTimeout = getUserParamValue("readTimeoutMillis").toInt()
@@ -480,6 +482,7 @@ public class TulipApi {
                 boolean onStart() {
                     // Initialize the shared RestClient object only once
                     if (userId == 0) {
+                        logger.info("Groovy")
                         logger.info("Initializing static data")
                         def connectTimeout = getUserParamValue("connectTimeoutMillis") as Integer
                         def readTimeout = getUserParamValue("readTimeoutMillis") as Integer
@@ -576,6 +579,7 @@ public class TulipApi {
               override def onStart(): Boolean = {
                 // Initialize the shared RestClient object only once
                 if (getUserId == 0) {
+                  logger.info("Scala")
                   logger.info("Initializing static data")
                   val connectTimeout = getUserParamValue("connectTimeoutMillis").toInt
                   val readTimeout = getUserParamValue("readTimeoutMillis").toInt
