@@ -23,9 +23,9 @@ java {
 
 dependencies {
     implementation("io.micrometer:micrometer-registry-jmx:1.14.3")
-    implementation("org.slf4j:slf4j-api:2.0.16")
-    implementation("org.slf4j:slf4j-simple:2.0.16")
-    implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+    //implementation("org.slf4j:slf4j-api:2.0.16")
+    //implementation("org.slf4j:slf4j-simple:2.0.16")
+    //implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     implementation("org.hdrhistogram:HdrHistogram:2.2.2")
     implementation("org.python:jython-standalone:2.7.4")
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
