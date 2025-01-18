@@ -278,6 +278,8 @@ public class TulipApi {
             import org.springframework.web.client.RestClient;
             import org.springframework.web.client.RestClientException;
             import org.springframework.http.client.SimpleClientHttpRequestFactory;
+            import org.slf4j.Logger;
+            import org.slf4j.LoggerFactory;
             
             public class HttpUser extends TulipUser {
             
@@ -288,6 +290,7 @@ public class TulipApi {
                 public boolean onStart() {
                     // Initialize the shared RestClient object only once
                     if (getUserId() == 0) {
+                        logger.info("Initializing static data");
                         var connectTimeout = Integer.valueOf(getUserParamValue("connectTimeoutMillis"));
                         var readTimeout = Integer.valueOf(getUserParamValue("readTimeoutMillis"));
                         var factory = new SimpleClientHttpRequestFactory();
@@ -298,7 +301,7 @@ public class TulipApi {
                             .baseUrl(getUserParamValue("baseURI"))
                             .build();
                         debug = Boolean.valueOf(getUserParamValue("debug"));
-                        System.out.println("debug = " + debug);
+                        logger.info("debug = " + debug);
                     }
                     return true;
                 }
@@ -361,6 +364,9 @@ public class TulipApi {
             
                 // Debug flag
                 private static boolean debug = false;
+            
+                /// Logger
+                private static final Logger logger = LoggerFactory.getLogger(HttpUser.class);
             
             }
             """;
