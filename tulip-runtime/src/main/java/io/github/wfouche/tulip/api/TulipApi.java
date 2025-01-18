@@ -682,7 +682,7 @@ public class TulipApi {
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             rm -f benchmark_report.html
-            export JBANG_JAVA_OPTIONS="-server -Xm2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
+            export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
             jbang run App.kt
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
