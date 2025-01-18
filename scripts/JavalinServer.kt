@@ -13,7 +13,7 @@ public fun main() {
         .get("/albums/{id}") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
         .get("/photos/{id}") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
         .get("/todos/{id}") { ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") }
-        .start(7071)
+        .start(7070)
 }
 // $ ./JavalinServer.kt        # or use command below
 // $ jbang JavalinServer.kt

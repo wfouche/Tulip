@@ -19,6 +19,6 @@ public class JavalinServer {
                 System.out.println(ctx.body());
                 ctx.result("{\"code\": \"OK\"}").contentType("application/json");
             } )
-            .start(7071);
+            .start(7070);
     }
 }
