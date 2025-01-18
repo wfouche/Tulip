@@ -257,7 +257,7 @@ public class TulipApi {
             //> using dep org.slf4j:slf4j-api:2.0.16
             //> using dep ch.qos.logback:logback-core:1.5.16
             //> using dep ch.qos.logback:logback-classic:1.5.16
-            //> using javaOpt -server, -Xmx1024m, -XX:+UseZGC, -XX:+ZGenerational
+            //> using javaOpt -server, -Xms1024m, -Xmx1024m, -XX:+UseZGC, -XX:+ZGenerational
             //> using repositories m2local
             
             // https://yadukrishnan.live/developing-java-applications-with-scala-cli
@@ -656,7 +656,7 @@ public class TulipApi {
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             rm -f benchmark_report.html
-            export JBANG_JAVA_OPTIONS="-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
+            export JBANG_JAVA_OPTIONS="-server -Xms1024m -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
             jbang run App.java
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
@@ -667,7 +667,7 @@ public class TulipApi {
     private static String runBenchCmdJava = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             if exist benchmark_report.html del benchmark_report.html
-            set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
+            set JBANG_JAVA_OPTIONS=-server -Xms1024m -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.java
             @echo off
             echo.
@@ -682,7 +682,7 @@ public class TulipApi {
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             rm -f benchmark_report.html
-            export JBANG_JAVA_OPTIONS="-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
+            export JBANG_JAVA_OPTIONS="-server -Xms1024m -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
             jbang run App.kt
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
@@ -693,7 +693,7 @@ public class TulipApi {
     private static String runBenchCmdKotlin = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             if exist benchmark_report.html del benchmark_report.html
-            set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
+            set JBANG_JAVA_OPTIONS=-server -Xms1024m -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.kt
             @echo off
             echo.
@@ -708,7 +708,7 @@ public class TulipApi {
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             rm -f benchmark_report.html
-            export JBANG_JAVA_OPTIONS="-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
+            export JBANG_JAVA_OPTIONS="-server -Xms1024m -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
             jbang run App.groovy
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
@@ -719,7 +719,7 @@ public class TulipApi {
     private static String runBenchCmdGroovy = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             if exist benchmark_report.html del benchmark_report.html
-            set JBANG_JAVA_OPTIONS=-server -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
+            set JBANG_JAVA_OPTIONS=-server -Xms1024m -Xmx1024m -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.groovy
             @echo off
             echo.
