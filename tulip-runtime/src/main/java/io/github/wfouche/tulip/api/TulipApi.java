@@ -251,7 +251,7 @@ public class TulipApi {
             // https://yadukrishnan.live/developing-java-applications-with-scala-cli
             // https://www.baeldung.com/scala/scala-cli-intro
             
-            import io.github.wfouche.tulip.api._
+            import io.github.wfouche.tulip.api.TulipApi
             
             object App {
               def main(args: Array[String]): Unit = {
