@@ -40,6 +40,7 @@ table, th, td {
     <th>MQS</th>
     <th>AWT</th>
     <th>MWT</th>
+    <th>CPU_T</th>
     <th>CPU</th>
     <th>MEM</th>
   </tr>
@@ -64,6 +65,7 @@ benchmark_columns = '''
     <th>MQS</th>
     <th>AWT</th>
     <th>MWT</th>
+    <th>CPU_T</th>
     <th>CPU</th>
     <th>MEM</th>
   </tr>
@@ -72,6 +74,7 @@ benchmark_columns = '''
 benchmark_header = '''
   <tr>
     <td>%s</td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -114,6 +117,7 @@ benchmark_empty_row = '''
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
+    <td>&nbsp;</td>
   </tr>
 '''
 
@@ -136,6 +140,7 @@ benchmark_detail_row = '''
     <td>%d</td>
     <td>%.1f ms</td>
     <td>%.1f ms</td>
+    <td>%s</td>
     <td>%.1f</td>
     <td>%.1f</td>
   </tr>
@@ -160,6 +165,7 @@ benchmark_summary_row = '''
     <td><b>%d</b></td>
     <td><b>%.1f ms</b></td>
     <td><b>%.1f ms</b></td>
+    <td><b>%s</b></td>
     <td><b>%.1f</b></td>
     <td><b>%.1f</b></td>
   </tr>
@@ -186,6 +192,7 @@ class Summary:
     avg_qs = 0.0
     max_qs = 0
     name = ""
+    cpu_time_ns = 0
 
 def createReport(filename):
 
@@ -222,7 +229,8 @@ def createReport(filename):
         global name2s
         global name2s_list
         avg_aps = 0.0 if sm.name in ["onStart", "onStop"] else sm.num_actions/sm.duration
-        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,sm.cpu,sm.mem)
+        cpu_t = str(datetime.timedelta(seconds=sm.cpu_time_ns/1000000000.0))[:-5]
+        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,cpu_t,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -266,7 +274,8 @@ def createReport(filename):
             else:
                 text = "[%s]"%(key)
             avg_aps = 0.0 if smx.name in ["onStart", "onStop"] else smx.num_actions/smx.duration
-            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,smx.cpu,smx.mem)
+            cpu_t = str(datetime.timedelta(seconds=smx.cpu_time_ns/1000000000.0))[:-5]
+            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -328,6 +337,7 @@ def createReport(filename):
                 e["max_wthread_qsize"],
                 e["avg_wt"],
                 e["max_wt"],
+                str(datetime.timedelta(seconds=e["process_cpu_time_ns"]/1000000000.0))[:-5],
                 p_cpu,
                 p_mem
                 ))
@@ -354,6 +364,7 @@ def createReport(filename):
             sm.mem = p_mem
         if sm.cpu < p_cpu:
             sm.cpu = p_cpu
+        sm.cpu_time_ns += e["process_cpu_time_ns"]
 
         # jhh ...
         for key in e["user_actions"].keys():
@@ -397,6 +408,7 @@ def createReport(filename):
                 smx.mem = p_mem
             if smx.cpu < p_cpu:
                 smx.cpu = p_cpu
+            smx.cpu_time_ns += e["process_cpu_time_ns"]
 
     print_action_summary()
     print_global_summary()
