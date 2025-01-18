@@ -15,11 +15,13 @@ from collections import OrderedDict
 
 header = '''<!DOCTYPE html>
 <html>
+
 <style>
 table, th, td {
   border:1px solid black; font-size:16px; text-align: center;
 }
 </style>
+
 <body>
 
 <h2>__DESC1__ / __DESC2__</h2>
