@@ -91,7 +91,7 @@ public class TulipApi {
                     "report_filename": "benchmark_report.html",
                     "user_class": "HttpUser",
                     "user_params": {
-                        "baseURI": "https://jsonplaceholder.typicode.com",
+                        "baseURI": "__BASE_URI__",
                         "connectTimeoutMillis": 500,
                         "readTimeoutMillis": 2000,
                         "debug": false
@@ -129,7 +129,7 @@ public class TulipApi {
                     },
                      "REST1": {
                         "enabled": true,
-                        "throughput_rate": 10.0,
+                        "throughput_rate": __AVG_APS__,
                         "scenario_actions": [
                             {
                                 "id": 1
@@ -144,7 +144,7 @@ public class TulipApi {
                     },
                     "REST2": {
                         "enabled": true,
-                        "throughput_rate": 10.0,
+                        "throughput_rate": __AVG_APS__,
                         "scenario_actions": [
                             {
                                 "id": 1, "weight": 10
@@ -165,7 +165,7 @@ public class TulipApi {
                     },
                     "REST3": {
                         "enabled": true,
-                        "throughput_rate": 10.0,
+                        "throughput_rate": __AVG_APS__,
                         "scenario_workflow": "api-user",
                         "time": {
                             "pre_warmup_duration": 30,
@@ -782,8 +782,23 @@ public class TulipApi {
             System.out.println("Tulip: creating a " + lang + " benchmark with JBang support");
         }
 
+        String avgAPS = "10.0";
+        if (args.length > 1) {
+            avgAPS = args[1];
+        }
+
+        String baseURI = "https://jsonplaceholder.typicode.com";
+        if (args.length > 2) {
+            baseURI = args[2];
+        }
+
         if (lang.equals("Java")) {
-            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
+            writeToFile(
+                    "benchmark_config.jsonc",
+                    benchmarkConfig.stripLeading()
+                            .replace("__TULIP_LANG__", lang)
+                            .replace("__AVG_APS__", avgAPS)
+                            .replace("__BASE_URI__", baseURI), false);
             writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.java", javaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShJava.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
@@ -801,7 +816,12 @@ public class TulipApi {
         }
 
         if (lang.equals("Kotlin")) {
-            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
+            writeToFile(
+                    "benchmark_config.jsonc",
+                    benchmarkConfig.stripLeading()
+                            .replace("__TULIP_LANG__", lang)
+                            .replace("__AVG_APS__", avgAPS)
+                            .replace("__BASE_URI__", baseURI), false);
             writeToFile("App.kt", kotlinApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.kt", kotlinUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
@@ -819,7 +839,12 @@ public class TulipApi {
         }
 
         if (lang.equals("Groovy")) {
-            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
+            writeToFile(
+                    "benchmark_config.jsonc",
+                    benchmarkConfig.stripLeading()
+                            .replace("__TULIP_LANG__", lang)
+                            .replace("__AVG_APS__", avgAPS)
+                            .replace("__BASE_URI__", baseURI), false);
             writeToFile("App.groovy", groovyApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.groovy", groovyUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShGroovy.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
@@ -837,7 +862,12 @@ public class TulipApi {
         }
 
         if (lang.equals("Scala")) {
-            writeToFile("benchmark_config.jsonc", benchmarkConfig.stripLeading().replace("__TULIP_LANG__", lang), false);
+            writeToFile(
+                    "benchmark_config.jsonc",
+                    benchmarkConfig.stripLeading()
+                            .replace("__TULIP_LANG__", lang)
+                            .replace("__AVG_APS__", avgAPS)
+                            .replace("__BASE_URI__", baseURI), false);
             writeToFile("App.scala", scalaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.scala", scalaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShScala.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
