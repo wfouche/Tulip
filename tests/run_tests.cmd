@@ -23,3 +23,5 @@ cd Scala
 call jbang io.github.wfouche.tulip:tulip-runtime:%version% Scala
 call run_bench.cmd
 cd ..
+
+google-chrome Java/benchmark_report.html Groovy/benchmark_report.html Kotlin/benchmark_report.html Scala/benchmark_report.html
