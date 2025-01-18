@@ -186,7 +186,7 @@ public class TulipApi {
                 "contexts": {
                     "Context-1": {
                         "enabled": true,
-                        "num_users": 10,
+                        "num_users": 128,
                         "num_threads": 2
                     }
                 }
