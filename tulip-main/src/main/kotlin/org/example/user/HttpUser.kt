@@ -2,13 +2,15 @@ package org.example.user
 
 /*-------------------------------------------------------------------------*/
 
-import io.github.wfouche.tulip.api.TulipConsole
 import io.github.wfouche.tulip.api.TulipUtils
 import io.github.wfouche.tulip.api.TulipUser
 import java.net.URI
 import java.net.http.HttpClient
 import java.net.http.HttpRequest
 import java.net.http.HttpResponse
+
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 /*-------------------------------------------------------------------------*/
 
@@ -40,15 +42,12 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     private val requestTodos = createRequest("todos")
 
     override fun onStart(): Boolean {
-        val actionId = 0
-        TulipConsole.put("  $userId -> $actionId -> ${getActionName(actionId)} -> $threadId")
-        //TulipConsole.put(listOf("a", "b"))
         if (userId == 0) {
             var s = ""
-            s = "debug: " + getUserParamValue("debug")
-            TulipConsole.put(s)
-            s = "http_port: " + getUserParamValue("http_port")
-            TulipConsole.put(s)
+            s = "debug: " + getUserParamValue("debug").toBoolean()
+            logger.info(s)
+            s = "http_port: " + getUserParamValue("http_port").toInt()
+            logger.info(s)
         }
         return true
     }
@@ -113,7 +112,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun onStop(): Boolean {
-        TulipConsole.put("  Terminate: UserId = $userId")
+        logger.info("  Terminate: UserId = $userId")
         Thread.sleep(100)
         return true
     }
@@ -132,13 +131,9 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-//    companion object {
-//        init {
-//            //TulipConsole.put("Loading .... Kotlin class ... HttpUser")
-//        }
-//    }
-
-    // ----------------------------------------------------------------- //
+    companion object {
+        private val logger: Logger = LoggerFactory.getLogger(HttpUser::class.java)
+    }
 
 }
 

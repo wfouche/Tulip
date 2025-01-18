@@ -1,5 +1,8 @@
 package org.example.user
 
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+
 import io.github.wfouche.tulip.api.TulipUser
 
 class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
@@ -24,5 +27,9 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun onStop(): Boolean {
         return true
+    }
+
+    companion object {
+        private val logger: Logger = LoggerFactory.getLogger(DemoUser::class.java)
     }
 }
