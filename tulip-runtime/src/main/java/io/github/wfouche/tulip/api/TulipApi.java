@@ -377,6 +377,8 @@ public class TulipApi {
             import org.springframework.web.client.RestClient
             import org.springframework.web.client.RestClientException
             import org.springframework.http.client.SimpleClientHttpRequestFactory
+            import org.slf4j.Logger
+            import org.slf4j.LoggerFactory
             
             class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             
@@ -384,6 +386,7 @@ public class TulipApi {
                 override fun onStart(): Boolean {
                     // Initialize the shared RestClient object only once
                     if (userId == 0) {
+                        logger.info("Initializing static data")
                         val connectTimeout = getUserParamValue("connectTimeoutMillis").toInt()
                         val readTimeout = getUserParamValue("readTimeoutMillis").toInt()
                         val factory = SimpleClientHttpRequestFactory().apply {
@@ -395,7 +398,7 @@ public class TulipApi {
                             .baseUrl(getUserParamValue("baseURI"))
                             .build()
                         debug = getUserParamValue("debug").toBoolean()
-                        println("debug = " + debug)
+                        logger.info("debug = " + debug)
                     }
                     return true
                 }
@@ -454,6 +457,7 @@ public class TulipApi {
                 companion object {
                     private lateinit var restClient: RestClient
                     private var debug: Boolean = false
+                    private val logger = LoggerFactory.getLogger(HttpUser::class.java)
                 }
             }
             """;
@@ -464,6 +468,8 @@ public class TulipApi {
             import org.springframework.web.client.RestClientException
             import org.springframework.http.client.SimpleClientHttpRequestFactory
             import java.util.concurrent.ThreadLocalRandom
+            import org.slf4j.Logger
+            import org.slf4j.LoggerFactory
             
             class HttpUser extends TulipUser {
             
@@ -474,6 +480,7 @@ public class TulipApi {
                 boolean onStart() {
                     // Initialize the shared RestClient object only once
                     if (userId == 0) {
+                        logger.info("Initializing static data")
                         def connectTimeout = getUserParamValue("connectTimeoutMillis") as Integer
                         def readTimeout = getUserParamValue("readTimeoutMillis") as Integer
                         def factory = new SimpleClientHttpRequestFactory()
@@ -483,8 +490,8 @@ public class TulipApi {
                             .requestFactory(factory)
                             .baseUrl(getUserParamValue("baseURI"))
                             .build()
-                        debug = getUserParamValue("debug") as Boolean
-                        println "debug = $debug"
+                        def debug = Boolean.valueOf(getUserParamValue("debug"))
+                        logger.info("debug = " + debug)
                     }
                     return true
                 }
@@ -547,6 +554,9 @@ public class TulipApi {
             
                 // Debug flag
                 static boolean debug = false
+            
+                // Logger
+                static Logger logger = LoggerFactory.getLogger(HttpUser.class)
             
             }
             """;
