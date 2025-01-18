@@ -319,7 +319,7 @@ def createReport(filename):
                 str(datetime.timedelta(seconds=int(e["duration"]))),
                 e["num_actions"],
                 e["num_failed"],
-                0.0 if p_cpu == 0.0 else e["avg_aps"],
+                0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"],
                 e["avg_rt"],
                 ht.getStdDeviation()/1000.0,
                 e["min_rt"],
