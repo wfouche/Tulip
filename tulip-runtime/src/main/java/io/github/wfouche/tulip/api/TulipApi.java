@@ -266,7 +266,6 @@ public class TulipApi {
             import org.springframework.web.client.RestClient;
             import org.springframework.web.client.RestClientException;
             import org.springframework.http.client.SimpleClientHttpRequestFactory;
-            import java.time.Duration;
             
             public class HttpUser extends TulipUser {
             
@@ -277,8 +276,8 @@ public class TulipApi {
                 public boolean onStart() {
                     // Initialize the shared RestClient object only once
                     if (getUserId() == 0) {
-                        var connectTimeout = Duration.ofMillis(Integer.valueOf(getUserParamValue("connectTimeoutMillis")));
-                        var readTimeout = Duration.ofMillis(Integer.valueOf(getUserParamValue("readTimeoutMillis")));
+                        var connectTimeout = Integer.valueOf(getUserParamValue("connectTimeoutMillis"));
+                        var readTimeout = Integer.valueOf(getUserParamValue("readTimeoutMillis"));
                         var factory = new SimpleClientHttpRequestFactory();
                         factory.setConnectTimeout(connectTimeout);
                         factory.setReadTimeout(readTimeout);
