@@ -5,7 +5,7 @@ import org.jreleaser.model.Active
 import org.jetbrains.dokka.gradle.DokkaTask
 
 group = "io.github.wfouche.tulip"
-version = "2.1.3-dev"
+version = "2.1.3"
 
 plugins {
     id("com.github.ben-manes.versions") version "0.51.0"
