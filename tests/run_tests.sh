@@ -1,4 +1,4 @@
-export TULIP_VERSION="2.1.3-dev"
+export TULIP_VERSION="2.1.3"
 
 export TULIP_OPTS="10000.0 http://localhost:7070"
 

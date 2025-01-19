@@ -1,4 +1,4 @@
-set version=2.1.3-dev
+set version=2.1.3
 
 md Java
 cd Java
