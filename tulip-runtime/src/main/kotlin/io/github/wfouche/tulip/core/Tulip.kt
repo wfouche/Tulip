@@ -1245,7 +1245,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
         }
 
-        cpuTime = 0 //getProcessCpuTime()
+        cpuTime = getProcessCpuTime()
         for (aid in actionList) {
             for (uid in userList) {
                 startTask(uid, aid, rateGovernor)
@@ -1259,7 +1259,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         if (durationMillis == 0) {
             durationMillis = 1
         }
-        cpuTime = 0 //getProcessCpuTime() - cpuTime
+        cpuTime = getProcessCpuTime() - cpuTime
 
         elapsedTimeNanos {
             DataCollector.createSummary(
