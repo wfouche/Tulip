@@ -39,7 +39,7 @@
         }
     },
     "benchmarks": {
-        "Init": {
+        "onStart": {
             "enabled": true,
             "scenario_actions": [
                 { "id": 0 }
@@ -47,7 +47,7 @@
         },
         "Max TPS": {
             "enabled": true,
-            "throughput_rate": 0.0,
+            "aps_rate": 0.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
@@ -59,7 +59,7 @@
         },
         "1m TPS": {
             "enabled": true,
-            "throughput_rate": 1000000.0,
+            "aps_rate": 1000000.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
@@ -71,7 +71,7 @@
         },
         "100 TPS": {
             "enabled": true,
-            "throughput_rate": 100.0,
+            "aps_rate": 100.0,
             "worker_thread_queue_size": 1,
             "time": {
                 "pre_warmup_duration": 15,
@@ -83,7 +83,7 @@
         },
         "50 TPS": {
             "enabled": true,
-            "throughput_rate": 50.0,
+            "aps_rate": 50.0,
             "worker_thread_queue_size": 1,
             "time": {
                 "pre_warmup_duration": 15,
@@ -97,7 +97,7 @@
         },
         "HTTP Max TPS": {
             "enabled": true,
-            "throughput_rate": 0.0,
+            "aps_rate": 0.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
@@ -109,7 +109,7 @@
         },
         "HTTP 1250 TPS": {
             "enabled": true,
-            "throughput_rate": 1250.0,
+            "aps_rate": 1250.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
@@ -119,7 +119,7 @@
             },
             "scenario_workflow": "http"
         },
-        "Shutdown": {
+        "onStop": {
             "enabled":true,
             "scenario_actions": [
                 {"id": 99 }

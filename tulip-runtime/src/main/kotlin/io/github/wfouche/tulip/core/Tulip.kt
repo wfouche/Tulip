@@ -328,7 +328,7 @@ data class ConfigAction(
 data class ConfigTest(
     val enabled: Boolean = true,
     val time: ConfigDuration = ConfigDuration(),
-    @SerialName("throughput_rate") val throughputRate: Double = 0.0,
+    @SerialName("aps_rate") val throughputRate: Double = 0.0,
     @SerialName("worker_thread_queue_size") val workInProgress: Int = 0,
     @SerialName("scenario_actions") val actions: List<ConfigAction> = listOf(),
     @SerialName("scenario_workflow") val workflow: String = ""

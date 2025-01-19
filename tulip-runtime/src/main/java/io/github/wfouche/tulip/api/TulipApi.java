@@ -129,7 +129,7 @@ public class TulipApi {
                     },
                      "REST1": {
                         "enabled": true,
-                        "throughput_rate": __AVG_APS__,
+                        "aps_rate": __AVG_APS__,
                         "scenario_actions": [
                             {
                                 "id": 1
@@ -144,7 +144,7 @@ public class TulipApi {
                     },
                     "REST2": {
                         "enabled": true,
-                        "throughput_rate": __AVG_APS__,
+                        "aps_rate": __AVG_APS__,
                         "scenario_actions": [
                             {
                                 "id": 1, "weight": 10
@@ -165,7 +165,7 @@ public class TulipApi {
                     },
                     "REST3": {
                         "enabled": true,
-                        "throughput_rate": __AVG_APS__,
+                        "aps_rate": __AVG_APS__,
                         "scenario_workflow": "api-user",
                         "time": {
                             "pre_warmup_duration": 30,
