@@ -240,7 +240,11 @@ def createReport(filename):
         global name2s
         global name2s_list
         avg_aps = 0.0 if sm.name in ["onStart", "onStop"] else sm.num_actions/sm.duration
-        cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
+        if sm.name in ["onStart", "onStop"]:
+            cpu_t = "0:00:00"
+            sm.cpu = 0.0
+        else:
+            cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
         html = benchmark_summary_row%(name2s,"",sm.num_actions,sm.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,cpu_t,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
@@ -285,7 +289,11 @@ def createReport(filename):
             else:
                 text = "[%s]"%(key)
             avg_aps = 0.0 if smx.name in ["onStart", "onStop"] else smx.num_actions/smx.duration
-            cpu_t = str_from_cpu_time_ns(smx.cpu_time_ns)
+            if smx.name in ["onStart", "onStop"]:
+                cpu_t = "0:00:00"
+                smx.cpu = 0.0
+            else:
+                cpu_t = str_from_cpu_time_ns(smx.cpu_time_ns)
             html = benchmark_summary_row%(name2s,text,smx.num_actions,smx.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
@@ -329,6 +337,12 @@ def createReport(filename):
         jh.add(ht)
         p_mem = 100.0 * e["jvm_memory_used"] / e["jvm_memory_maximum"]
         p_cpu = e["process_cpu_utilization"]
+        if e["bm_name"] in ["onStart", "onStop"]:
+            cpu_t = "0:00:00"
+            p_cpu = 0.0
+        else:
+            cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
+            p_cpu = e["process_cpu_utilization"]
         if print_detail_rows:
             printf(benchmark_detail_row%( \
                 name2s,
@@ -348,7 +362,7 @@ def createReport(filename):
                 e["max_wthread_qsize"],
                 e["avg_wt"],
                 e["max_wt"],
-                str_from_cpu_time_ns(e["process_cpu_time_ns"]),
+                cpu_t,
                 p_cpu,
                 p_mem
                 ))
