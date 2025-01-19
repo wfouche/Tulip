@@ -25,9 +25,9 @@ table, th, td {
   <tr>
     <th>Benchmark</th>
     <th>Run Id</th>
-    <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
+    <th>Duration</th>
     <th>Aps</th>
     <th>Avg_Rt</th>
     <th>Stdev</th>
@@ -50,9 +50,9 @@ benchmark_columns = '''
   <tr>
     <th>Benchmark</th>
     <th>Run Id</th>
-    <th>Duration</th>
     <th>#N</th>
     <th>#F</th>
+    <th>Duration</th>
     <th>Aps</th>
     <th>Avg_Rt</th>
     <th>Stdev</th>
@@ -125,9 +125,9 @@ benchmark_detail_row = '''
   <tr>
     <td>%s</td>
     <td>%d</td>
+    <td>%d</td>
+    <td>%d</td>
     <td>%s</td>
-    <td>%d</td>
-    <td>%d</td>
     <td>%.3f</td>
     <td>%.3f ms</td>
     <td>%.1f ms</td>
@@ -150,9 +150,9 @@ benchmark_summary_row = '''
   <tr>
     <td>%s</td>
     <td>%s</td>
-    <td><b>%s</b></td>
     <td><b>%d</b></td>
     <td><b><tag1>%d</tag1></b></td>
+    <td><b>%s</b></td>
     <td><b><tag2>%.3f</tag2></b></td>
     <td><b>%.3f ms</b></td>
     <td><b>%.1f ms</b></td>
@@ -236,7 +236,7 @@ def createReport(filename):
         global name2s_list
         avg_aps = 0.0 if sm.name in ["onStart", "onStop"] else sm.num_actions/sm.duration
         cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
-        html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,cpu_t,sm.cpu,sm.mem)
+        html = benchmark_summary_row%(name2s,"",sm.num_actions,sm.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,cpu_t,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
@@ -281,7 +281,7 @@ def createReport(filename):
                 text = "[%s]"%(key)
             avg_aps = 0.0 if smx.name in ["onStart", "onStop"] else smx.num_actions/smx.duration
             cpu_t = str_from_cpu_time_ns(smx.cpu_time_ns)
-            html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
+            html = benchmark_summary_row%(name2s,text,smx.num_actions,smx.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -328,9 +328,9 @@ def createReport(filename):
             printf(benchmark_detail_row%( \
                 name2s,
                 e["row_id"]+1,
-                str(datetime.timedelta(seconds=int(e["duration"]))),
                 e["num_actions"],
                 e["num_failed"],
+                str(datetime.timedelta(seconds=int(e["duration"]))),
                 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"],
                 e["avg_rt"],
                 ht.getStdDeviation()/1000.0,
