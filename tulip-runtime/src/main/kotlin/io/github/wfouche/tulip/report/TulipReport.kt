@@ -598,11 +598,11 @@ def createReport(filename):
             printf('| *enabled* | %s\n'%(b["enabled"]))
         else:
             printf('| *enabled* | True\n')
-        # throughput_rate
-        if "throughput_rate" in b.keys():
-            printf('| *throughput_rate* | %.1f\n'%(b["throughput_rate"]))
+        # aps_rate
+        if "aps_rate" in b.keys():
+            printf('| *aps_rate* | %.1f\n'%(b["aps_rate"]))
         else:
-            printf('| *throughput_rate* | 0.0\n')
+            printf('| *aps_rate* | 0.0\n')
         # worker_thread_queue_size
         if "worker_thread_queue_size" in b.keys():
             printf('| *worker_thread_queue_size* | %d\n'%(b["worker_thread_queue_size"]))
