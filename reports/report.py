@@ -225,11 +225,17 @@ def createReport(filename):
     def printf(s):
         report_fh.write(s)
 
+    def str_from_cpu_time_ns(v_ns):
+        r = str(datetime.timedelta(seconds=v_ns/1000000000.0))  #[:-5]
+        if '.' in r:
+            r = r[:-5]
+        return r
+
     def print_global_summary():
         global name2s
         global name2s_list
         avg_aps = 0.0 if sm.name in ["onStart", "onStop"] else sm.num_actions/sm.duration
-        cpu_t = str(datetime.timedelta(seconds=sm.cpu_time_ns/1000000000.0))[:-5]
+        cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
         html = benchmark_summary_row%(name2s,"",str(datetime.timedelta(seconds=int(sm.duration))),sm.num_actions,sm.num_failed,avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:].replace("_"," "),sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,cpu_t,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
@@ -274,7 +280,7 @@ def createReport(filename):
             else:
                 text = "[%s]"%(key)
             avg_aps = 0.0 if smx.name in ["onStart", "onStop"] else smx.num_actions/smx.duration
-            cpu_t = str(datetime.timedelta(seconds=smx.cpu_time_ns/1000000000.0))[:-5]
+            cpu_t = str_from_cpu_time_ns(smx.cpu_time_ns)
             html = benchmark_summary_row%(name2s,text,str(datetime.timedelta(seconds=int(sm.duration))),smx.num_actions,smx.num_failed,avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:].replace("_"," "),smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
@@ -337,7 +343,7 @@ def createReport(filename):
                 e["max_wthread_qsize"],
                 e["avg_wt"],
                 e["max_wt"],
-                str(datetime.timedelta(seconds=e["process_cpu_time_ns"]/1000000000.0))[:-5],
+                str_from_cpu_time_ns(e["process_cpu_time_ns"]),
                 p_cpu,
                 p_mem
                 ))
