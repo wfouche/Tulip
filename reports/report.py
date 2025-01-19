@@ -253,8 +253,8 @@ def createReport(filename):
             html = html.replace("</tag1>","")
         # Validation: Avg_APS
         #print(sm.name)
-        if "throughput_rate" in jb["config"]["benchmarks"][sm.name].keys():
-            target_aps = jb["config"]["benchmarks"][sm.name]["throughput_rate"]
+        if "aps_rate" in jb["config"]["benchmarks"][sm.name].keys():
+            target_aps = jb["config"]["benchmarks"][sm.name]["aps_rate"]
         else:
             target_aps = 0.0
         if target_aps > 0.0:
