@@ -341,7 +341,7 @@ def createReport(filename):
             cpu_t = "0:00:00"
             p_cpu = 0.0
         else:
-            cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
+            cpu_t = str_from_cpu_time_ns(e["process_cpu_time_ns"])
             p_cpu = e["process_cpu_utilization"]
         if print_detail_rows:
             printf(benchmark_detail_row%( \
