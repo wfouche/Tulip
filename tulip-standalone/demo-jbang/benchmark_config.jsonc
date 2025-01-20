@@ -29,7 +29,7 @@
     },
     "benchmarks": {
         "Startup": {
-            "actions": [
+            "scenario_actions": [
                 {
                     "id": 0
                 }
@@ -42,8 +42,8 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "actions": [
+            "aps_rate": 0.0,
+            "scenario_actions": [
                 {
                     "id": 1,
                     "weight": 90
@@ -61,8 +61,8 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "throughput_rate": 100.0,
-            "actions": [
+            "aps_rate": 100.0,
+            "scenario_actions": [
                 {
                     "id": 1,
                     "weight": 90
@@ -80,15 +80,15 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 3
             },
-            "throughput_rate": 0.0,
-            "actions": [
+            "aps_rate": 0.0,
+            "scenario_actions": [
                 {
                     "id": 3
                 }
             ]
         },
         "Shutdown": {
-            "actions": [
+            "scenario_actions": [
                 {
                     "id": 99
                 }

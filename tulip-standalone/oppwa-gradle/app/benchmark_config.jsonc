@@ -24,9 +24,16 @@
         }
     },
     "benchmarks": {
+        "onStart": {
+            "scenario_actions": [
+                {
+                    "id": 0
+                }
+            ]
+        },
         "Max TPS": {
             "enabled": true,
-            "throughput_rate": 0.0,
+            "aps_rate": 0.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
@@ -34,9 +41,16 @@
                 "benchmark_duration": 30,
                 "benchmark_repeat_count": 4
             },
-            "actions": [
+            "scenario_actions": [
                 {
                     "id": -1
+                }
+            ]
+        },
+        "onStop": {
+            "scenario_actions": [
+                {
+                    "id": 99
                 }
             ]
         }
