@@ -5,7 +5,7 @@
 //DEPS ch.qos.logback:logback-core:1.5.16
 //DEPS ch.qos.logback:logback-classic:1.5.16
 //JAVA 21
-//KOTLIN 2.1.0
+//KOTLIN 2.0.21
 
 import io.github.wfouche.tulip.api.TulipApi
 import io.github.wfouche.tulip.api.TulipUser
