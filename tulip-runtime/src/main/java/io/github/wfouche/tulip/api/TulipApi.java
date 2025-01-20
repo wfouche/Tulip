@@ -43,11 +43,11 @@ public class TulipApi {
      * Runs the Tulip benchmarking process.
      * This method initializes the configuration, runs the benchmarks, and creates an HTML report.
      *
-     * @param configFilename The name of the configuration file to be used for initialization.
+     * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting with {.
      * @param userFactory    A TulipUserFactory object responsible for creating Tulip users.
      */
-    public static void runTulip(String configFilename, TulipUserFactory userFactory) {
-        String outputFilename = TulipKt.initConfig(configFilename);
+    public static void runTulip(String text, TulipUserFactory userFactory) {
+        String outputFilename = TulipKt.initConfig(text);
         TulipKt.runBenchmarks(userFactory);
         createHtmlReport(outputFilename);
     }
@@ -56,10 +56,10 @@ public class TulipApi {
      * Runs the Tulip benchmarking process.
      * This method initializes the configuration, runs the benchmarks, and creates an HTML report.
      *
-     * @param configFilename The name of the configuration file to be used for initialization.
+     * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting with {.
      */
-    public static void runTulip(String configFilename) {
-        String outputFilename = TulipKt.initConfig(configFilename);
+    public static void runTulip(String text) {
+        String outputFilename = TulipKt.initConfig(text);
         TulipUserFactory userFactory = new TulipUserFactory();
         TulipKt.runBenchmarks(userFactory);
         createHtmlReport(outputFilename);

@@ -352,16 +352,23 @@ data class TulipConfig(
     val workflows: Map<String,Map<String,Map<String,Double>>> = mapOf()
 )
 
-fun initConfig(configFilename: String): String {
+fun initConfig(text: String): String {
+    val textIsJsonString: Boolean = text.startsWith("{")
     initTulip()
     Console.put("")
     val wd = System.getProperty("user.dir")
     Console.put("  working directory = $wd")
     Console.put("")
-    Console.put("  config filename = $configFilename")
+    if (!textIsJsonString) {
+        Console.put("  config filename = $text")
+    }
 
     // Read JSON file contents into memory
-    val sf = java.io.File(configFilename).readText()
+    val sf: String = if (textIsJsonString) {
+        text
+    } else {
+        java.io.File(text).readText()
+    }
 
     // Remove all JSONC comments from the JSON
     val gsonJsonTree = JsonParser.parseString(sf)
@@ -426,8 +433,10 @@ fun initConfig(configFilename: String): String {
     }
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
-    Console.put("")
-    createConfigReport(configFilename)
+    if (!textIsJsonString) {
+        Console.put("")
+        createConfigReport(text)
+    }
 
     return g_config.actions.jsonFilename
 }
