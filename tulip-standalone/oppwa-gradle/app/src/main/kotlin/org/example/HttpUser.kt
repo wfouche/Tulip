@@ -254,7 +254,9 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         // 3:RF => {0}
         // 4:DB => {3:RF, or 0}
 
-        val nid = workflow.next(cid)
+        var nid = workflow.next(cid)
+        if (nid == 0) nid = workflow.next(cid)
+
         // PA(1) -> CP(2)
         if (State.PA.equals(cid) && State.CP.equals(nid) && id == "") {
             // Skip CP(2), if PA(1) failed; id == ""
