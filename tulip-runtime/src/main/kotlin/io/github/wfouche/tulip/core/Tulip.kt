@@ -353,7 +353,7 @@ data class TulipConfig(
 )
 
 fun initConfig(text: String): String {
-    val textIsJsonString: Boolean = text.startsWith("{")
+    val textIsJsonString: Boolean = text.trim().startsWith("{")
     initTulip()
     Console.put("")
     val wd = System.getProperty("user.dir")
