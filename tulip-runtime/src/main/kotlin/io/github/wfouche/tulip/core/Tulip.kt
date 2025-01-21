@@ -209,6 +209,7 @@ private data class Duration(
 
 private data class TestProfile(
     val enabled: Boolean = true,
+    val saveStats: Boolean = true,
 
     //
     // Name of the benchmark test.
@@ -327,6 +328,7 @@ data class ConfigAction(
 @Serializable
 data class ConfigTest(
     val enabled: Boolean = true,
+    @SerialName("save_stats") val logStats: Boolean = true,
     val time: ConfigDuration = ConfigDuration(),
     @SerialName("aps_rate") val throughputRate: Double = 0.0,
     @SerialName("worker_thread_queue_size") val workInProgress: Int = 0,
@@ -390,6 +392,7 @@ fun initConfig(text: String): String {
         //println("${e.name}")
         val v = TestProfile(
             enabled = e.enabled,
+            saveStats = e.logStats,
             name = key,
             duration = if (e.time == null)
                 Duration(0, 0, 0, 1, TimeUnit.SECONDS)
@@ -1283,7 +1286,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
                 0,
                 cpuTime)
             DataCollector.printStats()
-            DataCollector.saveStatsJson(testCase.filename)
+            if (testCase.saveStats) DataCollector.saveStatsJson(testCase.filename)
         }
         //Console.put("Init: Duration spend in stats processing = ${durationNanos2}")
         return
@@ -1374,7 +1377,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             )
             DataCollector.printStats()
             if (testPhase == "Benchmark") {
-                DataCollector.saveStatsJson(testCase.filename)
+                if (testCase.saveStats) DataCollector.saveStatsJson(testCase.filename)
             }
         }
         //Console.put("Main: Duration spend in stats processing = ${durationNanos2}")
