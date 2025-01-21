@@ -25,7 +25,7 @@ val benchmarkConfig:String = """
 {
     // Actions
     "actions": {
-        "description": "kwrik [Kotlin]",
+        "description": "kwrk [Kotlin]",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
         "user_class": "HttpUser",
@@ -152,7 +152,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     }
 }
 
-class KwrikCli : CliktCommand() {
+class KwrkCli : CliktCommand() {
     private val p_rate by option("--rate").default("5.0")
     private val p_threads by option("--threads").default("2")
     private val p_duration by option("--duration").default("30")
@@ -167,7 +167,7 @@ class KwrikCli : CliktCommand() {
         jsonc = jsonc.replace("__P_REPEAT__", p_repeat)
         jsonc = jsonc.replace("__P_URL__", p_url)
 
-        println("kwrik arguments:")
+        println("kwrk arguments:")
         println("  --rate = ${p_rate}")
         println("  --threads = ${p_threads}")
         println("  --duration = ${p_duration}")
@@ -177,7 +177,7 @@ class KwrikCli : CliktCommand() {
         TulipApi.runTulip(jsonc)
 
         println("")
-        println("kwirk arguments:")
+        println("kwrk arguments:")
         println("  --rate = ${p_rate}")
         println("  --threads = ${p_threads}")
         println("  --duration = ${p_duration}")
@@ -187,4 +187,4 @@ class KwrikCli : CliktCommand() {
     }
 }
 
-fun main(args: Array<String>) = KwrikCli().main(args)
+fun main(args: Array<String>) = KwrkCli().main(args)
