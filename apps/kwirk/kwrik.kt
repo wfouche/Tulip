@@ -1,4 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
+//DEPS com.github.ajalt.clikt:clikt-jvm:5.0.1
 //DEPS io.github.wfouche.tulip:tulip-runtime:2.1.4-dev
 //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
 //DEPS org.slf4j:slf4j-api:2.0.16
@@ -16,26 +17,28 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
+import com.github.ajalt.clikt.core.*
+import com.github.ajalt.clikt.parameters.options.default
+import com.github.ajalt.clikt.parameters.options.option
+
 val benchmarkConfig:String = """
 {
     // Actions
     "actions": {
-        "description": "Spring RestClient Benchmark [Kotlin]",
+        "description": "kwrik [Kotlin]",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
         "user_class": "HttpUser",
         "user_params": {
-            //"baseURI": "http://localhost:7070",
-            "baseURI": "https://jsonplaceholder.typicode.com",
+            "baseURI": "__P_URL__",
+            //"baseURI": "https://jsonplaceholder.typicode.com",
             "connectTimeoutMillis": 500,
             "readTimeoutMillis": 2000,
             "debug": false
         },
         "user_actions": {
             "0": "onStart",  // Init
-            "1": "GET:posts",
-            "2": "GET:comments",
-            "3": "GET:todos",
+            "1": "GET:url",
             "99": "onStop"   // Shutdown
         }
     },
@@ -62,51 +65,19 @@ val benchmarkConfig:String = """
         "onStart": {
             "scenario_actions": [ {"id": 0} ]
         },
-         "REST1": {
+         "HTTP": {
             "enabled": true,
-            "aps_rate": 10000.0,
+            "aps_rate": __P_RATE__,
             "scenario_actions": [
                 {
                     "id": 1
                 }
             ],
             "time": {
-                "pre_warmup_duration": 30,
-                "warmup_duration": 10,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
-            }
-        },
-        "REST2": {
-            "enabled": true,
-            "aps_rate": 10000.0,
-            "scenario_actions": [
-                {
-                    "id": 1, "weight": 10
-                },
-                {
-                    "id": 2, "weight": 40
-                },
-                {
-                    "id": 3, "weight": 50
-                }
-            ],
-            "time": {
-                "pre_warmup_duration": 30,
-                "warmup_duration": 10,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
-            }
-        },
-        "REST3": {
-            "enabled": true,
-            "aps_rate": 10000.0,
-            "scenario_workflow": "api-user",
-            "time": {
-                "pre_warmup_duration": 30,
-                "warmup_duration": 10,
-                "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "pre_warmup_duration": 10,
+                "warmup_duration": 5,
+                "benchmark_duration": __P_DURATION__,
+                "benchmark_repeat_count": __P_REPEAT__
             }
         },
         "onStop": {
@@ -121,8 +92,8 @@ val benchmarkConfig:String = """
     "contexts": {
         "Context-1": {
             "enabled": true,
-            "num_users": 128,
-            "num_threads": 2
+            "num_users": __P_THREADS__,
+            "num_threads": __P_THREADS__
         }
     }
 }
@@ -136,6 +107,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         if (userId == 0) {
             logger.info("Kotlin")
             logger.info("Initializing static data")
+            logger.info(getUserParamValue("baseURI"))
             val connectTimeout = getUserParamValue("connectTimeoutMillis").toInt()
             val readTimeout = getUserParamValue("readTimeoutMillis").toInt()
             val factory = SimpleClientHttpRequestFactory().apply {
@@ -146,48 +118,17 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
                 .requestFactory(factory)
                 .baseUrl(getUserParamValue("baseURI"))
                 .build()
-            debug = getUserParamValue("debug").toBoolean()
-            logger.info("debug = " + debug)
+            //debug = getUserParamValue("debug").toBoolean()
+            //logger.info("debug = " + debug)
         }
         return true
     }
 
-    // Action 1: GET /posts/{id}
+    // Action 1: GET ${url}
     override fun action1(): Boolean {
-        val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(100)+1
         return try {
             val rsp: String? = restClient.get()
-                .uri("/posts/${id}")
-                .retrieve()
-                .body(String::class.java)
-            //Postcondition
-            (rsp != null && rsp.length > 2)
-        } catch (e: RestClientException) {
-            false
-        }
-    }
-
-    // Action 2: GET /comments/{id}
-    override fun action2(): Boolean {
-        val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(500)+1
-        return try {
-            val rsp: String? = restClient.get()
-                .uri("/comments/${id}")
-                .retrieve()
-                .body(String::class.java)
-            //Postcondition
-            (rsp != null && rsp.length > 2)
-        } catch (e: RestClientException) {
-            false
-        }
-    }
-
-    // Action 3: GET /todos/{id}
-    override fun action3(): Boolean {
-        val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(200)+1
-        return try {
-            val rsp: String? = restClient.get()
-                .uri("/todos/${id}")
+                .uri("")
                 .retrieve()
                 .body(String::class.java)
             //Postcondition
@@ -205,11 +146,34 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // RestClient object
     companion object {
         private lateinit var restClient: RestClient
-        private var debug: Boolean = false
         private val logger = LoggerFactory.getLogger(HttpUser::class.java)
     }
 }
 
-fun main(args: Array<String>) {
-    TulipApi.runTulip(benchmarkConfig)
+class KwrikCli : CliktCommand() {
+    private val p_rate by option("--rate").default("5.0")
+    private val p_threads by option("--threads").default("2")
+    private val p_duration by option("--duration").default("30")
+    private val p_repeat by option("--repeat").default("3")
+    private val p_url by option("--url").default("http://localhost:7070")
+    override fun run() {
+        var jsonc = benchmarkConfig
+
+        jsonc = jsonc.replace("__P_RATE__", p_rate)
+        jsonc = jsonc.replace("__P_THREADS__", p_threads)
+        jsonc = jsonc.replace("__P_DURATION__", p_duration)
+        jsonc = jsonc.replace("__P_REPEAT__", p_repeat)
+        jsonc = jsonc.replace("__P_URL__", p_url)
+
+        println("kwrik:")
+        println("  --rate = ${p_rate}")
+        println("  --threads = ${p_threads}")
+        println("  --duration = ${p_duration}")
+        println("  --repeat = ${p_repeat}")
+        println("  --url = ${p_url}")
+
+        TulipApi.runTulip(jsonc)
+    }
 }
+
+fun main(args: Array<String>) = KwrikCli().main(args)
