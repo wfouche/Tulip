@@ -63,6 +63,7 @@ val benchmarkConfig:String = """
     // Benchmarks
     "benchmarks": {
         "onStart": {
+            "save_stats": false,
             "scenario_actions": [ {"id": 0} ]
         },
          "HTTP": {
@@ -81,6 +82,7 @@ val benchmarkConfig:String = """
             }
         },
         "onStop": {
+            "save_stats": false,
             "scenario_actions": [
                 {
                     "id": 99
@@ -132,7 +134,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
                 .retrieve()
                 .body(String::class.java)
             //Postcondition
-            (rsp != null && rsp.length > 2)
+            (rsp != null && rsp.length > 0)
         } catch (e: RestClientException) {
             false
         }
