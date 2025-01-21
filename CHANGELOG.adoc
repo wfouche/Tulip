@@ -8,6 +8,20 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.1.4] - 2025-01-21
+
+* Configuration changes:
+
+** *save_stats* benchmark property added with default value set to `true`. If set to `false`, then data is not written to the json output file for a particular benchmark.
+
+* API changes:
+
+** `runTulip(String filename)` changes to `runTulip(String text)` where `text` is either the name of a file or a json string starting with `{`.
+
+=== Release Notes
+
+* Configuration file changes:
+
 == [v2.1.3] - 2025-01-15
 
 === Release Notes
