@@ -25,7 +25,7 @@ val benchmarkConfig:String = """
 {
     // Actions
     "actions": {
-        "description": "kwrk [Kotlin]",
+        "description": "kwrk",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
         "user_class": "HttpUser",
