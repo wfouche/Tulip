@@ -125,6 +125,7 @@ public class TulipApi {
                 // Benchmarks
                 "benchmarks": {
                     "onStart": {
+                        "save_stats": false,
                         "scenario_actions": [ {"id": 0} ]
                     },
                      "REST1": {
@@ -175,11 +176,8 @@ public class TulipApi {
                         }
                     },
                     "onStop": {
-                        "scenario_actions": [
-                            {
-                                "id": 99
-                            }
-                        ]
+                        "save_stats": false,
+                        "scenario_actions": [ {"id": 99} ]
                     }
                 },
                 // Contexts
