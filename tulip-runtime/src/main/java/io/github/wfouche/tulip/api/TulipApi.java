@@ -661,12 +661,12 @@ public class TulipApi {
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
-            #jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            #jbang run asciidoc@wfouche benchmark_config.adoc
             """;
 
     private static String runBenchCmdJava = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
-            if exist benchmark_report.html del benchmark_report.html
+            if exist benchmark_report.htmlgis del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
             call jbang run App.java
             @echo off
@@ -674,7 +674,7 @@ public class TulipApi {
             REM w3m.exe -dump -cols 205 benchmark_report.html
             REM lynx.exe -dump -width 205 benchmark_report.html
             start benchmark_report.html
-            REM jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
             """;
 
@@ -687,7 +687,7 @@ public class TulipApi {
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
-            #jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            #jbang run asciidoc@wfouche benchmark_config.adoc
             """;
 
     private static String runBenchCmdKotlin = """
@@ -700,7 +700,7 @@ public class TulipApi {
             REM call w3m.exe -dump -cols 205 benchmark_report.html
             REM lynx.exe -dump -width 205 benchmark_report.html
             start benchmark_report.html
-            REM jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
             """;
 
@@ -713,7 +713,7 @@ public class TulipApi {
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
-            #jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            #jbang run asciidoc@wfouche benchmark_config.adoc
             """;
 
     private static String runBenchCmdGroovy = """
@@ -726,7 +726,7 @@ public class TulipApi {
             REM call w3m.exe -dump -cols 205 benchmark_report.html
             REM lynx.exe -dump -width 205 benchmark_report.html
             start benchmark_report.html
-            REM jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
             """;
 
@@ -738,7 +738,7 @@ public class TulipApi {
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
-            #jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            #jbang run asciidoc@wfouche benchmark_config.adoc
             """;
 
     private static String runBenchCmdScala = """
@@ -750,7 +750,7 @@ public class TulipApi {
             REM call w3m.exe -dump -cols 205 benchmark_report.html
             REM lynx.exe -dump -width 205 benchmark_report.html
             start benchmark_report.html
-            REM jbang run https://gist.github.com/wfouche/70738de122128bbc19ea888799151699 benchmark_config.adoc
+            REM jbang asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
             """;
 
