@@ -866,7 +866,9 @@ private object DataCollector {
 
             json += "\"java\": { "
             json += "\"java.vendor\": \"${System.getProperty("java.vendor")}\", "
-            json += "\"java.runtime.version\": \"${System.getProperty("java.runtime.version")}\""
+            json += "\"java.runtime.version\": \"${System.getProperty("java.runtime.version")}\", "
+            json += "\"kotlin.version\": \"${KotlinVersion.CURRENT}\""
+
             json += "}, "
 
             json += "\"duration\": ${r.durationSeconds}, "
