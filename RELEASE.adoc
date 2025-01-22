@@ -89,3 +89,11 @@ $ git tag -d v2.0.9
 git commit --amend -m "New commit message"
 git push --force
 ----
+
+=== Make a script executable
+
+.A script file was previously submitted to Git, but without +x
+[source,bash]
+----
+git update-index --chmod=+x  run_bench.sh
+----
