@@ -1,7 +1,7 @@
 REM kwrk
 if exist benchmark_report.html del benchmark_report.html
 set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
-jbang run kwrk.kt --rate 10000.0 --threads 2 --duration 30 --repeat 4 --url https://jsonplaceholder.typicode.com/posts/1
+jbang run kwrk.kt --rate 10.0 --threads 2 --duration 30 --repeat 4 --url https://jsonplaceholder.typicode.com/posts/1
 @echo off
 echo.
 REM w3m.exe -dump -cols 205 benchmark_report.html
