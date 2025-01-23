@@ -1,0 +1,21 @@
+{
+  "name": "scala-cli",
+  "argv": [
+    "/home/wfouche/.sdkman/candidates/scalacli/current/bin/scala-cli",
+    "bsp",
+    "--json-options",
+    "/home/wfouche/IdeaProjects/Tulip/tests/Scala/.scala-build/ide-options-v2.json",
+    "--json-launcher-options",
+    "/home/wfouche/IdeaProjects/Tulip/tests/Scala/.scala-build/ide-launcher-options.json",
+    "--envs-file",
+    "/home/wfouche/IdeaProjects/Tulip/tests/Scala/.scala-build/ide-envs.json",
+    "/home/wfouche/IdeaProjects/Tulip/tests/Scala/App.scala",
+    "/home/wfouche/IdeaProjects/Tulip/tests/Scala/HttpUser.scala"
+  ],
+  "version": "1.5.4",
+  "bspVersion": "2.1.1",
+  "languages": [
+    "scala",
+    "java"
+  ]
+}

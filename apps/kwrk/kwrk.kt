@@ -31,7 +31,6 @@ val benchmarkConfig:String = """
         "user_class": "HttpUser",
         "user_params": {
             "baseURI": "__P_URL__",
-            //"baseURI": "https://jsonplaceholder.typicode.com",
             "connectTimeoutMillis": 500,
             "readTimeoutMillis": 2000,
             "debug": false
@@ -40,24 +39,6 @@ val benchmarkConfig:String = """
             "0": "onStart",  // Init
             "1": "GET:url",
             "99": "onStop"   // Shutdown
-        }
-    },
-    // Workflows using Markov chains
-    "workflows": {
-        "api-user": {
-            "-": {
-                "1": 0.40,
-                "3": 0.60
-            },
-            "1": {
-                "2": 1.0
-            },
-            "2": {
-                "-": 1.0
-            },
-            "3": {
-                "-": 1.0
-            }
         }
     },
     // Benchmarks
@@ -83,11 +64,7 @@ val benchmarkConfig:String = """
         },
         "onStop": {
             "save_stats": false,
-            "scenario_actions": [
-                {
-                    "id": 99
-                }
-            ]
+            "scenario_actions": [ {"id": 99} ]
         }
     },
     // Contexts
@@ -107,9 +84,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     override fun onStart(): Boolean {
         // Initialize the shared RestClient object only once
         if (userId == 0) {
-            logger.info("Kotlin")
-            logger.info("Initializing static data")
-            logger.info(getUserParamValue("baseURI"))
+            //logger.info(getUserParamValue("baseURI"))
             val connectTimeout = getUserParamValue("connectTimeoutMillis").toInt()
             val readTimeout = getUserParamValue("readTimeoutMillis").toInt()
             val factory = SimpleClientHttpRequestFactory().apply {

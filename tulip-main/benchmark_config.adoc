@@ -1,0 +1,405 @@
+= Tulip Configuration Report
+:toc: left
+:sectnums:
+:diagram-server-url: https://kroki.io/
+:diagram-server-type: kroki_io
+
+Description::
+  Micro-benchmarks 
+
+Filename::
+  benchmark_config.jsonc
+
+== Actions
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *description*
+| Micro-benchmarks
+| *output_filename*
+| benchmark_output.json
+| *report_filename*
+| benchmark_report.html
+| *user_class*
+| org.example.user.HttpUser
+| *user_params*
+|
+[%header,cols="1a,2a"]
+!===
+! id ! value 
+! *url* ! https://jsonplaceholder.typicode.com
+! *urlx* ! http://localhost:7071
+! *debug* ! False
+! *http_port* ! 7071
+!===
+| *user_actions*
+|
+[%header,cols="1a,2a"]
+!===
+! id ! value 
+! *0* ! onStart
+! *1* ! DELAY-6ms
+! *2* ! DELAY-14ms
+! *3* ! r/posts
+! *4* ! r/comments
+! *5* ! r/albums
+! *6* ! r/photos
+! *7* ! r/todos
+! *8* ! Nop1
+! *9* ! Nop2
+! *10* ! DELAY-10ms
+! *99* ! onStop
+!===
+|===
+
+== Workflows 
+
+[[max-tps]]
+=== max-tps
+
+[%header,cols="1a,1a"]
+|===
+| Workflow Diagram | Specification
+|[plantuml,wfd0,svg]
+----
+@startuml
+state "-" as A0
+state "Action 8" as A8
+A8: <Nop1>
+
+state "Action 9" as A9
+A9: <Nop2>
+
+A0 --> A8: 0.500
+A0 --> A9: 0.500
+A8 --> A0: 1.000
+A9 --> A0: 1.000
+@enduml
+----
+| 
+[source,json]
+----
+{
+    "-": {
+        "8": 0.5, 
+        "9": 0.5
+    }, 
+    "8": {
+        "-": 1.0
+    }, 
+    "9": {
+        "-": 1.0
+    }
+}
+----
+|===
+
+[[random]]
+=== random
+
+[%header,cols="1a,1a"]
+|===
+| Workflow Diagram | Specification
+|[plantuml,wfd1,svg]
+----
+@startuml
+state "-" as A0
+state "Action 1" as A1
+A1: <DELAY-6ms>
+
+state "Action 2" as A2
+A2: <DELAY-14ms>
+
+A0 --> A1: 0.250
+A0 --> A2: 0.750
+A1 --> A0: 1.000
+A2 --> A0: 1.000
+@enduml
+----
+| 
+[source,json]
+----
+{
+    "-": {
+        "1": 0.25, 
+        "2": 0.75
+    }, 
+    "1": {
+        "-": 1.0
+    }, 
+    "2": {
+        "-": 1.0
+    }
+}
+----
+|===
+
+[[http]]
+=== http
+
+[%header,cols="1a,1a"]
+|===
+| Workflow Diagram | Specification
+|[plantuml,wfd2,svg]
+----
+@startuml
+state "-" as A0
+state "Action 3" as A3
+A3: <r/posts>
+
+state "Action 4" as A4
+A4: <r/comments>
+
+state "Action 5" as A5
+A5: <r/albums>
+
+state "Action 6" as A6
+A6: <r/photos>
+
+state "Action 7" as A7
+A7: <r/todos>
+
+A0 --> A3: 1.000
+A3 --> A4: 1.000
+A4 --> A5: 1.000
+A5 --> A6: 1.000
+A6 --> A7: 1.000
+A7 --> A0: 1.000
+@enduml
+----
+| 
+[source,json]
+----
+{
+    "-": {
+        "3": 1.0
+    }, 
+    "3": {
+        "4": 1.0
+    }, 
+    "4": {
+        "5": 1.0
+    }, 
+    "5": {
+        "6": 1.0
+    }, 
+    "6": {
+        "7": 1.0
+    }, 
+    "7": {
+        "-": 1.0
+    }
+}
+----
+|===
+
+== Benchmarks
+
+=== onStart
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 0.0
+| *worker_thread_queue_size* | 0
+| *scenario_actions* 
+| 
+[%header,cols="1a,2a"]
+!===
+! id ! weight 
+! 0
+! - 
+!===
+|===
+
+=== Max TPS
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 0.0
+| *worker_thread_queue_size* | 0
+| *scenario_workflow* | <<max-tps>>
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 15 seconds
+! *warmup_duration*
+! 30 seconds
+! *benchmark_duration*
+! 60 seconds
+! *benchmark_repeat_count*
+! 4 seconds
+!===
+|===
+
+=== 1m TPS
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 1000000.0
+| *worker_thread_queue_size* | 0
+| *scenario_workflow* | <<max-tps>>
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 15 seconds
+! *warmup_duration*
+! 30 seconds
+! *benchmark_duration*
+! 60 seconds
+! *benchmark_repeat_count*
+! 4 seconds
+!===
+|===
+
+=== 100 TPS
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 100.0
+| *worker_thread_queue_size* | 1
+| *scenario_workflow* | <<random>>
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 15 seconds
+! *warmup_duration*
+! 15 seconds
+! *benchmark_duration*
+! 30 seconds
+! *benchmark_repeat_count*
+! 4 seconds
+!===
+|===
+
+=== 50 TPS
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 50.0
+| *worker_thread_queue_size* | 1
+| *scenario_actions* 
+| 
+[%header,cols="1a,2a"]
+!===
+! id ! weight 
+! 10
+! - 
+!===
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 15 seconds
+! *warmup_duration*
+! 15 seconds
+! *benchmark_duration*
+! 30 seconds
+! *benchmark_repeat_count*
+! 4 seconds
+!===
+|===
+
+=== HTTP Max TPS
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 0.0
+| *worker_thread_queue_size* | 0
+| *scenario_workflow* | <<http>>
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 15 seconds
+! *warmup_duration*
+! 15 seconds
+! *benchmark_duration*
+! 30 seconds
+! *benchmark_repeat_count*
+! 3 seconds
+!===
+|===
+
+=== HTTP 1250 TPS
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 1250.0
+| *worker_thread_queue_size* | 0
+| *scenario_workflow* | <<http>>
+| *time* 
+| 
+[%noheader,cols="2a,1a"]
+!===
+! *pre_warmup_duration*
+! 15 seconds
+! *warmup_duration*
+! 15 seconds
+! *benchmark_duration*
+! 30 seconds
+! *benchmark_repeat_count*
+! 3 seconds
+!===
+|===
+
+=== onStop
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 0.0
+| *worker_thread_queue_size* | 0
+| *scenario_actions* 
+| 
+[%header,cols="1a,2a"]
+!===
+! id ! weight 
+! 99
+! - 
+!===
+|===
+
+== Contexts
+
+=== Context-0
+
+[%header,cols="1a,2a"]
+|===
+| id | value 
+| *num_users*   | 16
+| *num_threads* | 2
+| *enabled* | True
+|===
+=== Context-1
+
+[%header,cols="1a,2a"]
+|===
+| id | value 
+| *num_users*   | 32
+| *num_threads* | 4
+| *enabled* | False
+|===
