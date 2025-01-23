@@ -168,22 +168,13 @@ class KwrkCli : CliktCommand() {
         jsonc = jsonc.replace("__P_URL__", p_url)
 
         println("kwrk arguments:")
-        println("  --rate = ${p_rate}")
-        println("  --threads = ${p_threads}")
-        println("  --duration = ${p_duration}")
-        println("  --repeat = ${p_repeat}")
-        println("  --url = ${p_url}")
+        println("  --rate ${p_rate}")
+        println("  --threads ${p_threads}")
+        println("  --duration ${p_duration}")
+        println("  --repeat ${p_repeat}")
+        println("  --url ${p_url}")
 
         TulipApi.runTulip(jsonc)
-
-        println("")
-        println("kwrk arguments:")
-        println("  --rate = ${p_rate}")
-        println("  --threads = ${p_threads}")
-        println("  --duration = ${p_duration}")
-        println("  --repeat = ${p_repeat}")
-        println("  --url = ${p_url}")
-
     }
 }
 
