@@ -1,4 +1,4 @@
-set version=2.1.4
+set version=2.1.5-dev
 
 if not exist "Java" (md Java)
 cd Java
