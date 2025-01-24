@@ -56,7 +56,7 @@ tasks.jar {
 // https://dev.to/tschuehly/how-to-publish-a-kotlinjava-spring-boot-library-with-gradle-to-maven-central-complete-guide-402a
 // https://jreleaser.org/guide/latest/examples/maven/staging-artifacts.html
 //
-// $ ./gradlew publish    # Remove SNAPSHOT and then publish, output to tulip-runtime/build/staging-deploy
+// $ ./gradlew publish    # Output in folder tulip-runtime/build/staging-deploy
 //
 publishing {
     publications {
@@ -95,7 +95,6 @@ publishing {
             }
         }
     }
-
     repositories {
         maven {
             url = uri(layout.buildDirectory.dir("staging-deploy"))
