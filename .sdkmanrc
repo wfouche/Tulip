@@ -2,8 +2,7 @@
 # Add key=value pairs of SDKs to use below
 
 # Java
-java=21.0.5-tem
-#java=23.0.1-tem
+java=21.0.6-tem
 
 # Gradle
 gradle=8.10.2
