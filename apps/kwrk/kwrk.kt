@@ -5,6 +5,7 @@
 //DEPS org.slf4j:slf4j-api:2.0.16
 //DEPS ch.qos.logback:logback-core:1.5.16
 //DEPS ch.qos.logback:logback-classic:1.5.16
+//DEPS org.pkl-lang:pkl-core:0.27.2
 //JAVA 21
 //KOTLIN 2.0.21
 
@@ -21,11 +22,14 @@ import com.github.ajalt.clikt.core.*
 import com.github.ajalt.clikt.parameters.options.default
 import com.github.ajalt.clikt.parameters.options.option
 
+import  org.pkl.core.Duration
+import  org.pkl.core.DurationUnit
+
 val benchmarkConfig:String = """
 {
     // Actions
     "actions": {
-        "description": "kwrk",
+        "description": "kwrk",   // pronounced 'quirk'
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
         "user_class": "HttpUser",
@@ -130,15 +134,16 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 class KwrkCli : CliktCommand() {
     private val p_rate by option("--rate").default("5.0")
     private val p_threads by option("--threads").default("2")
-    private val p_duration by option("--duration").default("30")
+    private val p_duration: String by option("--duration", help="value,{s,min,h,d}").default("30,s")
     private val p_repeat by option("--repeat").default("3")
     private val p_url by option("--url").default("http://localhost:7070")
     override fun run() {
         var jsonc = benchmarkConfig
-
+        val s = p_duration.split(",")  // n,{s,min,h,d}
+        val d_seconds = Duration(s[0].toDouble(), DurationUnit.parse(s[1])!!).inWholeSeconds().toString()
         jsonc = jsonc.replace("__P_RATE__", p_rate)
         jsonc = jsonc.replace("__P_THREADS__", p_threads)
-        jsonc = jsonc.replace("__P_DURATION__", p_duration)
+        jsonc = jsonc.replace("__P_DURATION__", d_seconds)
         jsonc = jsonc.replace("__P_REPEAT__", p_repeat)
         jsonc = jsonc.replace("__P_URL__", p_url)
 
