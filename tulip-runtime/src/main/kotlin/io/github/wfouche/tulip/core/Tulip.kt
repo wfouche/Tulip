@@ -1324,14 +1324,18 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 
         val rateGovernor: RateGovernor? = null
         // New rate control logic - begin
-        var nanosPerAction = 0.0
+        val nanosPerAction: Double
         if (arrivalRate > -1.0) {
             // Warm-up duration at max speed, ungoverned.
+            nanosPerAction = 0.0
         } else {
             // Ramp-up or Main duration.
             if (testCase.arrivalRate > 0.0) {
-                //rateGovernor = RateGovernor(testCase.arrivalRate, timeMillisStart)
+                // rate limited, calculate time ns per action
                 nanosPerAction = 1000000000.0 /  testCase.arrivalRate
+            } else {
+                // Not rate limited
+                nanosPerAction = 0.0
             }
         }
 
@@ -1359,8 +1363,8 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             }
             rTime = System.nanoTime().toDouble()
         }
-        val tsEnd = java.time.LocalDateTime.now().format(formatter)
         cpuTime = getProcessCpuTime() - cpuTime
+        val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
         Console.put("$testPhase (${testCase.name}), run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})")
 
