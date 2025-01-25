@@ -1,6 +1,6 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
 //DEPS com.github.ajalt.clikt:clikt-jvm:5.0.1
-//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.4
+//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.5-dev
 //DEPS org.springframework.boot:spring-boot-starter-web:3.4.1
 //DEPS org.slf4j:slf4j-api:2.0.16
 //DEPS ch.qos.logback:logback-core:1.5.16
