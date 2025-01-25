@@ -1336,7 +1336,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         }
 
         val durationNanos: Double = durationMillis * 1000000.0
-        val startTimeNanos = System.nanoTime()
+        val startTimeNanos = timeMillisStart * 1000000L
         val endTimeNanos: Double = startTimeNanos + durationNanos
         var rTime: Double = startTimeNanos.toDouble()
         var vTime: Double = rTime
