@@ -214,7 +214,7 @@ def createReport(filename):
     jb = json.load(fileObj, object_pairs_hook=OrderedDict)
     version = jb['version']
     desc1 = 'Tulip ' + version
-    desc2 = jb["config"]["actions"]["description"] + " / " + jb["timestamp"].replace("_", " ")
+    desc2 = jb["config"]["actions"]["description"] + " / " + jb["timestamp"]
     rb = jb["results"]
 
     report_fn = jb["config"]["actions"]["report_filename"]
