@@ -1,6 +1,5 @@
 export TULIP_VERSION="2.1.5-dev"
-
-export TULIP_OPTS="10000.0 http://localhost:7070"
+export TULIP_OPTS="10000.0 http localhost:7070"
 
 mkdir -p Java
 cd Java || exit

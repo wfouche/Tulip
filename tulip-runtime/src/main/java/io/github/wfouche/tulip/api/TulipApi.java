@@ -91,10 +91,12 @@ public class TulipApi {
                     "report_filename": "benchmark_report.html",
                     "user_class": "HttpUser",
                     "user_params": {
-                        "baseURI": "__BASE_URI__",
+                        "protocol": "__PROTOCOL__",
+                        "baseURL": "__BASE_URL__",
+                        "method": "__METHOD__",
                         "connectTimeoutMillis": 500,
                         "readTimeoutMillis": 2000,
-                        "debug": false
+                        "debug": true
                     },
                     "user_actions": {
                         "0": "onStart",  // Init
@@ -295,12 +297,16 @@ public class TulipApi {
                         var factory = new SimpleClientHttpRequestFactory();
                         factory.setConnectTimeout(connectTimeout);
                         factory.setReadTimeout(readTimeout);
+                        var url = getUserParamValue("protocol") + "://" + getUserParamValue("baseURL");
                         restClient = RestClient.builder()
                             .requestFactory(factory)
-                            .baseUrl(getUserParamValue("baseURI"))
+                            .baseUrl(url)
                             .build();
                         debug = Boolean.valueOf(getUserParamValue("debug"));
                         logger.info("debug = " + debug);
+                        if (debug) {
+                            logger.info(url);
+                        }
                     }
                     return true;
                 }
@@ -393,12 +399,16 @@ public class TulipApi {
                             setConnectTimeout(connectTimeout)
                             setReadTimeout(readTimeout)
                         }
+                        val url = getUserParamValue("protocol") + "://" + getUserParamValue("baseURL")
                         restClient = RestClient.builder()
                             .requestFactory(factory)
-                            .baseUrl(getUserParamValue("baseURI"))
+                            .baseUrl(url)
                             .build()
                         debug = getUserParamValue("debug").toBoolean()
                         logger.info("debug = " + debug)
+                        if (debug) {
+                            logger.info(url)
+                        }
                     }
                     return true
                 }
@@ -487,12 +497,16 @@ public class TulipApi {
                         def factory = new SimpleClientHttpRequestFactory()
                         factory.setConnectTimeout(connectTimeout)
                         factory.setReadTimeout(readTimeout)
+                        def url = getUserParamValue("protocol") + "://" + getUserParamValue("baseURL")
                         restClient = RestClient.builder()
                             .requestFactory(factory)
-                            .baseUrl(getUserParamValue("baseURI"))
+                            .baseUrl(url)
                             .build()
                         def debug = Boolean.valueOf(getUserParamValue("debug"))
                         logger.info("debug = " + debug)
+                        if (debug) {
+                            logger.info(url)
+                        }
                     }
                     return true
                 }
@@ -584,12 +598,16 @@ public class TulipApi {
                   val factory = new SimpleClientHttpRequestFactory()
                   factory.setConnectTimeout(connectTimeout)
                   factory.setReadTimeout(readTimeout)
+                  val url = getUserParamValue("protocol")+ "://" + getUserParamValue("baseURL")
                   restClient = RestClient.builder()
                     .requestFactory(factory)
-                    .baseUrl(getUserParamValue("baseURI"))
+                    .baseUrl(url)
                     .build()
                   debug = getUserParamValue("debug").toBoolean
                   logger.info(s"debug = $debug")
+                  if (debug) {
+                    logger.info(url)
+                  }
                 }
                 true
               }
@@ -760,6 +778,9 @@ public class TulipApi {
     public static void main(String[] args) {
         // jbang io.github.wfouche.tulip:tulip-runtime:<version>
         String lang = "Java";
+        String protocol = "http";
+        String method = "GET";
+
         if (args.length > 0) {
             lang = args[0];
         }
@@ -785,9 +806,13 @@ public class TulipApi {
             avgAPS = args[1];
         }
 
-        String baseURI = "https://jsonplaceholder.typicode.com";
         if (args.length > 2) {
-            baseURI = args[2];
+            protocol = args[2];
+        }
+
+        String baseURL = "jsonplaceholder.typicode.com";
+        if (args.length > 3) {
+            baseURL = args[3];
         }
 
         if (lang.equals("Java")) {
@@ -796,7 +821,9 @@ public class TulipApi {
                     benchmarkConfig.stripLeading()
                             .replace("__TULIP_LANG__", lang)
                             .replace("__AVG_APS__", avgAPS)
-                            .replace("__BASE_URI__", baseURI), false);
+                            .replace("__BASE_URL__", baseURL)
+                            .replace("__PROTOCOL__", protocol)
+                            .replace("__METHOD__", method), false);
             writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.java", javaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShJava.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
@@ -819,7 +846,9 @@ public class TulipApi {
                     benchmarkConfig.stripLeading()
                             .replace("__TULIP_LANG__", lang)
                             .replace("__AVG_APS__", avgAPS)
-                            .replace("__BASE_URI__", baseURI), false);
+                            .replace("__BASE_URL__", baseURL)
+                            .replace("__PROTOCOL__", protocol)
+                            .replace("__METHOD__", method), false);
             writeToFile("App.kt", kotlinApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.kt", kotlinUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
@@ -842,7 +871,9 @@ public class TulipApi {
                     benchmarkConfig.stripLeading()
                             .replace("__TULIP_LANG__", lang)
                             .replace("__AVG_APS__", avgAPS)
-                            .replace("__BASE_URI__", baseURI), false);
+                            .replace("__BASE_URL__", baseURL)
+                            .replace("__PROTOCOL__", protocol)
+                            .replace("__METHOD__", method), false);
             writeToFile("App.groovy", groovyApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.groovy", groovyUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShGroovy.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
@@ -865,7 +896,9 @@ public class TulipApi {
                     benchmarkConfig.stripLeading()
                             .replace("__TULIP_LANG__", lang)
                             .replace("__AVG_APS__", avgAPS)
-                            .replace("__BASE_URI__", baseURI), false);
+                            .replace("__BASE_URL__", baseURL)
+                            .replace("__PROTOCOL__", protocol)
+                            .replace("__METHOD__", method), false);
             writeToFile("App.scala", scalaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile("HttpUser.scala", scalaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShScala.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
