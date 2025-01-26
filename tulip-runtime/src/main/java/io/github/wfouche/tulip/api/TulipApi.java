@@ -99,11 +99,9 @@ public class TulipApi {
                         "debug": true
                     },
                     "user_actions": {
-                        "0": "onStart",  // Init
                         "1": "GET:posts",
                         "2": "GET:comments",
-                        "3": "GET:todos",
-                        "99": "onStop"   // Shutdown
+                        "3": "GET:todos"
                     }
                 },
                 // Workflows using Markov chains
