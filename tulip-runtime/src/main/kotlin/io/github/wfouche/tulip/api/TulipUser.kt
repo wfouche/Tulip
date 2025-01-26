@@ -244,7 +244,15 @@ abstract class TulipUser(val userId: Int, val threadId: Int) {
     }
 
     open fun getActionName(actionId: Int): String {
-        return if (actionNames.containsKey(actionId)) actionNames[actionId]!! else "action${actionId}"
+        return if (actionNames.containsKey(actionId)) {
+            actionNames[actionId]!!
+        } else {
+            when (actionId) {
+                0 -> "onStart"
+                99 -> "opStop"
+                else -> "action${actionId}"
+            }
+        }
     }
 
 }
