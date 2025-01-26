@@ -40,9 +40,7 @@ val benchmarkConfig:String = """
             "debug": false
         },
         "user_actions": {
-            "0": "onStart",  // Init
-            "1": "GET:url",
-            "99": "onStop"   // Shutdown
+            "1": "GET:url"
         }
     },
     // Benchmarks
