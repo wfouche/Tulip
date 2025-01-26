@@ -598,11 +598,10 @@ public class TulipApi {
                   val factory = new SimpleClientHttpRequestFactory()
                   factory.setConnectTimeout(connectTimeout)
                   factory.setReadTimeout(readTimeout)
-                  val url = getUserParamValue("protocol")+ "://" + getUserParamValue("baseURL")
+                  val url = getUserParamValue("protocol") + "://" + getUserParamValue("baseURL")
                   restClient = RestClient.builder()
                     .requestFactory(factory)
                     .baseUrl(url)
-                  val rsp = restClient.get()
                     .build()
                   debug = getUserParamValue("debug").toBoolean
                   logger.info(s"debug = $debug")
