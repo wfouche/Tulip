@@ -249,7 +249,7 @@ abstract class TulipUser(val userId: Int, val threadId: Int) {
         } else {
             when (actionId) {
                 0 -> "onStart"
-                99 -> "opStop"
+                TulipApi.NUM_ACTIONS-1 -> "opStop"
                 else -> "action${actionId}"
             }
         }
