@@ -315,7 +315,7 @@ public class TulipApi {
                 public boolean action1() {
                     boolean rc;
                     try {
-                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(100)+1;
+                        int id = ThreadLocalRandom.current().nextInt(100)+1;
                         String rsp = restClient.get()
                           .uri("/posts/{id}", id)
                           .retrieve()
@@ -331,7 +331,7 @@ public class TulipApi {
                 public boolean action2() {
                     boolean rc;
                     try {
-                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(500)+1;
+                        int id = ThreadLocalRandom.current().nextInt(500)+1;
                         String rsp = restClient.get()
                             .uri("/comments/{id}", id)
                             .retrieve()
@@ -347,7 +347,7 @@ public class TulipApi {
                 public boolean action3() {
                     boolean rc;
                     try {
-                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(200)+1;
+                        int id = ThreadLocalRandom.current().nextInt(200)+1;
                         String rsp = restClient.get()
                             .uri("/todos/{id}", id)
                             .retrieve()
@@ -415,7 +415,7 @@ public class TulipApi {
             
                 // Action 1: GET /posts/{id}
                 override fun action1(): Boolean {
-                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(100)+1
+                    val id: Int = ThreadLocalRandom.current().nextInt(100)+1
                     return try {
                         val rsp: String? = restClient.get()
                             .uri("/posts/${id}")
@@ -430,7 +430,7 @@ public class TulipApi {
             
                 // Action 2: GET /comments/{id}
                 override fun action2(): Boolean {
-                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(500)+1
+                    val id: Int = ThreadLocalRandom.current().nextInt(500)+1
                     return try {
                         val rsp: String? = restClient.get()
                             .uri("/comments/${id}")
@@ -445,7 +445,7 @@ public class TulipApi {
             
                 // Action 3: GET /todos/{id}
                 override fun action3(): Boolean {
-                    val id: Int = if (debug) 1 else ThreadLocalRandom.current().nextInt(200)+1
+                    val id: Int = ThreadLocalRandom.current().nextInt(200)+1
                     return try {
                         val rsp: String? = restClient.get()
                             .uri("/todos/${id}")
@@ -515,7 +515,7 @@ public class TulipApi {
                 boolean action1() {
                     boolean rc
                     try {
-                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(100) + 1
+                        int id = ThreadLocalRandom.current().nextInt(100) + 1
                         String rsp = restClient.get()
                             .uri("/posts/${id}")
                             .retrieve()
@@ -531,7 +531,7 @@ public class TulipApi {
                 boolean action2() {
                     boolean rc
                     try {
-                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(500) + 1
+                        int id = ThreadLocalRandom.current().nextInt(500) + 1
                         String rsp = restClient.get()
                             .uri("/comments/${id}")
                             .retrieve()
@@ -547,7 +547,7 @@ public class TulipApi {
                 boolean action3() {
                     boolean rc
                     try {
-                        int id = debug ? 1 : ThreadLocalRandom.current().nextInt(200) + 1
+                        int id = ThreadLocalRandom.current().nextInt(200) + 1
                         String rsp = restClient.get()
                             .uri("/todos/${id}")
                             .retrieve()
@@ -602,6 +602,7 @@ public class TulipApi {
                   restClient = RestClient.builder()
                     .requestFactory(factory)
                     .baseUrl(url)
+                  val rsp = restClient.get()
                     .build()
                   debug = getUserParamValue("debug").toBoolean
                   logger.info(s"debug = $debug")
@@ -615,7 +616,7 @@ public class TulipApi {
               // Action 1: GET /posts/{id}
               override def action1(): Boolean = {
                 try {
-                  val id = if (debug) 1 else ThreadLocalRandom.current().nextInt(100) + 1
+                  val id = ThreadLocalRandom.current().nextInt(100) + 1
                   val rsp = restClient.get()
                     .uri("/posts/{id}", id)
                     .retrieve()
@@ -629,7 +630,7 @@ public class TulipApi {
               // Action 2: GET /comments/{id}
               override def action2(): Boolean = {
                 try {
-                  val id = if (debug) 1 else ThreadLocalRandom.current().nextInt(500) + 1
+                  val id = ThreadLocalRandom.current().nextInt(500) + 1
                   val rsp = restClient.get()
                     .uri("/comments/{id}", id)
                     .retrieve()
@@ -643,7 +644,7 @@ public class TulipApi {
               // Action 3: GET /todos/{id}
               override def action3(): Boolean = {
                 try {
-                  val id = if (debug) 1 else ThreadLocalRandom.current().nextInt(200) + 1
+                  val id = ThreadLocalRandom.current().nextInt(200) + 1
                   val rsp = restClient.get()
                     .uri("/todos/{id}", id)
                     .retrieve()
