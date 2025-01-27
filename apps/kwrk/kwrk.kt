@@ -66,7 +66,7 @@ val benchmarkConfig:String = """
         },
         "onStop": {
             "save_stats": false,
-            "scenario_actions": [ {"id": 99} ]
+            "scenario_actions": [ {"id": 100} ]
         }
     },
     // Contexts

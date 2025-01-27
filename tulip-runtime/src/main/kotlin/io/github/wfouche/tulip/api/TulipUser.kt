@@ -109,6 +109,7 @@ abstract class TulipUser(val userId: Int, val threadId: Int) {
         ::action96,
         ::action97,
         ::action98,
+        ::action99,
         ::onStop
     )
 
@@ -211,6 +212,7 @@ abstract class TulipUser(val userId: Int, val threadId: Int) {
     open fun action96(): Boolean = false
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
+    open fun action99(): Boolean = false
     abstract fun onStop(): Boolean
 
     open fun processAction(actionId: Int): Boolean {

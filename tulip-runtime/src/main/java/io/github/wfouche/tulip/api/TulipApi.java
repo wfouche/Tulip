@@ -37,7 +37,7 @@ public class TulipApi {
     /**
      * The number of unique actions available in the benchmarking process.
      */
-    public static final int NUM_ACTIONS = 100;
+    public static final int NUM_ACTIONS = 101;
 
     /**
      * Runs the Tulip benchmarking process.
@@ -177,7 +177,7 @@ public class TulipApi {
                     },
                     "onStop": {
                         "save_stats": false,
-                        "scenario_actions": [ {"id": 99} ]
+                        "scenario_actions": [ {"id": 100} ]
                     }
                 },
                 // Contexts

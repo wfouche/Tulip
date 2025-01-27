@@ -11,7 +11,6 @@
             "http_port": 7071
         },
         "user_actions": {
-            "0": "onStart",
             "1": "DELAY-6ms",
             "2": "DELAY-14ms",
             "3": "r/posts",
@@ -21,8 +20,7 @@
             "7": "r/todos",
             "8": "Nop1",
             "9": "Nop2",
-            "10": "DELAY-10ms",
-            "99": "onStop"
+            "10": "DELAY-10ms"
         }
     },
     "contexts": {
@@ -122,7 +120,7 @@
         "onStop": {
             "enabled":true,
             "scenario_actions": [
-                {"id": 99 }
+                {"id": 100 }
             ]
         }
     },
