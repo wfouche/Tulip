@@ -175,6 +175,17 @@ public class TulipApi {
                             "benchmark_repeat_count": 3
                         }
                     },
+                    "REST3.max": {
+                        "enabled": true,
+                        "aps_rate": 0.0,
+                        "scenario_workflow": "api-user",
+                        "time": {
+                            "pre_warmup_duration": 30,
+                            "warmup_duration": 10,
+                            "benchmark_duration": 30,
+                            "benchmark_repeat_count": 3
+                        }
+                    },
                     "onStop": {
                         "save_stats": false,
                         "scenario_actions": [ {"id": 100} ]
@@ -185,7 +196,7 @@ public class TulipApi {
                     "Context-1": {
                         "enabled": true,
                         "num_users": 128,
-                        "num_threads": 2
+                        "num_threads": 8
                     }
                 }
             }
