@@ -8,11 +8,9 @@
             "url": "http://localhost:7070"
         },
         "user_actions": {
-            "0": "onStart",
             "1": "DELAY-10ms",
             "2": "DELAY-20ms",
             "3": "NOP",
-            "99": "onStop"
         }
     },
     "contexts": {
@@ -90,7 +88,7 @@
         "Shutdown": {
             "scenario_actions": [
                 {
-                    "id": 99
+                    "id": 100
                 }
             ]
         }

@@ -1,5 +1,5 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.3
+//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.5-dev
 //JAVA 21
 //SOURCES DemoUser.kt
 
