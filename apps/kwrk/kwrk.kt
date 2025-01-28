@@ -117,7 +117,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         }
     }
 
-    // Action 99
+    // Action 100
     override fun onStop(): Boolean {
         return true
     }
