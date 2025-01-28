@@ -35,4 +35,4 @@ jbang io.github.wfouche.tulip:tulip-runtime:$TULIP_VERSION Scala $TULIP_OPTS
 cd ..
 
 echo ""
-google-chrome Java/benchmark_report.html Groovy/benchmark_report.html Kotlin/benchmark_report.html Scala/benchmark_report.html
+firefox Java/benchmark_report.html Groovy/benchmark_report.html Kotlin/benchmark_report.html Scala/benchmark_report.html
