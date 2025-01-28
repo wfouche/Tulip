@@ -1,0 +1,68 @@
+{
+    "actions": {
+        "description": "OPPWA",
+        "output_filename": "oppwa_output.json",
+        "report_filename": "oppwa_report.html",
+        "user_class": "org.example.HttpUser",
+        "user_actions": {
+            "1": "PA",
+            "2": "CP",
+            "3": "RF",
+            "4": "DB"
+        }
+    },
+    "contexts": {
+        "Context-1": {
+            "enabled": true,
+            "num_users": 16,
+            "num_threads": 4
+        },
+        "Context-2": {
+            "enabled": false,
+            "num_users": 16,
+            "num_threads": 8
+        }
+    },
+    "benchmarks": {
+        "onStart": {
+            "scenario_actions": [ {"id": 0} ]
+        },
+        "Max TPS": {
+            "enabled": true,
+            "aps_rate": 0.0,
+            "worker_thread_queue_size": 0,
+            "time": {
+                "pre_warmup_duration": 15,
+                "warmup_duration": 15,
+                "benchmark_duration": 30,
+                "benchmark_repeat_count": 4
+            },
+            "scenario_workflow": "payments"
+        },
+        "onStop": {
+            "scenario_actions": [ {"id": 100} ]
+        }
+    },
+    "workflows": {
+        "payments": {
+            "-": {
+                "1": 0.5,
+                "4": 0.5
+            },
+            "1": {
+                "2": 1.0
+            },
+            "2": {
+                "3": 0.2,
+                "-": 0.8
+            },
+            "3": {
+                "-": 1.0
+            },
+            "4": {
+                "3": 0.2,
+                "-": 0.8
+            }
+        }
+    }
+}
