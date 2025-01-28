@@ -2,11 +2,12 @@
 # https://docs.gradle.org/current/userguide/platforms.html#sub::toml-dependencies-format
 
 [versions]
-guava = "33.3.1-jre"
-junit-jupiter-engine = "5.11.3"
+guava = "33.4.0-jre"
+junit-jupiter-engine = "5.11.4"
 clikt-jvm = "5.0.2"
-kotlinx-serialization-json = "1.7.3"
+kotlinx-serialization-json = "1.8.0"
 tulip-runtime = "2.1.5-dev"
+kotlin = "2.1.10"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
@@ -16,6 +17,6 @@ kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serializa
 tulip-runtime = { module = "io.github.wfouche.tulip:tulip-runtime", version.ref = "tulip-runtime" }
 
 [plugins]
-kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version = "2.1.0" }
-kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version = "2.1.0" }
-gradle-versions-plugin = { id = "com.github.ben-manes.versions",  version = "0.51.0" }
+kotlin-jvm = { id = "org.jetbrains.kotlin.jvm", version.ref = "kotlin" }
+kotlin-serialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+gradle-versions-plugin = { id = "com.github.ben-manes.versions",  version = "0.52.0" }
