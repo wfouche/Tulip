@@ -35,7 +35,7 @@
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 4
+                "benchmark_iterations": 4
             },
             "scenario_workflow": "payments"
         },
