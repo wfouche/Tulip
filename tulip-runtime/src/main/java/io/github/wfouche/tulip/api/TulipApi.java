@@ -248,7 +248,7 @@ public class TulipApi {
             //DEPS ch.qos.logback:logback-classic:1.5.16
             //SOURCES HttpUser.groovy
             //JAVA 21
-            //GROOVY 4.0.24
+            //GROOVY 4.0.25
             
             import io.github.wfouche.tulip.api.TulipApi
             
