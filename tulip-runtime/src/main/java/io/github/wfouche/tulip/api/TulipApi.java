@@ -140,7 +140,7 @@ public class TulipApi {
                             "pre_warmup_duration": 30,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
-                            "benchmark_repeat_count": 3
+                            "benchmark_iterations": 3
                         }
                     },
                     "REST2": {
@@ -161,7 +161,7 @@ public class TulipApi {
                             "pre_warmup_duration": 30,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
-                            "benchmark_repeat_count": 3
+                            "benchmark_iterations": 3
                         }
                     },
                     "REST3": {
@@ -172,7 +172,7 @@ public class TulipApi {
                             "pre_warmup_duration": 30,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
-                            "benchmark_repeat_count": 3
+                            "benchmark_iterations": 3
                         }
                     },
                     "REST3.max": {
@@ -183,7 +183,7 @@ public class TulipApi {
                             "pre_warmup_duration": 30,
                             "warmup_duration": 10,
                             "benchmark_duration": 30,
-                            "benchmark_repeat_count": 3
+                            "benchmark_iterations": 3
                         }
                     },
                     "onStop": {
