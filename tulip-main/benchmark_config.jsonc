@@ -51,7 +51,7 @@
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 60,
-                "benchmark_repeat_count": 4
+                "benchmark_iterations": 4
             },
             "scenario_workflow": "max-tps"
         },
@@ -63,7 +63,7 @@
                 "pre_warmup_duration": 15,
                 "warmup_duration": 30,
                 "benchmark_duration": 60,
-                "benchmark_repeat_count": 4
+                "benchmark_iterations": 4
             },
             "scenario_workflow": "max-tps"
         },
@@ -75,7 +75,7 @@
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 4
+                "benchmark_iterations": 4
             },
             "scenario_workflow": "random"
         },
@@ -87,7 +87,7 @@
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 4
+                "benchmark_iterations": 4
             },
             "scenario_actions": [
                 { "id": 10 }
@@ -101,7 +101,7 @@
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_iterations": 3
             },
             "scenario_workflow": "http"
         },
@@ -113,7 +113,7 @@
                 "pre_warmup_duration": 15,
                 "warmup_duration": 15,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_iterations": 3
             },
             "scenario_workflow": "http"
         },

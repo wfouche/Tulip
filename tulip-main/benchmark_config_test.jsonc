@@ -40,7 +40,7 @@
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_iterations": 3
             },
             "aps_rate": 0.0,
             "scenario_actions": [
@@ -53,7 +53,7 @@
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_iterations": 3
             },
             "aps_rate": 0.0,
             "scenario_actions": [
@@ -67,7 +67,7 @@
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_iterations": 3
             },
             "aps_rate": 100.0,
             "scenario_actions": [
