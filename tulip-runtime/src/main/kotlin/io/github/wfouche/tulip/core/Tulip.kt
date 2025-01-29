@@ -437,7 +437,6 @@ fun initConfig(text: String): String {
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
     if (!textIsJsonString) {
-        Console.put("")
         createConfigReport(text)
     }
 

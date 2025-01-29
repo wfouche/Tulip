@@ -210,8 +210,6 @@ def createReport(filename):
             printf('| *enabled* | True\n')
         printf("|===\n")
 
-    print("  config report = " + report_fn)
-
     report_fh.close()
 
 if __name__ == "__main__":
