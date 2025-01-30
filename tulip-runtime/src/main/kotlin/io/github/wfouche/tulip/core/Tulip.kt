@@ -10,10 +10,10 @@ import io.github.wfouche.tulip.api.TulipUser
 import io.github.wfouche.tulip.api.TulipUserFactory
 import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
-import io.micrometer.core.instrument.Clock
-import io.micrometer.core.instrument.Tag
-import io.micrometer.jmx.JmxConfig
-import io.micrometer.jmx.JmxMeterRegistry
+//import io.micrometer.core.instrument.Clock
+//import io.micrometer.core.instrument.Tag
+//import io.micrometer.jmx.JmxConfig
+//import io.micrometer.jmx.JmxMeterRegistry
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
@@ -48,7 +48,7 @@ const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 private const val histogramNumberOfSignificantValueDigits=3
 
 private val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
-private val isWindows: Boolean = System.getProperty("os.name").lowercase().contains("windows")
+// private val isWindows: Boolean = System.getProperty("os.name").lowercase().contains("windows")
 
 /*-------------------------------------------------------------------------*/
 
@@ -98,24 +98,24 @@ private var newUser: TulipUserFactory? = null
 var actionNames: Map<Int, String> = emptyMap()
 var workflows: HashMap<String,MarkovChain> = HashMap<String,MarkovChain>()
 
-private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
-
-private val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",   "actions")),   AtomicInteger(0))
-private val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
-
-private val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context", "id")),      AtomicInteger(0))
-private val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "threads")), AtomicInteger(0))
-private val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "users")),   AtomicInteger(0))
-
-private val mg_rt_avg = registry.gauge("Tulip", listOf(Tag.of("rt",   "avg")), AtomicInteger(0))
-private val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",   "max")), AtomicInteger(0))
-private val mg_rt_min = registry.gauge("Tulip", listOf(Tag.of("rt",   "min")), AtomicInteger(0))
-
-private val mg_benchmark_id  = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "id")),       AtomicInteger(0))
-private val mg_benchmark_aps = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "aps")),      AtomicInteger(0))
-private val mg_benchmark_dur = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "duration")), AtomicInteger(0))
-private val mg_benchmark_phs = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
-private val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
+//private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
+//
+//private val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",   "actions")),   AtomicInteger(0))
+//private val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
+//
+//private val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context", "id")),      AtomicInteger(0))
+//private val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "threads")), AtomicInteger(0))
+//private val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "users")),   AtomicInteger(0))
+//
+//private val mg_rt_avg = registry.gauge("Tulip", listOf(Tag.of("rt",   "avg")), AtomicInteger(0))
+//private val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",   "max")), AtomicInteger(0))
+//private val mg_rt_min = registry.gauge("Tulip", listOf(Tag.of("rt",   "min")), AtomicInteger(0))
+//
+//private val mg_benchmark_id  = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "id")),       AtomicInteger(0))
+//private val mg_benchmark_aps = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "aps")),      AtomicInteger(0))
+//private val mg_benchmark_dur = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "duration")), AtomicInteger(0))
+//private val mg_benchmark_phs = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
+//private val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
 
 // internal val mg_cpu_tulip = registry.gauge("Tulip", listOf(Tag.of("cpu",   "tulip")), AtomicInteger(0))
 // internal val mg_cpu_system = registry.gauge("Tulip", listOf(Tag.of("cpu",   "system")), AtomicInteger(0))
@@ -136,9 +136,9 @@ private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<Tes
     userThreads = arrayOfNulls(MAX_NUM_THREADS)
     actionNames = actionDesc
 
-    mg_num_threads?.set(MAX_NUM_THREADS)
-    mg_num_users?.set(MAX_NUM_USERS)
-    mg_context_id?.set(contextId)
+//    mg_num_threads?.set(MAX_NUM_THREADS)
+//    mg_num_users?.set(MAX_NUM_USERS)
+//    mg_context_id?.set(contextId)
 }
 
 private fun runtimeDone() {
@@ -665,22 +665,22 @@ private class ActionStats {
 //            output.add("  average wait time  = ${"%.3f".format(Locale.US, r.awt)} ms")
 //            output.add("  maximum wait time  = ${"%.3f".format(Locale.US, r.maxWt)} ms")
 
-            mg_rt_avg?.set(r.art.toInt())
-            mg_rt_max?.set(r.maxRt.toInt())
-            mg_rt_min?.set(r.minRt.toInt())
-
-            mg_num_actions?.set(r.numActions)
-            mg_num_failed?.set(r.numActions - r.numSuccess)
-
-            mg_benchmark_aps?.set(r.aps.toInt())
-            mg_benchmark_dur?.set(r.durationSeconds.toInt())
+//            mg_rt_avg?.set(r.art.toInt())
+//            mg_rt_max?.set(r.maxRt.toInt())
+//            mg_rt_min?.set(r.minRt.toInt())
+//
+//            mg_num_actions?.set(r.numActions)
+//            mg_num_failed?.set(r.numActions - r.numSuccess)
+//
+//            mg_benchmark_aps?.set(r.aps.toInt())
+//            mg_benchmark_dur?.set(r.durationSeconds.toInt())
             var phaseId = 0
             if (r.testPhase == "PreWarmup") phaseId = 0
             if (r.testPhase == "Warmup") phaseId = 1
             if (r.testPhase == "Benchmark") phaseId = 2
 
-            mg_benchmark_phs?.set(phaseId)
-            mg_benchmark_run?.set(r.rowId)
+//            mg_benchmark_phs?.set(phaseId)
+//            mg_benchmark_run?.set(r.rowId)
         }
 
         Console.put(output)
@@ -1159,7 +1159,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
     output.add("======================================================================")
     Console.put(output)
 
-    mg_benchmark_id?.set(indexTestCase)
+//    mg_benchmark_id?.set(indexTestCase)
 
     val rnd = ThreadLocalRandom.current()
 

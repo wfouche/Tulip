@@ -23,7 +23,7 @@ java {
 
 dependencies {
     // https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-jmx
-    implementation("io.micrometer:micrometer-registry-jmx:1.14.3")
+    // implementation("io.micrometer:micrometer-registry-jmx:1.14.3")
 
     // https://mvnrepository.com/artifact/org.hdrhistogram/HdrHistogram
     implementation("org.hdrhistogram:HdrHistogram:2.2.2")
