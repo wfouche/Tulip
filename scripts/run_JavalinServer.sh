@@ -1,6 +1,7 @@
 # Shell 1 - run JavalinServer
 #
-export JBANG_JAVA_OPTIONS="-server -Xms2048m -Xmx2048m -XX:+UseZGC -XX:+ZGenerational"
+# export JBANG_JAVA_OPTIONS="-server -Xms1024m -Xmx1024m -XX:+UseZGC -XX:+ZGenerational"
+export JBANG_JAVA_OPTIONS="-server -Xms1024m -Xmx1024m -XX:+UseParallelGC"
 
 jbang JavalinServer.java
 
