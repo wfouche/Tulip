@@ -7,6 +7,8 @@ import io.leego.banana.Font;
 
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 
 /**
  * The TulipApi class provides the main interface for running Tulip benchmarks and generating reports.
@@ -89,7 +91,7 @@ public class TulipApi {
                     "description": "Spring RestClient Benchmark [__TULIP_LANG__]",
                     "output_filename": "benchmark_output.json",
                     "report_filename": "benchmark_report.html",
-                    "user_class": "HttpUser",
+                    "user_class": "io.tulip.HttpUser",
                     "user_params": {
                         "protocol": "__PROTOCOL__",
                         "baseURL": "__BASE_URL__",
@@ -212,6 +214,8 @@ public class TulipApi {
             //SOURCES HttpUser.java
             //JAVA 21
             
+            package io.tulip;
+            
             import io.github.wfouche.tulip.api.TulipApi;
             
             public class App {
@@ -232,6 +236,8 @@ public class TulipApi {
             //JAVA 21
             //KOTLIN 2.0.21
             
+            package io.tulip
+            
             import io.github.wfouche.tulip.api.TulipApi
             
             fun main(args: Array<String>) {
@@ -249,6 +255,8 @@ public class TulipApi {
             //SOURCES HttpUser.groovy
             //JAVA 21
             //GROOVY 4.0.25
+            
+            package io.tulip
             
             import io.github.wfouche.tulip.api.TulipApi
             
@@ -272,6 +280,8 @@ public class TulipApi {
             // https://yadukrishnan.live/developing-java-applications-with-scala-cli
             // https://www.baeldung.com/scala/scala-cli-intro
             
+            package io.tulip
+            
             import io.github.wfouche.tulip.api.TulipApi
             
             object App {
@@ -282,6 +292,8 @@ public class TulipApi {
             """;
 
     private static String javaUser = """
+            package io.tulip;
+            
             import io.github.wfouche.tulip.api.*;
             import java.util.concurrent.ThreadLocalRandom;
             import org.springframework.web.client.RestClient;
@@ -386,6 +398,8 @@ public class TulipApi {
             """;
 
     private static String kotlinUser = """
+            package io.tulip
+            
             import io.github.wfouche.tulip.api.*
             import java.util.concurrent.ThreadLocalRandom
             import org.springframework.web.client.RestClient
@@ -482,6 +496,8 @@ public class TulipApi {
             """;
 
     private static String groovyUser = """
+            package io.tulip
+            
             import io.github.wfouche.tulip.api.*
             import org.springframework.web.client.RestClient
             import org.springframework.web.client.RestClientException
@@ -586,6 +602,8 @@ public class TulipApi {
             """;
 
     private static String scalaUser = """
+            package io.tulip
+            
             import io.github.wfouche.tulip.api._
             import java.util.concurrent.ThreadLocalRandom
             import org.springframework.web.client.RestClient
@@ -682,7 +700,7 @@ public class TulipApi {
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             rm -f benchmark_report.html
             export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
-            jbang run App.java
+            jbang run io/tulip/App.java
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
@@ -693,7 +711,7 @@ public class TulipApi {
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             if exist benchmark_report.htmlgis del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
-            call jbang run App.java
+            call jbang run io/tulip/App.java
             @echo off
             echo.
             REM w3m.exe -dump -cols 205 benchmark_report.html
@@ -708,7 +726,7 @@ public class TulipApi {
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             rm -f benchmark_report.html
             export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
-            jbang run App.kt
+            jbang run io/tulip/App.kt
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
@@ -719,7 +737,7 @@ public class TulipApi {
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             if exist benchmark_report.html del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
-            call jbang run App.kt
+            call jbang run io/tulip/App.kt
             @echo off
             echo.
             REM call w3m.exe -dump -cols 205 benchmark_report.html
@@ -734,7 +752,7 @@ public class TulipApi {
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             rm -f benchmark_report.html
             export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
-            jbang run App.groovy
+            jbang run io/tulip/App.groovy
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
@@ -745,7 +763,7 @@ public class TulipApi {
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             if exist benchmark_report.html del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
-            call jbang run App.groovy
+            call jbang run io/tulip/App.groovy
             @echo off
             echo.
             REM call w3m.exe -dump -cols 205 benchmark_report.html
@@ -759,7 +777,7 @@ public class TulipApi {
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Scala
             rm -f benchmark_report.html
-            scala-cli App.scala HttpUser.scala
+            scala-cli io/tulip/App.scala io/tulip/HttpUser.scala
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
@@ -769,7 +787,7 @@ public class TulipApi {
     private static String runBenchCmdScala = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Scala
             if exist benchmark_report.html del benchmark_report.html
-            scala-cli App.scala HttpUser.scala
+            scala-cli io/tulip/App.scala io/tulip/HttpUser.scala
             @echo off
             echo.
             REM call w3m.exe -dump -cols 205 benchmark_report.html
@@ -784,7 +802,7 @@ public class TulipApi {
      *
      * @param args The name of the programming language to generate a benchmark proj
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         // jbang io.github.wfouche.tulip:tulip-runtime:<version>
         String lang = "Java";
         String protocol = "http";
@@ -824,7 +842,9 @@ public class TulipApi {
             baseURL = args[3];
         }
 
+        String path = "io/tulip/";
         if (lang.equals("Java")) {
+            Files.createDirectories(Paths.get(path));
             writeToFile(
                     "benchmark_config.jsonc",
                     benchmarkConfig.stripLeading()
@@ -833,8 +853,8 @@ public class TulipApi {
                             .replace("__BASE_URL__", baseURL)
                             .replace("__PROTOCOL__", protocol)
                             .replace("__METHOD__", method), false);
-            writeToFile("App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
-            writeToFile("HttpUser.java", javaUser.stripLeading(), false);
+            writeToFile(path+"App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(path+"HttpUser.java", javaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShJava.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
@@ -850,6 +870,7 @@ public class TulipApi {
         }
 
         if (lang.equals("Kotlin")) {
+            Files.createDirectories(Paths.get(path));
             writeToFile(
                     "benchmark_config.jsonc",
                     benchmarkConfig.stripLeading()
@@ -858,8 +879,8 @@ public class TulipApi {
                             .replace("__BASE_URL__", baseURL)
                             .replace("__PROTOCOL__", protocol)
                             .replace("__METHOD__", method), false);
-            writeToFile("App.kt", kotlinApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
-            writeToFile("HttpUser.kt", kotlinUser.stripLeading(), false);
+            writeToFile(path+"App.kt", kotlinApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(path+"HttpUser.kt", kotlinUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
@@ -875,6 +896,7 @@ public class TulipApi {
         }
 
         if (lang.equals("Groovy")) {
+            Files.createDirectories(Paths.get(path));
             writeToFile(
                     "benchmark_config.jsonc",
                     benchmarkConfig.stripLeading()
@@ -883,8 +905,8 @@ public class TulipApi {
                             .replace("__BASE_URL__", baseURL)
                             .replace("__PROTOCOL__", protocol)
                             .replace("__METHOD__", method), false);
-            writeToFile("App.groovy", groovyApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
-            writeToFile("HttpUser.groovy", groovyUser.stripLeading(), false);
+            writeToFile(path+"App.groovy", groovyApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(path+"HttpUser.groovy", groovyUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShGroovy.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
@@ -900,6 +922,7 @@ public class TulipApi {
         }
 
         if (lang.equals("Scala")) {
+            Files.createDirectories(Paths.get(path));
             writeToFile(
                     "benchmark_config.jsonc",
                     benchmarkConfig.stripLeading()
@@ -908,8 +931,8 @@ public class TulipApi {
                             .replace("__BASE_URL__", baseURL)
                             .replace("__PROTOCOL__", protocol)
                             .replace("__METHOD__", method), false);
-            writeToFile("App.scala", scalaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
-            writeToFile("HttpUser.scala", scalaUser.stripLeading(), false);
+            writeToFile(path+"App.scala", scalaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(path+"HttpUser.scala", scalaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShScala.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
