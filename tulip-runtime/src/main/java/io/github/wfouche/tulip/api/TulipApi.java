@@ -808,8 +808,17 @@ public class TulipApi {
         String protocol = "http";
         String method = "GET";
 
+        String command = "";
         if (args.length > 0) {
-            lang = args[0];
+            command = args[0];
+        }
+
+        if (!command.equals("init")) {
+            System.exit(0);
+        }
+
+        if (args.length > 1) {
+            lang = args[1];
         }
         var list = new java.util.ArrayList<String>();
         list.add("Java");
@@ -829,17 +838,17 @@ public class TulipApi {
         }
 
         String avgAPS = "10.0";
-        if (args.length > 1) {
-            avgAPS = args[1];
+        if (args.length > 2) {
+            avgAPS = args[2];
         }
 
-        if (args.length > 2) {
-            protocol = args[2];
+        if (args.length > 3) {
+            protocol = args[3];
         }
 
         String baseURL = "jsonplaceholder.typicode.com";
-        if (args.length > 3) {
-            baseURL = args[3];
+        if (args.length > 4) {
+            baseURL = args[4];
         }
 
         String path = "io/tulip/";
