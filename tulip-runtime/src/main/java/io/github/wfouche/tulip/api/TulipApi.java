@@ -705,6 +705,7 @@ public class TulipApi {
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
             #jbang run asciidoc@wfouche benchmark_config.adoc
+            #jbang export fatjar io/tulip/App.java
             """;
 
     private static String runBenchCmdJava = """
@@ -719,6 +720,7 @@ public class TulipApi {
             start benchmark_report.html
             REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
+            REM jbang export fatjar io/tulip/App.java
             """;
 
     private static String runBenchShKotlin = """
@@ -731,6 +733,7 @@ public class TulipApi {
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
             #jbang run asciidoc@wfouche benchmark_config.adoc
+            #jbang export fatjar io/tulip/App.java
             """;
 
     private static String runBenchCmdKotlin = """
@@ -745,6 +748,7 @@ public class TulipApi {
             start benchmark_report.html
             REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
+            REM jbang export fatjar io/tulip/App.java
             """;
 
     private static String runBenchShGroovy = """
@@ -757,6 +761,7 @@ public class TulipApi {
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
             #jbang run asciidoc@wfouche benchmark_config.adoc
+            #jbang export fatjar io/tulip/App.java
             """;
 
     private static String runBenchCmdGroovy = """
@@ -771,6 +776,7 @@ public class TulipApi {
             start benchmark_report.html
             REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
+            REM jbang export fatjar io/tulip/App.java
             """;
 
     private static String runBenchShScala = """
