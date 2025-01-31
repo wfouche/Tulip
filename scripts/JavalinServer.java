@@ -9,6 +9,7 @@ public class JavalinServer {
     public static void main(String[] args) {
         var app = Javalin.create(/*config*/)
             .get("/", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json"))
+            .get("/exit", ctx -> {System.exit(0); })
             .get("/posts/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
             .get("/comments/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
             .get("/albums/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
