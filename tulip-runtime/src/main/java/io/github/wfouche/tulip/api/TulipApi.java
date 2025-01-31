@@ -712,7 +712,7 @@ public class TulipApi {
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             if exist benchmark_report.htmlgis del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
-            call jbang run io/tulip/App.java
+            call jbang run io\\tulip\\App.java
             @echo off
             echo.
             REM w3m.exe -dump -cols 205 benchmark_report.html
@@ -720,7 +720,7 @@ public class TulipApi {
             start benchmark_report.html
             REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
-            REM jbang export fatjar io/tulip/App.java
+            REM jbang export fatjar io\\tulip\\App.java
             """;
 
     private static String runBenchShKotlin = """
@@ -733,14 +733,14 @@ public class TulipApi {
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
             #jbang run asciidoc@wfouche benchmark_config.adoc
-            #jbang export fatjar io/tulip/App.java
+            #jbang export fatjar io/tulip/App.kt
             """;
 
     private static String runBenchCmdKotlin = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             if exist benchmark_report.html del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
-            call jbang run io/tulip/App.kt
+            call jbang run io\\tulip\\App.kt
             @echo off
             echo.
             REM call w3m.exe -dump -cols 205 benchmark_report.html
@@ -748,7 +748,7 @@ public class TulipApi {
             start benchmark_report.html
             REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
-            REM jbang export fatjar io/tulip/App.java
+            REM jbang export fatjar io\\tulip\\App.kt
             """;
 
     private static String runBenchShGroovy = """
@@ -761,14 +761,14 @@ public class TulipApi {
             #w3m -dump -cols 205 benchmark_report.html
             lynx -dump -width 205 benchmark_report.html
             #jbang run asciidoc@wfouche benchmark_config.adoc
-            #jbang export fatjar io/tulip/App.java
+            #jbang export fatjar io/tulip/App.groovy
             """;
 
     private static String runBenchCmdGroovy = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             if exist benchmark_report.html del benchmark_report.html
             set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
-            call jbang run io/tulip/App.groovy
+            call jbang run io\\tulip\\App.groovy
             @echo off
             echo.
             REM call w3m.exe -dump -cols 205 benchmark_report.html
@@ -776,7 +776,7 @@ public class TulipApi {
             start benchmark_report.html
             REM jbang run asciidoc@wfouche benchmark_config.adoc
             REM start benchmark_config.html
-            REM jbang export fatjar io/tulip/App.java
+            REM jbang export fatjar io\\tulip\\App.groovy
             """;
 
     private static String runBenchShScala = """
@@ -793,7 +793,7 @@ public class TulipApi {
     private static String runBenchCmdScala = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Scala
             if exist benchmark_report.html del benchmark_report.html
-            scala-cli io/tulip/App.scala io/tulip/HttpUser.scala
+            scala-cli io\\tulip\\App.scala io\\tulip\\HttpUser.scala
             @echo off
             echo.
             REM call w3m.exe -dump -cols 205 benchmark_report.html
