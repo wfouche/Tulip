@@ -8,6 +8,22 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.1.5] - 2025-02-01
+
+* Runtime:
+
+** Fixed sending no more than the required number of actions per benchmark run.
+
+** `onStop` action id change from `99` to `100`.
+
+** Changed `Pre-Warmup` to `PreWarmUp`.
+
+** Fixed virtual clock alignment.
+
+* Configuration changes:
+
+** Renamed `benchmark_repeat_count` to `benchmark_iterations`.
+
 == [v2.1.4] - 2025-01-21
 
 * Configuration changes:
