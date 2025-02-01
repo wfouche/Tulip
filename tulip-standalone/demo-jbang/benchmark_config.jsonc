@@ -10,7 +10,7 @@
         "user_actions": {
             "1": "DELAY-10ms",
             "2": "DELAY-20ms",
-            "3": "NOP",
+            "3": "NOP"
         }
     },
     "contexts": {
@@ -26,7 +26,7 @@
         }
     },
     "benchmarks": {
-        "Startup": {
+        "onStart": {
             "scenario_actions": [
                 {
                     "id": 0
@@ -38,7 +38,7 @@
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_iterations": 3
             },
             "aps_rate": 0.0,
             "scenario_actions": [
@@ -57,7 +57,7 @@
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_iterations": 3
             },
             "aps_rate": 100.0,
             "scenario_actions": [
@@ -76,7 +76,7 @@
                 "pre_warmup_duration": 5,
                 "warmup_duration": 10,
                 "benchmark_duration": 30,
-                "benchmark_repeat_count": 3
+                "benchmark_iterations": 3
             },
             "aps_rate": 0.0,
             "scenario_actions": [
@@ -85,7 +85,7 @@
                 }
             ]
         },
-        "Shutdown": {
+        "onStop": {
             "scenario_actions": [
                 {
                     "id": 100
