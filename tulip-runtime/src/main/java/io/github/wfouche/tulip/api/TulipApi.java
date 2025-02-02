@@ -10,6 +10,8 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 
+import static java.lang.System.getenv;
+
 /**
  * The TulipApi class provides the main interface for running Tulip benchmarks and generating reports.
  */
@@ -274,7 +276,7 @@ public class TulipApi {
             //> using dep org.slf4j:slf4j-api:2.0.16
             //> using dep ch.qos.logback:logback-core:1.5.16
             //> using dep ch.qos.logback:logback-classic:1.5.16
-            //> using javaOpt -server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
+            //> using javaOpt __TULIP_JAVA_OPTIONS__
             //> using repositories m2local
             
             // https://yadukrishnan.live/developing-java-applications-with-scala-cli
@@ -699,7 +701,7 @@ public class TulipApi {
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             rm -f benchmark_report.html
-            export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
+            export JBANG_JAVA_OPTIONS="__TULIP_JAVA_OPTIONS__"
             jbang run io/tulip/App.java
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
@@ -711,7 +713,7 @@ public class TulipApi {
     private static String runBenchCmdJava = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Java
             if exist benchmark_report.htmlgis del benchmark_report.html
-            set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
+            set JBANG_JAVA_OPTIONS=__TULIP_JAVA_OPTIONS__
             call jbang run io\\tulip\\App.java
             @echo off
             echo.
@@ -727,7 +729,7 @@ public class TulipApi {
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             rm -f benchmark_report.html
-            export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
+            export JBANG_JAVA_OPTIONS="__TULIP_JAVA_OPTIONS__"
             jbang run io/tulip/App.kt
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
@@ -739,7 +741,7 @@ public class TulipApi {
     private static String runBenchCmdKotlin = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Kotlin
             if exist benchmark_report.html del benchmark_report.html
-            set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
+            set JBANG_JAVA_OPTIONS=__TULIP_JAVA_OPTIONS__
             call jbang run io\\tulip\\App.kt
             @echo off
             echo.
@@ -755,7 +757,7 @@ public class TulipApi {
             #!/bin/bash
             # jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             rm -f benchmark_report.html
-            export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
+            export JBANG_JAVA_OPTIONS="__TULIP_JAVA_OPTIONS__"
             jbang run io/tulip/App.groovy
             echo ""
             #w3m -dump -cols 205 benchmark_report.html
@@ -767,7 +769,7 @@ public class TulipApi {
     private static String runBenchCmdGroovy = """
             REM jbang io.github.wfouche.tulip:tulip-runtime:__TULIP_VERSION__ Groovy
             if exist benchmark_report.html del benchmark_report.html
-            set JBANG_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
+            set JBANG_JAVA_OPTIONS=__TULIP_JAVA_OPTIONS__
             call jbang run io\\tulip\\App.groovy
             @echo off
             echo.
@@ -813,6 +815,7 @@ public class TulipApi {
         String lang = "Java";
         String protocol = "http";
         String method = "GET";
+        String TULIP_JAVA_OPTIONS=getenv("TULIP_JAVA_OPTIONS") != null ? getenv("TULIP_JAVA_OPTIONS") : "-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational";
 
         String command = "";
         if (args.length > 0) {
@@ -870,7 +873,11 @@ public class TulipApi {
                             .replace("__METHOD__", method), false);
             writeToFile(path+"App.java", javaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile(path+"HttpUser.java", javaUser.stripLeading(), false);
-            writeToFile("run_bench.sh", runBenchShJava.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(
+                    "run_bench.sh",
+                    runBenchShJava.stripLeading()
+                            .replace("__TULIP_VERSION__", VERSION)
+                            .replace("__TULIP_JAVA_OPTIONS__", TULIP_JAVA_OPTIONS), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
             } else {
@@ -881,7 +888,11 @@ public class TulipApi {
                     // pass
                 }
             }
-            writeToFile("run_bench.cmd", runBenchCmdJava.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(
+                    "run_bench.cmd",
+                    runBenchCmdJava.stripLeading()
+                            .replace("__TULIP_VERSION__", VERSION)
+                            .replace("__TULIP_JAVA_OPTIONS__", TULIP_JAVA_OPTIONS), false);
         }
 
         if (lang.equals("Kotlin")) {
@@ -896,7 +907,11 @@ public class TulipApi {
                             .replace("__METHOD__", method), false);
             writeToFile(path+"App.kt", kotlinApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile(path+"HttpUser.kt", kotlinUser.stripLeading(), false);
-            writeToFile("run_bench.sh", runBenchShKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(
+                    "run_bench.sh",
+                    runBenchShKotlin.stripLeading()
+                            .replace("__TULIP_VERSION__", VERSION)
+                            .replace("__TULIP_JAVA_OPTIONS__", TULIP_JAVA_OPTIONS), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
             } else {
@@ -907,7 +922,11 @@ public class TulipApi {
                     // pass
                 }
             }
-            writeToFile("run_bench.cmd", runBenchCmdKotlin.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(
+                    "run_bench.cmd",
+                    runBenchCmdKotlin.stripLeading()
+                            .replace("__TULIP_VERSION__", VERSION)
+                            .replace("__TULIP_JAVA_OPTIONS__", TULIP_JAVA_OPTIONS), false);
         }
 
         if (lang.equals("Groovy")) {
@@ -922,7 +941,11 @@ public class TulipApi {
                             .replace("__METHOD__", method), false);
             writeToFile(path+"App.groovy", groovyApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             writeToFile(path+"HttpUser.groovy", groovyUser.stripLeading(), false);
-            writeToFile("run_bench.sh", runBenchShGroovy.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(
+                    "run_bench.sh",
+                    runBenchShGroovy.stripLeading()
+                            .replace("__TULIP_VERSION__", VERSION)
+                            .replace("__TULIP_JAVA_OPTIONS__", TULIP_JAVA_OPTIONS), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
                 // pass
             } else {
@@ -933,7 +956,11 @@ public class TulipApi {
                     // pass
                 }
             }
-            writeToFile("run_bench.cmd", runBenchCmdGroovy.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(
+                    "run_bench.cmd",
+                    runBenchCmdGroovy.stripLeading()
+                            .replace("__TULIP_VERSION__", VERSION)
+                            .replace("__TULIP_JAVA_OPTIONS__", TULIP_JAVA_OPTIONS), false);
         }
 
         if (lang.equals("Scala")) {
@@ -946,7 +973,10 @@ public class TulipApi {
                             .replace("__BASE_URL__", baseURL)
                             .replace("__PROTOCOL__", protocol)
                             .replace("__METHOD__", method), false);
-            writeToFile(path+"App.scala", scalaApp.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
+            writeToFile(path+"App.scala",
+                    scalaApp.stripLeading()
+                            .replace("__TULIP_VERSION__", VERSION)
+                            .replace("__TULIP_JAVA_OPTIONS__", TULIP_JAVA_OPTIONS), false);
             writeToFile(path+"HttpUser.scala", scalaUser.stripLeading(), false);
             writeToFile("run_bench.sh", runBenchShScala.stripLeading().replace("__TULIP_VERSION__", VERSION), false);
             if (System.getProperty("os.name").toLowerCase().contains("windows")) {
