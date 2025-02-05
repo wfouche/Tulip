@@ -9,6 +9,7 @@
 # $ echo 1024 > /sys/kernel/mm/hugepages/hugepages-2048kB/nr_hugepages
 #
 # "-XX:+UseLargePages",
+jbang --fresh run tulip-cli@wfouche
 
 export TULIP_PARAMS="10000.0 http localhost:7070"
 

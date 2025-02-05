@@ -1,6 +1,8 @@
 set TULIP_PARAMS=10000.0 http localhost:7070
 set TULIP_JAVA_OPTIONS=-server -Xms1g -Xmx1g -XX:+UseZGC -XX:+ZGenerational
 
+call jbang --fresh run tulip-cli@wfouche
+
 if not exist "Java" (md Java)
 cd Java
 call jbang run tulip-cli@wfouche init Java %TULIP_PARAMS%
