@@ -10,7 +10,6 @@
 #
 # "-XX:+UseLargePages",
 
-export TULIP_VERSION="2.1.6-dev"
 export TULIP_PARAMS="10000.0 http localhost:7070"
 
 unset TULIP_JAVA_OPTIONS
