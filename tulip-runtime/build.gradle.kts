@@ -38,7 +38,7 @@ dependencies {
     implementation("io.leego:banana:2.1.0")
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation("com.google.code.gson:gson:2.11.0")
+    implementation("com.google.code.gson:gson:2.12.1")
 
     // https://mvnrepository.com/artifact/com.glureau/html-mermaid-dokka-plugin
     dokkaPlugin("com.glureau:html-mermaid-dokka-plugin:0.6.0")
