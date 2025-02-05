@@ -4,10 +4,10 @@
 [versions]
 guava = "33.4.0-jre"
 junit-jupiter-engine = "5.11.4"
-clikt-jvm = "5.0.2"
-kotlinx-serialization-json = "1.8.0"
-tulip-runtime = "2.1.5"
+tulip-runtime = "2.1.6-dev"
 kotlin = "2.1.10"
+kotlinx-serialization-json = "1.8.0"
+clikt-jvm = "5.0.2"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
