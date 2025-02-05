@@ -21,7 +21,7 @@ rm -f -r Java
 mkdir -p Java
 cd Java || exit
 echo ""
-jbang io.github.wfouche.tulip:tulip-runtime:$TULIP_VERSION init Java $TULIP_PARAMS
+jbang run tulip-cli@wfouche init Java $TULIP_PARAMS
 . ./run_bench.sh
 cd ..
 
@@ -29,7 +29,7 @@ rm -f -r Groovy
 mkdir -p Groovy
 cd Groovy || exit
 echo ""
-jbang io.github.wfouche.tulip:tulip-runtime:$TULIP_VERSION init Groovy $TULIP_PARAMS
+jbang run tulip-cli@wfouche init Groovy $TULIP_PARAMS
 
 . ./run_bench.sh
 cd ..
@@ -38,7 +38,7 @@ rm -f -r Kotlin
 mkdir -p Kotlin
 cd Kotlin || exit
 echo ""
-jbang io.github.wfouche.tulip:tulip-runtime:$TULIP_VERSION init Kotlin $TULIP_PARAMS
+jbang run tulip-cli@wfouche init Kotlin $TULIP_PARAMS
 . ./run_bench.sh
 cd ..
 
@@ -46,7 +46,7 @@ rm -f -r Scala
 mkdir -p Scala
 cd Scala || exit
 echo ""
-jbang io.github.wfouche.tulip:tulip-runtime:$TULIP_VERSION init Scala $TULIP_PARAMS
+jbang run tulip-cli@wfouche init Scala $TULIP_PARAMS
 . ./run_bench.sh
 cd ..
 
