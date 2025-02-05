@@ -79,9 +79,11 @@ public class TulipApi {
     }
 
     /**
-     * main method
+     * The JAR has a main method
+     *
+     * @param args The command-line arguments variable.
      */
-    public static void main(String[] args) throws IOException {
+    public static void main(String[] args) {
 
     }
 }
