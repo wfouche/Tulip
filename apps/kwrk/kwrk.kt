@@ -1,13 +1,13 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS com.github.ajalt.clikt:clikt-jvm:5.0.1
-//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.5-dev
+//DEPS com.github.ajalt.clikt:clikt-jvm:5.0.2
+//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.6-dev
 //DEPS org.springframework.boot:spring-boot-starter-web:3.4.2
 //DEPS org.slf4j:slf4j-api:2.0.16
 //DEPS ch.qos.logback:logback-core:1.5.16
 //DEPS ch.qos.logback:logback-classic:1.5.16
 //DEPS org.pkl-lang:pkl-core:0.27.2
 //JAVA 21
-//KOTLIN 2.0.21
+//KOTLIN 2.1.10
 
 import io.github.wfouche.tulip.api.TulipApi
 import io.github.wfouche.tulip.api.TulipUser
