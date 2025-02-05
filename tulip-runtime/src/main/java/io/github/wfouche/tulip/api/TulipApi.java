@@ -236,7 +236,7 @@ public class TulipApi {
             //DEPS ch.qos.logback:logback-classic:1.5.16
             //SOURCES HttpUser.kt
             //JAVA 21
-            //KOTLIN 2.0.21
+            //KOTLIN 2.1.10
             
             package io.tulip
             
