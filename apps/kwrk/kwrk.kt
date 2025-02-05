@@ -130,11 +130,13 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 }
 
 class KwrkCli : CliktCommand() {
+
     private val p_rate by option("--rate").default("5.0")
     private val p_threads by option("--threads").default("2")
     private val p_duration: String by option("--duration", help="value,{s,min,h,d}").default("30,s")
     private val p_repeat by option("--repeat").default("3")
-    private val p_url by option("--url").default("http://localhost:7070")
+    private val p_url by option("--url").default("http://jsonplaceholder.typicode.com/posts/1")
+
     override fun run() {
         var jsonc = benchmarkConfig
         val s = p_duration.split(",")  // n,{s,min,h,d}
