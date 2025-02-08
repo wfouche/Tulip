@@ -100,7 +100,7 @@ A3 --> A0: 1.000
 |===
 | id | value
 | *enabled* | True
-| *throughput_rate* | 0.0
+| *aps_rate* | 0.0
 | *worker_thread_queue_size* | 0
 | *scenario_actions* 
 | 
@@ -118,7 +118,7 @@ A3 --> A0: 1.000
 |===
 | id | value
 | *enabled* | True
-| *throughput_rate* | 10.0
+| *aps_rate* | 0.0
 | *worker_thread_queue_size* | 0
 | *scenario_actions* 
 | 
@@ -149,7 +149,7 @@ A3 --> A0: 1.000
 |===
 | id | value
 | *enabled* | True
-| *throughput_rate* | 10.0
+| *aps_rate* | 0.0
 | *worker_thread_queue_size* | 0
 | *scenario_actions* 
 | 
@@ -184,7 +184,7 @@ A3 --> A0: 1.000
 |===
 | id | value
 | *enabled* | True
-| *throughput_rate* | 10.0
+| *aps_rate* | 0.0
 | *worker_thread_queue_size* | 0
 | *scenario_workflow* | <<api-user>>
 | *time* 
@@ -208,7 +208,7 @@ A3 --> A0: 1.000
 |===
 | id | value
 | *enabled* | True
-| *throughput_rate* | 0.0
+| *aps_rate* | 0.0
 | *worker_thread_queue_size* | 0
 | *scenario_actions* 
 | 
