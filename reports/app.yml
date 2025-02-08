@@ -1,0 +1,4 @@
+dependencies:
+  com.google.code.gson:gson: 2.11.0
+  org.hdrhistogram:HdrHistogram: 2.2.2
+  org.python:jython-standalone: 2.7.4
