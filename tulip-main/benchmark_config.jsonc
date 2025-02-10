@@ -8,7 +8,7 @@
             //"url": "https://jsonplaceholder.typicode.com",
             "url": "http://localhost:7070",
             "debug": false,
-            "http_port": 7071
+            "http_port": 7070
         },
         "user_actions": {
             "1": "DELAY-6ms",
