@@ -50,5 +50,13 @@ jbang run tulip-cli@wfouche init Scala $TULIP_PARAMS
 . ./run_bench.sh
 cd ..
 
+rm -f -r Jython
+mkdir -p Jython
+cd Jython || exit
 echo ""
-firefox Java/benchmark_report.html Groovy/benchmark_report.html Kotlin/benchmark_report.html Scala/benchmark_report.html
+jbang run tulip-cli@wfouche init Jython $TULIP_PARAMS
+. ./run_bench.sh
+cd ..
+
+echo ""
+firefox Java/benchmark_report.html Groovy/benchmark_report.html Kotlin/benchmark_report.html Scala/benchmark_report.html Jython/benchmark_report.html

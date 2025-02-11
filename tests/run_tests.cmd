@@ -26,3 +26,9 @@ cd Scala
 call jbang run tulip-cli@wfouche init Scala %TULIP_PARAMS%
 call run_bench.cmd
 cd ..
+
+if not exist "Jython" (md Jython)
+cd Jython
+call jbang run tulip-cli@wfouche init Scala %TULIP_PARAMS%
+call run_bench.cmd
+cd ..
