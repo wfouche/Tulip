@@ -12,10 +12,10 @@
 jbang --fresh run tulip-cli@wfouche
 
 export TULIP_PARAMS="10000.0 http localhost:7070"
+export TULIP_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
 
-unset TULIP_JAVA_OPTIONS
-export TULIP_JAVA_OPTIONS="-server -Xms1g -Xmx1g -XX:+UseZGC -XX:+ZGenerational -XX:+UseLargePages"
-export TULIP_JAVA_OPTIONS="-server -Xms1g -Xmx1g -XX:+UseZGC -XX:+ZGenerational"
+#unset TULIP_JAVA_OPTIONS
+#export TULIP_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational -XX:+UseLargePages"
 
 rm -f -r Java
 mkdir -p Java
