@@ -127,7 +127,7 @@ def createReport(filename):
     # Workflows
     if "workflows" in jb.keys():
         printf("\n")
-        printf("== Workflows \n")
+        printf("== Scenarios \n")
         generate_workflow()
 
     # Benchmarks Data
@@ -135,6 +135,9 @@ def createReport(filename):
     printf("== Benchmarks\n")
     for k in jb['benchmarks'].keys():
         b = jb['benchmarks'][k]
+        if "save_stats" in b.keys():
+            if b["save_stats"] == False:
+                continue
         printf("\n")
         printf('=== %s'%(k) + '\n')
         printf("\n")
