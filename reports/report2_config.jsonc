@@ -37,6 +37,7 @@
     // Benchmarks
     "benchmarks": {
         "onStart": {
+            "save_stats": false,
             "scenario_actions": [ {"id": 0} ]
         },
          "REST1": {

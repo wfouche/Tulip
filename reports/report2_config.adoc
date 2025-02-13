@@ -43,7 +43,7 @@ Filename::
 !===
 |===
 
-== Workflows 
+== Scenarios 
 
 [[api-user]]
 === api-user
@@ -93,24 +93,6 @@ A3 --> A0: 1.000
 |===
 
 == Benchmarks
-
-=== onStart
-
-[%header,cols="1a,2a"]
-|===
-| id | value
-| *enabled* | True
-| *aps_rate* | 0.0
-| *worker_thread_queue_size* | 0
-| *scenario_actions* 
-| 
-[%header,cols="1a,2a"]
-!===
-! id ! weight 
-! 0
-! - 
-!===
-|===
 
 === REST1
 
