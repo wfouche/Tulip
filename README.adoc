@@ -5,7 +5,7 @@
 
 == Documentation
 
-https://wfouche.github.io/Tulip/
+https://wfouche.github.io/Tulip-docs/
 
 image::tulip_logo.jpg[width=128]
 
