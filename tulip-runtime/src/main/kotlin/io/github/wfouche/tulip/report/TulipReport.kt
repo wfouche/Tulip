@@ -579,7 +579,7 @@ def createReport(filename):
     # Workflows
     if "workflows" in jb.keys():
         printf("\n")
-        printf("== Scenarios \n")
+        printf("== Workflows \n")
         generate_workflow()
 
     # Benchmarks Data
