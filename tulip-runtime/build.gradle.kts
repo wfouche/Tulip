@@ -12,7 +12,7 @@ plugins {
     id("buildlogic.kotlin-library-conventions")
     `maven-publish`
     id("org.jreleaser") version "1.15.0"
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.10"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
     id("org.jetbrains.dokka") version "2.0.0"
 }
 
@@ -32,7 +32,7 @@ dependencies {
     implementation("org.python:jython-standalone:2.7.4")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
 
     // https://mvnrepository.com/artifact/io.leego/banana
     implementation("io.leego:banana:2.1.0")
