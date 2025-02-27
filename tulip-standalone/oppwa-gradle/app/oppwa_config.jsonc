@@ -25,6 +25,8 @@
     },
     "benchmarks": {
         "onStart": {
+            "enabled": false,
+            "save_stats": false,
             "scenario_actions": [ {"id": 0} ]
         },
         "Max TPS": {
@@ -40,6 +42,8 @@
             "scenario_workflow": "payments"
         },
         "onStop": {
+            "enabled": false,
+            "save_stats": false,
             "scenario_actions": [ {"id": 100} ]
         }
     },
