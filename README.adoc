@@ -41,6 +41,7 @@ Run a low-volume, constant rate load test to `test-api.k6.io`
 
 ----
 $ export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
+
 $ jbang run kwrk@wfouche \
     --rate=10.0 \
     --url=https://test-api.k6.io/public/crocodiles/1
