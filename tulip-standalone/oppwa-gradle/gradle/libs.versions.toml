@@ -3,16 +3,18 @@
 
 [versions]
 guava = "33.4.0-jre"
-junit-jupiter-engine = "5.11.4"
+junit-jupiter-engine = "5.12.0"
 tulip-runtime = "2.1.6-dev"
 kotlin = "2.1.10"
+kotlin-test-junit5 = "2.1.10"
 kotlinx-serialization-json = "1.8.0"
-clikt-jvm = "5.0.2"
+clikt-jvm = "5.0.3"
 
 [libraries]
 guava = { module = "com.google.guava:guava", version.ref = "guava" }
 junit-jupiter-engine = { module = "org.junit.jupiter:junit-jupiter-engine", version.ref = "junit-jupiter-engine" }
 clikt-jvm = { module = "com.github.ajalt.clikt:clikt-jvm", version.ref = "clikt-jvm"}
+kotlin-test-junit5 = { module = "org.jetbrains.kotlin:kotlin-test-junit5", version.ref = "kotlin-test-junit5"}
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinx-serialization-json" }
 tulip-runtime = { module = "io.github.wfouche.tulip:tulip-runtime", version.ref = "tulip-runtime" }
 
