@@ -12,6 +12,50 @@ https://wfouche.github.io/Tulip-docs/
 image::tulip_logo.jpg[width=128]
 |===
 
+== Kwrk
+
+`kwrk` is a HTTP benchmark utility implemented using the Tulip runtime. `kwrk` is similar in functionality to https://github.com/wg/wrk[wrk] and https://github.com/giltene/wrk2[wrk2].
+
+Show the options supported by `kwrk`:
+
+----
+$ jbang run kwrk@wfouche --help
+
+Usage: kwrk [<options>]
+
+Options:
+  --debug=<text>
+  --rate=<float>
+  --qsize=<int>
+  --threads=<int>
+  --duration=<int>
+  --iterations=<int>
+  --header=<text>
+  --url=<text>
+  -h, --help          Show this message and exit
+----
+
+Run a low-volume, constant rate load test to `test-api.k6.io`
+
+----
+$ export JBANG_JAVA_OPTIONS="-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational"
+$ jbang run kwrk@wfouche \
+    --rate=10.0 \
+    --url=https://test-api.k6.io/public/crocodiles/1
+....
+....
+Output filename = kwrk_output.json
+Report filename = kwrk_report.html
+----
+
+The performance results are shown in `kwrk_report.html`. The results show that for this particular benchmark only 1 API call failed (#F is 1) and that the Aps (average number of actions per second) rate is 1.989 (~2.0) which did not meet the target of 10.0 that was set for the benchmark.
+
+image::image-2025-02-27-11-49-24-856.png[]
+
+Additional information about `kwrk` is provided in the Tulip documentation at:
+
+* https://wfouche.github.io/Tulip-docs/tulip/main/utilities-and-scripts.html#_kwrk
+
 == License
 
 [source,text]
