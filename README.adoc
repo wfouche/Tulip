@@ -12,6 +12,8 @@ https://wfouche.github.io/Tulip-docs/
 image::tulip_logo.jpg[width=128]
 |===
 
+Tulip is an advanced open source software toolkit designed for load testing, stress testing, and performance regression testing of complex software components and deployments. Tulip is a robust solution for evaluating the performance and stability of web applications under varying conditions, ensuring they can handle high traffic and stress levels efficiently. Similar to well-known tools like JMeter, Gatling, and Locust, Tulip provides powerful capabilities to simulate real-world scenarios and generate comprehensive reports, helping developers identify and resolve potential bottlenecks.
+
 == Kwrk
 
 `kwrk` is a HTTP benchmark utility implemented using the Tulip runtime. `kwrk` is similar in functionality to https://github.com/wg/wrk[wrk] and https://github.com/giltene/wrk2[wrk2].
