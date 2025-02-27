@@ -58,7 +58,7 @@ The Aps rate does not meet the target of 10.0 that was set for the benchmark and
 
 image::image-2025-02-27-11-49-24-856.png[]
 
-Additional information about `kwrk` is provided in the Tulip documentation at:
+Additional information about `kwrk` is provided in the Tulip documentation:
 
 * https://wfouche.github.io/Tulip-docs/tulip/main/utilities-and-scripts.html#_kwrk
 
