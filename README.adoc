@@ -1,6 +1,5 @@
 = Tulip
 :sectnums:
-:toc:
 :imagesdir: images
 
 == Documentation
