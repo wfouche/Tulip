@@ -33,7 +33,7 @@ application {
         //
         // "-XX:+UseLargePages",
 
-        "-Xms2048m",
+        //"-Xms2048m",
         "-Xmx2048m",
 
         // "-XX:+UseParallelGC",
