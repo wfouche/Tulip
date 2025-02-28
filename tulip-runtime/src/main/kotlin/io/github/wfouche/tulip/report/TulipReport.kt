@@ -563,9 +563,11 @@ def createReport(filename):
     sf = open(filename,'r').read()
     gsonJsonTree = JsonParser.parseString(sf)
     jsonWithoutComments = gsonJsonTree.toString()
+    gsonJsonTree = None
 
     # Restore JSON from String
     jb = json.loads(jsonWithoutComments, object_pairs_hook=OrderedDict)
+    jsonWithoutComments = None
 
     # print header
     printf(header.replace("__CONFIG_FILENAME__", filename).replace("__DESCRIPTION__", jb['actions']['description']))
