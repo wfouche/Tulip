@@ -189,7 +189,6 @@ trailer = '''
 '''
 
 class Summary:
-    num_rows = 0
     num_actions = 0
     num_failed = 0
     duration = 0.0
