@@ -10,7 +10,7 @@ import sys
 import org.HdrHistogram.Histogram as Histogram
 from collections import OrderedDict
 
-# <h2><a href="https://wfouche.github.io/Tulip">__DESC1__</a> / __DESC2__</h2>
+# <h2><a href="https://wfouche.github.io/Tulip-docs">__DESC1__</a> / __DESC2__</h2>
 # <h2>__DESC1__ / __DESC2__</h2>
 
 header = '''<!DOCTYPE html>
@@ -30,7 +30,7 @@ td:nth-child(n+14) {
 
 <body>
 
-<h2>__DESC1__ / __DESC2__</h2>
+<h2><a href="https://wfouche.github.io/Tulip-docs">__DESC1__</a> / __DESC2__</h2>
 
 <table style="width:100%">
   <tr>
