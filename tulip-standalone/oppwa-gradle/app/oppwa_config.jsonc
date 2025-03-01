@@ -28,7 +28,7 @@
     },
     "benchmarks": {
         "onStart": {
-            "enabled": false,
+            "enabled": true,
             "save_stats": false,
             "scenario_actions": [ {"id": 0} ]
         },
