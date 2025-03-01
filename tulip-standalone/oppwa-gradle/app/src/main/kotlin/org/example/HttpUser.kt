@@ -104,11 +104,12 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     private var id: String = ""
 
-    private val token = "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8ZmY0b1UhZSVlckI9YUJzQj82KyU="
-
     // ----------------------------------------------------------------- //
 
     override fun onStart(): Boolean {
+        if (userId == 0) {
+            token = getUserParamValue("token")
+        }
         return true
     }
 
@@ -244,6 +245,10 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     }
 
     // ----------------------------------------------------------------- //
+
+    companion object {
+        private var token: String = ""
+    }
 
 }
 

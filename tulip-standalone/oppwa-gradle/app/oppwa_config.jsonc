@@ -4,6 +4,9 @@
         "output_filename": "oppwa_output.json",
         "report_filename": "oppwa_report.html",
         "user_class": "org.example.HttpUser",
+        "user_params": {
+            "token": "OGE4Mjk0MTc0YjdlY2IyODAxNGI5Njk5MjIwMDE1Y2N8ZmY0b1UhZSVlckI9YUJzQj82KyU="
+        },
         "user_actions": {
             "1": "PA",
             "2": "CP",
