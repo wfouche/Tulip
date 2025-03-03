@@ -594,9 +594,6 @@ def createReport(filename):
     printf("== Benchmarks\n")
     for k in jb['benchmarks'].keys():
         b = jb['benchmarks'][k]
-        if "save_stats" in b.keys():
-            if b["save_stats"] == False:
-                continue
         printf("\n")
         printf('=== %s'%(k) + '\n')
         printf("\n")
