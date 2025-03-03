@@ -661,12 +661,12 @@ def createReport(filename):
         printf('[%header,cols="1a,2a"]\n')
         printf('|===\n')
         printf('| id | value \n')
-        printf('| *num_users*   | %d\n'%(c["num_users"]))
-        printf('| *num_threads* | %d\n'%(c["num_threads"]))
         if "enabled" in c.keys():
             printf('| *enabled* | %s\n'%(c["enabled"]))
         else:
             printf('| *enabled* | True\n')
+        printf('| *num_users*   | %d\n'%(c["num_users"]))
+        printf('| *num_threads* | %d\n'%(c["num_threads"]))
         printf("|===\n")
 
     report_fh.close()
