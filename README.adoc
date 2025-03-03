@@ -12,7 +12,7 @@ https://wfouche.github.io/Tulip-docs/
 image::tulip_logo.jpg[width=128]
 |===
 
-Tulip is an Kotlin SDK supporting load testing, stress testing, and performance regression testing of complex software components and deployments. Tulip is a robust solution for evaluating the performance and stability of web applications under varying conditions, ensuring they can handle high traffic and stress levels efficiently. Similar to well-known tools like JMeter, Gatling, and Locust, Tulip provides powerful capabilities to simulate real-world scenarios and generate comprehensive reports, helping developers identify and resolve potential bottlenecks.
+Tulip is a Kotlin SDK to create load testing, stress testing, and performance regression testing benchmarks for software systems. Tulip is a robust solution for evaluating the performance and stability of web applications under varying conditions, ensuring they can handle high traffic and stress levels efficiently. Similar to well-known tools like JMeter, Gatling, and Locust, Tulip provides powerful capabilities to simulate real-world scenarios and generate comprehensive reports, helping developers identify and resolve potential bottlenecks.
 
 == Kwrk
 
