@@ -137,9 +137,6 @@ def createReport(filename):
     printf("== Benchmarks\n")
     for k in jb['benchmarks'].keys():
         b = jb['benchmarks'][k]
-        if "save_stats" in b.keys():
-            if b["save_stats"] == False:
-                continue
         printf("\n")
         printf('=== %s'%(k) + '\n')
         printf("\n")
@@ -207,12 +204,12 @@ def createReport(filename):
         printf('[%header,cols="1a,2a"]\n')
         printf('|===\n')
         printf('| id | value \n')
-        printf('| *num_users*   | %d\n'%(c["num_users"]))
-        printf('| *num_threads* | %d\n'%(c["num_threads"]))
         if "enabled" in c.keys():
             printf('| *enabled* | %s\n'%(c["enabled"]))
         else:
             printf('| *enabled* | True\n')
+        printf('| *num_users*   | %d\n'%(c["num_users"]))
+        printf('| *num_threads* | %d\n'%(c["num_threads"]))
         printf("|===\n")
 
     report_fh.close()
