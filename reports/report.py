@@ -211,8 +211,10 @@ def createReport(filename):
 
     global name2s
     global name2s_list
+    global benchmark_id
     name2s = ""
     name2s_list = []
+    benchmark_id = 0
 
     sm = None
     jh = Histogram(1, 3600*1000*1000, 3)
@@ -282,6 +284,7 @@ def createReport(filename):
     def print_action_summary():
         global name2s
         global name2s_list
+        global benchmark_id
         for key in jss.keys():
             smx = jss[key]
             jhx = jhh[key]
@@ -289,13 +292,14 @@ def createReport(filename):
                 text = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
             else:
                 text = "[%s]"%(key)
-            text = "<a href='file.html'>%s</a>"%(text)
-            printStream = PrintStream('file.html')
+            statsFilename = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,int(key))
+            text = "<a href='%s'>%s</a>"%(statsFilename,text)
+            printStream = PrintStream(statsFilename)
             printStream.print("<html>")
             printStream.println()
             printStream.print("<body>")
             printStream.println()
-            printStream.print("<h2>Benchmark: %s</h2>"%(smx.name))
+            printStream.print("<h2>Name:  %s, Action Id: %s</h2>"%(smx.name,key))
             printStream.println()
             printStream.print("<h3>Response Time (ms) Percentile Distribution</h3>")
             printStream.println()
@@ -346,6 +350,7 @@ def createReport(filename):
             sm = Summary()
             sm.name = e["bm_name"]
             jh.reset()
+            benchmark_id += 1
             jhh = {}
             jss = {}
             printf(benchmark_header%(e["bm_name"]))
