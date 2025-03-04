@@ -22,10 +22,10 @@ table, th, td {
   border:1px solid black; font-size:16px; text-align: center;
 }
 th:nth-child(n+14) {
-    background-color: #D3D3D3;
+    background-color: #E5E4E2;
 }
 td:nth-child(n+14) {
-    background-color: #D3D3D3;
+    background-color: #E5E4E2;
 }
 </style>
 
