@@ -1,4 +1,4 @@
-set TULIP_PARAMS=10000.0 http localhost:7070
+set TULIP_PARAMS=10000.0 http localhost:7070 2.1.6
 set TULIP_JAVA_OPTIONS=-server -Xms2g -Xmx2g -XX:+UseZGC -XX:+ZGenerational
 
 call jbang --fresh run tulip-cli@wfouche
