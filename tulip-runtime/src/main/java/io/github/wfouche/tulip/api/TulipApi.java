@@ -53,7 +53,7 @@ public class TulipApi {
     public static void runTulip(String text, TulipUserFactory userFactory) {
         String outputFilename = TulipKt.initConfig(text);
         TulipKt.runBenchmarks(userFactory);
-        createHtmlReport(outputFilename);
+        createHtmlReport(outputFilename, text);
     }
 
     /**
@@ -66,16 +66,18 @@ public class TulipApi {
         String outputFilename = TulipKt.initConfig(text);
         TulipUserFactory userFactory = new TulipUserFactory();
         TulipKt.runBenchmarks(userFactory);
-        createHtmlReport(outputFilename);
+        createHtmlReport(outputFilename, text);
     }
 
     /**
      * Creates an HTML report from the benchmarking output.
      *
      * @param outputFilename The name of the output file containing the benchmarking results.
+     *
+     * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting with {.
      */
-    public static void createHtmlReport(String outputFilename) {
-        TulipReportKt.createHtmlReport(outputFilename);
+    public static void createHtmlReport(String outputFilename, String text) {
+        TulipReportKt.createHtmlReport(outputFilename, text);
     }
 
     /**

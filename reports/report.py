@@ -3,6 +3,7 @@ import datetime
 import json
 import sys
 import org.HdrHistogram.Histogram as Histogram
+import os
 from collections import OrderedDict
 import java.io.PrintStream as PrintStream
 
@@ -628,9 +629,14 @@ class Summary:
     name = ""
     cpu_time_ns = 0
 
-def createReport(filename):
+def createReport(filename, text):
 
     print("\nOutput filename = " + filename)
+
+    if text[0] == '{':
+        config_filename = ""
+    else:
+        config_filename = text
 
     jhh = {}
     jss = {}
@@ -655,8 +661,15 @@ def createReport(filename):
     report_fn = jb["config"]["actions"]["report_filename"]
     report_fh = open(report_fn, "w+")
 
-    desc2 = "<a href='%s'>"%(report_fn.split(".")[0] + ".adoc")
-    desc2 += jb["config"]["actions"]["description"] + "</a> / " + jb["timestamp"]
+    if len(config_filename) > 0:
+        desc2 = "<a href='%s'>"%(os.path.splitext(config_filename)[0] + ".adoc")
+    else:
+        desc2 = ""
+
+    if len(config_filename) > 0:
+        desc2 += jb["config"]["actions"]["description"] + "</a> / " + jb["timestamp"]
+    else:
+        desc2 += jb["config"]["actions"]["description"] + " / " + jb["timestamp"]
 
     print("Report filename = " + report_fn)
 
@@ -960,4 +973,5 @@ def createReport(filename):
 
 if __name__ == "__main__":
     filename = sys.argv[1]
-    createReport(filename)
+    configFilename = sys.argv[2]
+    createReport(filename, configFilename)
