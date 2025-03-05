@@ -6,7 +6,7 @@ import org.HdrHistogram.Histogram as Histogram
 from collections import OrderedDict
 import java.io.PrintStream as PrintStream
 
-summary_html = '''<!DOCTYPE html>
+summary_html_1 = '''<!DOCTYPE html>
 <html>
 <head>
 <meta charset="UTF-8">
@@ -49,7 +49,9 @@ summary_html = '''<!DOCTYPE html>
         chartData = google.visualization.arrayToDataTable(series);
     }
 
+'''
 
+text_block_1 = '''
     function drawInitialChart() {
         // Connect the choose files button:
         document.getElementById('files').addEventListener('change', handleFileSelect, false);
@@ -64,7 +66,9 @@ summary_html = '''<!DOCTYPE html>
         setChartData(names, histos);
         drawChart();
     }
+'''
 
+summary_html_2 = '''
     var maxPercentile = 1000000;
 
     function drawChart() {
@@ -921,7 +925,47 @@ def createReport(filename):
         statsFilename = '%s_%d.html'%(report_fn.split('.')[0],benchmark_id)
         text = "<a href='%s'>%s</a>"%(statsFilename,"[Summary]")
         printStream = PrintStream(statsFilename)
-        printStream.print(summary_html.replace("__BENCHMARK_NAME__", sm.name))
+        printStream.print(summary_html_1)
+        printStream.println()
+        printStream.print('    function drawInitialChart() {')
+        printStream.println()
+        printStream.print('        // Connect the choose files button:')
+        printStream.println()
+        printStream.print("        document.getElementById('files').addEventListener('change', handleFileSelect, false);")
+        printStream.println()
+        printStream.println()
+        printStream.print('        // Load some static example data:')
+        printStream.println()
+        idx = 0
+        actionsString = ""
+        for key in jss.keys():
+            idx += 1
+            smx = jss[key]
+            jhx = jhh[key]
+            if len(actionsString) > 0:
+                actionsString += ', '
+            actionsString += "'A%s'"%(key)
+            printStream.print('    var data%dStr = document.querySelector("div#data_%d").innerHTML.trim();'%(idx,idx))
+            printStream.println()
+        histosString = ""
+        while idx > 0:
+            if len(histosString) == 0:
+                histosString = "data%dStr"%(idx)
+            else:
+                histosString += ", " + "data%dStr"%(idx)
+            idx -= 1
+        printStream.print('    var histos = [%s];'%(histosString))
+        printStream.println()
+        printStream.print('    var names = [%s];'%(actionsString))
+        printStream.println()
+
+        printStream.print('    setChartData(names, histos);')
+        printStream.println()
+        printStream.print('    drawChart();')
+        printStream.println()
+        printStream.print('    }')
+        printStream.println()
+        printStream.print(summary_html_2.replace("__BENCHMARK_NAME__", sm.name))
         printStream.println()
         printStream.flush()
         printStream.close()
