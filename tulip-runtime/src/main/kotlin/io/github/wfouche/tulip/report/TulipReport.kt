@@ -257,7 +257,7 @@ def createReport(filename):
             cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
 
         statsFilename = '%s_%d.html'%(report_fn.split('.')[0],benchmark_id)
-        text = "<a href='%s'>%s</a>"%(statsFilename,"[Actions]")
+        text = "<a href='%s'>%s</a>"%(statsFilename,"[Summary]")
         printStream = PrintStream(statsFilename)
         printStream.print("<html>")
         printStream.println()
