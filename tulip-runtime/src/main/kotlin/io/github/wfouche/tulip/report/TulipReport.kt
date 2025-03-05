@@ -306,7 +306,7 @@ def createReport(filename):
             printStream.println()
             printStream.print("<h2>Name:  %s, Action Id: %s</h2>"%(smx.name,key))
             printStream.println()
-            printStream.print("<h3>Response Time (ms) Percentile Distribution</h3>")
+            printStream.print("<h3>Response Time Percentile Distribution</h3>")
             printStream.println()
             printStream.print("<pre>")
             printStream.println()
