@@ -5,14 +5,11 @@ import com.google.gson.JsonParser as JsonParser
 import os
 from collections import OrderedDict
 
-header = '''= Tulip Configuration Report
+header = '''= __DESCRIPTION__
 :toc: left
 :sectnums:
 :diagram-server-url: https://kroki.io/
 :diagram-server-type: kroki_io
-
-Description::
-  __DESCRIPTION__ 
 
 Filename::
   __CONFIG_FILENAME__
