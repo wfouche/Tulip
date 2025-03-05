@@ -655,11 +655,13 @@ def createReport(filename):
     jb = json.load(fileObj, object_pairs_hook=OrderedDict)
     version = jb['version']
     desc1 = 'Tulip ' + version
-    desc2 = jb["config"]["actions"]["description"] + " / " + jb["timestamp"]
     rb = jb["results"]
 
     report_fn = jb["config"]["actions"]["report_filename"]
     report_fh = open(report_fn, "w+")
+
+    desc2 = "<a href='%s'>"%(report_fn.split(".")[0] + ".adoc")
+    desc2 += jb["config"]["actions"]["description"] + "</a> / " + jb["timestamp"]
 
     print("Report filename = " + report_fn)
 
