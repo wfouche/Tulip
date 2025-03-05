@@ -32,7 +32,7 @@ private class TulipCli00 : CliktCommand() {
             TulipApi.runTulip(configOpt)
         } else if (resultOpt != "") {
 	        echo(resultOpt)
-            TulipApi.createHtmlReport(resultOpt)
+            TulipApi.createHtmlReport(resultOpt,"{}")
         }
     }
 }
