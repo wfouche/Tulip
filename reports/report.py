@@ -242,13 +242,40 @@ def createReport(filename):
     def print_global_summary():
         global name2s
         global name2s_list
+        global benchmark_id
+
         avg_aps = 0.0 if sm.name in ["onStart", "onStop"] else sm.num_actions/sm.duration
         if sm.name in ["onStart", "onStop"]:
             cpu_t = "0:00:00"
             sm.cpu = 0.0
         else:
             cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
-        html = benchmark_summary_row%(name2s,"",sm.num_actions,sm.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:],sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,cpu_t,sm.cpu,sm.mem)
+
+        statsFilename = '%s_%d.html'%(report_fn.split('.')[0],benchmark_id)
+        text = "<a href='%s'>%s</a>"%(statsFilename,"[Actions]")
+        printStream = PrintStream(statsFilename)
+        printStream.print("<html>")
+        printStream.println()
+        printStream.print("<body>")
+        printStream.println()
+        printStream.print("<h2>Name:  %s</h2>"%(sm.name))
+        printStream.println()
+        printStream.print("<h3>Latency by Percentile Distribution</h3>")
+        printStream.println()
+        printStream.print("<pre>")
+        printStream.println()
+        printStream.print("TBD.")
+        printStream.println()
+        printStream.print("</pre>")
+        printStream.println()
+        printStream.print("</body>")
+        printStream.println()
+        printStream.print("</html>")
+        printStream.println()
+        printStream.flush()
+        printStream.close()
+
+        html = benchmark_summary_row%(name2s,text,sm.num_actions,sm.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:],sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,cpu_t,sm.cpu,sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
