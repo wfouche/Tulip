@@ -7,6 +7,28 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.1.6] - 2025-03-07
+
+* Reporting::
+
+** Created per action reports to display latency by percentile distribution.
+
+** Create a summary report with percentile distribution graphs by latency for all actions.
+
+** Link benchmark name in report title to the configuration report.
+
+** Link Tulip name and version to the Tulip documentation site.
+
+* Runtime::
+
+** Removed benchmark creating logic from tulip-runtime.jar, use `jbang tulipc-cli@wfouche init <lang>` instead.
+
+* Software versions:
+** Java 21.0.6
+** Kotlin 2.0.21
+** Gradle 8.12.1
+** JBang 0.124.0
+
 == [v2.1.5] - 2025-02-01
 
 * Runtime:
