@@ -1,5 +1,4 @@
 = Changelog
-:toc: left
 :sectnums:
 :toclevels: 3
 
