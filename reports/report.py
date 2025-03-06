@@ -722,6 +722,11 @@ def createReport(filename, text):
             histosString += "data%dStr"%(idx)
             printStream.print('    var data%dStr = document.querySelector("div#data_%d").innerHTML.trim();'%(idx,idx))
             printStream.println()
+        if idx > 1:
+            actionsString += ', ' + "'S'"
+            histosString += ', ' + "data%dStr"%(0)
+            printStream.print('    var data%dStr = document.querySelector("div#data_%d").innerHTML.trim();'%(0,0))
+            printStream.println()
         printStream.print('    var histos = [%s];'%(histosString))
         printStream.println()
         printStream.print('    var names = [%s];'%(actionsString))
@@ -746,6 +751,13 @@ def createReport(filename, text):
             jhx.outputPercentileDistribution(printStream, 1000.0)
             printStream.print('</div>')
             printStream.println()
+
+        printStream.print('<div id="data_0" class="histo">')
+        printStream.println()
+        jh.outputPercentileDistribution(printStream, 1000.0)
+        printStream.print('</div>')
+        printStream.println()
+
         printStream.print(summary_html_3)
         printStream.println()
         printStream.flush()
