@@ -1223,6 +1223,6 @@ def createReport(filename):
 fun createConfigReport(configFilename: String) {
     PythonInterpreter().use { pyInterp ->
         pyInterp.exec(jythonCode2)
-        pyInterp.eval("createReport('${configFilename}')")
+        pyInterp.eval("createReport(\"${configFilename}\")")
     }
 }
