@@ -989,10 +989,19 @@ def createReport(filename, text):
     report_fh.close()
 """
 
-fun createHtmlReport(outputFilename: String, text: String) {
+fun createHtmlReport(outputFilename: String, text1: String) {
+    //System.out.println("---")
+    //System.out.println("text: " + text1)
+    //System.out.println("---")
+
+    var text2: String = text1.trim()
+    if (text2.startsWith("{")) {
+        text2 = "{}"
+    }
+
     PythonInterpreter().use { pyInterp ->
         pyInterp.exec(jythonCode)
-        pyInterp.eval("createReport('${outputFilename}','${text}')")
+        pyInterp.eval("createReport(\"${outputFilename}\",\"${text2}\")")
     }
 }
 
@@ -1214,6 +1223,6 @@ def createReport(filename):
 fun createConfigReport(configFilename: String) {
     PythonInterpreter().use { pyInterp ->
         pyInterp.exec(jythonCode2)
-        pyInterp.eval("createReport('${configFilename}')")
+        pyInterp.eval("createReport(\"${configFilename}\")")
     }
 }
