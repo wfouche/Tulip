@@ -1,1 +1,1 @@
-call jbang run Jython.java report.py ..\tulip-main\benchmark_output.json
+call jbang run Jython.java report.py report_output.json report2_config.jsonc
