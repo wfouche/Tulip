@@ -672,9 +672,9 @@ def createReport(filename, text):
         desc2 = ""
 
     if len(config_filename) > 0:
-        desc2 += jb["config"]["actions"]["description"] + "</a> / " + jb["timestamp"]
+        desc2 += jb["config"]["actions"]["description"] + "</a> / " + jb["timestamp"][:-3]
     else:
-        desc2 += jb["config"]["actions"]["description"] + " / " + jb["timestamp"]
+        desc2 += jb["config"]["actions"]["description"] + " / " + jb["timestamp"][:-3]
 
     print("Report filename = " + report_fn)
 
