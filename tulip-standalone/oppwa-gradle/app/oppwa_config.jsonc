@@ -1,6 +1,6 @@
 {
     "actions": {
-        "description": "OPPWA",
+        "description": "docs.oppwa.com",
         "output_filename": "oppwa_output.json",
         "report_filename": "oppwa_report.html",
         "user_class": "org.example.HttpUser",
@@ -10,29 +10,29 @@
         "user_actions": {
             "1": "PA",
             "2": "CP",
-            "3": "RF",
-            "4": "DB"
+            "3": "DB",
+            "4": "RF"
         }
     },
     "workflows": {
         "payments": {
             "-": {
                 "1": 0.5,
-                "4": 0.5
+                "3": 0.5
             },
             "1": {
                 "2": 1.0
             },
             "2": {
-                "3": 0.2,
+                "4": 0.2,
                 "-": 0.8
             },
             "3": {
-                "-": 1.0
+                "4": 0.2,
+                "-": 0.8
             },
             "4": {
-                "3": 0.2,
-                "-": 0.8
+                "-": 1.0
             }
         }
     },

@@ -183,33 +183,6 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "entityId"          to "8a8294174b7ecb28014b9699220015ca",
             "amount"            to "92.00",
             "currency"          to "EUR",
-            "paymentType"       to "RF")
-        val body: String = map.entries.joinToString("&")
-
-        val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${id}"))
-            .header("Authorization", "Bearer " + token)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body))
-            .build()
-
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        if (response.statusCode() == 200) {
-            val rsp = Json.decodeFromString<CompResponse>(response.body())
-            if (rsp.result.code.split(".")[0] == "000") {
-                return true
-            }
-        }
-        return true
-    }
-
-    // ----------------------------------------------------------------- //
-
-    override fun action4(): Boolean {
-        val map = mapOf(
-            "entityId"          to "8a8294174b7ecb28014b9699220015ca",
-            "amount"            to "92.00",
-            "currency"          to "EUR",
             "paymentBrand"      to "VISA",
             "paymentType"       to "DB",
             "card.number"       to "4200000000000000",
@@ -236,6 +209,33 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             }
         }
         return false
+    }
+
+    // ----------------------------------------------------------------- //
+
+    override fun action4(): Boolean {
+        val map = mapOf(
+            "entityId"          to "8a8294174b7ecb28014b9699220015ca",
+            "amount"            to "92.00",
+            "currency"          to "EUR",
+            "paymentType"       to "RF")
+        val body: String = map.entries.joinToString("&")
+
+        val request:HttpRequest = HttpRequest.newBuilder()
+            .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${id}"))
+            .header("Authorization", "Bearer " + token)
+            .header("Content-Type", "application/x-www-form-urlencoded")
+            .POST(HttpRequest.BodyPublishers.ofString(body))
+            .build()
+
+        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
+        if (response.statusCode() == 200) {
+            val rsp = Json.decodeFromString<CompResponse>(response.body())
+            if (rsp.result.code.split(".")[0] == "000") {
+                return true
+            }
+        }
+        return true
     }
 
     // ----------------------------------------------------------------- //
