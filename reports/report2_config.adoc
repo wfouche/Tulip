@@ -1,11 +1,8 @@
-= Tulip Configuration Report
+= Spring RestClient Benchmark
 :toc: left
 :sectnums:
 :diagram-server-url: https://kroki.io/
 :diagram-server-type: kroki_io
-
-Description::
-  Spring RestClient Benchmark 
 
 Filename::
   report2_config.jsonc
@@ -43,7 +40,7 @@ Filename::
 !===
 |===
 
-== Scenarios 
+== Workflows 
 
 [[api-user]]
 === api-user
@@ -93,6 +90,24 @@ A3 --> A0: 1.000
 |===
 
 == Benchmarks
+
+=== onStart
+
+[%header,cols="1a,2a"]
+|===
+| id | value
+| *enabled* | True
+| *aps_rate* | 0.0
+| *worker_thread_queue_size* | 0
+| *scenario_actions* 
+| 
+[%header,cols="1a,2a"]
+!===
+! id ! weight 
+! 0
+! - 
+!===
+|===
 
 === REST1
 
@@ -209,16 +224,16 @@ A3 --> A0: 1.000
 [%header,cols="1a,2a"]
 |===
 | id | value 
+| *enabled* | True
 | *num_users*   | 10
 | *num_threads* | 2
-| *enabled* | True
 |===
 === Context-2
 
 [%header,cols="1a,2a"]
 |===
 | id | value 
+| *enabled* | True
 | *num_users*   | 50
 | *num_threads* | 5
-| *enabled* | True
 |===
