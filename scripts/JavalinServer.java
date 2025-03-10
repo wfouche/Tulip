@@ -1,6 +1,6 @@
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.javalin:javalin:6.4.0
-//DEPS org.slf4j:slf4j-simple:2.0.13
+//DEPS io.javalin:javalin:6.5.0
+//DEPS org.slf4j:slf4j-simple:2.0.17
 
 // https://javalin.io/
 import io.javalin.Javalin;
