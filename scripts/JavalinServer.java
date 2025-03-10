@@ -8,7 +8,7 @@ import java.lang.System;
 
 public class JavalinServer {
     public static void main(String[] args) {
-        var app = Javalin.create(config -> config.useVirtualThreads=true)
+        var app = Javalin.create(config -> config.useVirtualThreads=false)
             .get("/", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json"))
             .get("/exit", ctx -> {System.out.println("Exit."); System.exit(0); })
             .get("/posts/{id}", ctx -> ctx.result("{\"code\": \"OK\"}").contentType("application/json") )
