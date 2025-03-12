@@ -108,11 +108,13 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun onStart(): Boolean {
-        super.onStart()
-        if (userId == 0) {
-            token = getUserParamValue("token")
+        if (super.onStart()) {
+            if (userId == 0) {
+                token = getUserParamValue("token")
+                return true;
+            }
         }
-        return true
+        return false;
     }
 
     // ----------------------------------------------------------------- //
