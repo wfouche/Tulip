@@ -1,7 +1,6 @@
 package io.github.wfouche.tulip.user;
 
 import io.github.wfouche.tulip.api.*;
-import java.util.concurrent.ThreadLocalRandom;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -35,7 +34,7 @@ public class HttpUser extends TulipUser {
             }
 
             var url = getUserParamValue("protocol") + "://" + getUserParamValue("host");
-            logger.info("url=" + url);
+            logger.info("url={}", url);
 
             client = RestClient.builder()
                     .requestFactory(factory)
@@ -72,7 +71,7 @@ public class HttpUser extends TulipUser {
     public boolean http_GET(String uri, Object... uriVariables) {
         boolean rc;
         try {
-            String rsp = client.get()
+            String rsp = restClient().get()
                     .uri(uri, uriVariables)
                     .retrieve()
                     .body(String.class);
@@ -83,7 +82,7 @@ public class HttpUser extends TulipUser {
         return rc;
     }
 
-    public RestClient getRestClient()  {
+    public RestClient restClient()  {
         return client;
     }
 
