@@ -1,0 +1,111 @@
+{
+    "actions": {
+        "description": "Spring RestClient Benchmark [Java]",
+        "output_filename": "benchmark_output.json",
+        "report_filename": "benchmark_report.html",
+        "user_class": "io.tulip.DemoHttpUser",
+        "user_params": {
+            "protocol": "http",
+            "host": "localhost:7070",
+            "connectTimeoutMillis": 500,
+            "readTimeoutMillis": 2000
+        },
+        "user_actions": {
+            "1": "GET:posts",
+            "2": "GET:comments",
+            "3": "GET:todos"
+        }
+    },
+    "workflows": {
+        "api-user": {
+            "-": {
+                "1": 0.40,
+                "3": 0.60
+            },
+            "1": {
+                "2": 1.0
+            },
+            "2": {
+                "-": 1.0
+            },
+            "3": {
+                "-": 1.0
+            }
+        }
+    },
+    "benchmarks": {
+        "onStart": {
+            "save_stats": false,
+            "scenario_actions": [ {"id": 0} ]
+        },
+         "REST1": {
+            "enabled": true,
+            "aps_rate": 10000.0,
+            "scenario_actions": [
+                {
+                    "id": 1
+                }
+            ],
+            "time": {
+                "pre_warmup_duration": 30,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_iterations": 3
+            }
+        },
+        "REST2": {
+            "enabled": true,
+            "aps_rate": 10000.0,
+            "scenario_actions": [
+                {
+                    "id": 1, "weight": 10
+                },
+                {
+                    "id": 2, "weight": 40
+                },
+                {
+                    "id": 3, "weight": 50
+                }
+            ],
+            "time": {
+                "pre_warmup_duration": 30,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_iterations": 3
+            }
+        },
+        "REST3": {
+            "enabled": true,
+            "aps_rate": 10000.0,
+            "scenario_workflow": "api-user",
+            "time": {
+                "pre_warmup_duration": 30,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_iterations": 3
+            }
+        },
+        "REST3.max": {
+            "enabled": true,
+            "aps_rate": 0.0,
+            "scenario_workflow": "api-user",
+            "time": {
+                "pre_warmup_duration": 30,
+                "warmup_duration": 10,
+                "benchmark_duration": 30,
+                "benchmark_iterations": 3
+            }
+        },
+        "onStop": {
+            "save_stats": false,
+            "scenario_actions": [ {"id": 100} ]
+        }
+    },
+    "contexts": {
+        "Context-1": {
+            "enabled": true,
+            "num_users": 128,
+            "num_threads": 8
+        }
+    }
+}
