@@ -131,19 +131,19 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
             "card.expiryMonth"  to "05",
             "card.expiryYear"   to "2034",
             "card.cvv"          to "123")
-        val bodyText: String = map.entries.joinToString("&")
+        val reqBodyText: String = map.entries.joinToString("&")
 
-        val rspText: String? = restClient().post()
+        val rspBodyText: String? = restClient().post()
             .uri("/v1/payments")
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(bodyText)
+            .body(reqBodyText)
             .retrieve()
             .body(String::class.java)
 
         id = ""
-        if (rspText != null) {
-            val rsp = Json.decodeFromString<AuthResponse>(rspText!!)
+        if (rspBodyText != null) {
+            val rsp = Json.decodeFromString<AuthResponse>(rspBodyText!!)
             if (rsp.result.code.split(".")[0] == "000") {
                 id = rsp.id
                 return true
@@ -160,18 +160,18 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
             "amount"            to "92.00",
             "currency"          to "EUR",
             "paymentType"       to "CP")
-        val bodyText: String = map.entries.joinToString("&")
+        val reqBodyText: String = map.entries.joinToString("&")
 
-        val rspText: String? = restClient().post()
+        val rspBodyText: String? = restClient().post()
             .uri("/v1/payments/${id}")
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(bodyText)
+            .body(reqBodyText)
             .retrieve()
             .body(String::class.java)
 
-        if (rspText != null) {
-            val rsp = Json.decodeFromString<CompResponse>(rspText!!)
+        if (rspBodyText != null) {
+            val rsp = Json.decodeFromString<CompResponse>(rspBodyText!!)
             if (rsp.result.code.split(".")[0] == "000") {
                 return true
             }
@@ -193,19 +193,19 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
             "card.expiryMonth"  to "05",
             "card.expiryYear"   to "2034",
             "card.cvv"          to "123")
-        val bodyText: String = map.entries.joinToString("&")
+        val reqBodyText: String = map.entries.joinToString("&")
 
-        val rspText: String? = restClient().post()
+        val rspBodyText: String? = restClient().post()
             .uri("/v1/payments")
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(bodyText)
+            .body(reqBodyText)
             .retrieve()
             .body(String::class.java)
 
         id = ""
-        if (rspText != null) {
-            val rsp = Json.decodeFromString<AuthResponse>(rspText!!)
+        if (rspBodyText != null) {
+            val rsp = Json.decodeFromString<AuthResponse>(rspBodyText!!)
             if (rsp.result.code.split(".")[0] == "000") {
                 id = rsp.id
                 return true
@@ -222,18 +222,18 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
             "amount"            to "92.00",
             "currency"          to "EUR",
             "paymentType"       to "RF")
-        val bodyText: String = map.entries.joinToString("&")
+        val reqBodyText: String = map.entries.joinToString("&")
 
-        val rspText: String? = restClient().post()
+        val rspBodyText: String? = restClient().post()
             .uri("/v1/payments/${id}")
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(bodyText)
+            .body(reqBodyText)
             .retrieve()
             .body(String::class.java)
 
-        if (rspText != null) {
-            val rsp = Json.decodeFromString<CompResponse>(rspText!!)
+        if (rspBodyText != null) {
+            val rsp = Json.decodeFromString<CompResponse>(rspBodyText!!)
             if (rsp.result.code.split(".")[0] == "000") {
                 return true
             }
