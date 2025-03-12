@@ -3,12 +3,13 @@ package org.example
 /*-------------------------------------------------------------------------*/
 
 import io.github.wfouche.tulip.api.TulipUser
+import io.github.wfouche.tulip.user.HttpUser
 import io.github.wfouche.tulip.core.Console
 import io.github.wfouche.tulip.core.delayMillisRandom
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
+//import java.net.URI
+//import java.net.http.HttpClient
+//import java.net.http.HttpRequest
+//import java.net.http.HttpResponse
 import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
 import java.lang.Exception
@@ -17,7 +18,7 @@ import kotlinx.serialization.json.*
 
 /*-------------------------------------------------------------------------*/
 
-private val client = HttpClient.newHttpClient()
+//private val client = HttpClient.newHttpClient()
 
 /*-------------------------------------------------------------------------*/
 
@@ -98,7 +99,7 @@ data class CompResponse(
 
 /*-------------------------------------------------------------------------*/
 
-class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
+class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
@@ -107,6 +108,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun onStart(): Boolean {
+        super.onStart()
         if (userId == 0) {
             token = getUserParamValue("token")
         }
@@ -127,20 +129,19 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "card.expiryMonth"  to "05",
             "card.expiryYear"   to "2034",
             "card.cvv"          to "123")
-        val body: String = map.entries.joinToString("&")
+        val bodyText: String = map.entries.joinToString("&")
 
-        val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("https://eu-test.oppwa.com/v1/payments"))
+        val rspText: String? = restClient().post()
+            .uri("/v1/payments")
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body))
-            .build()
+            .body(bodyText)
+            .retrieve()
+            .body(String::class.java)
 
         id = ""
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        // Console.put(response.body())
-        if (response.statusCode() == 200) {
-            val rsp = Json.decodeFromString<AuthResponse>(response.body())
+        if (rspText != null) {
+            val rsp = Json.decodeFromString<AuthResponse>(rspText!!)
             if (rsp.result.code.split(".")[0] == "000") {
                 id = rsp.id
                 return true
@@ -157,18 +158,18 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "amount"            to "92.00",
             "currency"          to "EUR",
             "paymentType"       to "CP")
-        val body: String = map.entries.joinToString("&")
+        val bodyText: String = map.entries.joinToString("&")
 
-        val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${id}"))
+        val rspText: String? = restClient().post()
+            .uri("/v1/payments/${id}")
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body))
-            .build()
+            .body(bodyText)
+            .retrieve()
+            .body(String::class.java)
 
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        if (response.statusCode() == 200) {
-            val rsp = Json.decodeFromString<CompResponse>(response.body())
+        if (rspText != null) {
+            val rsp = Json.decodeFromString<CompResponse>(rspText!!)
             if (rsp.result.code.split(".")[0] == "000") {
                 return true
             }
@@ -190,19 +191,19 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "card.expiryMonth"  to "05",
             "card.expiryYear"   to "2034",
             "card.cvv"          to "123")
-        val body: String = map.entries.joinToString("&")
+        val bodyText: String = map.entries.joinToString("&")
 
-        val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("https://eu-test.oppwa.com/v1/payments"))
+        val rspText: String? = restClient().post()
+            .uri("/v1/payments")
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body))
-            .build()
+            .body(bodyText)
+            .retrieve()
+            .body(String::class.java)
 
         id = ""
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        if (response.statusCode() == 200) {
-            val rsp = Json.decodeFromString<AuthResponse>(response.body())
+        if (rspText != null) {
+            val rsp = Json.decodeFromString<AuthResponse>(rspText!!)
             if (rsp.result.code.split(".")[0] == "000") {
                 id = rsp.id
                 return true
@@ -219,18 +220,18 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
             "amount"            to "92.00",
             "currency"          to "EUR",
             "paymentType"       to "RF")
-        val body: String = map.entries.joinToString("&")
+        val bodyText: String = map.entries.joinToString("&")
 
-        val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI.create("https://eu-test.oppwa.com/v1/payments/${id}"))
+        val rspText: String? = restClient().post()
+            .uri("/v1/payments/${id}")
             .header("Authorization", "Bearer " + token)
             .header("Content-Type", "application/x-www-form-urlencoded")
-            .POST(HttpRequest.BodyPublishers.ofString(body))
-            .build()
+            .body(bodyText)
+            .retrieve()
+            .body(String::class.java)
 
-        val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-        if (response.statusCode() == 200) {
-            val rsp = Json.decodeFromString<CompResponse>(response.body())
+        if (rspText != null) {
+            val rsp = Json.decodeFromString<CompResponse>(rspText!!)
             if (rsp.result.code.split(".")[0] == "000") {
                 return true
             }
