@@ -5,7 +5,7 @@ import org.jreleaser.model.Active
 import org.jetbrains.dokka.gradle.DokkaTask
 
 group = "io.github.wfouche.tulip"
-version = "2.1.6"
+version = "2.1.7-dev"
 
 plugins {
     id("com.github.ben-manes.versions") version "0.52.0"
@@ -45,6 +45,12 @@ dependencies {
 
     // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
     //implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
+
+    implementation("io.github.wfouche.tulip:tulip-runtime:2.1.6")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.4.3")
+    implementation("org.slf4j:slf4j-api:2.0.17")
+    implementation("ch.qos.logback:logback-core:1.5.17")
+    implementation("ch.qos.logback:logback-classic:1.5.17")
 }
 
 tasks.jar {
