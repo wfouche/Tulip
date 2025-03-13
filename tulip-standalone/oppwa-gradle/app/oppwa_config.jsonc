@@ -3,7 +3,7 @@
         "description": "docs.oppwa.com",
         "output_filename": "oppwa_output.json",
         "report_filename": "oppwa_report.html",
-        "user_class": "org.example.OppHttpUser",
+        "user_class": "io.tulip.OppHttpUser",
         "user_params": {
             "protocol": "https",
             "host": "eu-test.oppwa.com",
@@ -46,7 +46,7 @@
         },
         "Max TPS": {
             "enabled": true,
-            "aps_rate": 10.0,
+            "aps_rate": 100.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
@@ -65,8 +65,8 @@
     "contexts": {
         "Context-1": {
             "enabled": true,
-            "num_users": 16,
-            "num_threads": 8
+            "num_users": 100,
+            "num_threads": 100
         },
         "Context-2": {
             "enabled": false,
