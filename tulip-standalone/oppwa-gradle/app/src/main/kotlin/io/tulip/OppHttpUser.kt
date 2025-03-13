@@ -15,6 +15,7 @@ import io.github.wfouche.tulip.pfsm.MarkovChain
 import java.lang.Exception
 import kotlinx.serialization.*
 import kotlinx.serialization.json.*
+import org.springframework.web.client.RestClientException
 
 /*-------------------------------------------------------------------------*/
 
@@ -108,137 +109,155 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun onStart(): Boolean {
-        if (super.onStart()) {
-            if (userId == 0) {
-                token = getUserParamValue("token")
-                return true;
-            }
+        super.onStart()
+        if (userId == 0) {
+            token = getUserParamValue("token")
         }
-        return false;
+        return true
     }
 
     // ----------------------------------------------------------------- //
     // https://docs.oppwa.com/integrations/server-to-server#syncPayment
     override fun action1(): Boolean {
-        val map = mapOf(
-            "entityId"          to "8a8294174b7ecb28014b9699220015ca",
-            "amount"            to "92.00",
-            "currency"          to "EUR",
-            "paymentBrand"      to "VISA",
-            "paymentType"       to "PA",
-            "card.number"       to "4200000000000000",
-            "card.holder"       to "Jane Jones",
-            "card.expiryMonth"  to "05",
-            "card.expiryYear"   to "2034",
-            "card.cvv"          to "123")
-        val reqBodyText: String = map.entries.joinToString("&")
+        return try {
+            val map = mapOf(
+                "entityId" to "8a8294174b7ecb28014b9699220015ca",
+                "amount" to "92.00",
+                "currency" to "EUR",
+                "paymentBrand" to "VISA",
+                "paymentType" to "PA",
+                "card.number" to "4200000000000000",
+                "card.holder" to "Jane Jones",
+                "card.expiryMonth" to "05",
+                "card.expiryYear" to "2034",
+                "card.cvv" to "123"
+            )
+            val reqBodyText: String = map.entries.joinToString("&")
 
-        val rspBodyText: String? = restClient().post()
-            .uri("/v1/payments")
-            .header("Authorization", "Bearer " + token)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(reqBodyText)
-            .retrieve()
-            .body(String::class.java)
+            val rspBodyText: String? = restClient().post()
+                .uri("/v1/payments")
+                .header("Authorization", "Bearer " + token)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .body(reqBodyText)
+                .retrieve()
+                .body(String::class.java)
 
-        id = ""
-        if (rspBodyText != null) {
-            val rsp = Json.decodeFromString<AuthResponse>(rspBodyText!!)
-            if (rsp.result.code.split(".")[0] == "000") {
-                id = rsp.id
-                return true
+            id = ""
+            if (rspBodyText != null) {
+                val rsp = Json.decodeFromString<AuthResponse>(rspBodyText!!)
+                if (rsp.result.code.split(".")[0] == "000") {
+                    id = rsp.id
+                    return true
+                }
             }
+            false
+        } catch (e: RestClientException) {
+            false
         }
-        return false
     }
 
     // ----------------------------------------------------------------- //
 
     override fun action2(): Boolean {
-        val map = mapOf(
-            "entityId"          to "8a8294174b7ecb28014b9699220015ca",
-            "amount"            to "92.00",
-            "currency"          to "EUR",
-            "paymentType"       to "CP")
-        val reqBodyText: String = map.entries.joinToString("&")
+        return try {
+            val map = mapOf(
+                "entityId" to "8a8294174b7ecb28014b9699220015ca",
+                "amount" to "92.00",
+                "currency" to "EUR",
+                "paymentType" to "CP"
+            )
+            val reqBodyText: String = map.entries.joinToString("&")
 
-        val rspBodyText: String? = restClient().post()
-            .uri("/v1/payments/${id}")
-            .header("Authorization", "Bearer " + token)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(reqBodyText)
-            .retrieve()
-            .body(String::class.java)
+            val rspBodyText: String? = restClient().post()
+                .uri("/v1/payments/${id}")
+                .header("Authorization", "Bearer " + token)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .body(reqBodyText)
+                .retrieve()
+                .body(String::class.java)
 
-        if (rspBodyText != null) {
-            val rsp = Json.decodeFromString<CompResponse>(rspBodyText!!)
-            if (rsp.result.code.split(".")[0] == "000") {
-                return true
+            if (rspBodyText != null) {
+                val rsp = Json.decodeFromString<CompResponse>(rspBodyText!!)
+                if (rsp.result.code.split(".")[0] == "000") {
+                    return true
+                }
             }
+            false
+        } catch (e: RestClientException) {
+            false
         }
-        return true
     }
 
     // ----------------------------------------------------------------- //
 
     override fun action3(): Boolean {
-        val map = mapOf(
-            "entityId"          to "8a8294174b7ecb28014b9699220015ca",
-            "amount"            to "92.00",
-            "currency"          to "EUR",
-            "paymentBrand"      to "VISA",
-            "paymentType"       to "DB",
-            "card.number"       to "4200000000000000",
-            "card.holder"       to "Jane Jones",
-            "card.expiryMonth"  to "05",
-            "card.expiryYear"   to "2034",
-            "card.cvv"          to "123")
-        val reqBodyText: String = map.entries.joinToString("&")
+        return try {
+            val map = mapOf(
+                "entityId" to "8a8294174b7ecb28014b9699220015ca",
+                "amount" to "92.00",
+                "currency" to "EUR",
+                "paymentBrand" to "VISA",
+                "paymentType" to "DB",
+                "card.number" to "4200000000000000",
+                "card.holder" to "Jane Jones",
+                "card.expiryMonth" to "05",
+                "card.expiryYear" to "2034",
+                "card.cvv" to "123"
+            )
+            val reqBodyText: String = map.entries.joinToString("&")
 
-        val rspBodyText: String? = restClient().post()
-            .uri("/v1/payments")
-            .header("Authorization", "Bearer " + token)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(reqBodyText)
-            .retrieve()
-            .body(String::class.java)
+            val rspBodyText: String? = restClient().post()
+                .uri("/v1/payments")
+                .header("Authorization", "Bearer " + token)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .body(reqBodyText)
+                .retrieve()
+                .body(String::class.java)
 
-        id = ""
-        if (rspBodyText != null) {
-            val rsp = Json.decodeFromString<AuthResponse>(rspBodyText!!)
-            if (rsp.result.code.split(".")[0] == "000") {
-                id = rsp.id
-                return true
+            id = ""
+            if (rspBodyText != null) {
+                val rsp = Json.decodeFromString<AuthResponse>(rspBodyText!!)
+                if (rsp.result.code.split(".")[0] == "000") {
+                    id = rsp.id
+                    return true
+                }
             }
+            false
+        } catch (e: RestClientException) {
+            false
         }
-        return false
     }
 
     // ----------------------------------------------------------------- //
 
     override fun action4(): Boolean {
-        val map = mapOf(
-            "entityId"          to "8a8294174b7ecb28014b9699220015ca",
-            "amount"            to "92.00",
-            "currency"          to "EUR",
-            "paymentType"       to "RF")
-        val reqBodyText: String = map.entries.joinToString("&")
+        return try {
+            val map = mapOf(
+                "entityId" to "8a8294174b7ecb28014b9699220015ca",
+                "amount" to "92.00",
+                "currency" to "EUR",
+                "paymentType" to "RF"
+            )
+            val reqBodyText: String = map.entries.joinToString("&")
 
-        val rspBodyText: String? = restClient().post()
-            .uri("/v1/payments/${id}")
-            .header("Authorization", "Bearer " + token)
-            .header("Content-Type", "application/x-www-form-urlencoded")
-            .body(reqBodyText)
-            .retrieve()
-            .body(String::class.java)
+            val rspBodyText: String? = restClient().post()
+                .uri("/v1/payments/${id}")
+                .header("Authorization", "Bearer " + token)
+                .header("Content-Type", "application/x-www-form-urlencoded")
+                .body(reqBodyText)
+                .retrieve()
+                .body(String::class.java)
 
-        if (rspBodyText != null) {
-            val rsp = Json.decodeFromString<CompResponse>(rspBodyText!!)
-            if (rsp.result.code.split(".")[0] == "000") {
-                return true
+            if (rspBodyText != null) {
+                val rsp = Json.decodeFromString<CompResponse>(rspBodyText!!)
+                if (rsp.result.code.split(".")[0] == "000") {
+                    return true
+                }
             }
+            false
+        } catch (e: RestClientException) {
+            false
         }
-        return true
     }
 
     // ----------------------------------------------------------------- //
