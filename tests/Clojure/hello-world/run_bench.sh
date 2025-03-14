@@ -1,1 +1,0 @@
-clj -X hello/run
