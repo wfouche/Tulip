@@ -162,9 +162,6 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // Action 2 - Auth Completion
     override fun action2(): Boolean {
-        if (paymentId == "") {
-            return false
-        }
         val map = mapOf(
             "entityId" to "8a8294174b7ecb28014b9699220015ca",
             "amount" to "92.00",
@@ -173,6 +170,9 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
         )
         val reqBodyText: String = map.entries.joinToString("&")
         return try {
+            if (paymentId == "") {
+                return false
+            }
             val rspBodyText: String? = restClient().post()
                 .uri("/v1/payments/${paymentId}")
                 .header("Authorization", "Bearer " + token)
@@ -239,9 +239,6 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // Action 4 - Refund
     override fun action4(): Boolean {
-        if (paymentId == "") {
-            return false
-        }
         val map = mapOf(
             "entityId" to "8a8294174b7ecb28014b9699220015ca",
             "amount" to "92.00",
@@ -250,6 +247,9 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
         )
         val reqBodyText: String = map.entries.joinToString("&")
         return try {
+            if (paymentId == "") {
+                return false
+            }
             val rspBodyText: String? = restClient().post()
                 .uri("/v1/payments/${paymentId}")
                 .header("Authorization", "Bearer " + token)
