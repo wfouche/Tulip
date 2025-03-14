@@ -104,7 +104,7 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-    private var id: String = ""
+    private var paymentId: String = ""
 
     // ----------------------------------------------------------------- //
 
@@ -119,21 +119,20 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     // ----------------------------------------------------------------- //
     // https://docs.oppwa.com/integrations/server-to-server#syncPayment
     override fun action1(): Boolean {
+        val map = mapOf(
+            "entityId" to "8a8294174b7ecb28014b9699220015ca",
+            "amount" to "92.00",
+            "currency" to "EUR",
+            "paymentBrand" to "VISA",
+            "paymentType" to "PA",
+            "card.number" to "4200000000000000",
+            "card.holder" to "Jane Jones",
+            "card.expiryMonth" to "05",
+            "card.expiryYear" to "2034",
+            "card.cvv" to "123"
+        )
+        val reqBodyText: String = map.entries.joinToString("&")
         return try {
-            val map = mapOf(
-                "entityId" to "8a8294174b7ecb28014b9699220015ca",
-                "amount" to "92.00",
-                "currency" to "EUR",
-                "paymentBrand" to "VISA",
-                "paymentType" to "PA",
-                "card.number" to "4200000000000000",
-                "card.holder" to "Jane Jones",
-                "card.expiryMonth" to "05",
-                "card.expiryYear" to "2034",
-                "card.cvv" to "123"
-            )
-            val reqBodyText: String = map.entries.joinToString("&")
-
             val rspBodyText: String? = restClient().post()
                 .uri("/v1/payments")
                 .header("Authorization", "Bearer " + token)
@@ -141,17 +140,18 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
                 .body(reqBodyText)
                 .retrieve()
                 .body(String::class.java)
-
-            id = ""
+            paymentId = ""
             if (rspBodyText != null) {
                 val rsp = Json.decodeFromString<AuthResponse>(rspBodyText!!)
                 if (rsp.result.code.split(".")[0] == "000") {
-                    id = rsp.id
+                    paymentId = rsp.id
                     return true
                 }
             }
             false
         } catch (e: RestClientException) {
+            println("action1 - fail")
+            println(e.toString())
             false
         }
     }
@@ -159,23 +159,21 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun action2(): Boolean {
+        val map = mapOf(
+            "entityId" to "8a8294174b7ecb28014b9699220015ca",
+            "amount" to "92.00",
+            "currency" to "EUR",
+            "paymentType" to "CP"
+        )
+        val reqBodyText: String = map.entries.joinToString("&")
         return try {
-            val map = mapOf(
-                "entityId" to "8a8294174b7ecb28014b9699220015ca",
-                "amount" to "92.00",
-                "currency" to "EUR",
-                "paymentType" to "CP"
-            )
-            val reqBodyText: String = map.entries.joinToString("&")
-
             val rspBodyText: String? = restClient().post()
-                .uri("/v1/payments/${id}")
+                .uri("/v1/payments/${paymentId}")
                 .header("Authorization", "Bearer " + token)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .body(reqBodyText)
                 .retrieve()
                 .body(String::class.java)
-
             if (rspBodyText != null) {
                 val rsp = Json.decodeFromString<CompResponse>(rspBodyText!!)
                 if (rsp.result.code.split(".")[0] == "000") {
@@ -184,6 +182,8 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
             }
             false
         } catch (e: RestClientException) {
+            println("action2 - fail")
+            println(e.toString())
             false
         }
     }
@@ -191,21 +191,20 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun action3(): Boolean {
+        val map = mapOf(
+            "entityId" to "8a8294174b7ecb28014b9699220015ca",
+            "amount" to "92.00",
+            "currency" to "EUR",
+            "paymentBrand" to "VISA",
+            "paymentType" to "DB",
+            "card.number" to "4200000000000000",
+            "card.holder" to "Jane Jones",
+            "card.expiryMonth" to "05",
+            "card.expiryYear" to "2034",
+            "card.cvv" to "123"
+        )
+        val reqBodyText: String = map.entries.joinToString("&")
         return try {
-            val map = mapOf(
-                "entityId" to "8a8294174b7ecb28014b9699220015ca",
-                "amount" to "92.00",
-                "currency" to "EUR",
-                "paymentBrand" to "VISA",
-                "paymentType" to "DB",
-                "card.number" to "4200000000000000",
-                "card.holder" to "Jane Jones",
-                "card.expiryMonth" to "05",
-                "card.expiryYear" to "2034",
-                "card.cvv" to "123"
-            )
-            val reqBodyText: String = map.entries.joinToString("&")
-
             val rspBodyText: String? = restClient().post()
                 .uri("/v1/payments")
                 .header("Authorization", "Bearer " + token)
@@ -213,17 +212,18 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
                 .body(reqBodyText)
                 .retrieve()
                 .body(String::class.java)
-
-            id = ""
+            paymentId = ""
             if (rspBodyText != null) {
                 val rsp = Json.decodeFromString<AuthResponse>(rspBodyText!!)
                 if (rsp.result.code.split(".")[0] == "000") {
-                    id = rsp.id
+                    paymentId = rsp.id
                     return true
                 }
             }
             false
         } catch (e: RestClientException) {
+            println("action3 - fail")
+            println(e.toString())
             false
         }
     }
@@ -231,23 +231,21 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun action4(): Boolean {
+        val map = mapOf(
+            "entityId" to "8a8294174b7ecb28014b9699220015ca",
+            "amount" to "92.00",
+            "currency" to "EUR",
+            "paymentType" to "RF"
+        )
+        val reqBodyText: String = map.entries.joinToString("&")
         return try {
-            val map = mapOf(
-                "entityId" to "8a8294174b7ecb28014b9699220015ca",
-                "amount" to "92.00",
-                "currency" to "EUR",
-                "paymentType" to "RF"
-            )
-            val reqBodyText: String = map.entries.joinToString("&")
-
             val rspBodyText: String? = restClient().post()
-                .uri("/v1/payments/${id}")
+                .uri("/v1/payments/${paymentId}")
                 .header("Authorization", "Bearer " + token)
                 .header("Content-Type", "application/x-www-form-urlencoded")
                 .body(reqBodyText)
                 .retrieve()
                 .body(String::class.java)
-
             if (rspBodyText != null) {
                 val rsp = Json.decodeFromString<CompResponse>(rspBodyText!!)
                 if (rsp.result.code.split(".")[0] == "000") {
@@ -256,6 +254,8 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
             }
             false
         } catch (e: RestClientException) {
+            println("action4 - fail")
+            println(e.toString())
             false
         }
     }
