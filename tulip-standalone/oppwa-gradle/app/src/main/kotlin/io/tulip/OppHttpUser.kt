@@ -118,6 +118,8 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
     // https://docs.oppwa.com/integrations/server-to-server#syncPayment
+
+    // Action 1 - Auth
     override fun action1(): Boolean {
         val map = mapOf(
             "entityId" to "8a8294174b7ecb28014b9699220015ca",
@@ -158,7 +160,11 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
+    // Action 2 - Auth Completion
     override fun action2(): Boolean {
+        if (paymentId == "") {
+            return false
+        }
         val map = mapOf(
             "entityId" to "8a8294174b7ecb28014b9699220015ca",
             "amount" to "92.00",
@@ -190,6 +196,7 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
+    // Action 3 - Debit
     override fun action3(): Boolean {
         val map = mapOf(
             "entityId" to "8a8294174b7ecb28014b9699220015ca",
@@ -230,7 +237,11 @@ class OppHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
+    // Action 4 - Refund
     override fun action4(): Boolean {
+        if (paymentId == "") {
+            return false
+        }
         val map = mapOf(
             "entityId" to "8a8294174b7ecb28014b9699220015ca",
             "amount" to "92.00",
