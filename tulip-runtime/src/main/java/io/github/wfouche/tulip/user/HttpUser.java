@@ -6,6 +6,8 @@ import org.springframework.web.client.RestClientException;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import javax.net.ssl.*;
+import java.security.cert.X509Certificate;
 
 /**
  * The HttpUser class is an experimental addition to Tulip.
@@ -41,7 +43,18 @@ public class HttpUser extends TulipUser {
                     .baseUrl(url)
                     .build();
 
-            // debug = Boolean.valueOf(getUserParamValue("debug"));
+            var verify_ = getUserParamValue("verify");
+            if (!verify_.isEmpty()) {
+                var sslVerify = Boolean.parseBoolean(getUserParamValue("verify"));
+                if (!sslVerify) {
+                    try {
+                        disableSSLValidation();
+                    } catch (Exception e) {
+                        logger.info("SSL/TLS verify disable failed");
+                        throw new RuntimeException(e);
+                    }
+                }
+            }
         }
         return true;
     }
@@ -80,6 +93,31 @@ public class HttpUser extends TulipUser {
             rc = false;
         }
         return rc;
+    }
+
+    public void disableSSLValidation() throws Exception {
+        final SSLContext sslContext = SSLContext.getInstance("TLS");
+
+        sslContext.init(null, new TrustManager[]{new X509TrustManager() {
+            @Override
+            public void checkClientTrusted(X509Certificate[] x509Certificates, String s) {}
+
+            @Override
+            public void checkServerTrusted(X509Certificate[] x509Certificates, String s) {}
+
+            @Override
+            public X509Certificate[] getAcceptedIssuers() {
+                return new X509Certificate[0];
+            }
+        }}, null);
+
+        HttpsURLConnection.setDefaultSSLSocketFactory(sslContext.getSocketFactory());
+        HttpsURLConnection.setDefaultHostnameVerifier(new HostnameVerifier() {
+            public boolean verify(String hostname, SSLSession session) {
+                return true;
+            }
+        });
+
     }
 
     public RestClient restClient()  {
