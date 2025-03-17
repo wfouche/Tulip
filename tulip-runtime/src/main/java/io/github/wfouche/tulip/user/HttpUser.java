@@ -1,7 +1,6 @@
 package io.github.wfouche.tulip.user;
 
 import io.github.wfouche.tulip.api.*;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -9,6 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import javax.net.ssl.*;
 import java.security.cert.X509Certificate;
+// import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 
 /**
  * The HttpUser class is an experimental addition to Tulip.
@@ -22,7 +22,8 @@ public class HttpUser extends TulipUser {
     public boolean onStart() {
         // Initialize the shared RestClient object only once
         if (getUserId() == 0) {
-            var factory = new HttpComponentsClientHttpRequestFactory();
+            //var factory = new HttpComponentsClientHttpRequestFactory();
+            var factory = new SimpleClientHttpRequestFactory();
 
             var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
             if (!connectTimeout_.isEmpty()) {
