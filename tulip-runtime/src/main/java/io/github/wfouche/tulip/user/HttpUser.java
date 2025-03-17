@@ -1,6 +1,7 @@
 package io.github.wfouche.tulip.user;
 
 import io.github.wfouche.tulip.api.*;
+import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -21,7 +22,7 @@ public class HttpUser extends TulipUser {
     public boolean onStart() {
         // Initialize the shared RestClient object only once
         if (getUserId() == 0) {
-            var factory = new SimpleClientHttpRequestFactory();
+            var factory = new HttpComponentsClientHttpRequestFactory();
 
             var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
             if (!connectTimeout_.isEmpty()) {
