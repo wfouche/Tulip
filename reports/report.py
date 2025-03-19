@@ -362,7 +362,7 @@ summary_html_2 = '''
 </head>
 
 <body>
-<h2>Summary: __BENCHMARK_NAME__</h2>
+<h2>Benchmark: __BENCHMARK_NAME__</h2>
 
 <input type="file" id="files" name="files[]" multiple />
 
@@ -695,7 +695,7 @@ def createReport(filename, text):
             cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
 
         statsFilename = '%s_%d.html'%(report_fn.split('.')[0],benchmark_id)
-        text = "<a href='%s'>%s</a>"%(statsFilename,"[Summary]")
+        text = "<a href='%s'>%s</a>"%(statsFilename,"[Charts]")
         printStream = PrintStream(statsFilename)
         printStream.print(summary_html_1)
         printStream.println()
