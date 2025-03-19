@@ -1103,7 +1103,12 @@ def createReport(filename, text):
 
         #if len(sm.chart_t_list) == 0:
         #    sm.chart_t_list.append(['%s'%(e["test_begin"].replace("_", "T")),int(e["avg_aps"]),0.0])
-        sm.chart_t_list.append(['%s'%(e["test_end"].replace("_", "T")),int(e["avg_aps"]),float("%.1f"%(e["num_failed"]/e["duration"]))])
+        sm.chart_t_list.append(
+            [
+                '%s'%(e["test_end"].replace("_", "T")),
+                float("%.1f"%(e["avg_aps"])),
+                float("%.3f"%(e["num_failed"]/e["duration"]))
+             ])
 
         # ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30 ]
         sm.chart_p_list.append(
