@@ -367,6 +367,9 @@ summary_html_2 = '''
 </head>
 
 <body>
+
+__CHARTS_TEXT__
+
 <h2>Benchmark: __BENCHMARK_NAME__</h2>
 
 <input type="file" id="files" name="files[]" multiple />
@@ -618,21 +621,144 @@ trailer = '''
 </html>
 '''
 
+charts_html = '''
+<h2>Actions per Second</h2>
+  <div id="main" style="width: 1000px;height:500px;"></div>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
+  <script src="__JS_T_CHART__"></script>
+<h2>Response Times (ms)</h2>
+  <div id="main_p" style="width: 1000px;height:500px;"></div>
+  <script src="__JS_P_CHART__"></script>
+'''
+
+chart_t_html = '''
+var myChart = echarts.init(document.getElementById('main'));
+
+var data =  __DATA__;
+
+var option = {
+  legend: {},
+  tooltip: {
+    trigger: 'axis',
+  },
+  dataset: {
+    source:data,
+    dimensions: ['timestamp', 'sensor1', 'sensor2'],
+  },
+  xAxis: { type: 'time' },
+  yAxis: { },
+  series: [
+  {
+     name: 'Actions/s',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor1' // refer sensor 1 value 
+     }
+  },{
+     name: 'Failures/s',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor2'
+  }
+}]
+};
+myChart.setOption(option);
+'''
+
+chart_p_html = '''
+var myChart = echarts.init(document.getElementById('main_p'));
+
+var data =  __DATA__;
+
+var option = {
+  legend: {},
+  tooltip: {
+    trigger: 'axis',
+  },
+  dataset: {
+    source:data,
+    dimensions: ['timestamp', 'sensor1', 'sensor2', 'sensor3', 'sensor4', 'sensor5', 'sensor6'],
+  },
+  xAxis: { type: 'time' },
+  yAxis: { },
+  series: [
+  {
+     name: 'Max',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor6' // refer sensor 1 value
+     }
+  },{
+     name: 'p99',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor5' // refer sensor 1 value
+     }
+  },{
+     name: 'p95',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor4' // refer sensor 1 value
+     }
+
+  },{
+     name: 'p90',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor3' // refer sensor 1 value
+     }
+
+  },{
+     name: 'Avg',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor2'
+     }
+  },{
+     name: 'Min',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor1'
+  }
+}]
+};
+myChart.setOption(option);
+'''
+
 class Summary:
-    num_actions = 0
-    num_failed = 0
-    duration = 0.0
-    min_rt = 1000000000.0
-    max_rt = 0.0
-    max_rt_ts = ""
-    mem = 0.0
-    cpu = 0.0
-    max_awt = 0.0
-    max_wt = 0.0
-    avg_qs = 0.0
-    max_qs = 0
-    name = ""
-    cpu_time_ns = 0
+    def __init__(self):
+        self.num_actions = 0
+        self.num_failed = 0
+        self.duration = 0.0
+        self.min_rt = 1000000000.0
+        self.max_rt = 0.0
+        self.max_rt_ts = ""
+        self.mem = 0.0
+        self.cpu = 0.0
+        self.max_awt = 0.0
+        self.max_wt = 0.0
+        self.avg_qs = 0.0
+        self.max_qs = 0
+        self.name = ""
+        self.cpu_time_ns = 0
+        self.chart_t_list = []   # ['2018-04-10T20:40:33.100', 1100, 0]
+        self.chart_p_list = []   # ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30]
 
 def createReport(filename, text):
 
@@ -743,7 +869,16 @@ def createReport(filename, text):
         printStream.println()
         printStream.print('    }')
         printStream.println()
-        printStream.print(summary_html_2.replace("__BENCHMARK_NAME__", sm.name))
+        tChartFilename = '%s_%d_t.js'%(report_fn.split('.')[0],benchmark_id)
+        pChartFilename = '%s_%d_p.js'%(report_fn.split('.')[0],benchmark_id)
+        printStream.print(
+            summary_html_2
+                .replace("__BENCHMARK_NAME__", sm.name)
+                .replace("__CHARTS_TEXT__",
+                    charts_html
+                         .replace("__JS_T_CHART__",tChartFilename)
+                         .replace("__JS_P_CHART__",pChartFilename))
+                )
         printStream.println()
 
         idx = 0
@@ -764,6 +899,34 @@ def createReport(filename, text):
         printStream.println()
 
         printStream.print(summary_html_3)
+        printStream.println()
+        printStream.flush()
+        printStream.close()
+
+        # Actions/s chart
+        #chart_t_list = [
+        #    ['2018-04-10T20:40:33.100', 1100, 0],
+        #    ['2018-04-10T20:40:53.200', 1002, 0],
+        #    ['2018-04-10T20:41:03.300', 1104, 0],
+        #    ['2018-04-10T20:44:03.400', 1205.5, 0],
+        #    ['2018-04-10T20:45:03.500', 1306, 0]
+        #]
+        chart_p_list = [
+            ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30 ],
+            ['2018-04-10T20:40:53Z', 2, 6, 15, 25, 30, 35],
+            ['2018-04-10T20:41:03Z', 2, 5, 20, 30, 35, 40],
+            ['2018-04-10T20:44:03Z', 3, 7, 12, 22, 30, 32],
+            ['2018-04-10T20:45:03Z', 2, 10, 13, 23, 30, 33]
+        ]
+        printStream = PrintStream(tChartFilename)
+        printStream.print(chart_t_html.replace("__DATA__",("%s"%(sm.chart_t_list)).replace("u'","'")))
+        printStream.println()
+        printStream.flush()
+        printStream.close()
+
+        # Response Time (ms) chart
+        printStream = PrintStream(pChartFilename)
+        printStream.print(chart_p_html.replace("__DATA__","%s"%(chart_p_list)))
         printStream.println()
         printStream.flush()
         printStream.close()
@@ -937,6 +1100,10 @@ def createReport(filename, text):
         if sm.cpu < p_cpu:
             sm.cpu = p_cpu
         sm.cpu_time_ns += e["process_cpu_time_ns"]
+
+        #if len(sm.chart_t_list) == 0:
+        #    sm.chart_t_list.append(['%s'%(e["test_begin"].replace("_", "T")),int(e["avg_aps"]),0.0])
+        sm.chart_t_list.append(['%s'%(e["test_end"].replace("_", "T")),int(e["avg_aps"]),float("%.1f"%(e["num_failed"]/e["duration"]))])
 
         # jhh ...
         for key in e["user_actions"].keys():
