@@ -21,30 +21,21 @@ var option = {
   yAxis: { },
   series: [
   {
-     name: 'Min',
+     name: 'Max',
      type: 'line',
      smooth: true,
      encode: {
        x: 'timestamp',
-       y: 'sensor1' // refer sensor 1 value 
+       y: 'sensor6' // refer sensor 1 value
      }
   },{
-     name: 'Avg',
+     name: 'p99',
      type: 'line',
      smooth: true,
      encode: {
        x: 'timestamp',
-       y: 'sensor2' // refer sensor 1 value
+       y: 'sensor5' // refer sensor 1 value
      }
-  },{
-     name: 'p90',
-     type: 'line',
-     smooth: true,
-     encode: {
-       x: 'timestamp',
-       y: 'sensor3' // refer sensor 1 value
-     }
-
   },{
      name: 'p95',
      type: 'line',
@@ -55,20 +46,29 @@ var option = {
      }
 
   },{
-     name: 'p99',
+     name: 'p90',
      type: 'line',
      smooth: true,
      encode: {
        x: 'timestamp',
-       y: 'sensor5'
+       y: 'sensor3' // refer sensor 1 value
+     }
+
+  },{
+     name: 'Avg',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor2'
      }
   },{
-     name: 'Max',
+     name: 'Min',
      type: 'line',
      smooth: true,
      encode: {
        x: 'timestamp',
-       y: 'sensor6'
+       y: 'sensor1'
   }
 }]
 };
