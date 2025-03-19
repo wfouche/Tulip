@@ -926,7 +926,7 @@ def createReport(filename, text):
 
         # Response Time (ms) chart
         printStream = PrintStream(pChartFilename)
-        printStream.print(chart_p_html.replace("__DATA__","%s"%(chart_p_list)))
+        printStream.print(chart_p_html.replace("__DATA__",("%s"%(sm.chart_p_list)).replace("u'","'")))
         printStream.println()
         printStream.flush()
         printStream.close()
@@ -1104,6 +1104,18 @@ def createReport(filename, text):
         #if len(sm.chart_t_list) == 0:
         #    sm.chart_t_list.append(['%s'%(e["test_begin"].replace("_", "T")),int(e["avg_aps"]),0.0])
         sm.chart_t_list.append(['%s'%(e["test_end"].replace("_", "T")),int(e["avg_aps"]),float("%.1f"%(e["num_failed"]/e["duration"]))])
+
+        # ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30 ]
+        sm.chart_p_list.append(
+            [
+                '%s'%(e["test_end"].replace("_", "T")),
+                float("%.1f"%(e["min_rt"])),
+                float("%.1f"%(e["avg_rt"])),
+                float("%.1f"%(ht.getValueAtPercentile(90.0)/1000.0)),
+                float("%.1f"%(ht.getValueAtPercentile(95.0)/1000.0)),
+                float("%.1f"%(ht.getValueAtPercentile(99.0)/1000.0)),
+                float("%.1f"%(e["max_rt"]))
+            ])
 
         # jhh ...
         for key in e["user_actions"].keys():
