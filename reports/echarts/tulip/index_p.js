@@ -23,6 +23,7 @@ var option = {
   {
      name: '90p',
      type: 'line',
+     smooth: true,
      encode: {
        x: 'timestamp',
        y: 'sensor1' // refer sensor 1 value 
@@ -30,6 +31,7 @@ var option = {
   },{
      name: 'Max',
      type: 'line',
+     smooth: true,
      encode: {
        x: 'timestamp',
        y: 'sensor2'
