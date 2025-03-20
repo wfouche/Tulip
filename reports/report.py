@@ -618,11 +618,11 @@ trailer = '''
 
 charts_html = '''
 <h2>Actions per Second</h2>
-  <div id="main" style="width: 1000px;height:500px;"></div>
+  <div id="main" style="width: 1000px;height:400px;"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
   <script src="__JS_T_CHART__"></script>
 <h2>Response Times (ms)</h2>
-  <div id="main_p" style="width: 1000px;height:500px;"></div>
+  <div id="main_p" style="width: 1000px;height:400px;"></div>
   <script src="__JS_P_CHART__"></script>
 '''
 
