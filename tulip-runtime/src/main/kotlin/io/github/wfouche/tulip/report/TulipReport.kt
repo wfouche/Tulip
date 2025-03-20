@@ -623,16 +623,16 @@ trailer = '''
 
 charts_html = '''
 <h2>Actions per Second</h2>
-  <div id="main" style="width: 1000px;height:400px;"></div>
+  <div id="main" style="width: 100%;height:400px;"></div>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/echarts/5.6.0/echarts.min.js"></script>
   <script src="__JS_T_CHART__"></script>
 <h2>Response Times (ms)</h2>
-  <div id="main_p" style="width: 1000px;height:400px;"></div>
+  <div id="main_p" style="width: 100%;height:400px;"></div>
   <script src="__JS_P_CHART__"></script>
 '''
 
 chart_t_html = '''
-var myChart = echarts.init(document.getElementById('main'));
+var myChart1 = echarts.init(document.getElementById('main'));
 
 var data =  __DATA__;
 
@@ -666,11 +666,11 @@ var option = {
   }
 }]
 };
-myChart.setOption(option);
+myChart1.setOption(option);
 '''
 
 chart_p_html = '''
-var myChart = echarts.init(document.getElementById('main_p'));
+var myChart2 = echarts.init(document.getElementById('main_p'));
 
 var data =  __DATA__;
 
@@ -738,7 +738,12 @@ var option = {
   }
 }]
 };
-myChart.setOption(option);
+myChart2.setOption(option);
+
+window.onresize = function() {
+  myChart1.resize();
+  myChart2.resize();
+};
 '''
 
 class Summary:
