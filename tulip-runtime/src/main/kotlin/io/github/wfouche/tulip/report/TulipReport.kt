@@ -1101,7 +1101,7 @@ def createReport(filename, text):
             sm.cpu = p_cpu
         sm.cpu_time_ns += e["process_cpu_time_ns"]
 
-        if len(sm.chart_t_list) == 0:
+        if len(sm.chart_t_list) == -1:
             sm.chart_t_list.append(
             [
                 '%s'%(e["test_begin"].replace("_", "T")),
@@ -1117,7 +1117,7 @@ def createReport(filename, text):
              ])
 
         # ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30 ]
-        if len(sm.chart_p_list) == 0:
+        if len(sm.chart_p_list) == -1:
             sm.chart_p_list.append(
                 [
                     '%s'%(e["test_begin"].replace("_", "T")),
