@@ -1101,8 +1101,14 @@ def createReport(filename, text):
             sm.cpu = p_cpu
         sm.cpu_time_ns += e["process_cpu_time_ns"]
 
-        #if len(sm.chart_t_list) == 0:
-        #    sm.chart_t_list.append(['%s'%(e["test_begin"].replace("_", "T")),int(e["avg_aps"]),0.0])
+        if len(sm.chart_t_list) == 0:
+            sm.chart_t_list.append(
+            [
+                '%s'%(e["test_begin"].replace("_", "T")),
+                float("%.1f"%(e["avg_aps"])),
+                float("%.3f"%(e["num_failed"]/e["duration"]))
+            ])
+
         sm.chart_t_list.append(
             [
                 '%s'%(e["test_end"].replace("_", "T")),
@@ -1111,6 +1117,18 @@ def createReport(filename, text):
              ])
 
         # ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30 ]
+        if len(sm.chart_p_list) == 0:
+            sm.chart_p_list.append(
+                [
+                    '%s'%(e["test_begin"].replace("_", "T")),
+                    float("%.1f"%(e["min_rt"])),
+                    float("%.1f"%(e["avg_rt"])),
+                    float("%.1f"%(ht.getValueAtPercentile(90.0)/1000.0)),
+                    float("%.1f"%(ht.getValueAtPercentile(95.0)/1000.0)),
+                    float("%.1f"%(ht.getValueAtPercentile(99.0)/1000.0)),
+                    float("%.1f"%(e["max_rt"]))
+                ])
+
         sm.chart_p_list.append(
             [
                 '%s'%(e["test_end"].replace("_", "T")),
