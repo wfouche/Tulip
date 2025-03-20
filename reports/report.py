@@ -365,7 +365,7 @@ summary_html_2 = '''
 
 __CHARTS_TEXT__
 
-<h2>Benchmark: __BENCHMARK_NAME__</h2>
+<h2>Percentile Distribution</h2>
 
 <input type="file" id="files" name="files[]" multiple />
 
@@ -873,7 +873,6 @@ def createReport(filename, text):
         pChartFilename = '%s_%d_p.js'%(report_fn.split('.')[0],benchmark_id)
         printStream.print(
             summary_html_2
-                .replace("__BENCHMARK_NAME__", sm.name)
                 .replace("__CHARTS_TEXT__",
                     charts_html
                          .replace("__JS_T_CHART__",tChartFilename)
