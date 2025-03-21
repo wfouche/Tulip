@@ -91,7 +91,7 @@ summary_html_2 = '''
         var unitText = unitSelection.options[unitSelIndex].innerHTML;
 
         var options = {
-            title: 'Latency by Percentile Distribution',
+//            title: 'Percentile Response Time Distribution',
             height: 480,
 //            hAxis: {title: 'Percentile', minValue: 0, logScale: true, ticks:ticks },
             hAxis: {
@@ -366,7 +366,7 @@ summary_html_2 = '''
 
 __CHARTS_TEXT__
 
-<h2>Percentile Distribution</h2>
+<h2>Percentile Response Time Distribution</h2>
 
 <input type="file" id="files" name="files[]" multiple />
 
@@ -985,8 +985,7 @@ def createReport(filename, text):
             printStream.println("}")
             printStream.println("</style>")
             printStream.println("<body>")
-            printStream.println("<h2>Name:  %s, Action Id: %s</h2>"%(smx.name,key))
-            printStream.println("<h3>Latency by Percentile Distribution</h3>")
+            printStream.println("<h2>Percentile Response Time Distribution</h2>")
 
             #printStream.println("<pre>")
             #jhx.outputPercentileDistribution(printStream, 1000.0)
