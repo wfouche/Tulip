@@ -11,6 +11,7 @@ import org.HdrHistogram.Histogram as Histogram
 import os
 from collections import OrderedDict
 import java.io.PrintStream as PrintStream
+import java.io.ByteArrayOutputStream as ByteArrayOutputStream
 
 summary_html_1 = '''<!DOCTYPE html>
 <html>
@@ -982,23 +983,59 @@ def createReport(filename, text):
             statsFilename = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,int(key))
             text = "<a href='%s'>%s</a>"%(statsFilename,text)
             printStream = PrintStream(statsFilename)
-            printStream.print("<html>")
-            printStream.println()
-            printStream.print("<body>")
-            printStream.println()
-            printStream.print("<h2>Name:  %s, Action Id: %s</h2>"%(smx.name,key))
-            printStream.println()
-            printStream.print("<h3>Latency by Percentile Distribution</h3>")
-            printStream.println()
-            printStream.print("<pre>")
-            printStream.println()
-            jhx.outputPercentileDistribution(printStream, 1000.0)
-            printStream.print("</pre>")
-            printStream.println()
-            printStream.print("</body>")
-            printStream.println()
-            printStream.print("</html>")
-            printStream.println()
+            printStream.println("<html>")
+            printStream.println("<style>")
+            printStream.println("table, th, td {")
+            printStream.println("  border:1px solid black; font-size:16px; text-align: center;")
+            printStream.println("}")
+            printStream.println("</style>")
+            printStream.println("<body>")
+            printStream.println("<h2>Name:  %s, Action Id: %s</h2>"%(smx.name,key))
+            printStream.println("<h3>Latency by Percentile Distribution</h3>")
+
+            #printStream.println("<pre>")
+            #jhx.outputPercentileDistribution(printStream, 1000.0)
+
+            bos = ByteArrayOutputStream()
+            ox = PrintStream(bos)
+            jhx.outputPercentileDistribution(ox, 1000.0)
+            ox.flush()
+            ox.close()
+            ptext = bos.toString()
+            lines = ptext.split('\n')
+            tcount = int(lines[-5].split()[2])
+            header = True
+            for line in lines:
+              if len(line) == 0:
+                continue
+              if line[0] != "#":
+                e = line.split()
+                if header:
+                  printStream.println('<table style="width:600px">')
+                  printStream.println('  <tr>')
+                  printStream.println('    <th>%s</th>'%(e[0]))
+                  printStream.println('    <th>%s</th>'%(e[1]))
+                  printStream.println('    <th>%s</th>'%(e[2]))
+                  printStream.println('    <th>%s</th>'%(e[3]))
+                  printStream.println('    <th>AboveCount</th>')
+                  printStream.println('  </tr>')
+                  header = False
+                else:
+                  if len(e) == 3:
+                    e.append('')
+                  printStream.println('  <tr>')
+                  printStream.println('    <td>%s</td>'%(e[0]))
+                  printStream.println('    <td>%s</td>'%(e[1]))
+                  printStream.println('    <td>%s</td>'%(e[2]))
+                  printStream.println('    <td>%s</td>'%(e[3]))
+                  printStream.println('    <td>%s</td>'%(tcount-int(e[2])))
+                  printStream.println('  </tr>')
+            printStream.println("</table>")
+
+            #printStream.println("</pre>")
+
+            printStream.println("</body>")
+            printStream.println("</html>")
             printStream.flush()
             printStream.close()
             avg_aps = 0.0 if smx.name in ["onStart", "onStop"] else smx.num_actions/smx.duration
