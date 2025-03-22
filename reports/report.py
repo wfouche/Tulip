@@ -997,7 +997,7 @@ def createReport(filename, text):
             ox.close()
             ptext = bos.toString()
             lines = ptext.split('\n')
-            tcount = int(lines[-5].split()[2])
+            tcount = jhx.getTotalCount()
             header = True
             for line in lines:
               if len(line) == 0:
