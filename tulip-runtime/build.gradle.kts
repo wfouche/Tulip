@@ -157,7 +157,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
             it.setMaxWidth(100)
             it.setBlockIndent(4)
             it.setContinuationIndent(4)
-            it.setRemoveUnusedImports(false)
+            it.setRemoveUnusedImports(true)
             it.setManageTrailingCommas(false)
         }
     }
