@@ -154,7 +154,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     kotlin {
         // version, style and all configurations here are optional
         ktfmt("0.54").googleStyle().configure {
-            it.setMaxWidth(80)
+            it.setMaxWidth(100)
             it.setBlockIndent(4)
             it.setContinuationIndent(4)
             it.setRemoveUnusedImports(false)
