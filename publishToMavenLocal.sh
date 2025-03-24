@@ -9,6 +9,9 @@ rm -f -r ~/.m2/repository/io/github/wfouche/tulip/tulip-runtime
 echo ""
 read -p "Press ENTER to continue ..."
 
+# spotless
+./gradlew spotlessCheck
+
 # Publish tulip-runtime.jar to local Maven
 ./gradlew :tulip-runtime:publishToMavenLocal
 
