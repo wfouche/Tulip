@@ -3,13 +3,12 @@
  */
 package org.example.lib
 
+import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 
-import org.junit.jupiter.api.Assertions.*
-
 class TulipLibTest1 {
-    @Test fun testConstructor() {
+    @Test
+    fun testConstructor() {
         assertEquals(0, 0)
     }
-
 }

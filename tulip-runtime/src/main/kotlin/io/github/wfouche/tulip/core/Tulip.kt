@@ -4,23 +4,18 @@ package io.github.wfouche.tulip.core
 
 /*-------------------------------------------------------------------------*/
 
+// import io.micrometer.core.instrument.Clock
+// import io.micrometer.core.instrument.Tag
+// import io.micrometer.jmx.JmxConfig
+// import io.micrometer.jmx.JmxMeterRegistry
+import com.google.gson.JsonParser
 import com.sun.management.OperatingSystemMXBean
 import io.github.wfouche.tulip.api.TulipApi
 import io.github.wfouche.tulip.api.TulipUser
 import io.github.wfouche.tulip.api.TulipUserFactory
 import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
-//import io.micrometer.core.instrument.Clock
-//import io.micrometer.core.instrument.Tag
-//import io.micrometer.jmx.JmxConfig
-//import io.micrometer.jmx.JmxMeterRegistry
-import kotlinx.serialization.SerialName
-import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
-import kotlinx.serialization.json.Json
-import kotlinx.serialization.json.JsonPrimitive
-import org.HdrHistogram.Histogram
-import org.HdrHistogram.IntCountsHistogram
+import io.github.wfouche.tulip.report.createConfigReport
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.lang.management.ManagementFactory
@@ -36,8 +31,13 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.math.abs
 import kotlin.system.exitProcess
-import com.google.gson.JsonParser
-import io.github.wfouche.tulip.report.createConfigReport
+import kotlinx.serialization.SerialName
+import kotlinx.serialization.Serializable
+import kotlinx.serialization.encodeToString
+import kotlinx.serialization.json.Json
+import kotlinx.serialization.json.JsonPrimitive
+import org.HdrHistogram.Histogram
+import org.HdrHistogram.IntCountsHistogram
 
 /*-------------------------------------------------------------------------*/
 
@@ -45,24 +45,28 @@ const val VERSION = TulipApi.VERSION
 
 const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 
-private const val histogramNumberOfSignificantValueDigits=3
+private const val histogramNumberOfSignificantValueDigits = 3
 
-private val osBean: OperatingSystemMXBean  = ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
-// private val isWindows: Boolean = System.getProperty("os.name").lowercase().contains("windows")
+private val osBean: OperatingSystemMXBean =
+    ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
+
+// private val isWindows: Boolean =
+// System.getProperty("os.name").lowercase().contains("windows")
 
 /*-------------------------------------------------------------------------*/
 
-class InformativeBlockingQueue<E>(val capacity: Int) :
-    BlockingQueue<E>(capacity) { }
+class InformativeBlockingQueue<E>(val capacity: Int) : BlockingQueue<E>(capacity) {}
 
 typealias Java_Queue<E> = InformativeBlockingQueue<E>
+
 typealias MPSC_Queue<E> = InformativeBlockingQueue<E>
+
 typealias SPSC_Queue<E> = InformativeBlockingQueue<E>
 
 /*-------------------------------------------------------------------------*/
 
 // https://github.com/oshai/kotlin-logging
-//private val logger = KotlinLogging.logger {}
+// private val logger = KotlinLogging.logger {}
 
 /*-------------------------------------------------------------------------*/
 
@@ -84,7 +88,7 @@ private var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<
 //
 // Array of Worker thread objects
 //
-private var userThreads: Array<UserThread?>? = null //arrayOfNulls<UserThread>(NUM_THREADS)
+private var userThreads: Array<UserThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
 
 // ...
 private var testSuite: List<TestProfile>? = null
@@ -96,33 +100,54 @@ var g_workflow: MarkovChain? = null
 private var newUser: TulipUserFactory? = null
 
 var actionNames: Map<Int, String> = emptyMap()
-var workflows: HashMap<String,MarkovChain> = HashMap<String,MarkovChain>()
+var workflows: HashMap<String, MarkovChain> = HashMap<String, MarkovChain>()
 
-//private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
+// private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 //
-//private val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",   "actions")),   AtomicInteger(0))
-//private val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",    "failed")),   AtomicInteger(0))
+// private val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",
+//  "actions")),   AtomicInteger(0))
+// private val mg_num_failed    = registry.gauge("Tulip", listOf(Tag.of("num",
+//  "failed")),   AtomicInteger(0))
 //
-//private val mg_context_id   = registry.gauge("Tulip", listOf(Tag.of("context", "id")),      AtomicInteger(0))
-//private val mg_num_threads  = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "threads")), AtomicInteger(0))
-//private val mg_num_users    = registry.gauge("Tulip", listOf(Tag.of("context", "id"), Tag.of("num", "users")),   AtomicInteger(0))
+// private val mg_context_id   = registry.gauge("Tulip",
+// listOf(Tag.of("context", "id")),      AtomicInteger(0))
+// private val mg_num_threads  = registry.gauge("Tulip",
+// listOf(Tag.of("context", "id"), Tag.of("num", "threads")), AtomicInteger(0))
+// private val mg_num_users    = registry.gauge("Tulip",
+// listOf(Tag.of("context", "id"), Tag.of("num", "users")),   AtomicInteger(0))
 //
-//private val mg_rt_avg = registry.gauge("Tulip", listOf(Tag.of("rt",   "avg")), AtomicInteger(0))
-//private val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",   "max")), AtomicInteger(0))
-//private val mg_rt_min = registry.gauge("Tulip", listOf(Tag.of("rt",   "min")), AtomicInteger(0))
+// private val mg_rt_avg = registry.gauge("Tulip", listOf(Tag.of("rt",
+// "avg")), AtomicInteger(0))
+// private val mg_rt_max = registry.gauge("Tulip", listOf(Tag.of("rt",
+// "max")), AtomicInteger(0))
+// private val mg_rt_min = registry.gauge("Tulip", listOf(Tag.of("rt",
+// "min")), AtomicInteger(0))
 //
-//private val mg_benchmark_id  = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "id")),       AtomicInteger(0))
-//private val mg_benchmark_aps = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "aps")),      AtomicInteger(0))
-//private val mg_benchmark_dur = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "duration")), AtomicInteger(0))
-//private val mg_benchmark_phs = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
-//private val mg_benchmark_run = registry.gauge("Tulip", listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
+// private val mg_benchmark_id  = registry.gauge("Tulip",
+// listOf(Tag.of("benchmark",   "id")),       AtomicInteger(0))
+// private val mg_benchmark_aps = registry.gauge("Tulip",
+// listOf(Tag.of("benchmark",   "aps")),      AtomicInteger(0))
+// private val mg_benchmark_dur = registry.gauge("Tulip",
+// listOf(Tag.of("benchmark",   "duration")), AtomicInteger(0))
+// private val mg_benchmark_phs = registry.gauge("Tulip",
+// listOf(Tag.of("benchmark",   "phase")), AtomicInteger(0))
+// private val mg_benchmark_run = registry.gauge("Tulip",
+// listOf(Tag.of("benchmark",   "run")), AtomicInteger(0))
 
-// internal val mg_cpu_tulip = registry.gauge("Tulip", listOf(Tag.of("cpu",   "tulip")), AtomicInteger(0))
-// internal val mg_cpu_system = registry.gauge("Tulip", listOf(Tag.of("cpu",   "system")), AtomicInteger(0))
+// internal val mg_cpu_tulip = registry.gauge("Tulip", listOf(Tag.of("cpu",
+// "tulip")), AtomicInteger(0))
+// internal val mg_cpu_system = registry.gauge("Tulip", listOf(Tag.of("cpu",
+// "system")), AtomicInteger(0))
 
 /*-------------------------------------------------------------------------*/
 
-private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<TestProfile>, actionDesc: Map<Int, String>, userFactory: TulipUserFactory) {
+private fun runtimeInit(
+    contextId: Int,
+    context: RuntimeContext,
+    tests: List<TestProfile>,
+    actionDesc: Map<Int, String>,
+    userFactory: TulipUserFactory
+) {
     TULIP_CONTEXT_ID = contextId
     TULIP_CONTEXT_NAME = context.name
 
@@ -136,16 +161,14 @@ private fun runtimeInit(contextId: Int, context: RuntimeContext, tests: List<Tes
     userThreads = arrayOfNulls(MAX_NUM_THREADS)
     actionNames = actionDesc
 
-//    mg_num_threads?.set(MAX_NUM_THREADS)
-//    mg_num_users?.set(MAX_NUM_USERS)
-//    mg_context_id?.set(contextId)
+    //    mg_num_threads?.set(MAX_NUM_THREADS)
+    //    mg_num_users?.set(MAX_NUM_USERS)
+    //    mg_context_id?.set(contextId)
 }
 
 private fun runtimeDone() {
     // Terminate all user threads.
-    userThreads!!.forEach { userThread ->
-        userThread!!.tq.put(Task(status = 999))
-    }
+    userThreads!!.forEach { userThread -> userThread!!.tq.put(Task(status = 999)) }
 
     // Wait for all user threads to exit.
     while (userThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
@@ -171,7 +194,8 @@ private data class Action(
 
     //
     // Number of occurrences of this action relative to other actions.
-    // Set weight to 0 (or use default value) when a workflow should be specified.
+    // Set weight to 0 (or use default value) when a workflow should be
+    // specified.
     val weight: Int = 0
 )
 
@@ -193,9 +217,7 @@ private data class Duration(
     // The main phase executed 'repeatCount' every iteration of TestCase.
     //
     val mainDurationUnits: Long = 0,
-
     val mainDurationRepeatCount: Int = 1,
-
     val timeUnit: TimeUnit = TimeUnit.SECONDS,
 
     // ------------------------------
@@ -215,12 +237,11 @@ private data class TestProfile(
     // Name of the benchmark test.
     //
     val name: String = "",
-
     val duration: Duration = Duration(0, 0, 0, 1),
 
     // List of actions to be performed.
-    // If the weights of all the actions are zero (0), then treat the action list
-    // as a workflow to be executed per user object.
+    // If the weights of all the actions are zero (0), then treat the action
+    // list as a workflow to be executed per user object.
     val actions: List<Action>,
 
     // https://en.wikipedia.org/wiki/Queueing_theory
@@ -237,7 +258,6 @@ private data class TestProfile(
     //
     val queueLengths: List<Int> = listOf(0),
 
-
     // List of percentile values to report on.
     val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0, 99.9),
 
@@ -251,7 +271,8 @@ private data class TestProfile(
 /*-------------------------------------------------------------------------*/
 
 //
-// Task data class. Tasks are created be the main thread and send to User objects to perform known actions.
+// Task data class. Tasks are created be the main thread and send to User
+// objects to perform known actions.
 //
 data class Task(
 
@@ -270,11 +291,8 @@ data class Task(
     // Duration (elapsed time) in microseconds.
     var serviceTimeNanos: Long = 0,
     var waitTimeNanos: Long = 0,
-
     var rspQueue: MPSC_Queue<Task>? = null,
-
     var status: Int = -1,
-
     var beginQueueTimeNanos: Long = 0
 )
 
@@ -289,7 +307,9 @@ inline fun elapsedTimeNanos(block: () -> Unit): Long {
 fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
     require(delayFrom >= 0) { "delayFrom must be non-negative, is $delayFrom" }
     require(delayTo >= 0) { "delayTo must be non-negative, is $delayTo" }
-    require(delayFrom < delayTo) { "delayFrom must be smaller than delayTo, but $delayFrom >= $delayTo"}
+    require(delayFrom < delayTo) {
+        "delayFrom must be smaller than delayTo, but $delayFrom >= $delayTo"
+    }
     val delayMillis = ThreadLocalRandom.current().nextLong(delayTo - delayFrom + 1) + delayFrom
     Thread.sleep(delayMillis)
 }
@@ -319,11 +339,7 @@ data class ConfigDuration(
     @SerialName("benchmark_iterations") val mainDurationRepeatCount: Int = 1
 )
 
-@Serializable
-data class ConfigAction(
-    val id: Int,
-    val weight: Int = 0
-)
+@Serializable data class ConfigAction(val id: Int, val weight: Int = 0)
 
 @Serializable
 data class ConfigTest(
@@ -343,15 +359,15 @@ data class ActionsConfig(
     @SerialName("report_filename") val htmlFilename: String = "",
     @SerialName("user_class") val userClass: String = "",
     @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
-    @SerialName("user_actions") val userActions: Map<Int,String> = mapOf()
+    @SerialName("user_actions") val userActions: Map<Int, String> = mapOf()
 )
 
 @Serializable
 data class TulipConfig(
     val actions: ActionsConfig = ActionsConfig(),
-    val contexts: Map<String,ConfigContext> = mapOf(),
-    val benchmarks: Map<String,ConfigTest> = mapOf(),
-    val workflows: Map<String,Map<String,Map<String,Double>>> = mapOf()
+    val contexts: Map<String, ConfigContext> = mapOf(),
+    val benchmarks: Map<String, ConfigTest> = mapOf(),
+    val workflows: Map<String, Map<String, Map<String, Double>>> = mapOf()
 )
 
 fun initConfig(text: String): String {
@@ -366,11 +382,12 @@ fun initConfig(text: String): String {
     }
 
     // Read JSON file contents into memory
-    val sf: String = if (textIsJsonString) {
-        text
-    } else {
-        java.io.File(text).readText()
-    }
+    val sf: String =
+        if (textIsJsonString) {
+            text
+        } else {
+            java.io.File(text).readText()
+        }
 
     // Remove all JSONC comments from the JSON
     val gsonJsonTree = JsonParser.parseString(sf)
@@ -381,52 +398,58 @@ fun initConfig(text: String): String {
     g_config = json.decodeFromString<TulipConfig>(jsonWithoutComments)
     g_config.contexts.forEach { entry ->
         val k = entry.key
-        //println("${k}")
+        // println("${k}")
         val e = entry.value
         if (e.enabled) {
             val v = RuntimeContext(k, e.numUsers, e.numThreads)
             g_contexts.add(v)
         }
     }
-    g_config.benchmarks.forEach { (key,e) ->
-        //println("${e.name}")
-        val v = TestProfile(
-            enabled = e.enabled,
-            saveStats = e.logStats,
-            name = key,
-            duration = if (e.time == null)
-                Duration(0, 0, 0, 1, TimeUnit.SECONDS)
-            else
-                Duration(e.time.startupDuration, e.time.warmupDuration, e.time.mainDuration, e.time.mainDurationRepeatCount, TimeUnit.SECONDS),
-            arrivalRate = e.throughputRate,
-            queueLengths = listOf(e.workInProgress),
-            actions = mutableListOf<Action>().apply {
-                if (e.workflow.isEmpty()) {
-                    // List of actions to execute
-                    for (a: ConfigAction in e.actions) {
-                        this.add(Action(a.id, a.weight))
-                    }
-                } else {
-                    // actionId -1 --> execute workflow
-                    this.add(Action(-1, 0))
-                }
-            },
-            filename = g_config.actions.jsonFilename,
-            workflow = e.workflow
-        )
+    g_config.benchmarks.forEach { (key, e) ->
+        // println("${e.name}")
+        val v =
+            TestProfile(
+                enabled = e.enabled,
+                saveStats = e.logStats,
+                name = key,
+                duration =
+                    if (e.time == null) Duration(0, 0, 0, 1, TimeUnit.SECONDS)
+                    else
+                        Duration(
+                            e.time.startupDuration,
+                            e.time.warmupDuration,
+                            e.time.mainDuration,
+                            e.time.mainDurationRepeatCount,
+                            TimeUnit.SECONDS),
+                arrivalRate = e.throughputRate,
+                queueLengths = listOf(e.workInProgress),
+                actions =
+                    mutableListOf<Action>().apply {
+                        if (e.workflow.isEmpty()) {
+                            // List of actions to execute
+                            for (a: ConfigAction in e.actions) {
+                                this.add(Action(a.id, a.weight))
+                            }
+                        } else {
+                            // actionId -1 --> execute workflow
+                            this.add(Action(-1, 0))
+                        }
+                    },
+                filename = g_config.actions.jsonFilename,
+                workflow = e.workflow)
         g_tests.add(v)
     }
     for (wn in g_config.workflows.keys) {
-        //Console.put("workflow = $wn")
+        // Console.put("workflow = $wn")
         val mc = MarkovChain(wn)
         for (an in g_config.workflows[wn]!!.keys) {
-            //Console.put("  aid = $an")
+            // Console.put("  aid = $an")
             val an_id = if (an == "-") 0 else an.toInt()
             var list = mutableListOf<Edge>()
             for (da in g_config.workflows[wn]!![an]!!.keys) {
                 val da_id = if (da == "-") 0 else da.toInt()
-                val weight = (g_config.workflows[wn]!![an]!![da]!!.toDouble()*1000).toInt()
-                //Console.put("    did = $da, weight = $weight")
+                val weight = (g_config.workflows[wn]!![an]!![da]!!.toDouble() * 1000).toInt()
+                // Console.put("    did = $da, weight = $weight")
                 list.add(Edge(da_id, weight))
             }
             mc.add(an_id, list)
@@ -447,40 +470,31 @@ fun initConfig(text: String): String {
 
 private data class ActionSummary(
     var actionId: Int = 0,
-
     var rowId: Int = 0,
-
     var testBegin: String = "",
     var testEnd: String = "",
     var testName: String = "",
     var testPhase: String = "",
-
     var testId: Int = 0,
     var indexUserProfile: Int = 0,
     var queueLength: Int = 0,
-
     var numActions: Int = 0,
     var numSuccess: Int = 0,
-
     var histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
-
     var durationSeconds: Double = 0.0,
-
     var aps: Double = 0.0,
     var art: Double = 0.0,
     var sdev: Double = 0.0,
     var minRt: Double = 0.0,
     var maxRt: Double = 0.0,
     var maxRtTs: String = "",
-
     var awt: Double = 0.0,
     var maxWt: Double = 0.0,
-
     var pk: List<Double> = mutableListOf(),
     var pv: List<Double> = mutableListOf(),
 
-    //var avgCpuSystem: Double = 0.0,
-    //var avgCpuProcess: Double = 0.0
+    // var avgCpuSystem: Double = 0.0,
+    // var avgCpuProcess: Double = 0.0
     var processCpuTime: Long = 0,
     var processCpuCores: Double = 0.0,
     var processCpuUtilization: Double = 0.0
@@ -492,9 +506,11 @@ private var waitTimeMicrosHistogram = Histogram(histogramNumberOfSignificantValu
 
 private class ActionStats {
     // <numberOfSignificantValueDigits>
-    //private val NUM_DIGITS=1  // Tested - inaccurate results, don't use
-    //private val NUM_DIGITS=2  // Tested - good results, small results file (default, optimal)
-    //private val NUM_DIGITS=3  // Tested - great results, large results file, histogram_rt
+    // private val NUM_DIGITS=1  // Tested - inaccurate results, don't use
+    // private val NUM_DIGITS=2  // Tested - good results, small results file
+    // (default, optimal)
+    // private val NUM_DIGITS=3  // Tested - great results, large results file,
+    // histogram_rt
     private val histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits)
     private var histogramMinRt: Long = Long.MAX_VALUE
     private var histogramMaxRt: Long = Long.MIN_VALUE
@@ -556,13 +572,14 @@ private class ActionStats {
 
         // percentiles
         r.pk = testCase.percentiles
-        r.pv = mutableListOf<Double>().apply {
-            r.pk.forEach {
-                var px = histogram.getValueAtPercentile(it) / 1000.0
-                if (px > r.maxRt) px = r.maxRt
-                this.add(px)
+        r.pv =
+            mutableListOf<Double>().apply {
+                r.pk.forEach {
+                    var px = histogram.getValueAtPercentile(it) / 1000.0
+                    if (px > r.maxRt) px = r.maxRt
+                    this.add(px)
+                }
             }
-        }
 
         r.histogram = histogram
 
@@ -570,17 +587,16 @@ private class ActionStats {
         r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
 
         // Summarize CPU usage for global stats only.
-        //if (actionId == NUM_ACTIONS) {
+        // if (actionId == NUM_ACTIONS) {
         //    // average process CPU load.
         //    // r.avgCpuProcess = 0.0
         //
         //    // average system CPU load.
         //    // r.avgCpuSystem = 0.0
-        //}
+        // }
         if (actionId == NUM_ACTIONS) {
             r.processCpuTime = cpuTime
         }
-
     }
 
     fun printStats(actionId: Int) {
@@ -589,9 +605,9 @@ private class ActionStats {
 
         if (r.processCpuTime == 0L) {
             // Init, or Shutdown -> TPS inaccurate, so set to 0.0
-            //r.aps = 0.0
-            //This is not a complete solution, breaks the report
-            //Disabled for now.
+            // r.aps = 0.0
+            // This is not a complete solution, breaks the report
+            // Disabled for now.
         }
 
         if (actionId != NUM_ACTIONS) {
@@ -600,21 +616,27 @@ private class ActionStats {
         output.add("  num_actions = ${r.numActions}")
         output.add("  num_failed  = ${r.numActions - r.numSuccess}")
         output.add("")
-        output.add("  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
+        output.add(
+            "  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
         if (r.processCpuTime == 0L) {
             // Init, or Shutdown
-            output.add("  duration of actions (in seconds)               = ${r.durationSeconds} seconds")
+            output.add(
+                "  duration of actions (in seconds)               = ${r.durationSeconds} seconds")
         } else {
             // Benchmark
-            output.add("  duration of benchmark (in seconds)             = ${r.durationSeconds} seconds")
+            output.add(
+                "  duration of benchmark (in seconds)             = ${r.durationSeconds} seconds")
         }
         output.add("")
-        output.add("  average latency     (response time)  (millis)  = ${"%.3f".format(Locale.US, r.art)} ms")
-        output.add("  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)} ms")
+        output.add(
+            "  average latency     (response time)  (millis)  = ${"%.3f".format(Locale.US, r.art)} ms")
+        output.add(
+            "  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)} ms")
         output.add("")
         r.pk.forEachIndexed { index, percentile ->
             val px = r.pv.elementAt(index)
-            output.add("  ${percentile}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)} ms")
+            output.add(
+                "  ${percentile}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)} ms")
         }
 
         output.add("")
@@ -625,8 +647,7 @@ private class ActionStats {
                     Locale.US,
                     r.maxRt
                 )
-            } ms at $histogramMaxRtTs"
-        )
+            } ms at $histogramMaxRtTs")
 
         if (actionId == NUM_ACTIONS) {
             val rt = Runtime.getRuntime()
@@ -634,12 +655,14 @@ private class ActionStats {
             val tm = rt.totalMemory()
             val mm = rt.maxMemory()
 
-            //output.add("")
-            //output.add("  average cpu load (process) = ${"%.3f".format(Locale.US, r.avgCpuProcess)}")
-            //output.add("  average cpu load (system ) = ${"%.3f".format(Locale.US, r.avgCpuSystem)}")
+            // output.add("")
+            // output.add("  average cpu load (process) =
+            // ${"%.3f".format(Locale.US, r.avgCpuProcess)}")
+            // output.add("  average cpu load (system ) =
+            // ${"%.3f".format(Locale.US, r.avgCpuSystem)}")
 
-            //mg_cpu_tulip?.set(r.avgCpuProcess.toInt())
-            //mg_cpu_system?.set(r.avgCpuSystem.toInt())
+            // mg_cpu_tulip?.set(r.avgCpuProcess.toInt())
+            // mg_cpu_system?.set(r.avgCpuSystem.toInt())
 
             output.add("")
             val gb1 = 1073741824.0
@@ -648,39 +671,47 @@ private class ActionStats {
             output.add("  total memory (jvm)   = ${"%.3f".format(Locale.US, tm/gb1)} GB")
             output.add("  maximum memory (jvm) = ${"%.3f".format(Locale.US, mm/gb1)} GB")
             output.add("")
-            val cpu_time_secs: Double = r.processCpuTime/1000000000.0
-            output.add("  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
+            val cpu_time_secs: Double = r.processCpuTime / 1000000000.0
+            output.add(
+                "  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
             r.processCpuCores = cpu_time_secs / r.durationSeconds
-            output.add("  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores")
+            output.add(
+                "  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores")
             r.processCpuUtilization = 100.0 * r.processCpuCores
-            //if (r.processCpuUtilization > 100.0) r.processCpuUtilization = 100.0
-            //support > 100.0 utilization due to hyper-threading
-            output.add("  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}%")
+            // if (r.processCpuUtilization > 100.0) r.processCpuUtilization =
+            // 100.0
+            // support > 100.0 utilization due to hyper-threading
+            output.add(
+                "  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}%")
 
-//            output.add("")
-//            val awqs: Double = wthread_queue_stats.mean
-//            val mwqs: Long = wthread_queue_stats.maxValue
-//            output.add("  avg wkr thrd qsize = ${"%.3f".format(Locale.US, awqs)}")
-//            output.add("  max wkr thrd qsize = ${"%,d".format(Locale.US, mwqs)}")
-//            output.add("  average wait time  = ${"%.3f".format(Locale.US, r.awt)} ms")
-//            output.add("  maximum wait time  = ${"%.3f".format(Locale.US, r.maxWt)} ms")
+            //            output.add("")
+            //            val awqs: Double = wthread_queue_stats.mean
+            //            val mwqs: Long = wthread_queue_stats.maxValue
+            //            output.add("  avg wkr thrd qsize =
+            // ${"%.3f".format(Locale.US, awqs)}")
+            //            output.add("  max wkr thrd qsize =
+            // ${"%,d".format(Locale.US, mwqs)}")
+            //            output.add("  average wait time  =
+            // ${"%.3f".format(Locale.US, r.awt)} ms")
+            //            output.add("  maximum wait time  =
+            // ${"%.3f".format(Locale.US, r.maxWt)} ms")
 
-//            mg_rt_avg?.set(r.art.toInt())
-//            mg_rt_max?.set(r.maxRt.toInt())
-//            mg_rt_min?.set(r.minRt.toInt())
-//
-//            mg_num_actions?.set(r.numActions)
-//            mg_num_failed?.set(r.numActions - r.numSuccess)
-//
-//            mg_benchmark_aps?.set(r.aps.toInt())
-//            mg_benchmark_dur?.set(r.durationSeconds.toInt())
+            //            mg_rt_avg?.set(r.art.toInt())
+            //            mg_rt_max?.set(r.maxRt.toInt())
+            //            mg_rt_min?.set(r.minRt.toInt())
+            //
+            //            mg_num_actions?.set(r.numActions)
+            //            mg_num_failed?.set(r.numActions - r.numSuccess)
+            //
+            //            mg_benchmark_aps?.set(r.aps.toInt())
+            //            mg_benchmark_dur?.set(r.durationSeconds.toInt())
             var phaseId = 0
             if (r.testPhase == "PreWarmup") phaseId = 0
             if (r.testPhase == "Warmup") phaseId = 1
             if (r.testPhase == "Benchmark") phaseId = 2
 
-//            mg_benchmark_phs?.set(phaseId)
-//            mg_benchmark_run?.set(r.rowId)
+            //            mg_benchmark_phs?.set(phaseId)
+            //            mg_benchmark_run?.set(r.rowId)
         }
 
         Console.put(output)
@@ -692,12 +723,15 @@ private class ActionStats {
 
         // Skip actionId = -1
         if (actionId >= 0) {
-            val name: String = if (actionNames.containsKey(actionId)) actionNames[actionId]!! else "action${actionId}"
+            val name: String =
+                if (actionNames.containsKey(actionId)) actionNames[actionId]!!
+                else "action${actionId}"
             results += "\"name\": \"${name}\""
         }
 
         results += ", \"num_actions\": ${numActions}, \"num_failed\": ${numActions - numSuccess}"
-        results += ", \"avg_aps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
+        results +=
+            ", \"avg_aps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
 
         results += ", \"percentiles_rt\": {"
         var t = ""
@@ -717,20 +751,21 @@ private class ActionStats {
         val b64s = Base64.encode(b.array(), 0, numBytes)
         results += '\"' + b64s + '\"'
 
-//        if (actionId == -1) {
-//            val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
-//            val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
-//            val b64s = Base64.encode(b.array(), 0, numBytes)
-//            results += '\"' + b64s + '\"'
-//        } else {
-//            results += "\"\""
-//        }
+        //        if (actionId == -1) {
+        //            val b =
+        // ByteBuffer.allocate(histogram.neededByteBufferCapacity)
+        //            val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
+        //            val b64s = Base64.encode(b.array(), 0, numBytes)
+        //            results += '\"' + b64s + '\"'
+        //        } else {
+        //            results += "\"\""
+        //        }
 
         return results
     }
 
     fun updateStats(task: Task) {
-        val durationMicros = (task.serviceTimeNanos)/1000
+        val durationMicros = (task.serviceTimeNanos) / 1000
         histogram.recordValue(durationMicros)
 
         if (durationMicros < histogramMinRt) {
@@ -744,7 +779,7 @@ private class ActionStats {
         if (task.status == 1) {
             numSuccess += 1
         }
-        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos/1000)
+        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos / 1000)
     }
 
     fun clearStats() {
@@ -794,8 +829,7 @@ private object DataCollector {
             tsEnd,
             testPhase,
             runId,
-            cpuTime
-        )
+            cpuTime)
         actionStats.forEachIndexed { index, data ->
             if (data.numActions > 0) {
                 if (index != NUM_ACTIONS) {
@@ -810,8 +844,7 @@ private object DataCollector {
                         tsEnd,
                         testPhase,
                         -1,
-                        0L
-                    )
+                        0L)
                 }
             }
         }
@@ -819,15 +852,15 @@ private object DataCollector {
 
     fun printStats() {
         actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
-//        if (printDetails) {
-//            actionStats.forEachIndexed { index, data ->
-//                if (data.numActions > 0) {
-//                    if (index != NUM_ACTIONS) {
-//                        data.printStats(index)
-//                    }
-//                }
-//            }
-//        }
+        //        if (printDetails) {
+        //            actionStats.forEachIndexed { index, data ->
+        //                if (data.numActions > 0) {
+        //                    if (index != NUM_ACTIONS) {
+        //                        data.printStats(index)
+        //                    }
+        //                }
+        //            }
+        //        }
     }
 
     fun saveStatsJson(filename: String) {
@@ -872,7 +905,8 @@ private object DataCollector {
 
             json += "\"duration\": ${r.durationSeconds}, "
 
-            // json += "\"avg_cpu_process\": ${r.avgCpuProcess}, \"avg_cpu_system\": ${r.avgCpuSystem}, "
+            // json += "\"avg_cpu_process\": ${r.avgCpuProcess},
+            // \"avg_cpu_system\": ${r.avgCpuSystem}, "
 
             json += "\"jvm_memory_used\": ${tm-fm}, "
             json += "\"jvm_memory_free\": $fm, "
@@ -911,31 +945,34 @@ private object DataCollector {
             json += "}"
 
             val fw = FileWriter(filename, true)
-            val bw = BufferedWriter(fw).apply {
-                when (fileWriteId) {
-                    0 -> {
-                        //val gson = GsonBuilder().setPrettyPrinting().create()
-                        //val jsonString = gson.toJson(g_config)
-                        val jsonString = Json.encodeToString(g_config)
-                        //val jsonString = "${g_config}"
-                        write("{  ")
-                        newLine()
-                        write("  \"version\": \"${VERSION}\"")
-                        newLine()
-                        write(", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
-                        newLine()
-                        write(", \"config\": ${jsonString}")
-                        newLine()
-                        write(", \"results\":[")
-                        newLine()
-                        write(" ${json}")
+            val bw =
+                BufferedWriter(fw).apply {
+                    when (fileWriteId) {
+                        0 -> {
+                            // val gson =
+                            // GsonBuilder().setPrettyPrinting().create()
+                            // val jsonString = gson.toJson(g_config)
+                            val jsonString = Json.encodeToString(g_config)
+                            // val jsonString = "${g_config}"
+                            write("{  ")
+                            newLine()
+                            write("  \"version\": \"${VERSION}\"")
+                            newLine()
+                            write(
+                                ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
+                            newLine()
+                            write(", \"config\": ${jsonString}")
+                            newLine()
+                            write(", \"results\":[")
+                            newLine()
+                            write(" ${json}")
+                        }
+                        else -> {
+                            write(",${json}")
+                        }
                     }
-                    else -> {
-                        write(",${json}")
-                    }
+                    newLine()
                 }
-                newLine()
-            }
             fileWriteId += 1
             bw.close()
             fw.close()
@@ -944,12 +981,13 @@ private object DataCollector {
 
     fun closeStatsJson(filename: String) {
         val fw = FileWriter(filename, true)
-        val bw = BufferedWriter(fw).apply {
-            write("]")
-            newLine()
-            write("}")
-            newLine()
-        }
+        val bw =
+            BufferedWriter(fw).apply {
+                write("]")
+                newLine()
+                write("}")
+                newLine()
+            }
         bw.close()
         fw.close()
     }
@@ -963,21 +1001,19 @@ private object DataCollector {
         actionStats[NUM_ACTIONS].updateStats(task)
         actionStats[task.actionId].updateStats(task)
 
-//        Counter.builder("Tulip")
-//            .tags("action", task.actionId.toString())
-//            .register(registry)
-//            .increment()
-//
-//        Counter.builder("Tulip")
-//            .tags("action", "aps")
-//            .register(registry)
-//            .increment()
+        //        Counter.builder("Tulip")
+        //            .tags("action", task.actionId.toString())
+        //            .register(registry)
+        //            .increment()
+        //
+        //        Counter.builder("Tulip")
+        //            .tags("action", "aps")
+        //            .register(registry)
+        //            .increment()
     }
 
     fun clearStats() {
-        actionStats.forEach {
-            it.clearStats()
-        }
+        actionStats.forEach { it.clearStats() }
         waitTimeMicrosHistogram.reset()
         wthread_queue_stats.reset()
     }
@@ -985,13 +1021,19 @@ private object DataCollector {
 
 /*-------------------------------------------------------------------------*/
 
-private class RateGovernor(private val averageRate: Double, private val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()))  {
+private class RateGovernor(
+    private val averageRate: Double,
+    private val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
+) {
 
     private var count: Long = 0
 
     fun pace() {
         count += 1
-        val deltaMs: Long = (timeMillisStart + count * (1000 / averageRate) - TimeUnit.NANOSECONDS.toMillis(System.nanoTime())).toLong()
+        val deltaMs: Long =
+            (timeMillisStart + count * (1000 / averageRate) -
+                    TimeUnit.NANOSECONDS.toMillis(System.nanoTime()))
+                .toLong()
         if (deltaMs > 0) Thread.sleep(deltaMs)
     }
 }
@@ -1021,7 +1063,7 @@ private class UserThread(private val threadId: Int) : Thread() {
 
             /// ....
             if (task.status == 999) {
-                //Console.put("Thread ${name} is stopping.")
+                // Console.put("Thread ${name} is stopping.")
                 running = false
             } else {
 
@@ -1050,7 +1092,6 @@ private class UserThread(private val threadId: Int) : Thread() {
                 }
 
                 task.rspQueue!!.put(task)
-
             }
         }
         userThreads!![threadId] = null
@@ -1062,7 +1103,7 @@ private class UserThread(private val threadId: Int) : Thread() {
 object Console : Thread() {
 
     init {
-        //priority = Thread.MAX_PRIORITY
+        // priority = Thread.MAX_PRIORITY
         isDaemon = true
         name = "console-thread"
         start()
@@ -1095,11 +1136,10 @@ private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<In
     test.queueLengths.forEach { queueLength ->
         list.add(
             when {
-                queueLength == 0 -> context.numThreads * USER_THREAD_QSIZE  // 11
-                queueLength >  0 -> context.numThreads * queueLength        // Actions per Thread
-                else -> abs(queueLength)                                    // Actions across all Threads
-            }
-        )
+                queueLength == 0 -> context.numThreads * USER_THREAD_QSIZE // 11
+                queueLength > 0 -> context.numThreads * queueLength // Actions per Thread
+                else -> abs(queueLength) // Actions across all Threads
+            })
     }
     return list
 }
@@ -1118,10 +1158,11 @@ private fun assignTask(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
     var w = userThreads!![threadId]
     if (w == null) {
-        w = UserThread(threadId).apply {
-            isDaemon = true
-            start()
-        }
+        w =
+            UserThread(threadId).apply {
+                isDaemon = true
+                start()
+            }
         userThreads!![threadId] = w
     }
     task.beginQueueTimeNanos = System.nanoTime()
@@ -1135,6 +1176,7 @@ private fun assignTask(task: Task) {
         wthread_queue_stats.recordValue(w.tq.size.toLong())
     }
 }
+
 /*-------------------------------------------------------------------------*/
 
 private fun createActionGenerator(list: List<Int>): Iterator<Int> {
@@ -1150,24 +1192,29 @@ private fun createActionGenerator(list: List<Int>): Iterator<Int> {
 
 /*-------------------------------------------------------------------------*/
 
-private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, indexUserProfile: Int, queueLength: Int) {
+private fun runTest(
+    testCase: TestProfile,
+    contextId: Int,
+    indexTestCase: Int,
+    indexUserProfile: Int,
+    queueLength: Int
+) {
     var cpuTime: Long = 0
     var tsBegin = java.time.LocalDateTime.now().format(formatter)
     val output = mutableListOf("")
     output.add("======================================================================")
-    output.add("= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - $tsBegin")
+    output.add(
+        "= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - $tsBegin")
     output.add("======================================================================")
     Console.put(output)
 
-//    mg_benchmark_id?.set(indexTestCase)
+    //    mg_benchmark_id?.set(indexTestCase)
 
     val rnd = ThreadLocalRandom.current()
 
     // create a list of randomized user IDs
     val userList = mutableListOf<Int>()
-    repeat(MAX_NUM_USERS) {
-        userList.add(it)
-    }
+    repeat(MAX_NUM_USERS) { userList.add(it) }
     userList.shuffle()
 
     // Create a list of actions (per user).
@@ -1184,14 +1231,13 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         }
     } else {
         for (action in testCase.actions) {
-            repeat(action.weight) {
-                actionList.add(action.id)
-            }
+            repeat(action.weight) { actionList.add(action.id) }
         }
         actionList.shuffle(rnd)
     }
     repeat(MAX_NUM_USERS) { idx ->
-        if ((testCase.duration.warmupDurationUnits == 0L) && (testCase.duration.mainDurationUnits == 0L)) {
+        if ((testCase.duration.warmupDurationUnits == 0L) &&
+            (testCase.duration.mainDurationUnits == 0L)) {
             userActions!![idx] = null
         } else {
             userActions!![idx] = createActionGenerator(actionList)
@@ -1206,9 +1252,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 
     fun initRspQueue() {
         if (rspQueueInitialized) return
-        repeat(queueLength) {
-            rspQueue.put(Task())
-        }
+        repeat(queueLength) { rspQueue.put(Task()) }
         rspQueueInitialized = true
     }
 
@@ -1234,8 +1278,11 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 
         // Assign the task to the user object.
         task.apply {
-            userId = uid; numUsers = MAX_NUM_USERS; numThreads = MAX_NUM_THREADS; actionId =
-            aid; this.rspQueue = rspQueue
+            userId = uid
+            numUsers = MAX_NUM_USERS
+            numThreads = MAX_NUM_THREADS
+            actionId = aid
+            this.rspQueue = rspQueue
         }
         assignTask(task)
 
@@ -1243,7 +1290,8 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         rateGovernor?.pace()
     }
 
-    if ((testCase.duration.warmupDurationUnits == 0L) && (testCase.duration.mainDurationUnits == 0L)) {
+    if ((testCase.duration.warmupDurationUnits == 0L) &&
+        (testCase.duration.mainDurationUnits == 0L)) {
 
         DataCollector.clearStats()
 
@@ -1251,7 +1299,8 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 
         val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
 
-        // Special bootstrap test case to initialize terminals, and other objects.
+        // Special bootstrap test case to initialize terminals, and other
+        // objects.
         // Typically only found at the start and end of a test suite.
         var rateGovernor: RateGovernor? = null
         if (testCase.arrivalRate > 0.0) {
@@ -1289,7 +1338,8 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             DataCollector.printStats()
             if (testCase.saveStats) DataCollector.saveStatsJson(testCase.filename)
         }
-        //Console.put("Init: Duration spend in stats processing = ${durationNanos2}")
+        // Console.put("Init: Duration spend in stats processing =
+        // ${durationNanos2}")
         return
     }
 
@@ -1302,21 +1352,25 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         testPhase: String,
         runId: Int,
         runIdMax: Int,
-        arrivalRate: Double = -1.0) {
+        arrivalRate: Double = -1.0
+    ) {
 
         if (durationMillis == 0L) {
             return
         }
         if (runId == 0) {
-            //Console.put("initRspQueue: runId == 0")
+            // Console.put("initRspQueue: runId == 0")
             initRspQueue()
         }
 
         DataCollector.clearStats()
         tsBegin = java.time.LocalDateTime.now().format(formatter)
-        val tsEndPredicted = java.time.LocalDateTime.now().plusSeconds(durationMillis/1000).format(formatter)
-        Console.put("\n${testPhase} (${testCase.name}), run ${runId+1} of ${runIdMax+1}: begin (${tsBegin})")
-        Console.put("${testPhase} (${testCase.name}), run ${runId+1} of ${runIdMax+1}:       (${tsEndPredicted})")
+        val tsEndPredicted =
+            java.time.LocalDateTime.now().plusSeconds(durationMillis / 1000).format(formatter)
+        Console.put(
+            "\n${testPhase} (${testCase.name}), run ${runId+1} of ${runIdMax+1}: begin (${tsBegin})")
+        Console.put(
+            "${testPhase} (${testCase.name}), run ${runId+1} of ${runIdMax+1}:       (${tsEndPredicted})")
 
         timeMillisStart = timeMillisEnd
         timeMillisEnd = timeMillisStart + durationMillis
@@ -1334,7 +1388,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             // Ramp-up or Main duration.
             if (testCase.arrivalRate > 0.0) {
                 // rate limited, calculate time ns per action
-                nanosPerAction = 1000000000.0 /  testCase.arrivalRate
+                nanosPerAction = 1000000000.0 / testCase.arrivalRate
                 numActionsMax = (testCase.arrivalRate * durationMillis / 1000.0).toLong()
             } else {
                 // Not rate limited
@@ -1362,7 +1416,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
 
             vTime += nanosPerAction
             if (vTime > rTime) {
-                val delayMillis: Long = ((vTime-rTime)/1000000.0).toLong()
+                val delayMillis: Long = ((vTime - rTime) / 1000000.0).toLong()
                 Thread.sleep(delayMillis)
             }
             rTime = System.nanoTime().toDouble()
@@ -1376,7 +1430,8 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
         cpuTime = getProcessCpuTime() - cpuTime
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
-        Console.put("$testPhase (${testCase.name}), run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})")
+        Console.put(
+            "$testPhase (${testCase.name}), run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})")
 
         elapsedTimeNanos {
             DataCollector.createSummary(
@@ -1389,23 +1444,24 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
                 tsEnd,
                 testPhase,
                 runId,
-                cpuTime
-            )
+                cpuTime)
             DataCollector.printStats()
             if (testPhase == "Benchmark") {
                 if (testCase.saveStats) DataCollector.saveStatsJson(testCase.filename)
             }
         }
-        //Console.put("Main: Duration spend in stats processing = ${durationNanos2}")
+        // Console.put("Main: Duration spend in stats processing =
+        // ${durationNanos2}")
         if (runId == runIdMax) {
-            //Console.put("drainRspQueue: runId == runIdMax")
+            // Console.put("drainRspQueue: runId == runIdMax")
             if (testPhase == "Benchmark") drainRspQueue()
         }
     }
 
     // Start-up
     //
-    // Since we could have 1 or more population set sizes, only perform the start-up phase
+    // Since we could have 1 or more population set sizes, only perform the
+    // start-up phase
     // on the first set, i.e., with index 0.
     //
     if (indexUserProfile == 0) {
@@ -1421,17 +1477,16 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, i
             testCase.duration.mainDurationMillis,
             "Benchmark",
             runId,
-            testCase.duration.mainDurationRepeatCount - 1
-        )
+            testCase.duration.mainDurationRepeatCount - 1)
     }
-
 }
 
 /*-------------------------------------------------------------------------*/
 
 private fun initTulip() {
     Console.put(TulipApi.getVersionBanner())
-    Console.put("Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
+    Console.put(
+        "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
 }
 
 /*-------------------------------------------------------------------------*/
@@ -1492,11 +1547,11 @@ private fun runBenchmarks(
     val filename = g_tests[0].filename
     val file = java.io.File(filename)
     file.delete()
-    //if (result) {
+    // if (result) {
     //    //println("File deleted successfully - ${filename}")
-    //} else {
+    // } else {
     //    //throw Exception("Exiting, could not delete file - ${filename}")
-    //}
+    // }
 
     // run all benchmarks
     contexts.forEachIndexed { contextId, context ->
@@ -1509,7 +1564,7 @@ private fun runBenchmarks(
 
 fun runBenchmarks(userFactory: TulipUserFactory) {
     runBenchmarks(userFactory, ::getTest)
-    //logger.info { "Done" }
+    // logger.info { "Done" }
 }
 
 /*-------------------------------------------------------------------------*/

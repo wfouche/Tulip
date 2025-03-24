@@ -2,7 +2,8 @@ package io.github.wfouche.tulip.report
 
 import org.python.util.PythonInterpreter
 
-val jythonCode: String = """
+val jythonCode: String =
+    """
 from __future__ import print_function
 import datetime
 import json
@@ -1232,9 +1233,9 @@ def createReport(filename, text):
 """
 
 fun createHtmlReport(outputFilename: String, text1: String) {
-    //System.out.println("---")
-    //System.out.println("text: " + text1)
-    //System.out.println("---")
+    // System.out.println("---")
+    // System.out.println("text: " + text1)
+    // System.out.println("---")
 
     var text2: String = text1.trim()
     if (text2.startsWith("{")) {
@@ -1247,7 +1248,8 @@ fun createHtmlReport(outputFilename: String, text1: String) {
     }
 }
 
-val jythonCode2: String = """
+val jythonCode2: String =
+    """
 from __future__ import print_function
 import json
 import sys
