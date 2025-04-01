@@ -7,7 +7,7 @@ find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
 rm -f -r ~/.m2/repository/io/github/wfouche/tulip/tulip-runtime
 
 # spotless
-./gradlew spotlessCheck
+./gradlew spotlessApply
 
 echo ""
 read -p "Press ENTER to continue ..."
