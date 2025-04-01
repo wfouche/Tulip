@@ -10,7 +10,7 @@ import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
 /** The HttpUser class. */
-public class HttpUser extends TulipUser {
+public class RestClientUser extends TulipUser {
 
   /**
    * HttpUser() constructor
@@ -18,7 +18,7 @@ public class HttpUser extends TulipUser {
    * @param userId - User object id
    * @param threadId - Worker thread id
    */
-  public HttpUser(int userId, int threadId) {
+  public RestClientUser(int userId, int threadId) {
     super(userId, threadId);
   }
 
@@ -156,5 +156,5 @@ public class HttpUser extends TulipUser {
   }
 
   // Logger
-  private static final Logger logger = LoggerFactory.getLogger(HttpUser.class);
+  private static final Logger logger = LoggerFactory.getLogger(RestClientUser.class);
 }
