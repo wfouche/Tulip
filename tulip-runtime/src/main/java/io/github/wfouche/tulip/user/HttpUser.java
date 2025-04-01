@@ -57,28 +57,20 @@ public class HttpUser extends TulipUser {
     return true;
   }
 
-  //    // Action 1: GET /posts/{id}
-  //    public boolean action1() {
-  //        int id = ThreadLocalRandom.current().nextInt(100)+1;
-  //        return http_GET("/posts/{id}", id);
-  //    }
-  //
-  //    // Action 2: GET /comments/{id}
-  //    public boolean action2() {
-  //        int id = ThreadLocalRandom.current().nextInt(500)+1;
-  //        return http_GET("/comments/{id}", id);
-  //    }
-  //
-  //    // Action 3: GET /todos/{id}
-  //    public boolean action3() {
-  //        int id = ThreadLocalRandom.current().nextInt(200)+1;
-  //        return http_GET("/todos/{id}", id);
-  //    }
-
+  /**
+   *
+   * @return
+   */
   public boolean onStop() {
     return true;
   }
 
+  /**
+   *
+   * @param uri
+   * @param uriVariables
+   * @return
+   */
   public boolean http_GET(String uri, Object... uriVariables) {
     boolean rc;
     try {
@@ -90,6 +82,16 @@ public class HttpUser extends TulipUser {
     return rc;
   }
 
+  //    // Action 1: GET /posts/{id}
+  //    public boolean action1() {
+  //        int id = ThreadLocalRandom.current().nextInt(100)+1;
+  //        return http_GET("/posts/{id}", id);
+  //    }
+
+  /**
+   *
+   * @throws Exception
+   */
   public void disableSSLValidation() throws Exception {
     final SSLContext sslContext = SSLContext.getInstance("TLS");
 
@@ -120,6 +122,10 @@ public class HttpUser extends TulipUser {
         });
   }
 
+  /**
+   *
+   * @return
+   */
   public RestClient restClient() {
     return client;
   }
