@@ -9,15 +9,24 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 import org.springframework.web.client.RestClientException;
 
-// import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
-
-/** The HttpUser class is an experimental addition to Tulip. */
+/** The HttpUser class. */
 public class HttpUser extends TulipUser {
 
+  /**
+   * HttpUser() constructor
+   *
+   * @param userId - User object id
+   * @param threadId - Worker thread id
+   */
   public HttpUser(int userId, int threadId) {
     super(userId, threadId);
   }
 
+  /**
+   * onStart() method
+   *
+   * @return boolean
+   */
   public boolean onStart() {
     // Initialize the shared RestClient object only once
     if (getUserId() == 0) {
@@ -58,18 +67,20 @@ public class HttpUser extends TulipUser {
   }
 
   /**
+   * onStop() method
    *
-   * @return
+   * @return boolean
    */
   public boolean onStop() {
     return true;
   }
 
   /**
+   * http_GET() method
    *
-   * @param uri
-   * @param uriVariables
-   * @return
+   * @param uri - uri to invoke
+   * @param uriVariables - sequence of variables to replace in uri
+   * @return boolean
    */
   public boolean http_GET(String uri, Object... uriVariables) {
     boolean rc;
@@ -89,8 +100,9 @@ public class HttpUser extends TulipUser {
   //    }
 
   /**
+   * disableSSLValidation() method
    *
-   * @throws Exception
+   * @throws Exception - error is SSL validation cannot be disabled
    */
   public void disableSSLValidation() throws Exception {
     final SSLContext sslContext = SSLContext.getInstance("TLS");
@@ -123,8 +135,9 @@ public class HttpUser extends TulipUser {
   }
 
   /**
+   * restClient() method
    *
-   * @return
+   * @return RestClient
    */
   public RestClient restClient() {
     return client;
@@ -133,8 +146,14 @@ public class HttpUser extends TulipUser {
   // RestClient object
   private static RestClient client;
 
-  // Debug flag
-  // private static boolean debug = false;
+  /**
+   * logger() method
+   *
+   * @return Logger
+   */
+  public Logger logger() {
+    return logger;
+  }
 
   // Logger
   private static final Logger logger = LoggerFactory.getLogger(HttpUser.class);
