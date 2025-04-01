@@ -6,11 +6,11 @@ sdk env
 find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
 rm -f -r ~/.m2/repository/io/github/wfouche/tulip/tulip-runtime
 
-echo ""
-read -p "Press ENTER to continue ..."
-
 # spotless
 ./gradlew spotlessCheck
+
+echo ""
+read -p "Press ENTER to continue ..."
 
 # Publish tulip-runtime.jar to local Maven
 ./gradlew :tulip-runtime:publishToMavenLocal
