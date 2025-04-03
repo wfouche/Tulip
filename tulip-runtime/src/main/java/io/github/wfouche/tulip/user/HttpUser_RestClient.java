@@ -20,7 +20,6 @@ import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.apache.hc.core5.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
@@ -70,57 +69,57 @@ public class HttpUser_RestClient extends TulipUser {
         baseUrl += ":" + urlPort;
       }
 
-      if (urlProtocol.equals("http")) {
-        // var factory = new HttpComponentsClientHttpRequestFactory();
-        var factory = new SimpleClientHttpRequestFactory();
+      // if (urlProtocol.equals("http")) {
+      // var factory = new HttpComponentsClientHttpRequestFactory();
+      var factory = new SimpleClientHttpRequestFactory();
 
-        if (!connectTimeout_.isEmpty()) {
-          factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-          logger.info("connectTimeoutMillis={}", connectTimeout_);
-        }
-
-        if (!readTimeout_.isEmpty()) {
-          factory.setReadTimeout(Integer.parseInt(readTimeout_));
-          logger.info("readTimeoutMillis={}", readTimeout_);
-        }
-
-        logger.info("baseUrl={}", baseUrl);
-        client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
-      } else {
-        HttpComponentsClientHttpRequestFactory factory =
-            new HttpComponentsClientHttpRequestFactory();
-
-        if (!connectTimeout_.isEmpty()) {
-          factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-          logger.info("connectTimeoutMillis={}", connectTimeout_);
-        }
-
-        if (!connectionRequestTimeout_.isEmpty()) {
-          factory.setConnectionRequestTimeout(Integer.parseInt(connectionRequestTimeout_));
-          logger.info("connectionRequestTimeout_={}", connectionRequestTimeout_);
-        }
-        if (!readTimeout_.isEmpty()) {
-          factory.setReadTimeout(Integer.parseInt(readTimeout_));
-          logger.info("readTimeoutMillis={}", readTimeout_);
-        }
-
-        try {
-          factory.setHttpClient(httpClient());
-        } catch (NoSuchAlgorithmException e) {
-          System.out.println(e.toString());
-          return false;
-
-        } catch (KeyManagementException e) {
-          System.out.println(e.toString());
-          return false;
-        } catch (KeyStoreException e) {
-          System.out.println(e.toString());
-          return false;
-        }
-
-        logger.info("baseUrl={}", baseUrl);
-        client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
+      if (!connectTimeout_.isEmpty()) {
+        factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
+        logger.info("connectTimeoutMillis={}", connectTimeout_);
       }
+
+      if (!readTimeout_.isEmpty()) {
+        factory.setReadTimeout(Integer.parseInt(readTimeout_));
+        logger.info("readTimeoutMillis={}", readTimeout_);
+      }
+
+      logger.info("baseUrl={}", baseUrl);
+      client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
+      //      } else {
+      //        HttpComponentsClientHttpRequestFactory factory =
+      //            new HttpComponentsClientHttpRequestFactory();
+      //
+      //        if (!connectTimeout_.isEmpty()) {
+      //          factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
+      //          logger.info("connectTimeoutMillis={}", connectTimeout_);
+      //        }
+      //
+      //        if (!connectionRequestTimeout_.isEmpty()) {
+      //          factory.setConnectionRequestTimeout(Integer.parseInt(connectionRequestTimeout_));
+      //          logger.info("connectionRequestTimeout_={}", connectionRequestTimeout_);
+      //        }
+      //        if (!readTimeout_.isEmpty()) {
+      //          factory.setReadTimeout(Integer.parseInt(readTimeout_));
+      //          logger.info("readTimeoutMillis={}", readTimeout_);
+      //        }
+      //
+      //        try {
+      //          factory.setHttpClient(httpClient());
+      //        } catch (NoSuchAlgorithmException e) {
+      //          System.out.println(e.toString());
+      //          return false;
+      //
+      //        } catch (KeyManagementException e) {
+      //          System.out.println(e.toString());
+      //          return false;
+      //        } catch (KeyStoreException e) {
+      //          System.out.println(e.toString());
+      //          return false;
+      //        }
+      //
+      //        logger.info("baseUrl={}", baseUrl);
+      //        client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
+      //      }
     }
     return true;
   }
