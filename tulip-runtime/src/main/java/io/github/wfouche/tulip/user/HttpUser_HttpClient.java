@@ -1,16 +1,17 @@
 package io.github.wfouche.tulip.user;
 
 import io.github.wfouche.tulip.api.*;
+import java.net.URI;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
 import java.security.cert.X509Certificate;
 import javax.net.ssl.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
-import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestClientException;
 
 /** The HttpClientUser class. */
-public class HttpClientUser extends TulipUser {
+public class HttpUser_HttpClient extends TulipUser {
 
   /**
    * HttpClientUser() constructor
@@ -18,7 +19,7 @@ public class HttpClientUser extends TulipUser {
    * @param userId - User object id
    * @param threadId - Worker thread id
    */
-  public HttpClientUser(int userId, int threadId) {
+  public HttpUser_HttpClient(int userId, int threadId) {
     super(userId, threadId);
   }
 
@@ -28,28 +29,28 @@ public class HttpClientUser extends TulipUser {
    * @return boolean
    */
   public boolean onStart() {
-    // Initialize the shared RestClient object only once
+    // Initialize the shared HttpClient object only once
     if (getUserId() == 0) {
-      // var factory = new HttpComponentsClientHttpRequestFactory();
-      var factory = new SimpleClientHttpRequestFactory();
-
-      var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
-      if (!connectTimeout_.isEmpty()) {
-        factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-        logger.info("connectTimeoutMillis={}", connectTimeout_);
-      }
-
-      var readTimeout_ = getUserParamValue("readTimeoutMillis");
-      if (!readTimeout_.isEmpty()) {
-        factory.setReadTimeout(Integer.parseInt(readTimeout_));
-        logger.info("readTimeoutMillis={}", readTimeout_);
-      }
-
-      var url = getUserParamValue("protocol") + "://" + getUserParamValue("host");
-      logger.info("url={}", url);
-
-      client = RestClient.builder().requestFactory(factory).baseUrl(url).build();
-
+      //      // var factory = new HttpComponentsClientHttpRequestFactory();
+      //      var factory = new SimpleClientHttpRequestFactory();
+      //
+      //      var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
+      //      if (!connectTimeout_.isEmpty()) {
+      //        factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
+      //        logger.info("connectTimeoutMillis={}", connectTimeout_);
+      //      }
+      //
+      //      var readTimeout_ = getUserParamValue("readTimeoutMillis");
+      //      if (!readTimeout_.isEmpty()) {
+      //        factory.setReadTimeout(Integer.parseInt(readTimeout_));
+      //        logger.info("readTimeoutMillis={}", readTimeout_);
+      //      }
+      //
+      //      var url = getUserParamValue("protocol") + "://" + getUserParamValue("host");
+      //      logger.info("url={}", url);
+      //
+      //      client = RestClient.builder().requestFactory(factory).baseUrl(url).build();
+      //
       var verify_ = getUserParamValue("verify");
       if (!verify_.isEmpty()) {
         var sslVerify = Boolean.parseBoolean(getUserParamValue("verify"));
@@ -78,19 +79,36 @@ public class HttpClientUser extends TulipUser {
   /**
    * http_GET() method
    *
-   * @param uri - uri to invoke
-   * @param uriVariables - sequence of variables to replace in uri
+   * @param url - url to invoke
    * @return boolean
    */
-  public boolean http_GET(String uri, Object... uriVariables) {
-    boolean rc;
+  public HttpRequest http_GET(String url) {
     try {
-      String rsp = restClient().get().uri(uri, uriVariables).retrieve().body(String.class);
-      rc = (rsp != null && !rsp.isEmpty());
-    } catch (RestClientException e) {
-      rc = false;
+      return HttpRequest.newBuilder().uri(new URI(url)).GET().build();
+    } catch (java.lang.Exception e) {
+      throw new RuntimeException(e);
     }
-    return rc;
+  }
+
+  /**
+   * serviceCall - invoke remote service call
+   *
+   * @param request - HTTP request object
+   * @return
+   */
+  public boolean serviceCall(HttpRequest request) {
+    try {
+      var response = client.send(request, HttpResponse.BodyHandlers.ofString());
+
+      // println(id)
+      // println(name)
+      // println(response.statusCode())
+      // println(response.body())
+
+      return (response.statusCode() == 200);
+    } catch (java.lang.Exception e) {
+      throw new RuntimeException(e);
+    }
   }
 
   //    // Action 1: GET /posts/{id}
@@ -139,12 +157,12 @@ public class HttpClientUser extends TulipUser {
    *
    * @return RestClient
    */
-  public RestClient restClient() {
+  public HttpClient httpClient() {
     return client;
   }
 
   // RestClient object
-  private static RestClient client;
+  private static final HttpClient client = HttpClient.newHttpClient();
 
   /**
    * logger() method
@@ -156,5 +174,5 @@ public class HttpClientUser extends TulipUser {
   }
 
   // Logger
-  private static final Logger logger = LoggerFactory.getLogger(HttpClientUser.class);
+  private static final Logger logger = LoggerFactory.getLogger(HttpUser_HttpClient.class);
 }
