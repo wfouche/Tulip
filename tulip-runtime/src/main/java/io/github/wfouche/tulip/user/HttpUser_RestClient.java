@@ -1,12 +1,13 @@
 package io.github.wfouche.tulip.user;
 
 import io.github.wfouche.tulip.api.*;
+import java.net.URI;
+import java.net.URL;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
-import javax.net.ssl.*;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.X509TrustManager;
 import org.apache.hc.client5.http.classic.HttpClient;
@@ -44,45 +45,64 @@ public class HttpUser_RestClient extends TulipUser {
    */
   public boolean onStart() {
     // Initialize the shared RestClient object only once
-    var protocol_ = getUserParamValue("protocol");
-    var url = protocol_ + "://" + getUserParamValue("host");
-    var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
-    var connectionRequestTimeout_ = getUserParamValue("connectionRequestTimeout");
-    var readTimeout_ = getUserParamValue("readTimeoutMillis");
-
     if (getUserId() == 0) {
-      if (protocol_.equals("http")) {
+      var url_ = getUserParamValue("url");
+      var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
+      var connectionRequestTimeout_ = getUserParamValue("connectionRequestTimeout");
+      var readTimeout_ = getUserParamValue("readTimeoutMillis");
+
+      if (url_.isEmpty()) {
+        return false;
+      }
+
+      try {
+        URL url = new URI(url_).toURL();
+        urlProtocol = url.getProtocol();
+        urlHost = url.getHost();
+        urlPort = url.getPort();
+        urlPath = url.getPath();
+      } catch (Exception e) {
+        e.printStackTrace();
+        return false;
+      }
+
+      String baseUrl = urlProtocol + "://" + urlHost;
+      if (urlPort != -1) {
+        baseUrl += ":" + urlPort;
+      }
+
+      if (urlProtocol.equals("http")) {
         // var factory = new HttpComponentsClientHttpRequestFactory();
         var factory = new SimpleClientHttpRequestFactory();
 
         if (!connectTimeout_.isEmpty()) {
           factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-          logger.info("http:connectTimeoutMillis={}", connectTimeout_);
+          logger.info("connectTimeoutMillis={}", connectTimeout_);
         }
 
         if (!readTimeout_.isEmpty()) {
           factory.setReadTimeout(Integer.parseInt(readTimeout_));
-          logger.info("http:readTimeoutMillis={}", readTimeout_);
+          logger.info("readTimeoutMillis={}", readTimeout_);
         }
 
-        logger.info("http:url={}", url);
-        client = RestClient.builder().requestFactory(factory).baseUrl(url).build();
+        logger.info("baseUrl={}", baseUrl);
+        client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
       } else {
         HttpComponentsClientHttpRequestFactory factory =
             new HttpComponentsClientHttpRequestFactory();
 
         if (!connectTimeout_.isEmpty()) {
           factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-          logger.info("https:connectTimeoutMillis={}", connectTimeout_);
+          logger.info("connectTimeoutMillis={}", connectTimeout_);
         }
 
         if (!connectionRequestTimeout_.isEmpty()) {
           factory.setConnectionRequestTimeout(Integer.parseInt(connectionRequestTimeout_));
-          logger.info("https:connectionRequestTimeout_={}", connectionRequestTimeout_);
+          logger.info("connectionRequestTimeout_={}", connectionRequestTimeout_);
         }
         if (!readTimeout_.isEmpty()) {
           factory.setReadTimeout(Integer.parseInt(readTimeout_));
-          logger.info("https:readTimeoutMillis={}", readTimeout_);
+          logger.info("readTimeoutMillis={}", readTimeout_);
         }
 
         try {
@@ -99,8 +119,8 @@ public class HttpUser_RestClient extends TulipUser {
           return false;
         }
 
-        logger.info("https:url={}", url);
-        client = RestClient.builder().requestFactory(factory).baseUrl(url).build();
+        logger.info("baseUrl={}", baseUrl);
+        client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
       }
     }
     return true;
@@ -192,6 +212,27 @@ public class HttpUser_RestClient extends TulipUser {
 
   // RestClient object
   private static RestClient client;
+
+  private static String urlProtocol = "";
+  private static String urlHost = "";
+  private static int urlPort = -1;
+  private static String urlPath = "";
+
+  public String getUrlProtocol() {
+    return urlProtocol;
+  }
+
+  public String getUrlHost() {
+    return urlHost;
+  }
+
+  public int getUrlPort() {
+    return urlPort;
+  }
+
+  public String getUrlPath() {
+    return urlPath;
+  }
 
   /**
    * logger() method
