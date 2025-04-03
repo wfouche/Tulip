@@ -8,7 +8,6 @@ import java.security.cert.CertificateException;
 import java.security.cert.X509Certificate;
 import javax.net.ssl.*;
 import javax.net.ssl.SSLContext;
-import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 import org.apache.hc.client5.http.classic.HttpClient;
 import org.apache.hc.client5.http.impl.classic.HttpClients;
@@ -16,8 +15,6 @@ import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuil
 import org.apache.hc.client5.http.io.HttpClientConnectionManager;
 import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
 import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactory;
-import org.apache.hc.client5.http.ssl.SSLConnectionSocketFactoryBuilder;
 import org.apache.hc.core5.ssl.SSLContextBuilder;
 import org.apache.hc.core5.ssl.TrustStrategy;
 import org.slf4j.Logger;
@@ -148,8 +145,7 @@ public class HttpUser_RestClient extends TulipUser {
       throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
     SSLContext sslContext =
         SSLContextBuilder.create()
-            .loadTrustMaterial(
-                null, (TrustStrategy) (chain, authType) -> true)
+            .loadTrustMaterial(null, (TrustStrategy) (chain, authType) -> true)
             .build();
 
     DefaultClientTlsStrategy tlsStrategy =
