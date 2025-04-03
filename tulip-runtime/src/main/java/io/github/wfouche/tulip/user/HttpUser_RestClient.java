@@ -23,7 +23,6 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.client.HttpComponentsClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
-import org.springframework.web.client.RestClientException;
 
 /** The HttpUser class. */
 public class HttpUser_RestClient extends TulipUser {
@@ -134,30 +133,6 @@ public class HttpUser_RestClient extends TulipUser {
   public boolean onStop() {
     return true;
   }
-
-  /**
-   * http_GET() method
-   *
-   * @param uri - uri to invoke
-   * @param uriVariables - sequence of variables to replace in uri
-   * @return boolean
-   */
-  public boolean http_GET(String uri, Object... uriVariables) {
-    boolean rc;
-    try {
-      String rsp = restClient().get().uri(uri, uriVariables).retrieve().body(String.class);
-      rc = (rsp != null && !rsp.isEmpty());
-    } catch (RestClientException e) {
-      rc = false;
-    }
-    return rc;
-  }
-
-  //    // Action 1: GET /posts/{id}
-  //    public boolean action1() {
-  //        int id = ThreadLocalRandom.current().nextInt(100)+1;
-  //        return http_GET("/posts/{id}", id);
-  //    }
 
   // https://github.com/kvsravindrareddy/springboot-virtual-threads/blob/main/src/main/java/com/veera/config/HttpConfig.java
   // root@wfouche-e6540:/home/wfouche/IdeaProjects/Tulip/scripts/ssl#  jbang run JavalinServer.java
