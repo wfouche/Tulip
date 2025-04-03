@@ -51,6 +51,9 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("ch.qos.logback:logback-core:1.5.18")
     implementation("ch.qos.logback:logback-classic:1.5.18")
+
+    // ...
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.4.3")
 }
 
 tasks.jar {
