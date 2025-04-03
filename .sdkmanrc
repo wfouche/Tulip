@@ -8,10 +8,13 @@ java=21.0.6-tem
 gradle=8.12.1
 
 # JBang
-jbang=0.125.0
+jbang=0.125.1
 
 # Scala
 scalacli=1.7.1
 
 # MCS
 mcs=0.7.3
+
+# Maven
+maven=3.9.9
