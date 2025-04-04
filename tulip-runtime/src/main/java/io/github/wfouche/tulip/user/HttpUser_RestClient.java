@@ -3,21 +3,6 @@ package io.github.wfouche.tulip.user;
 import io.github.wfouche.tulip.api.*;
 import java.net.URI;
 import java.net.URL;
-import java.security.KeyManagementException;
-import java.security.KeyStoreException;
-import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.X509Certificate;
-import javax.net.ssl.SSLContext;
-import javax.net.ssl.X509TrustManager;
-import org.apache.hc.client5.http.classic.HttpClient;
-import org.apache.hc.client5.http.impl.classic.HttpClients;
-import org.apache.hc.client5.http.impl.io.PoolingHttpClientConnectionManagerBuilder;
-import org.apache.hc.client5.http.io.HttpClientConnectionManager;
-import org.apache.hc.client5.http.ssl.DefaultClientTlsStrategy;
-import org.apache.hc.client5.http.ssl.NoopHostnameVerifier;
-import org.apache.hc.core5.ssl.SSLContextBuilder;
-import org.apache.hc.core5.ssl.TrustStrategy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
@@ -135,45 +120,45 @@ public class HttpUser_RestClient extends TulipUser {
 
   // https://github.com/kvsravindrareddy/springboot-virtual-threads/blob/main/src/main/java/com/veera/config/HttpConfig.java
   // root@wfouche-e6540:/home/wfouche/IdeaProjects/Tulip/scripts/ssl#  jbang run JavalinServer.java
-  public HttpClient httpClient()
-      throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
-    SSLContext sslContext =
-        SSLContextBuilder.create()
-            .loadTrustMaterial(null, (TrustStrategy) (chain, authType) -> true)
-            .build();
-
-    DefaultClientTlsStrategy tlsStrategy =
-        new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE);
-
-    HttpClientConnectionManager connectionManager =
-        PoolingHttpClientConnectionManagerBuilder.create()
-            .setTlsSocketStrategy(tlsStrategy)
-            .build();
-
-    return HttpClients.custom().setConnectionManager(connectionManager).build();
-  }
-
-  public static class NullTrustManager implements X509TrustManager {
-
-    @Override
-    public void checkClientTrusted(X509Certificate[] x509Certificates, String s)
-        throws CertificateException {}
-
-    @Override
-    public void checkServerTrusted(X509Certificate[] x509Certificates, String s)
-        throws CertificateException {}
-
-    @Override
-    public X509Certificate[] getAcceptedIssuers() {
-      return new X509Certificate[0];
-    }
-  }
-
-  public static class NullHostnameVerifier implements javax.net.ssl.HostnameVerifier {
-    public boolean verify(String hostname, javax.net.ssl.SSLSession sslSession) {
-      return true;
-    }
-  }
+  //  public HttpClient httpClient()
+  //      throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
+  //    SSLContext sslContext =
+  //        SSLContextBuilder.create()
+  //            .loadTrustMaterial(null, (TrustStrategy) (chain, authType) -> true)
+  //            .build();
+  //
+  //    DefaultClientTlsStrategy tlsStrategy =
+  //        new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE);
+  //
+  //    HttpClientConnectionManager connectionManager =
+  //        PoolingHttpClientConnectionManagerBuilder.create()
+  //            .setTlsSocketStrategy(tlsStrategy)
+  //            .build();
+  //
+  //    return HttpClients.custom().setConnectionManager(connectionManager).build();
+  //  }
+  //
+  //  public static class NullTrustManager implements X509TrustManager {
+  //
+  //    @Override
+  //    public void checkClientTrusted(X509Certificate[] x509Certificates, String s)
+  //        throws CertificateException {}
+  //
+  //    @Override
+  //    public void checkServerTrusted(X509Certificate[] x509Certificates, String s)
+  //        throws CertificateException {}
+  //
+  //    @Override
+  //    public X509Certificate[] getAcceptedIssuers() {
+  //      return new X509Certificate[0];
+  //    }
+  //  }
+  //
+  //  public static class NullHostnameVerifier implements javax.net.ssl.HostnameVerifier {
+  //    public boolean verify(String hostname, javax.net.ssl.SSLSession sslSession) {
+  //      return true;
+  //    }
+  //  }
 
   /**
    * restClient() method
