@@ -38,14 +38,14 @@ public class HttpUser extends HttpUser_RestClient {
     }
   }
 
-  public String http_POST(String reqBodyText, String uri, Object... uriVariables) {
+  public String http_POST(String reqBodyJson, String uri, Object... uriVariables) {
     try {
       String rsp =
           restClient()
               .post()
               .uri(uri, uriVariables)
               .contentType(APPLICATION_JSON)
-              .body(reqBodyText)
+              .body(reqBodyJson)
               .retrieve()
               .body(String.class);
       if (rsp != null && !rsp.isEmpty()) {
@@ -59,14 +59,14 @@ public class HttpUser extends HttpUser_RestClient {
     }
   }
 
-  public String http_PUT(String reqBodyText, String uri, Object... uriVariables) {
+  public String http_PUT(String reqBodyJson, String uri, Object... uriVariables) {
     try {
       String rsp =
           restClient()
               .put()
               .uri(uri, uriVariables)
               .contentType(APPLICATION_JSON)
-              .body(reqBodyText)
+              .body(reqBodyJson)
               .retrieve()
               .body(String.class);
       if (rsp != null && !rsp.isEmpty()) {
@@ -80,14 +80,14 @@ public class HttpUser extends HttpUser_RestClient {
     }
   }
 
-  public String http_PATCH(String reqBodyText, String uri, Object... uriVariables) {
+  public String http_PATCH(String reqBodyJson, String uri, Object... uriVariables) {
     try {
       String rsp =
           restClient()
               .patch()
               .uri(uri, uriVariables)
               .contentType(APPLICATION_JSON)
-              .body(reqBodyText)
+              .body(reqBodyJson)
               .retrieve()
               .body(String.class);
       if (rsp != null && !rsp.isEmpty()) {
