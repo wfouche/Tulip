@@ -12,12 +12,4 @@
 #
 GRADLE_VERSION=8.12.1
 
-./gradlew wrapper --gradle-version $GRADLE_VERSION
-
-pushd tulip-standalone/mbench-gradle-amper
-./gradlew wrapper --gradle-version $GRADLE_VERSION
-popd
-
-pushd tulip-standalone/oppwa-gradle
-./gradlew wrapper --gradle-version $GRADLE_VERSION
-popd
+./gradlew --no-daemon wrapper --gradle-version $GRADLE_VERSION
