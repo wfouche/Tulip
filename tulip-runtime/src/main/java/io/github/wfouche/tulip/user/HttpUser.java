@@ -2,6 +2,7 @@ package io.github.wfouche.tulip.user;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+import org.jetbrains.annotations.NotNull;
 import org.springframework.web.client.RestClientException;
 
 /** The HttpUser class. */
@@ -24,7 +25,7 @@ public class HttpUser extends HttpUser_RestClient {
    * @param uriVariables - sequence of variables to replace in uri
    * @return boolean
    */
-  public String http_GET(String uri, Object... uriVariables) {
+  @NotNull public String http_GET(String uri, Object... uriVariables) {
     try {
       String rsp = restClient().get().uri(uri, uriVariables).retrieve().body(String.class);
       if (rsp != null && !rsp.isEmpty()) {
@@ -38,7 +39,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
   }
 
-  public String http_POST(String reqBodyJson, String uri, Object... uriVariables) {
+  @NotNull public String http_POST(String reqBodyJson, String uri, Object... uriVariables) {
     try {
       String rsp =
           restClient()
@@ -59,7 +60,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
   }
 
-  public String http_PUT(String reqBodyJson, String uri, Object... uriVariables) {
+  @NotNull public String http_PUT(String reqBodyJson, String uri, Object... uriVariables) {
     try {
       String rsp =
           restClient()
@@ -80,7 +81,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
   }
 
-  public String http_PATCH(String reqBodyJson, String uri, Object... uriVariables) {
+  @NotNull public String http_PATCH(String reqBodyJson, String uri, Object... uriVariables) {
     try {
       String rsp =
           restClient()
@@ -101,7 +102,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
   }
 
-  public String http_DELETE(String uri, Object... uriVariables) {
+  @NotNull public String http_DELETE(String uri, Object... uriVariables) {
     try {
       String rsp = restClient().delete().uri(uri, uriVariables).retrieve().body(String.class);
       if (rsp != null && !rsp.isEmpty()) {
