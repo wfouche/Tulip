@@ -31,7 +31,7 @@ public class HttpUser_RestClient extends TulipUser {
     if (getUserId() == 0) {
       var url_ = getUserParamValue("url");
       var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
-      var connectionRequestTimeout_ = getUserParamValue("connectionRequestTimeout");
+      // var connectionRequestTimeout_ = getUserParamValue("connectionRequestTimeout");
       var readTimeout_ = getUserParamValue("readTimeoutMillis");
 
       if (url_.isEmpty()) {
