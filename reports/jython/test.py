@@ -4,6 +4,8 @@ import sys
 # https://github.com/jbangdev/jbang/issues/1911
 # https://github.com/jython/jython/issues/371
 
+# https://stackoverflow.com/questions/16701979/packaging-a-jython-program-in-an-executable-jar
+
 ##DEPS io.leego:banana:2.1.0
 ##JYTHON 2.7.4
 ##JAVA 21
