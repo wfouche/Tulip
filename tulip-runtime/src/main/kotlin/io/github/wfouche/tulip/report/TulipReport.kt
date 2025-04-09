@@ -799,6 +799,17 @@ def createReport(filename, text):
     report_fn = jb["config"]["actions"]["report_filename"]
     report_fh = open(report_fn, "w+")
 
+    global report_dn
+    report_dn = os.path.splitext(report_fn)[0]
+    try:
+        os.makedirs(report_dn)
+    except:
+        pass
+
+    def odir(filename):
+        global report_dn
+        return os.path.join(report_dn, filename)
+
     if len(config_filename) > 0:
         desc2 = "<a href='%s'>"%(os.path.splitext(config_filename)[0] + ".adoc")
     else:
@@ -832,7 +843,7 @@ def createReport(filename, text):
         else:
             cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
 
-        statsFilename = '%s_%d.html'%(report_fn.split('.')[0],benchmark_id)
+        statsFilename = '%s_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id)
         text = "<a href='%s'>%s</a>"%(statsFilename,"[Summary]")
         printStream = PrintStream(statsFilename)
         printStream.print(summary_html_1)
@@ -876,14 +887,14 @@ def createReport(filename, text):
         printStream.println()
         printStream.print('    }')
         printStream.println()
-        tChartFilename = '%s_%d_t.js'%(report_fn.split('.')[0],benchmark_id)
-        pChartFilename = '%s_%d_p.js'%(report_fn.split('.')[0],benchmark_id)
+        tChartFilename = '%s_%d_t.js'%(odir(report_fn.split('.')[0]),benchmark_id)
+        pChartFilename = '%s_%d_p.js'%(odir(report_fn.split('.')[0]),benchmark_id)
         printStream.print(
             summary_html_2
                 .replace("__CHARTS_TEXT__",
                     charts_html
-                         .replace("__JS_T_CHART__",tChartFilename)
-                         .replace("__JS_P_CHART__",pChartFilename))
+                         .replace("__JS_T_CHART__",os.path.basename(tChartFilename))
+                         .replace("__JS_P_CHART__",os.path.basename(pChartFilename)))
                 )
         printStream.println()
 
@@ -981,7 +992,7 @@ def createReport(filename, text):
                 text = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
             else:
                 text = "[%s]"%(key)
-            statsFilename = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,int(key))
+            statsFilename = '%s_%d_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id,int(key))
             text = "<a href='%s'>%s</a>"%(statsFilename,text)
             printStream = PrintStream(statsFilename)
             printStream.println("<html>")
