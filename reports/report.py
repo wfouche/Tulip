@@ -1242,6 +1242,7 @@ def createReport(filename, text):
     report_fh.close()
 
 if __name__ == "__main__":
-    filename = sys.argv[1]
-    configFilename = sys.argv[2]
-    createReport(filename, configFilename)
+    if len(sys.argv) >= 3:
+        filename = sys.argv[1]
+        configFilename = sys.argv[2]
+        createReport(filename, configFilename)

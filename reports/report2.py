@@ -217,5 +217,6 @@ def createReport(filename):
     report_fh.close()
 
 if __name__ == "__main__":
-    filename = sys.argv[1]
-    createReport(filename)
+    if len(sys.argv) >= 2:
+        filename = sys.argv[1]
+        createReport(filename)
