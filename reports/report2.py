@@ -5,6 +5,11 @@ import com.google.gson.JsonParser as JsonParser
 import os
 from collections import OrderedDict
 
+##DEPS org.python:jython-standalone:2.7.4
+##DEPS com.google.code.gson:gson:2.11.0
+##DEPS org.hdrhistogram:HdrHistogram:2.2.2
+##JAVA 21
+
 header = '''= __DESCRIPTION__
 :toc: left
 :sectnums:
