@@ -27,6 +27,9 @@ public class __CLASSNAME__ {
             }
             jythonArgsScript += "'" + arg + "'";
         }
+        if (jythonArgsScript.length() == 0) {
+            jythonArgsScript = "'" + mainScriptFilename + "'";
+        }
         jythonArgsScript = "import sys; sys.argv = [" + jythonArgsScript + "]";
         {
             byte[] decodedBytes = Base64.getDecoder().decode(mainScriptTextBase64);
@@ -55,8 +58,8 @@ javaLines = []
 
 def main():
     scriptFilename = sys.argv[1]
-    javaClassname = "_" + os.path.basename(scriptFilename)[:-3]
-    javaFilename = javaClassname + ".java"
+    javaClassname = os.path.basename(scriptFilename)[:-3] + "_py"
+    javaFilename = scriptFilename.replace(".","_") + ".java"
     deps = []
     jythonVersion = "2.7.4"
     javaVersion = "21"
