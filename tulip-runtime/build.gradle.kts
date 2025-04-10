@@ -152,6 +152,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         importOrder()
         removeUnusedImports()
         googleJavaFormat()
+        toggleOffOn()
         formatAnnotations()
     }
     kotlin {
