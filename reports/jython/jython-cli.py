@@ -46,6 +46,7 @@ public class __CLASSNAME__ {
             // initialize args
             pyInterp.exec(jythonArgsScript);
             // run script
+            //pyInterp.exec("__name__=\"\"");
             pyInterp.exec(mainScript);
         }
         //jython.main(args);
