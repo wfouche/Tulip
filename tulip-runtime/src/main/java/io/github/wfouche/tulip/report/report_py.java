@@ -1,12 +1,12 @@
 package io.github.wfouche.tulip.report;
 
-///usr/bin/env jbang "$0" "$@" ; exit $?
+/// usr/bin/env jbang "$0" "$@" ; exit $?
 
-//DEPS org.python:jython-standalone:2.7.4
-//DEPS com.google.code.gson:gson:2.11.0
-//DEPS org.hdrhistogram:HdrHistogram:2.2.2
-//DEPS org.python:jython-standalone:2.7.4
-//JAVA 21
+// DEPS org.python:jython-standalone:2.7.4
+// DEPS com.google.code.gson:gson:2.11.0
+// DEPS org.hdrhistogram:HdrHistogram:2.2.2
+// DEPS org.python:jython-standalone:2.7.4
+// JAVA 21
 
 import java.util.Base64;
 import org.python.util.PythonInterpreter;
