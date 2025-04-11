@@ -7,6 +7,35 @@ All notable changes to this project will be documented in this file.
 The format is based on https://keepachangelog.com/en/1.0.0/[Keep a Changelog],
 and this project adheres to https://semver.org/spec/v2.0.0.html[Semantic Versioning].
 
+== [v2.1.7] - 2025-04-11
+
+* Benchmarks::
+
+** Created repo https://github.com/wfouche/Tulip-benchmarks[Tulip-benchmarks] containing example benchmarks written using the Tulip runtime.
+
+** Upgraded Javalin to version 6.5.0
+
+* Reporting::
+
+** Enhanced the per action "Percentile Response Time Distribution" report by adding column AboveCount.
+
+** Enhanced the "Summary" report with two charts implemented using https://echarts.apache.org/en/index.html[Apache ECharts].
+*** "Actions per second" chart
+*** "Response time (ms)" chart
+
+** Embed the Jython reporting scripts in Tulip as Base64 encoded strings.
+** Save all secondary HTML reporting files into the same reporting folder.
+
+* User functionality::
+
+** Implemented classes HttpUser and HttpUser_RestClient.
+
+* Software versions:
+** Java 21.0.6
+** Kotlin 2.0.21
+** Gradle 8.12.1
+** JBang 0.125.1
+
 == [v2.1.6] - 2025-03-07
 
 * Reporting::
