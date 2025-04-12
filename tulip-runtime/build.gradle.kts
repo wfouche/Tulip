@@ -14,7 +14,7 @@ plugins {
     id("org.jreleaser") version "1.17.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
     id("org.jetbrains.dokka") version "2.0.0"
-    id("com.diffplug.spotless") version "7.0.2"
+    id("com.diffplug.spotless") version "7.0.3"
 }
 
 java {
