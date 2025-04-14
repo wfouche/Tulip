@@ -999,9 +999,13 @@ def createReport(filename, text):
             printStream.println("table, th, td {")
             printStream.println("  border:1px solid black; font-size:16px; text-align: center;")
             printStream.println("}")
+            printStream.println("mark {")
+            printStream.println("  background-color: LightGray;")
+            printStream.println("  color: black;")
+            printStream.println("}")
             printStream.println("</style>")
             printStream.println("<body>")
-            printStream.println("<h2>Percentile Response Time Distribution</h2>")
+            printStream.println("<h2>[A%d] Percentile Response Time Distribution</h2>"%(int(key)))
 
             #printStream.println("<pre>")
             #jhx.outputPercentileDistribution(printStream, 1000.0)
@@ -1037,9 +1041,25 @@ def createReport(filename, text):
                   rlist.append(e)
             rlist.reverse()
             for e in rlist:
+                mark = False
+                if e[1].startswith("0.9990"):
+                    mark = True
+                if e[1].startswith("0.990"):
+                    mark = True
+                if e[1] == "0.950000000000":
+                    mark = True
+                if e[1] == "0.900000000000":
+                    mark = True
+                if e[1] == "0.800000000000":
+                    mark = True
+                if e[1] == "0.500000000000":
+                    mark = True
                 printStream.println('  <tr>')
                 printStream.println('    <td>%s</td>'%(e[0]))
-                printStream.println('    <td>%s</td>'%(e[1]))
+                if mark:
+                    printStream.println('    <td><mark>%s</mark></td>'%(e[1]))
+                else:
+                    printStream.println('    <td>%s</td>'%(e[1]))
                 printStream.println('    <td>%s</td>'%(e[2]))
                 printStream.println('    <td>%s</td>'%(e[3]))
                 printStream.println('    <td>%s</td>'%(tcount-int(e[2])))

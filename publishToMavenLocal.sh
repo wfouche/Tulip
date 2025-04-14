@@ -6,6 +6,11 @@ sdk env
 find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
 rm -f -r ~/.m2/repository/io/github/wfouche/tulip/tulip-runtime
 
+# reports
+pushd ./reports
+./update_runtime.sh
+popd
+
 # spotless
 ./gradlew spotlessApply
 
