@@ -1055,10 +1055,11 @@ def createReport(filename, text):
                 if e[1] == "0.500000000000":
                     mark = True
                 printStream.println('  <tr>')
-                printStream.println('    <td>%s</td>'%(e[0]))
                 if mark:
+                    printStream.println('    <td><mark>%s</mark></td>'%(e[0]))
                     printStream.println('    <td><mark>%s</mark></td>'%(e[1]))
                 else:
+                    printStream.println('    <td>%s</td>'%(e[0]))
                     printStream.println('    <td>%s</td>'%(e[1]))
                 printStream.println('    <td>%s</td>'%(e[2]))
                 printStream.println('    <td>%s</td>'%(e[3]))
