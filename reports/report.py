@@ -1015,6 +1015,7 @@ def createReport(filename, text):
             lines = ptext.split('\n')
             tcount = jhx.getTotalCount()
             header = True
+            rlist = []
             for line in lines:
               if len(line) == 0:
                 continue
@@ -1033,13 +1034,16 @@ def createReport(filename, text):
                 else:
                   if len(e) == 3:
                     e.append('')
-                  printStream.println('  <tr>')
-                  printStream.println('    <td>%s</td>'%(e[0]))
-                  printStream.println('    <td>%s</td>'%(e[1]))
-                  printStream.println('    <td>%s</td>'%(e[2]))
-                  printStream.println('    <td>%s</td>'%(e[3]))
-                  printStream.println('    <td>%s</td>'%(tcount-int(e[2])))
-                  printStream.println('  </tr>')
+                  rlist.append(e)
+            rlist.reverse()
+            for e in rlist:
+                printStream.println('  <tr>')
+                printStream.println('    <td>%s</td>'%(e[0]))
+                printStream.println('    <td>%s</td>'%(e[1]))
+                printStream.println('    <td>%s</td>'%(e[2]))
+                printStream.println('    <td>%s</td>'%(e[3]))
+                printStream.println('    <td>%s</td>'%(tcount-int(e[2])))
+                printStream.println('  </tr>')
             printStream.println("</table>")
 
             #printStream.println("</pre>")
