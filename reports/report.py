@@ -1009,6 +1009,7 @@ def createReport(filename, text):
             printStream.println("}")
             printStream.println("</style>")
             printStream.println("<body>")
+            printStream.println('<a href="../%s">Up</a>'%(report_fn))
             if (page_id == 0) and (num_keys == 1):
                 printStream.println('<a href="#">Prev</a>')
                 printStream.println('<a href="#">Next</a>')
@@ -1021,7 +1022,6 @@ def createReport(filename, text):
             else:
                 printStream.println('<a href="%s">Prev</a>'%(statsFilenamePrev))
                 printStream.println('<a href="%s">Next</a>'%(statsFilenameNext))
-            printStream.println('<a href="../%s">Up</a>'%(report_fn))
             printStream.println("<h2>[A%d] Percentile Response Time Distribution</h2>"%(int(key)))
 
             #printStream.println("<pre>")
