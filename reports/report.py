@@ -1022,7 +1022,12 @@ def createReport(filename, text):
             else:
                 printStream.println('<a href="%s">Prev</a>'%(statsFilenamePrev))
                 printStream.println('<a href="%s">Next</a>'%(statsFilenameNext))
-            printStream.println("<h2>[A%d] Percentile Response Time Distribution</h2>"%(int(key)))
+
+            if jb["config"]["actions"]["user_actions"].has_key(key):
+                desc = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
+            else:
+                desc = "[A%s]"%(key)
+            printStream.println("<h2>%s Percentile Response Time Distribution</h2>"%(desc))
 
             #printStream.println("<pre>")
             #jhx.outputPercentileDistribution(printStream, 1000.0)
