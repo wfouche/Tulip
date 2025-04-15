@@ -985,6 +985,7 @@ def createReport(filename, text):
         global name2s_list
         global benchmark_id
         page_id = 0
+        num_keys = len(jss.keys())
         for key in jss.keys():
             smx = jss[key]
             jhx = jhh[key]
@@ -993,6 +994,8 @@ def createReport(filename, text):
             else:
                 text = "[%s]"%(key)
             statsFilename = '%s_%d_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id,page_id)
+            statsFilenamePrev = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,abs(page_id-1))
+            statsFilenameNext = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,page_id+1)
             text = "<a href='%s'>%s</a>"%(statsFilename,text)
             printStream = PrintStream(statsFilename)
             printStream.println("<html>")
@@ -1006,6 +1009,19 @@ def createReport(filename, text):
             printStream.println("}")
             printStream.println("</style>")
             printStream.println("<body>")
+            if (page_id == 0) and (num_keys == 1):
+                printStream.println('<a href="#">Prev</a>')
+                printStream.println('<a href="#">Next</a>')
+            elif (page_id == 0) and (num_keys > 1):
+                printStream.println('<a href="#">Prev</a>')
+                printStream.println('<a href="%s">Next</a>'%(statsFilenameNext))
+            elif (page_id+1 == num_keys):
+                printStream.println('<a href="%s">Prev</a>'%(statsFilenamePrev))
+                printStream.println('<a href="#">Next</a>')
+            else:
+                printStream.println('<a href="%s">Prev</a>'%(statsFilenamePrev))
+                printStream.println('<a href="%s">Next</a>'%(statsFilenameNext))
+            page_id += 1
             printStream.println("<h2>[A%d] Percentile Response Time Distribution</h2>"%(int(key)))
 
             #printStream.println("<pre>")
@@ -1095,8 +1111,6 @@ def createReport(filename, text):
             if len(name2s_list) > 0:
                 name2s = name2s_list[0]
                 del name2s_list[0]
-
-            page_id += 1
 
     printf(header.replace("__DESC1__", desc1).replace("__DESC2__", desc2))
 
