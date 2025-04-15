@@ -984,6 +984,7 @@ def createReport(filename, text):
         global name2s
         global name2s_list
         global benchmark_id
+        page_id = 0
         for key in jss.keys():
             smx = jss[key]
             jhx = jhh[key]
@@ -991,7 +992,7 @@ def createReport(filename, text):
                 text = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
             else:
                 text = "[%s]"%(key)
-            statsFilename = '%s_%d_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id,int(key))
+            statsFilename = '%s_%d_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id,page_id)
             text = "<a href='%s'>%s</a>"%(statsFilename,text)
             printStream = PrintStream(statsFilename)
             printStream.println("<html>")
@@ -1094,6 +1095,8 @@ def createReport(filename, text):
             if len(name2s_list) > 0:
                 name2s = name2s_list[0]
                 del name2s_list[0]
+
+            page_id += 1
 
     printf(header.replace("__DESC1__", desc1).replace("__DESC2__", desc2))
 
