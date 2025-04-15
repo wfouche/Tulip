@@ -1021,7 +1021,7 @@ def createReport(filename, text):
             else:
                 printStream.println('<a href="%s">Prev</a>'%(statsFilenamePrev))
                 printStream.println('<a href="%s">Next</a>'%(statsFilenameNext))
-            page_id += 1
+            printStream.println('<a href="../%s">Up</a>'%(report_fn))
             printStream.println("<h2>[A%d] Percentile Response Time Distribution</h2>"%(int(key)))
 
             #printStream.println("<pre>")
@@ -1111,6 +1111,8 @@ def createReport(filename, text):
             if len(name2s_list) > 0:
                 name2s = name2s_list[0]
                 del name2s_list[0]
+
+            page_id += 1
 
     printf(header.replace("__DESC1__", desc1).replace("__DESC2__", desc2))
 
