@@ -2,7 +2,7 @@
 # Add key=value pairs of SDKs to use below
 
 # Java
-java=21.0.6-tem
+java=21.0.7-tem
 
 # Gradle
 gradle=8.12.1
@@ -18,3 +18,6 @@ mcs=0.7.3
 
 # Maven
 maven=3.9.9
+
+# VisualVM
+visualvm=2.1.10
