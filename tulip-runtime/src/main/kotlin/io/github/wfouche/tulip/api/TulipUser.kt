@@ -7,12 +7,17 @@ import io.github.wfouche.tulip.core.g_workflow
 
 abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
 
-//    constructor() : this(0, 0)
-//
-//    fun init(userId_: Int, threadId_: Int) {
-//        userId = userId_
-//        threadId = threadId_
-//    }
+    //    constructor() : this(0, 0)
+    //
+    //    fun init(userId_: Int, threadId_: Int) {
+    //        userId = userId_
+    //        threadId = threadId_
+    //    }
+    //
+    // https://github.com/oracle/graalpython/issues/470
+    //
+    // GraalPython 25.0 might improve Java/Python inheritance functionality
+    //
 
     private var aid: Int = 0
 
