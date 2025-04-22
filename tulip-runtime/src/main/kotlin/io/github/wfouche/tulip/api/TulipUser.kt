@@ -5,7 +5,14 @@ import io.github.wfouche.tulip.core.actionNames
 import io.github.wfouche.tulip.core.g_config
 import io.github.wfouche.tulip.core.g_workflow
 
-abstract class TulipUser(val userId: Int, val threadId: Int) {
+abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
+
+//    constructor() : this(0, 0)
+//
+//    fun init(userId_: Int, threadId_: Int) {
+//        userId = userId_
+//        threadId = threadId_
+//    }
 
     private var aid: Int = 0
 
