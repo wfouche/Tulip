@@ -21,7 +21,7 @@ Filename::
 
 == Actions
 
-[%header,cols="1a,2a"]
+[%header,cols="1a,4a"]
 |===
 | id | value
 '''
@@ -31,15 +31,26 @@ def createReport(filename):
     def printf(s):
         report_fh.write(s)
 
-    def generate_table(e):
+    def generate_table1(e):
         printf("| *" + e + "*\n")
         printf("|\n")
-        printf('[%header,cols="1a,2a"]\n')
+        printf('[%header,cols="1a,3a"]\n')
         printf('!===\n')
         printf('! id ! value \n')
         for k in jb['actions'][e].keys():
             printf('! *' + k + '* ')
             printf('! ' + str(jb['actions'][e][k]) + '\n')
+        printf('!===\n')
+
+    def generate_table2(e):
+        printf("| *" + e + "*\n")
+        printf("|\n")
+        printf('[%header,cols="2a,2a,4a"]\n')
+        printf('!===\n')
+        printf('! id ! value ! description\n')
+        for k in jb['actions'][e].keys():
+            printf('! *' + k + '* ')
+            printf('! ' + str(jb['actions'][e][k]) + ' ! \n')
         printf('!===\n')
 
     def generate_workflow():
@@ -120,7 +131,10 @@ def createReport(filename):
     # Actions
     for e in jb['actions'].keys():
         if e in ['user_params', 'user_actions']:
-            generate_table(e)
+            if e == 'user_params':
+                generate_table1(e)
+            if e == 'user_actions':
+                generate_table2(e)
             continue
         # | *description*
         # | Micro-benchmarks
