@@ -36,6 +36,8 @@ application {
         //"-Xms2048m",
         "-Xmx2048m",
 
+        // ZGC - https://joelsiks.com/posts/zgc-heap-memory-allocation/
+        //
         // "-XX:+UseParallelGC",
         // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
         // "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
