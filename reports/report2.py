@@ -31,6 +31,15 @@ def createReport(filename):
     def printf(s):
         report_fh.write(s)
 
+    def actionName(s):
+        return s.split(",")[0].strip()
+
+    def actionDesc(s):
+        try:
+            return s.split(",")[1].strip()
+        except:
+            return ""
+
     def generate_table1(e):
         printf("| *" + e + "*\n")
         printf("|\n")
@@ -50,7 +59,8 @@ def createReport(filename):
         printf('! id ! value ! description\n')
         for k in jb['actions'][e].keys():
             printf('! *' + k + '* ')
-            printf('! ' + str(jb['actions'][e][k]) + ' ! \n')
+            printf('! ' + actionName(str(jb['actions'][e][k])))
+            printf('! ' + actionDesc(str(jb['actions'][e][k])) + '\n')
         printf('!===\n')
 
     def generate_workflow():
@@ -61,7 +71,7 @@ def createReport(filename):
             return int(s)
         def action_name(s):
             if s in jb['actions']['user_actions'].keys():
-                return jb['actions']['user_actions'][s]
+                return actionName(jb['actions']['user_actions'][s])
             return '<unknown>'
 
         #print(jb.keys())

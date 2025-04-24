@@ -9,7 +9,7 @@ Filename::
 
 == Actions
 
-[%header,cols="1a,2a"]
+[%header,cols="1a,4a"]
 |===
 | id | value
 | *description*
@@ -22,21 +22,21 @@ Filename::
 | HttpUser
 | *user_params*
 |
-[%header,cols="1a,2a"]
+[%header,cols="1a,3a"]
 !===
 ! id ! value 
 ! *baseURI* ! https://jsonplaceholder.typicode.com
 !===
 | *user_actions*
 |
-[%header,cols="1a,2a"]
+[%header,cols="2a,2a,4a"]
 !===
-! id ! value 
-! *0* ! onStart
-! *1* ! GET:posts
-! *2* ! GET:comments
-! *3* ! GET:todos
-! *99* ! onStop
+! id ! value ! description
+! *0* ! onStart! 
+! *1* ! GET:posts! Chargeback Reversal
+! *2* ! GET:comments! Reversal
+! *3* ! GET:todos! Refund
+! *99* ! onStop! 
 !===
 |===
 

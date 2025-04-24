@@ -824,6 +824,15 @@ def createReport(filename, text):
     def printf(s):
         report_fh.write(s)
 
+    def actionName(s):
+        return s.split(",")[0].strip()
+
+    def actionDesc(s):
+        try:
+            return s.split(",")[1].strip()
+        except:
+            return ""
+
     def str_from_cpu_time_ns(v_ns):
         r = str(datetime.timedelta(seconds=v_ns/1000000000.0))  #[:-5]
         if '.' in r:
@@ -990,7 +999,7 @@ def createReport(filename, text):
             smx = jss[key]
             jhx = jhh[key]
             if jb["config"]["actions"]["user_actions"].has_key(key):
-                text = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
+                text = "[%s.%s]"%(key, actionName(jb["config"]["actions"]["user_actions"][key]))
             else:
                 text = "[%s]"%(key)
             statsFilename = '%s_%d_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id,page_id)
@@ -1024,7 +1033,7 @@ def createReport(filename, text):
                 printStream.println('<a href="%s">Next</a>'%(statsFilenameNext))
 
             if jb["config"]["actions"]["user_actions"].has_key(key):
-                desc = "[%s.%s]"%(key, jb["config"]["actions"]["user_actions"][key])
+                desc = "[%s.%s]"%(key, actionName(jb["config"]["actions"]["user_actions"][key]))
             else:
                 desc = "[A%s]"%(key)
             printStream.println("<h2>%s Percentile Response Time Distribution</h2>"%(desc))

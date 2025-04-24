@@ -10,9 +10,9 @@
         },
         "user_actions": {
             "0": "onStart",  // Init
-            "1": "GET:posts",
-            "2": "GET:comments",
-            "3": "GET:todos",
+            "1": "GET:posts, Chargeback Reversal",
+            "2": "GET:comments, Reversal",
+            "3": "GET:todos, Refund",
             "99": "onStop"   // Shutdown
         }
     },
