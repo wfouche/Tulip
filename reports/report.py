@@ -8,10 +8,16 @@ from collections import OrderedDict
 import java.io.PrintStream as PrintStream
 import java.io.ByteArrayOutputStream as ByteArrayOutputStream
 
-##DEPS org.python:jython-standalone:2.7.4
-##DEPS com.google.code.gson:gson:2.11.0
-##DEPS org.hdrhistogram:HdrHistogram:2.2.2
-##JAVA 21
+# /// jbang
+# requires-jython = "==2.7.4"
+# requires-java = ">=21"
+# dependencies = [
+#   "com.google.code.gson:gson:2.11.0",
+#   "org.hdrhistogram:HdrHistogram:2.2.2"
+# ]
+# [python-jvm]
+#   debug = false
+# ///
 
 summary_html_1 = '''<!DOCTYPE html>
 <html>
