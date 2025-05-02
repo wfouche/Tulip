@@ -1,7 +1,7 @@
 #python3 jython/jython-cli.py report.py
-jbang --fresh run python-jvm@wfouche report.py
+jbang --fresh run python-jvm@wfouche --keep-java report.py
 #python3 jython/jython-cli.py report2.py
-jbang --fresh run python-jvm@wfouche report2.py
+jbang         run python-jvm@wfouche --keep-java report2.py
 
 cat package.txt report_py.java > report.txt
 cp   report.txt report_py.java
