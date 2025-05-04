@@ -371,6 +371,7 @@ data class TulipConfig(
 
 fun initConfig(text: String): String {
     val textIsJsonString: Boolean = text.trim().startsWith("{")
+    var configFilename: String = ""
     initTulip()
     Console.put("")
     val wd = System.getProperty("user.dir")
@@ -385,7 +386,17 @@ fun initConfig(text: String): String {
         if (textIsJsonString) {
             text
         } else {
-            java.io.File(text).readText()
+            // read config from local folder (JBang) or from src/main/resources (Gradle or Maven)
+            configFilename = text
+            if (!(java.io.File(configFilename)).exists()) {
+                val path2: java.nio.file.Path =
+                    java.nio.file.Paths.get("src", "main", "resources", configFilename)
+                val file2 = path2.toFile()
+                if (file2.isFile()) {
+                    configFilename = path2.toString()
+                }
+            }
+            java.io.File(configFilename).readText()
         }
 
     // Remove all JSONC comments from the JSON
@@ -459,7 +470,7 @@ fun initConfig(text: String): String {
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
     if (!textIsJsonString) {
-        createConfigReport(text)
+        createConfigReport(configFilename)
     }
 
     return g_config.actions.jsonFilename
