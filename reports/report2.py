@@ -129,6 +129,7 @@ def createReport(filename):
     # .jsonc -> .adoc
     f_ext = os.path.splitext(filename)[1]
     report_fn = filename[:-len(f_ext)]+".adoc"
+    report_fn = os.path.basename(report_fn)
     report_fh = open(report_fn, "w+")
 
     # Remove all JSONC comments from the JSON
