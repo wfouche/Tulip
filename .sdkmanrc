@@ -8,7 +8,7 @@ java=21.0.7-tem
 gradle=8.14
 
 # JBang
-jbang=0.125.1
+jbang=0.126.0
 
 # Scala
 scalacli=1.7.1
