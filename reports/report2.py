@@ -126,11 +126,16 @@ def createReport(filename):
 
     #print("\nConfig filename = " + filename)
 
+    # report dir
+    report_dir = "."
+    if os.path.isdir("build/reports/tulip"):
+        report_dir = "build/reports/tulip"
+
     # .jsonc -> .adoc
     f_ext = os.path.splitext(filename)[1]
     report_fn = filename[:-len(f_ext)]+".adoc"
     report_fn = os.path.basename(report_fn)
-    report_fh = open(report_fn, "w+")
+    report_fh = open(report_dir + "/" + report_fn, "w+")
 
     # Remove all JSONC comments from the JSON
     sf = open(filename,'r').read()

@@ -388,12 +388,18 @@ fun initConfig(text: String): String {
         } else {
             // read config from local folder (JBang) or from src/main/resources (Gradle or Maven)
             configFilename = text
-            if (!(java.io.File(configFilename)).exists()) {
-                val path2: java.nio.file.Path =
-                    java.nio.file.Paths.get("src", "main", "resources", configFilename)
-                val file2 = path2.toFile()
-                if (file2.isFile()) {
-                    configFilename = path2.toString()
+            if (java.io.File(configFilename).exists()) {
+                // JBang project
+            } else {
+                // Gradle or Maven project
+                val file2: String = "src/main/resources/" + configFilename
+                // Console.put("file2 = ${file2}")
+                if (java.io.File(file2).isFile()) {
+                    configFilename = file2
+                    // Console.put("file2: is a file")
+                    java.io.File("build/reports/tulip").mkdirs()
+                } else {
+                    // Console.put("file2: is not a file")
                 }
             }
             java.io.File(configFilename).readText()
