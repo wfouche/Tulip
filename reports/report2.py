@@ -9,7 +9,7 @@ from collections import OrderedDict
 # requires-jython = "==2.7.4"
 # requires-java = ">=21"
 # dependencies = [
-#   "com.google.code.gson:gson:2.11.0",
+#   "com.google.code.gson:gson:2.13.1",
 #   "org.hdrhistogram:HdrHistogram:2.2.2"
 # ]
 # [python-jvm]
