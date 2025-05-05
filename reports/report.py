@@ -12,7 +12,7 @@ import java.io.ByteArrayOutputStream as ByteArrayOutputStream
 # requires-jython = "==2.7.4"
 # requires-java = ">=21"
 # dependencies = [
-#   "com.google.code.gson:gson:2.11.0",
+#   "com.google.code.gson:gson:2.13.1",
 #   "org.hdrhistogram:HdrHistogram:2.2.2"
 # ]
 # [python-jvm]
@@ -774,6 +774,10 @@ class Summary:
 
 def createReport(filename, text):
 
+    cwd = os.getcwd()
+    if os.path.isdir("build/reports/tulip"):
+        os.chdir("build/reports/tulip")
+
     print("\nOutput filename = " + filename)
 
     if text[0] == '{':
@@ -813,7 +817,7 @@ def createReport(filename, text):
 
     def odir(filename):
         global report_dn
-        return os.path.join(report_dn, filename)
+        return os.path.join(os.getcwd(), report_dn, filename)
 
     if len(config_filename) > 0:
         desc2 = "<a href='%s'>"%(os.path.splitext(config_filename)[0] + ".adoc")
@@ -1304,6 +1308,8 @@ def createReport(filename, text):
     printf(trailer)
 
     report_fh.close()
+
+    os.chdir(cwd)
 
 if __name__ == "__main__":
     if len(sys.argv) >= 3:

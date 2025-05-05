@@ -101,6 +101,8 @@ private var newUser: TulipUserFactory? = null
 var actionNames: Map<Int, String> = emptyMap()
 var workflows: HashMap<String, MarkovChain> = HashMap<String, MarkovChain>()
 
+private var g_outputDirname: String = ""
+
 // private val registry = JmxMeterRegistry(JmxConfig.DEFAULT, Clock.SYSTEM)
 //
 // private val mg_num_actions    = registry.gauge("Tulip", listOf(Tag.of("num",
@@ -392,12 +394,13 @@ fun initConfig(text: String): String {
                 // JBang project
             } else {
                 // Gradle or Maven project
-                val file2: String = "src/main/resources/" + configFilename
+                val file2: String = "src/main/resources/$configFilename"
                 // Console.put("file2 = ${file2}")
                 if (java.io.File(file2).isFile()) {
                     configFilename = file2
                     // Console.put("file2: is a file")
                     java.io.File("build/reports/tulip").mkdirs()
+                    g_outputDirname = "build/reports/tulip"
                 } else {
                     // Console.put("file2: is not a file")
                 }
@@ -880,6 +883,11 @@ private object DataCollector {
     }
 
     fun saveStatsJson(filename: String) {
+
+        fun outputFilename(): String {
+            return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
+        }
+
         if (filename != "") {
             val rt = Runtime.getRuntime()
             val fm = rt.freeMemory()
@@ -960,7 +968,7 @@ private object DataCollector {
 
             json += "}"
 
-            val fw = FileWriter(filename, true)
+            val fw = FileWriter(outputFilename(), true)
             val bw =
                 BufferedWriter(fw).apply {
                     when (fileWriteId) {
@@ -996,7 +1004,12 @@ private object DataCollector {
     }
 
     fun closeStatsJson(filename: String) {
-        val fw = FileWriter(filename, true)
+
+        fun outputFilename(): String {
+            return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
+        }
+
+        val fw = FileWriter(outputFilename(), true)
         val bw =
             BufferedWriter(fw).apply {
                 write("]")
@@ -1556,12 +1569,16 @@ private fun runBenchmarks(
     userFactory: TulipUserFactory,
     getTest: (RuntimeContext, TestProfile) -> TestProfile
 ) {
+    fun outputFilename(filename: String): String {
+        return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
+    }
+
     val contexts = g_contexts
     val tests = g_tests
     val actionNames = g_config.actions.userActions
     // Remove the previous JSON results file (if it exists)
     val filename = g_tests[0].filename
-    val file = java.io.File(filename)
+    val file = java.io.File(outputFilename(filename))
     file.delete()
     // if (result) {
     //    //println("File deleted successfully - ${filename}")
