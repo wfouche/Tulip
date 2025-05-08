@@ -11,7 +11,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.52.0"
     id("buildlogic.kotlin-library-conventions")
     `maven-publish`
-    id("org.jreleaser") version "1.17.0"
+    id("org.jreleaser") version "1.18.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.0.21"
     id("org.jetbrains.dokka") version "2.0.0"
     id("com.diffplug.spotless") version "7.0.3"
@@ -39,7 +39,7 @@ dependencies {
     implementation("io.leego:banana:2.1.0")
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation("com.google.code.gson:gson:2.12.1")
+    implementation("com.google.code.gson:gson:2.13.1")
 
     // https://mvnrepository.com/artifact/com.glureau/html-mermaid-dokka-plugin
     dokkaPlugin("com.glureau:html-mermaid-dokka-plugin:0.6.0")
@@ -47,7 +47,7 @@ dependencies {
     // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
     // implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
-    implementation("org.springframework.boot:spring-boot-starter-web:3.4.4")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.4.5")
     implementation("org.slf4j:slf4j-api:2.0.17")
     implementation("ch.qos.logback:logback-core:1.5.18")
     implementation("ch.qos.logback:logback-classic:1.5.18")
