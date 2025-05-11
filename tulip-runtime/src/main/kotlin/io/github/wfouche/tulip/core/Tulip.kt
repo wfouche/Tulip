@@ -250,7 +250,8 @@ private data class TestProfile(
     // The average arrival rate (arrivals per second) to be maintained.
     //
     val arrivalRate: Double = 0.0,
-    val arrivalRateIncrement: Double = 0.0,
+    val arrivalRateStepChange: Double = 0.0,
+    val arrivalRateStepCount: Int = 1,
 
     // https://en.wikipedia.org/wiki/Little%27s_Law
     //
@@ -349,7 +350,8 @@ data class ConfigTest(
     @SerialName("save_stats") val logStats: Boolean = true,
     val time: ConfigDuration = ConfigDuration(),
     @SerialName("aps_rate") val throughputRate: Double = 0.0,
-    @SerialName("aps_rate_increment") val throughputRateIncrement: Double = 0.0,
+    @SerialName("aps_rate_step_change") val throughputRateStepChange: Double = 0.0,
+    @SerialName("aps_rate_step_count") val throughputRateStepCount: Int = 1,
     @SerialName("worker_thread_queue_size") val workInProgress: Int = 0,
     @SerialName("scenario_actions") val actions: List<ConfigAction> = listOf(),
     @SerialName("scenario_workflow") val workflow: String = ""
@@ -443,7 +445,8 @@ fun initConfig(text: String): String {
                             e.time.mainDurationRepeatCount,
                             TimeUnit.SECONDS),
                 arrivalRate = e.throughputRate,
-                arrivalRateIncrement = e.throughputRateIncrement,
+                arrivalRateStepChange = e.throughputRateStepChange,
+                arrivalRateStepCount = e.throughputRateStepCount,
                 queueLengths = listOf(e.workInProgress),
                 actions =
                     mutableListOf<Action>().apply {
@@ -1419,8 +1422,9 @@ private fun runTest(
         } else {
             // Ramp-up or Main duration.
             if (testCase.arrivalRate > 0.0) {
+                val sprintId: Int = runId / testCase.arrivalRateStepCount
                 val _arrivalRate: Double =
-                    testCase.arrivalRate + runId * testCase.arrivalRateIncrement
+                    testCase.arrivalRate + sprintId * testCase.arrivalRateStepChange
                 // rate limited, calculate time ns per action
                 nanosPerAction = 1000000000.0 / _arrivalRate
                 numActionsMax = (_arrivalRate * durationMillis / 1000.0).toLong()
@@ -1506,12 +1510,10 @@ private fun runTest(
     assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
 
     // Main run(s)
-    for (runId in 0 until testCase.duration.mainDurationRepeatCount) {
-        assignTasks(
-            testCase.duration.mainDurationMillis,
-            "Benchmark",
-            runId,
-            testCase.duration.mainDurationRepeatCount - 1)
+    val runIdMax: Int =
+        (testCase.duration.mainDurationRepeatCount * testCase.arrivalRateStepCount) - 1
+    for (runId in 0..runIdMax) {
+        assignTasks(testCase.duration.mainDurationMillis, "Benchmark", runId, runIdMax)
     }
 }
 
