@@ -983,7 +983,10 @@ def createReport(filename, text):
             target_aps = jb["config"]["benchmarks"][sm.name]["aps_rate"]
         else:
             target_aps = 0.0
-        if target_aps > 0.0:
+        aps_rate_step_change = 0.0
+        if "aps_rate_step_change" in jb["config"]["benchmarks"][sm.name].keys():
+            aps_rate_step_change = jb["config"]["benchmarks"][sm.name]["aps_rate_step_change"]
+        if aps_rate_step_change == 0.0 and target_aps > 0.0:
             delta_percentage_aps = 100.0*abs(target_aps-avg_aps)/target_aps
             if delta_percentage_aps > 1.5:
                 html = html.replace("<tag2>","<mark>")
