@@ -3,9 +3,11 @@ package io.github.wfouche.tulip.user;
 import io.github.wfouche.tulip.api.*;
 import java.net.URI;
 import java.net.URL;
+import java.net.http.HttpClient;
+import java.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
+import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 /** The HttpUser class. */
@@ -28,84 +30,79 @@ public class HttpUser_RestClient extends TulipUser {
    */
   public boolean onStart() {
     // Initialize the shared RestClient object only once
-    if (getUserId() == 0) {
-      var url_ = getUserParamValue("url");
-      var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
-      // var connectionRequestTimeout_ = getUserParamValue("connectionRequestTimeout");
-      var readTimeout_ = getUserParamValue("readTimeoutMillis");
-
-      if (url_.isEmpty()) {
-        return false;
-      }
-
-      try {
-        URL url = new URI(url_).toURL();
-        urlProtocol = url.getProtocol();
-        urlHost = url.getHost();
-        urlPort = url.getPort();
-        urlPath = url.getPath();
-      } catch (Exception e) {
-        e.printStackTrace();
-        return false;
-      }
-
-      String baseUrl = urlProtocol + "://" + urlHost;
-      if (urlPort != -1) {
-        baseUrl += ":" + urlPort;
-      }
-
-      // if (urlProtocol.equals("http")) {
-      // var factory = new HttpComponentsClientHttpRequestFactory();
-      var factory = new SimpleClientHttpRequestFactory();
-
-      if (!connectTimeout_.isEmpty()) {
-        factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-        logger.info("connectTimeoutMillis={}", connectTimeout_);
-      }
-
-      if (!readTimeout_.isEmpty()) {
-        factory.setReadTimeout(Integer.parseInt(readTimeout_));
-        logger.info("readTimeoutMillis={}", readTimeout_);
-      }
-
-      logger.info("baseUrl={}", baseUrl);
-      client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
-      //      } else {
-      //        HttpComponentsClientHttpRequestFactory factory =
-      //            new HttpComponentsClientHttpRequestFactory();
-      //
-      //        if (!connectTimeout_.isEmpty()) {
-      //          factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-      //          logger.info("connectTimeoutMillis={}", connectTimeout_);
-      //        }
-      //
-      //        if (!connectionRequestTimeout_.isEmpty()) {
-      //          factory.setConnectionRequestTimeout(Integer.parseInt(connectionRequestTimeout_));
-      //          logger.info("connectionRequestTimeout_={}", connectionRequestTimeout_);
-      //        }
-      //        if (!readTimeout_.isEmpty()) {
-      //          factory.setReadTimeout(Integer.parseInt(readTimeout_));
-      //          logger.info("readTimeoutMillis={}", readTimeout_);
-      //        }
-      //
-      //        try {
-      //          factory.setHttpClient(httpClient());
-      //        } catch (NoSuchAlgorithmException e) {
-      //          System.out.println(e.toString());
-      //          return false;
-      //
-      //        } catch (KeyManagementException e) {
-      //          System.out.println(e.toString());
-      //          return false;
-      //        } catch (KeyStoreException e) {
-      //          System.out.println(e.toString());
-      //          return false;
-      //        }
-      //
-      //        logger.info("baseUrl={}", baseUrl);
-      //        client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
-      //      }
+    if (getUserId() != 0) {
+      return true;
     }
+    var url_ = getUserParamValue("url");
+    var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
+    var readTimeout_ = getUserParamValue("readTimeoutMillis");
+    var httpVersion_ = getUserParamValue("httpVersion").toUpperCase();
+
+    if (url_.isEmpty()) {
+      logger.error("\"url\" property is empty");
+      return false;
+    }
+
+    if (httpVersion_.isEmpty()) {
+      httpVersion_ = "HTTP_1_1";
+    }
+
+    try {
+      URL url = new URI(url_).toURL();
+      urlProtocol = url.getProtocol();
+      urlHost = url.getHost();
+      urlPort = url.getPort();
+      urlPath = url.getPath();
+    } catch (Exception e) {
+      e.printStackTrace();
+      return false;
+    }
+
+    String baseUrl = urlProtocol + "://" + urlHost;
+    if (urlPort != -1) {
+      baseUrl += ":" + urlPort;
+    }
+    logger.info("baseUrl={}", baseUrl);
+
+    if (!(httpVersion_.equals("HTTP_1_1") || httpVersion_.equals("HTTP_2"))) {
+      logger.error("httpVersion={}, only \"HTTP_1_1\" and \"HTTP_2\" are supported", httpVersion_);
+      return false;
+    }
+    logger.info("httpVersion={}", httpVersion_);
+
+    // HTTP 1.1 or HTTP/2
+    HttpClient httpClient = null;
+    if (httpVersion_.equals("HTTP_1_1")) {
+      // HTTP 1.1
+      if (!connectTimeout_.isEmpty()) {
+        logger.info("connectTimeoutMillis={}", connectTimeout_);
+        httpClient =
+            HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_1_1)
+                .connectTimeout(Duration.ofMillis(Integer.parseInt(connectTimeout_)))
+                .build();
+      } else {
+        httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+      }
+    } else {
+      // HTTP/2
+      if (!connectTimeout_.isEmpty()) {
+        logger.info("connectTimeoutMillis={}", connectTimeout_);
+        httpClient =
+            HttpClient.newBuilder()
+                .version(HttpClient.Version.HTTP_2)
+                .connectTimeout(Duration.ofMillis(Integer.parseInt(connectTimeout_)))
+                .build();
+      } else {
+        httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
+      }
+    }
+    var factory = new JdkClientHttpRequestFactory(httpClient);
+    if (!readTimeout_.isEmpty()) {
+      factory.setReadTimeout(Integer.parseInt(readTimeout_));
+      logger.info("readTimeoutMillis={}", readTimeout_);
+    }
+    client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
     return true;
   }
 
