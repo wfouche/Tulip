@@ -191,6 +191,11 @@ def createReport(filename):
             printf('| *aps_rate* | %.1f\n'%(b["aps_rate"]))
         else:
             printf('| *aps_rate* | 0.0\n')
+        if "aps_rate_step_change" in b.keys():
+            printf('| *aps_rate_step_change* | %.1f\n'%(b["aps_rate_step_change"]))
+        if "aps_rate_step_count" in b.keys():
+            printf('| *aps_rate_step_count* | %d\n'%(b["aps_rate_step_count"]))
+
         # worker_thread_queue_size
         if "worker_thread_queue_size" in b.keys():
             printf('| *worker_thread_queue_size* | %d\n'%(b["worker_thread_queue_size"]))
@@ -225,7 +230,10 @@ def createReport(filename):
             #printf('! id ! value \n')
             for k in b["time"].keys():
                 printf('! *%s*\n'%(k))
-                printf('! %d seconds\n'%(b["time"][k]))
+                if k == "benchmark_iterations":
+                    printf('! %d\n'%(b["time"][k]))
+                else:
+                    printf('! %d seconds\n'%(b["time"][k]))
             printf('!===\n')
 
         printf("|===\n")
