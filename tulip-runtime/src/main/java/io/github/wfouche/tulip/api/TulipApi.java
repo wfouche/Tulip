@@ -71,6 +71,15 @@ public class TulipApi {
   }
 
   /**
+   * Creates a Configuration report from the benchmark config.
+   *
+   * @param configFilename
+   */
+  public static void createConfigReport(String configFilename) {
+    TulipReportKt.createConfigReport(configFilename);
+  }
+
+  /**
    * The JAR has a main method
    *
    * @param args The command-line arguments variable.
