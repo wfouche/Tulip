@@ -8,6 +8,7 @@ import java.time.Duration;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
+import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 /** The HttpUser class. */
@@ -43,10 +44,6 @@ public class HttpUser_RestClient extends TulipUser {
       return false;
     }
 
-    if (httpVersion_.isEmpty()) {
-      httpVersion_ = "HTTP_1_1";
-    }
-
     try {
       URL url = new URI(url_).toURL();
       urlProtocol = url.getProtocol();
@@ -64,10 +61,6 @@ public class HttpUser_RestClient extends TulipUser {
     }
     logger.info("baseUrl={}", baseUrl);
 
-    if (!(httpVersion_.equals("HTTP_1_1") || httpVersion_.equals("HTTP_2"))) {
-      logger.error("httpVersion={}, only \"HTTP_1_1\" and \"HTTP_2\" are supported", httpVersion_);
-      return false;
-    }
     logger.info("httpVersion={}", httpVersion_);
 
     // HTTP 1.1 or HTTP/2
@@ -84,7 +77,7 @@ public class HttpUser_RestClient extends TulipUser {
       } else {
         httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
       }
-    } else {
+    } else if (httpVersion_.equals("HTTP_2")) {
       // HTTP/2
       if (!connectTimeout_.isEmpty()) {
         logger.info("connectTimeoutMillis={}", connectTimeout_);
@@ -96,13 +89,28 @@ public class HttpUser_RestClient extends TulipUser {
       } else {
         httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
       }
+    } else {
+      var factory = new SimpleClientHttpRequestFactory();
+
+      if (!connectTimeout_.isEmpty()) {
+        factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
+        logger.info("connectTimeoutMillis={}", connectTimeout_);
+      }
+
+      if (!readTimeout_.isEmpty()) {
+        factory.setReadTimeout(Integer.parseInt(readTimeout_));
+        logger.info("readTimeoutMillis={}", readTimeout_);
+      }
+      client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
     }
-    var factory = new JdkClientHttpRequestFactory(httpClient);
-    if (!readTimeout_.isEmpty()) {
-      factory.setReadTimeout(Integer.parseInt(readTimeout_));
-      logger.info("readTimeoutMillis={}", readTimeout_);
+    if (client == null) {
+      var factory = new JdkClientHttpRequestFactory(httpClient);
+      if (!readTimeout_.isEmpty()) {
+        factory.setReadTimeout(Integer.parseInt(readTimeout_));
+        logger.info("readTimeoutMillis={}", readTimeout_);
+      }
+      client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
     }
-    client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
     return true;
   }
 
