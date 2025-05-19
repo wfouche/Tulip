@@ -128,7 +128,7 @@ def createReport(filename):
 
     # report dir
     report_dir = "."
-    config_fir = "."
+    config_dir = "."
     if os.path.isdir("build/reports/tulip"):
         report_dir = "build/reports/tulip"
         config_dir = "src/main/resources"
