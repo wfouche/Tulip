@@ -133,6 +133,9 @@ def createReport(filename):
         report_dir = "build/reports/tulip"
         config_dir = "src/main/resources"
 
+    if not os.path.exists(filename):
+        filename = config_dir + "/" + filename
+
     # .json/.jsonc -> .adoc
     f_ext = os.path.splitext(filename)[1]
     report_fn = filename[:-len(f_ext)]+".adoc"
@@ -140,7 +143,7 @@ def createReport(filename):
     report_fh = open(report_dir + "/" + report_fn, "w+")
 
     # Remove all JSONC comments from the JSON
-    sf = open(config_dir + "/" + filename,'r').read()
+    sf = open(filename,'r').read()
     gsonJsonTree = JsonParser.parseString(sf)
     jsonWithoutComments = gsonJsonTree.toString()
     gsonJsonTree = None
