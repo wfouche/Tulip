@@ -61,6 +61,9 @@ public class HttpUser_RestClient extends TulipUser {
     }
     logger.info("baseUrl={}", baseUrl);
 
+    if (httpVersion_.isEmpty()) {
+      httpVersion_ = "*";
+    }
     logger.info("httpVersion={}", httpVersion_);
 
     // HTTP 1.1 or HTTP/2
