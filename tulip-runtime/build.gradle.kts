@@ -53,7 +53,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.18")
 
     // Apache HttpClient
-    // implementation("org.apache.httpcomponents.client5:httpclient5:5.4.3")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.4.4")
 }
 
 tasks.jar {
