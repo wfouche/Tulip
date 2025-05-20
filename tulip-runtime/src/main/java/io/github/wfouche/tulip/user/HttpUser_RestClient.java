@@ -49,7 +49,7 @@ public class HttpUser_RestClient extends TulipUser {
     clients = new RestClient[urls.length];
     int idx = 0;
     for (String url : urls) {
-      clients[idx] = createRestClient(url, connectTimeout_, readTimeout_, httpVersion_);
+      clients[idx] = createRestClient(url.trim(), connectTimeout_, readTimeout_, httpVersion_);
       idx += 1;
     }
 
