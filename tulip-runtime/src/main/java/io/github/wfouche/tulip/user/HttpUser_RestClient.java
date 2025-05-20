@@ -34,6 +34,7 @@ public class HttpUser_RestClient extends TulipUser {
     if (getUserId() != 0) {
       return true;
     }
+
     var url_ = getUserParamValue("url");
     var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
     var readTimeout_ = getUserParamValue("readTimeoutMillis");
@@ -44,6 +45,28 @@ public class HttpUser_RestClient extends TulipUser {
       return false;
     }
 
+    String[] urls = url_.split(",");
+    clients = new RestClient[urls.length];
+    int idx = 0;
+    for (String url : urls) {
+      clients[idx] = createRestClient(url, connectTimeout_, readTimeout_, httpVersion_);
+      idx += 1;
+    }
+
+    return true;
+  }
+
+  /**
+   * @param url_
+   * @param connectTimeout_
+   * @param readTimeout_
+   * @param httpVersion_
+   * @return
+   */
+  RestClient createRestClient(
+      String url_, String connectTimeout_, String readTimeout_, String httpVersion_) {
+    RestClient client = null;
+
     try {
       URL url = new URI(url_).toURL();
       urlProtocol = url.getProtocol();
@@ -52,7 +75,7 @@ public class HttpUser_RestClient extends TulipUser {
       urlPath = url.getPath();
     } catch (Exception e) {
       e.printStackTrace();
-      return false;
+      return null;
     }
 
     String baseUrl = urlProtocol + "://" + urlHost;
@@ -114,7 +137,7 @@ public class HttpUser_RestClient extends TulipUser {
       }
       client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
     }
-    return true;
+    return client;
   }
 
   /**
@@ -126,59 +149,17 @@ public class HttpUser_RestClient extends TulipUser {
     return true;
   }
 
-  // https://github.com/kvsravindrareddy/springboot-virtual-threads/blob/main/src/main/java/com/veera/config/HttpConfig.java
-  // root@wfouche-e6540:/home/wfouche/IdeaProjects/Tulip/scripts/ssl#  jbang run JavalinServer.java
-  //  public HttpClient httpClient()
-  //      throws NoSuchAlgorithmException, KeyManagementException, KeyStoreException {
-  //    SSLContext sslContext =
-  //        SSLContextBuilder.create()
-  //            .loadTrustMaterial(null, (TrustStrategy) (chain, authType) -> true)
-  //            .build();
-  //
-  //    DefaultClientTlsStrategy tlsStrategy =
-  //        new DefaultClientTlsStrategy(sslContext, NoopHostnameVerifier.INSTANCE);
-  //
-  //    HttpClientConnectionManager connectionManager =
-  //        PoolingHttpClientConnectionManagerBuilder.create()
-  //            .setTlsSocketStrategy(tlsStrategy)
-  //            .build();
-  //
-  //    return HttpClients.custom().setConnectionManager(connectionManager).build();
-  //  }
-  //
-  //  public static class NullTrustManager implements X509TrustManager {
-  //
-  //    @Override
-  //    public void checkClientTrusted(X509Certificate[] x509Certificates, String s)
-  //        throws CertificateException {}
-  //
-  //    @Override
-  //    public void checkServerTrusted(X509Certificate[] x509Certificates, String s)
-  //        throws CertificateException {}
-  //
-  //    @Override
-  //    public X509Certificate[] getAcceptedIssuers() {
-  //      return new X509Certificate[0];
-  //    }
-  //  }
-  //
-  //  public static class NullHostnameVerifier implements javax.net.ssl.HostnameVerifier {
-  //    public boolean verify(String hostname, javax.net.ssl.SSLSession sslSession) {
-  //      return true;
-  //    }
-  //  }
-
   /**
    * restClient() method
    *
    * @return RestClient
    */
   public RestClient restClient() {
-    return client;
+    return clients[getUserId() % clients.length];
   }
 
-  // RestClient object
-  private static RestClient client;
+  // RestClient objects
+  private static RestClient[] clients = null;
 
   private static String urlProtocol = "";
   private static String urlHost = "";
