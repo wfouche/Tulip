@@ -49,7 +49,7 @@ public class HttpUser_RestClient extends TulipUser {
     clients = new RestClient[urls.length];
     int idx = 0;
     for (String url : urls) {
-      clients[idx] = createRestClient(url.trim(), connectTimeout_, readTimeout_, httpVersion_);
+      clients[idx] = createRestClient(idx, url.trim(), connectTimeout_, readTimeout_, httpVersion_);
       idx += 1;
     }
 
@@ -64,7 +64,7 @@ public class HttpUser_RestClient extends TulipUser {
    * @return
    */
   RestClient createRestClient(
-      String url_, String connectTimeout_, String readTimeout_, String httpVersion_) {
+      int idx, String url_, String connectTimeout_, String readTimeout_, String httpVersion_) {
     RestClient client = null;
 
     try {
@@ -82,19 +82,19 @@ public class HttpUser_RestClient extends TulipUser {
     if (urlPort != -1) {
       baseUrl += ":" + urlPort;
     }
-    logger.info("baseUrl={}", baseUrl);
+    logger.info("[{}]baseUrl={}", idx, baseUrl);
 
     if (httpVersion_.isEmpty()) {
       httpVersion_ = "*";
     }
-    logger.info("httpVersion={}", httpVersion_);
+    logger.info("[{}]httpVersion={}", idx, httpVersion_);
 
     // HTTP 1.1 or HTTP/2
     HttpClient httpClient = null;
     if (httpVersion_.equals("HTTP_1_1")) {
       // HTTP 1.1
       if (!connectTimeout_.isEmpty()) {
-        logger.info("connectTimeoutMillis={}", connectTimeout_);
+        logger.info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
         httpClient =
             HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_1_1)
@@ -106,7 +106,7 @@ public class HttpUser_RestClient extends TulipUser {
     } else if (httpVersion_.equals("HTTP_2")) {
       // HTTP/2
       if (!connectTimeout_.isEmpty()) {
-        logger.info("connectTimeoutMillis={}", connectTimeout_);
+        logger.info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
         httpClient =
             HttpClient.newBuilder()
                 .version(HttpClient.Version.HTTP_2)
@@ -120,12 +120,12 @@ public class HttpUser_RestClient extends TulipUser {
 
       if (!connectTimeout_.isEmpty()) {
         factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-        logger.info("connectTimeoutMillis={}", connectTimeout_);
+        logger.info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
       }
 
       if (!readTimeout_.isEmpty()) {
         factory.setReadTimeout(Integer.parseInt(readTimeout_));
-        logger.info("readTimeoutMillis={}", readTimeout_);
+        logger.info("[{}]readTimeoutMillis={}", idx, readTimeout_);
       }
       client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
     }
@@ -133,7 +133,7 @@ public class HttpUser_RestClient extends TulipUser {
       var factory = new JdkClientHttpRequestFactory(httpClient);
       if (!readTimeout_.isEmpty()) {
         factory.setReadTimeout(Integer.parseInt(readTimeout_));
-        logger.info("readTimeoutMillis={}", readTimeout_);
+        logger.info("[{}]readTimeoutMillis={}", idx, readTimeout_);
       }
       client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
     }
