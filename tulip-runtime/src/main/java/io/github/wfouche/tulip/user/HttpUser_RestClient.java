@@ -11,6 +11,15 @@ import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
+class HttpRecord {
+  public RestClient client = null;
+  public String url = "";
+  public String urlProtocol = "";
+  public String urlHost = "";
+  public int urlPort = -1;
+  public String urlPath = "";
+}
+
 /** The HttpUser class. */
 public class HttpUser_RestClient extends TulipUser {
 
@@ -36,6 +45,7 @@ public class HttpUser_RestClient extends TulipUser {
     }
 
     var url_ = getUserParamValue("url");
+
     var connectTimeout_ = getUserParamValue("connectTimeoutMillis");
     var readTimeout_ = getUserParamValue("readTimeoutMillis");
     var httpVersion_ = getUserParamValue("httpVersion").toUpperCase();
@@ -46,10 +56,12 @@ public class HttpUser_RestClient extends TulipUser {
     }
 
     String[] urls = url_.split(",");
-    clients = new RestClient[urls.length];
+    https = new HttpRecord[urls.length];
     int idx = 0;
     for (String url : urls) {
-      clients[idx] = createRestClient(idx, url.trim(), connectTimeout_, readTimeout_, httpVersion_);
+      https[idx] = new HttpRecord();
+      https[idx].client =
+          createRestClient(idx, url.trim(), connectTimeout_, readTimeout_, httpVersion_);
       idx += 1;
     }
 
@@ -67,20 +79,21 @@ public class HttpUser_RestClient extends TulipUser {
       int idx, String url_, String connectTimeout_, String readTimeout_, String httpVersion_) {
     RestClient client = null;
 
+    https[idx].url = url_;
     try {
       URL url = new URI(url_).toURL();
-      urlProtocol = url.getProtocol();
-      urlHost = url.getHost();
-      urlPort = url.getPort();
-      urlPath = url.getPath();
+      https[idx].urlProtocol = url.getProtocol();
+      https[idx].urlHost = url.getHost();
+      https[idx].urlPort = url.getPort();
+      https[idx].urlPath = url.getPath();
     } catch (Exception e) {
       e.printStackTrace();
       return null;
     }
 
-    String baseUrl = urlProtocol + "://" + urlHost;
-    if (urlPort != -1) {
-      baseUrl += ":" + urlPort;
+    String baseUrl = https[idx].urlProtocol + "://" + https[idx].urlHost;
+    if (https[idx].urlPort != -1) {
+      baseUrl += ":" + https[idx].urlPort;
     }
     logger.info("[{}]baseUrl={}", idx, baseUrl);
 
@@ -155,31 +168,26 @@ public class HttpUser_RestClient extends TulipUser {
    * @return RestClient
    */
   public RestClient restClient() {
-    return clients[getUserId() % clients.length];
+    return https[getUserId() % https.length].client;
   }
 
   // RestClient objects
-  private static RestClient[] clients = null;
-
-  private static String urlProtocol = "";
-  private static String urlHost = "";
-  private static int urlPort = -1;
-  private static String urlPath = "";
+  private static HttpRecord[] https = null;
 
   public String getUrlProtocol() {
-    return urlProtocol;
+    return https[getUserId() % https.length].urlProtocol;
   }
 
   public String getUrlHost() {
-    return urlHost;
+    return https[getUserId() % https.length].urlHost;
   }
 
   public int getUrlPort() {
-    return urlPort;
+    return https[getUserId() % https.length].urlPort;
   }
 
   public String getUrlPath() {
-    return urlPath;
+    return https[getUserId() % https.length].urlPath;
   }
 
   /**
