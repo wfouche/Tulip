@@ -30,7 +30,7 @@ dependencies {
     implementation("org.hdrhistogram:HdrHistogram:2.2.2")
 
     // https://mvnrepository.com/artifact/org.python/jython-standalone
-    implementation("org.python:jython-standalone:2.7.4")
+    implementation("org.python:jython-slim:2.7.4")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.7.3")
