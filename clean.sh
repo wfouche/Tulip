@@ -11,7 +11,3 @@ popd
 pushd ./tulip-main
 source clean.sh
 popd
-
-pushd ./tulip-standalone
-source clean.sh
-popd
