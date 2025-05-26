@@ -4,13 +4,14 @@
 
 plugins {
     id("buildlogic.kotlin-application-conventions")
+    id("com.github.ben-manes.versions") version "0.52.0"
 }
 
 dependencies {
-    implementation("com.github.ajalt.clikt:clikt-jvm:5.0.1")
-    implementation("org.slf4j:slf4j-api:2.0.16")
-    implementation("ch.qos.logback:logback-core:1.5.16")
-    implementation("ch.qos.logback:logback-classic:1.5.16")
+    implementation("com.github.ajalt.clikt:clikt-jvm:5.0.3")
+    implementation("org.slf4j:slf4j-api:2.0.17")
+    implementation("ch.qos.logback:logback-core:1.5.18")
+    implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation(project(":tulip-runtime"))
 }
 
