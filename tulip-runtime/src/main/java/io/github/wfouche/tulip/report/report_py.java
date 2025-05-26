@@ -5,7 +5,7 @@ package io.github.wfouche.tulip.report;
 // spotless:off
 //DEPS com.google.code.gson:gson:2.13.1
 //DEPS org.hdrhistogram:HdrHistogram:2.2.2
-//DEPS org.python:jython-standalone:2.7.4
+//DEPS org.python:jython-slim:2.7.4
 //JAVA 21
 // spotless:on
 
