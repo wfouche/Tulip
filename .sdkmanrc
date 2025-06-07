@@ -18,7 +18,7 @@ scalacli=1.8.1
 mcs=0.7.4
 
 # Maven
-maven=3.9.9
+maven=3.9.10
 
 # VisualVM
 visualvm=2.1.10
