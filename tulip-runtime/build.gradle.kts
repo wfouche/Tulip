@@ -149,11 +149,7 @@ tasks.withType<DokkaTask>().configureEach {
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
-        importOrder()
-        removeUnusedImports()
-        googleJavaFormat()
-        toggleOffOn()
-        formatAnnotations()
+        googleJavaFormat("1.27.0").aosp()
     }
     kotlin {
         // version, style and all configurations here are optional

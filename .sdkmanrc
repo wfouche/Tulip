@@ -12,10 +12,10 @@ gradle=8.14.2
 jbang=0.126.1
 
 # Scala
-scalacli=1.8.0
+scalacli=1.8.1
 
 # MCS
-mcs=0.7.3
+mcs=0.7.4
 
 # Maven
 maven=3.9.9
