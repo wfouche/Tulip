@@ -6,7 +6,7 @@ java=21.0.7-tem
 #ava=24.0.1-tem
 
 # Gradle
-gradle=8.14.1
+gradle=8.14.2
 
 # JBang
 jbang=0.126.1
