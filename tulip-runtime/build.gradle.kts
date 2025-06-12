@@ -54,6 +54,10 @@ dependencies {
 
     // Apache HttpClient
     implementation("org.apache.httpcomponents.client5:httpclient5:5.5")
+
+    // Asciidoctor
+    implementation("org.asciidoctor:asciidoctorj:3.0.0")
+    implementation("org.asciidoctor:asciidoctorj-diagram:2.3.2")
 }
 
 tasks.jar {
