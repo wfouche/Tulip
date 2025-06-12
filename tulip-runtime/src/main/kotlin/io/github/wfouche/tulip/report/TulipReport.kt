@@ -1,11 +1,11 @@
 package io.github.wfouche.tulip.report
 
+import java.io.File
+import java.util.*
 import org.asciidoctor.Asciidoctor
 import org.asciidoctor.Options
 import org.asciidoctor.SafeMode
 import org.python.util.PythonInterpreter
-import java.io.File
-import java.util.*
 
 fun createHtmlReport(outputFilename: String, text1: String) {
     var text2: String = text1.trim()
@@ -40,10 +40,5 @@ fun convertAdocToHtml(adocFilename: String) {
     val asciidoctor = Asciidoctor.Factory.create()
     asciidoctor.requireLibrary("asciidoctor-diagram")
     asciidoctor.convertFile(
-        File(adocFilename),
-        Options.builder()
-            .toFile(true)
-            .safe(SafeMode.UNSAFE)
-            .build()
-    )
+        File(adocFilename), Options.builder().toFile(true).safe(SafeMode.UNSAFE).build())
 }
