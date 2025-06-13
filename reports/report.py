@@ -1038,7 +1038,7 @@ def createReport(filename, text):
             elif (page_id == 0) and (num_keys > 1):
                 printStream.println('<a href="#">Prev</a>')
                 printStream.println('<a href="%s">Next</a>'%(statsFilenameNext))
-            elif (page_id+1 == num_keys):
+            elif page_id+1 == num_keys:
                 printStream.println('<a href="%s">Prev</a>'%(statsFilenamePrev))
                 printStream.println('<a href="#">Next</a>')
             else:
