@@ -819,6 +819,10 @@ def createReport(filename, text):
         global report_dn
         return os.path.join(os.getcwd(), report_dn, filename)
 
+    def odirHtml(filename):
+        global report_dn
+        return report_dn + "/" + filename
+
     if len(config_filename) > 0:
         desc2 = "<a href='%s'>"%(os.path.splitext(config_filename)[0] + ".adoc")
     else:
@@ -862,7 +866,8 @@ def createReport(filename, text):
             cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
 
         statsFilename = '%s_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id)
-        text = "<a href='%s'>%s</a>"%(statsFilename,"[Summary]")
+        statsFilenameHtml = '%s_%d.html'%(odirHtml(report_fn.split('.')[0]),benchmark_id)
+        text = "<a href='%s'>%s</a>"%(statsFilenameHtml,"[Summary]")
         printStream = PrintStream(statsFilename)
         printStream.print(summary_html_1)
         printStream.println()
@@ -906,13 +911,15 @@ def createReport(filename, text):
         printStream.print('    }')
         printStream.println()
         tChartFilename = '%s_%d_t.js'%(odir(report_fn.split('.')[0]),benchmark_id)
+        tChartFilenameHtml = '%s_%d_t.js'%(odirHtml(report_fn.split('.')[0]),benchmark_id)
         pChartFilename = '%s_%d_p.js'%(odir(report_fn.split('.')[0]),benchmark_id)
+        pChartFilenameHtml = '%s_%d_p.js'%(odirHtml(report_fn.split('.')[0]),benchmark_id)
         printStream.print(
             summary_html_2
                 .replace("__CHARTS_TEXT__",
                     charts_html
-                         .replace("__JS_T_CHART__",os.path.basename(tChartFilename))
-                         .replace("__JS_P_CHART__",os.path.basename(pChartFilename)))
+                         .replace("__JS_T_CHART__",os.path.basename(tChartFilenameHtml))
+                         .replace("__JS_P_CHART__",os.path.basename(pChartFilenameHtml)))
                 )
         printStream.println()
 
@@ -1016,9 +1023,10 @@ def createReport(filename, text):
             else:
                 text = "[%s]"%(key)
             statsFilename = '%s_%d_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id,page_id)
+            statsFilenameHtml = '%s_%d_%d.html'%(odirHtml(report_fn.split('.')[0]),benchmark_id,page_id)
             statsFilenamePrev = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,abs(page_id-1))
             statsFilenameNext = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,page_id+1)
-            text = "<a href='%s'>%s</a>"%(statsFilename,text)
+            text = "<a href='%s'>%s</a>"%(statsFilenameHtml,text)
             printStream = PrintStream(statsFilename)
             printStream.println("<html>")
             printStream.println("<style>")
