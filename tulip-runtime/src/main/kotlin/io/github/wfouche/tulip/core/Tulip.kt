@@ -15,6 +15,7 @@ import io.github.wfouche.tulip.api.TulipUser
 import io.github.wfouche.tulip.api.TulipUserFactory
 import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
+import io.github.wfouche.tulip.report.convertAdocToHtml
 import io.github.wfouche.tulip.report.createConfigReport
 import java.io.BufferedWriter
 import java.io.FileWriter
@@ -485,7 +486,8 @@ fun initConfig(text: String): String {
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
     if (!textIsJsonString) {
-        createConfigReport(configFilename)
+        val adocFilename = createConfigReport(configFilename)
+        convertAdocToHtml(adocFilename)
     }
 
     return g_config.actions.jsonFilename

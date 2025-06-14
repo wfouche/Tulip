@@ -5,6 +5,7 @@ import java.util.*
 import org.asciidoctor.Asciidoctor
 import org.asciidoctor.Options
 import org.asciidoctor.SafeMode
+import org.python.core.PyObject
 import org.python.util.PythonInterpreter
 
 fun createHtmlReport(outputFilename: String, text1: String) {
@@ -23,7 +24,7 @@ fun createHtmlReport(outputFilename: String, text1: String) {
     }
 }
 
-fun createConfigReport(configFilename: String) {
+fun createConfigReport(configFilename: String): String {
     val decodedBytes = Base64.getDecoder().decode(report2_py.mainScriptTextBase64)
     val jythonCode = String(decodedBytes)
     PythonInterpreter().use { pyInterp ->
@@ -32,7 +33,9 @@ fun createConfigReport(configFilename: String) {
         // Compile Jython code
         pyInterp.exec(jythonCode)
         // Run Jython function createReport()
-        pyInterp.eval("createReport(\"${configFilename}\")")
+        val result: PyObject = pyInterp.eval("createReport(\"${configFilename}\")")
+        val adocFilename: String = result.__tojava__(String::class.java) as String
+        return adocFilename
     }
 }
 

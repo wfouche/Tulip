@@ -140,7 +140,8 @@ def createReport(filename):
     f_ext = os.path.splitext(filename)[1]
     report_fn = filename[:-len(f_ext)]+".adoc"
     report_fn = os.path.basename(report_fn)
-    report_fh = open(report_dir + "/" + report_fn, "w+")
+    report_fp = report_dir + "/" + report_fn
+    report_fh = open(report_fp, "w+")
 
     # Remove all JSONC comments from the JSON
     sf = open(filename,'r').read()
@@ -264,6 +265,7 @@ def createReport(filename):
         printf("|===\n")
 
     report_fh.close()
+    return report_fp
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
