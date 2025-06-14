@@ -824,7 +824,7 @@ def createReport(filename, text):
         return report_dn + "/" + filename
 
     if len(config_filename) > 0:
-        desc2 = "<a href='%s'>"%(os.path.splitext(config_filename)[0] + ".adoc")
+        desc2 = "<a href='%s'>"%(os.path.splitext(config_filename)[0] + ".html")
     else:
         desc2 = ""
 
