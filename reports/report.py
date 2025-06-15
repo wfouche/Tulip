@@ -823,6 +823,11 @@ def createReport(filename, text):
         global report_dn
         return report_dn + "/" + filename
 
+    def name_to_href(name):
+        href = "_" + name.lower().replace(" ", "_")
+        hfile = os.path.splitext(config_filename)[0] + ".html"
+        return "<a href='%s#%s'>"%(hfile, href) + name + "</a>"
+
     if len(config_filename) > 0:
         desc2 = "<a href='%s'>"%(os.path.splitext(config_filename)[0] + ".html")
     else:
@@ -1166,7 +1171,7 @@ def createReport(filename, text):
             benchmark_id += 1
             jhh = {}
             jss = {}
-            printf(benchmark_header%(e["bm_name"]))
+            printf(benchmark_header%(name_to_href(e["bm_name"])))
             if len(e["workflow_name"]) > 0:
                 name2s_list = ["u:%d, t:%d"%(e["num_users"],e["num_threads"]), "w:%s"%(e["workflow_name"]), "c:%d"%(e["context_id"]) ,""]
             else:
