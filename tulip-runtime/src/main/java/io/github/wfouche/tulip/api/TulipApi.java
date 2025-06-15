@@ -76,7 +76,8 @@ public class TulipApi {
      * @param configFilename
      */
     public static void createConfigReport(String configFilename) {
-        TulipReportKt.createConfigReport(configFilename);
+        String adocFilename = TulipReportKt.createConfigReport(configFilename);
+        TulipReportKt.convertAdocToHtml(adocFilename);
     }
 
     /**
