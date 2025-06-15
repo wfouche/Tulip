@@ -1,6 +1,7 @@
 from __future__ import print_function
 import datetime
 import json
+import re
 import sys
 import org.HdrHistogram.Histogram as Histogram
 import os
@@ -824,7 +825,7 @@ def createReport(filename, text):
         return report_dn + "/" + filename
 
     def name_to_href(name):
-        href = "_" + name.lower().replace(" ", "_")
+        href = '_' + re.sub(r'\W', '_', name.lower())
         hfile = os.path.splitext(config_filename)[0] + ".html"
         return "<a href='%s#%s'>"%(hfile, href) + name + "</a>"
 
