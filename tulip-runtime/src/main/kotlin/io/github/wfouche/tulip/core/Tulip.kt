@@ -36,6 +36,7 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
+import net.sourceforge.plantuml.Run
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
 
@@ -1166,6 +1167,18 @@ object Console : Thread() {
     }
 }
 
+object PlantUmlServer : Thread() {
+
+    init {
+        isDaemon = true
+        name = "plantuml-server"
+    }
+
+    override fun run() {
+        net.sourceforge.plantuml.Run.main(arrayOf("-picoweb:8080"))
+    }
+}
+
 /*-------------------------------------------------------------------------*/
 
 private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<Int> {
@@ -1525,6 +1538,7 @@ private fun initTulip() {
     Console.put(TulipApi.getVersionBanner())
     Console.put(
         "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
+    PlantUmlServer.start()
 }
 
 /*-------------------------------------------------------------------------*/

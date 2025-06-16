@@ -62,7 +62,7 @@ dependencies {
     // Google
     implementation("com.google.guava:guava:33.4.8-jre")
 
-    // PLantUML
+    // PlantUML
     implementation("net.sourceforge.plantuml:plantuml-asl:1.2025.3")
 }
 
