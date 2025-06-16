@@ -19,7 +19,8 @@ from collections import OrderedDict
 header = '''= __DESCRIPTION__
 :toc: left
 :sectnums:
-:plantuml-server-url: http://www.plantuml.com/plantuml/
+:plantuml: plantuml.com/plantuml
+:plantuml-fetch-diagram:
 // :diagram-server-url: https://kroki.io/
 // :diagram-server-type: kroki_io
 
