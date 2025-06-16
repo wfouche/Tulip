@@ -21,7 +21,7 @@ header = '''= __DESCRIPTION__
 :sectnums:
 :plantuml: http://localhost:8080/plantuml
 :plantuml-fetch-diagram: true
-:plantuml-size-limit: 8192
+// :plantuml-size-limit: 8192
 // :plantuml: plantuml.com/plantuml
 // :diagram-server-url: https://kroki.io/
 // :diagram-server-type: kroki_io

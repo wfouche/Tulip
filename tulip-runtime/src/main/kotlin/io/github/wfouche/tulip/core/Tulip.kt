@@ -1538,8 +1538,6 @@ private fun initTulip() {
     Console.put(TulipApi.getVersionBanner())
     Console.put(
         "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
-    PlantUmlServer.start()
-    Thread.sleep(3000)
 }
 
 /*-------------------------------------------------------------------------*/
