@@ -40,11 +40,11 @@ fun createConfigReport(configFilename: String): String {
 }
 
 fun convertAdocToHtml(adocFilename: String) {
-    println()
-    println("debug: begin adoc to html")
+    //println()
+    //println("debug: begin adoc to html")
     val asciidoctor = Asciidoctor.Factory.create()
     asciidoctor.requireLibrary("asciidoctor-diagram")
     asciidoctor.convertFile(
         File(adocFilename), Options.builder().toFile(true).safe(SafeMode.UNSAFE).build())
-    println("debug: end adoc to html")
+    //println("debug: end adoc to html")
 }
