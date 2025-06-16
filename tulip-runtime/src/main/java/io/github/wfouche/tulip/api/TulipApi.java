@@ -93,5 +93,4 @@ public class TulipApi {
      * @param args The command-line arguments variable.
      */
     public static void main(String[] args) {}
-
 }
