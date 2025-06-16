@@ -363,6 +363,8 @@ data class ActionsConfig(
     @SerialName("description") val description: String = "",
     @SerialName("output_filename") val jsonFilename: String = "",
     @SerialName("report_filename") val htmlFilename: String = "",
+    @SerialName("diagram_server_url") val diagramServerUrl: String = "",
+    @SerialName("diagram_server_type") val diagramServerType: String = "",
     @SerialName("user_class") val userClass: String = "",
     @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
     @SerialName("user_actions") val userActions: Map<Int, String> = mapOf()
