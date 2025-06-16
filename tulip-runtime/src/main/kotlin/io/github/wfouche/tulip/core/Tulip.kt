@@ -1564,7 +1564,7 @@ private fun runTulip(
                 g_workflow = workflows[x.workflow]
             }
             x.queueLengths.forEachIndexed { indexUserProfile, queueLength ->
-                Thread.sleep(5000)
+                //Thread.sleep(5000)
                 runTest(x, contextId, indexTestCase, indexUserProfile, queueLength)
             }
             g_workflow = null
