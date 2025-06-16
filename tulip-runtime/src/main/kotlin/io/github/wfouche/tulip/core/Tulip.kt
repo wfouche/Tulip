@@ -1175,6 +1175,7 @@ object PlantUmlServer : Thread() {
     }
 
     override fun run() {
+        Console.put("")
         net.sourceforge.plantuml.Run.main(arrayOf("-picoweb:8080"))
     }
 }
