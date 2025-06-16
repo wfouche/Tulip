@@ -22,6 +22,22 @@ header = '''= __DESCRIPTION__
 :diagram-server-url: https://kroki.io/
 :diagram-server-type: kroki_io
 
+++++
+<style>
+/* CSS block for styling the main content area */
+#content {
+    max-width: 960px; /* Set your desired maximum width */
+    margin: 0 auto;  /* Center the content */
+    padding: 0 1em; /* Add some horizontal padding */
+}
+/* You can also target other elements like header or footer */
+#header, #footer {
+    max-width: 960px; /* Apply the same max-width to header and footer */
+    margin: 0 auto;
+}
+</style>
+++++
+
 Filename::
   __CONFIG_FILENAME__
 
