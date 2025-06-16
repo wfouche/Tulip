@@ -1,9 +1,12 @@
 package io.github.wfouche.tulip.api;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import io.github.wfouche.tulip.core.TulipKt;
 import io.github.wfouche.tulip.report.TulipReportKt;
 import io.leego.banana.BananaUtils;
 import io.leego.banana.Font;
+import java.io.IOException;
 
 /**
  * The TulipApi class provides the main interface for running Tulip benchmarks and generating
@@ -80,10 +83,15 @@ public class TulipApi {
         TulipReportKt.convertAdocToHtml(adocFilename);
     }
 
+    public static String readResource(final String fileName) throws IOException {
+        return Resources.toString(Resources.getResource(fileName), Charsets.UTF_8);
+    }
+
     /**
      * The JAR has a main method
      *
      * @param args The command-line arguments variable.
      */
     public static void main(String[] args) {}
+
 }
