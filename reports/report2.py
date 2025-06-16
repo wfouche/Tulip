@@ -26,13 +26,13 @@ header = '''= __DESCRIPTION__
 <style>
 /* CSS block for styling the main content area */
 #content {
-    max-width: 960px; /* Set your desired maximum width */
+    max-width: 1080px; /* Set your desired maximum width */
     margin: 0 auto;  /* Center the content */
     padding: 0 1em; /* Add some horizontal padding */
 }
 /* You can also target other elements like header or footer */
 #header, #footer {
-    max-width: 960px; /* Apply the same max-width to header and footer */
+    max-width: 1080px; /* Apply the same max-width to header and footer */
     margin: 0 auto;
 }
 </style>
