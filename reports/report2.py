@@ -27,6 +27,8 @@ Filename::
 
 == Actions
 
+=== Configuration
+
 [%header,cols="1a,4a"]
 |===
 | id | value
