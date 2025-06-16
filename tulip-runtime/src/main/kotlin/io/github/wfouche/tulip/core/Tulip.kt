@@ -1175,7 +1175,6 @@ object PlantUmlServer : Thread() {
     }
 
     override fun run() {
-        Console.put("")
         net.sourceforge.plantuml.Run.main(arrayOf("-picoweb:8080"))
     }
 }
@@ -1540,6 +1539,7 @@ private fun initTulip() {
     Console.put(
         "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
     PlantUmlServer.start()
+    Thread.sleep(3000)
 }
 
 /*-------------------------------------------------------------------------*/

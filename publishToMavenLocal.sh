@@ -18,6 +18,7 @@ echo ""
 read -p "Press ENTER to continue ..."
 
 # Publish tulip-runtime.jar to local Maven
+./gradlew clean
 ./gradlew :tulip-runtime:publishToMavenLocal
 
 find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
