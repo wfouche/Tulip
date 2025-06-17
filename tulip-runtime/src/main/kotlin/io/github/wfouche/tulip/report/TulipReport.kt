@@ -1,5 +1,6 @@
 package io.github.wfouche.tulip.report
 
+import io.github.wfouche.tulip.core.PlantUmlServer
 import java.io.File
 import java.util.*
 import org.asciidoctor.Asciidoctor
@@ -42,6 +43,10 @@ fun createConfigReport(configFilename: String): String {
 fun convertAdocToHtml(adocFilename: String) {
     // println()
     // println("debug: begin adoc to html")
+    if (!PlantUmlServer.running) {
+        PlantUmlServer.start()
+        Thread.sleep(1000)
+    }
     val asciidoctor = Asciidoctor.Factory.create()
     asciidoctor.requireLibrary("asciidoctor-diagram")
     asciidoctor.convertFile(
