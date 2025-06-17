@@ -46,5 +46,6 @@ fun convertAdocToHtml(adocFilename: String) {
     asciidoctor.requireLibrary("asciidoctor-diagram")
     asciidoctor.convertFile(
         File(adocFilename), Options.builder().toFile(true).safe(SafeMode.UNSAFE).build())
+    asciidoctor.shutdown()
     // println("debug: end adoc to html")
 }
