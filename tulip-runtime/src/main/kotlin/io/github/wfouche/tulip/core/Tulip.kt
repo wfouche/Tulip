@@ -36,7 +36,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
-import net.sourceforge.plantuml.Run
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
 
@@ -487,8 +486,6 @@ fun initConfig(text: String): String {
     Console.put("  output filename = ${g_config.actions.jsonFilename}")
     Console.put("  report filename = ${g_config.actions.htmlFilename}")
     if (!textIsJsonString) {
-        PlantUmlServer.start()
-        Thread.sleep(1000)
         val adocFilename = createConfigReport(configFilename)
         convertAdocToHtml(adocFilename)
     }
@@ -1169,20 +1166,20 @@ object Console : Thread() {
     }
 }
 
-object PlantUmlServer : Thread() {
-
-    var running = false
-
-    init {
-        isDaemon = true
-        name = "plantuml-server"
-    }
-
-    override fun run() {
-        running = true
-        net.sourceforge.plantuml.Run.main(arrayOf("-picoweb:8080"))
-    }
-}
+// object PlantUmlServer : Thread() {
+//
+//    var running = false
+//
+//    init {
+//        isDaemon = true
+//        name = "plantuml-server"
+//    }
+//
+//    override fun run() {
+//        running = true
+//        net.sourceforge.plantuml.Run.main(arrayOf("-picoweb:8080"))
+//    }
+// }
 
 /*-------------------------------------------------------------------------*/
 

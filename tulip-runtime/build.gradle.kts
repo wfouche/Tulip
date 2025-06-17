@@ -63,7 +63,7 @@ dependencies {
     implementation("com.google.guava:guava:33.4.8-jre")
 
     // PlantUML
-    implementation("net.sourceforge.plantuml:plantuml:1.2022.1")
+    // implementation("net.sourceforge.plantuml:plantuml:1.2022.1")
 }
 
 tasks.jar {
