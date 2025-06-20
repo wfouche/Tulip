@@ -783,8 +783,10 @@ def createReport(filename, text):
 
     if text[0] == '{':
         config_filename = ""
+        config_filename2 = ""
     else:
         config_filename = text
+        config_filename2 = os.path.basename(config_filename)
 
     jhh = {}
     jss = {}
@@ -826,15 +828,15 @@ def createReport(filename, text):
 
     def name_to_href(name):
         href = '_' + re.sub(r'\W', '_', name.lower())
-        hfile = os.path.splitext(config_filename)[0] + ".html"
+        hfile = os.path.splitext(config_filename2)[0] + ".html"
         return "<a href='%s#%s'>"%(hfile, href) + name + "</a>"
 
-    if len(config_filename) > 0:
-        desc2 = "<a href='%s'>"%(os.path.splitext(config_filename)[0] + ".html")
+    if len(config_filename2) > 0:
+        desc2 = "<a href='%s'>"%(os.path.splitext(config_filename2)[0] + ".html")
     else:
         desc2 = ""
 
-    if len(config_filename) > 0:
+    if len(config_filename2) > 0:
         desc2 += jb["config"]["actions"]["description"] + "</a> / " + jb["timestamp"][:-3]
     else:
         desc2 += jb["config"]["actions"]["description"] + " / " + jb["timestamp"][:-3]
