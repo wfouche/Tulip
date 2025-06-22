@@ -57,7 +57,7 @@ dependencies {
 
     // Asciidoctor
     implementation("org.asciidoctor:asciidoctorj:3.0.0")
-    implementation("org.asciidoctor:asciidoctorj-diagram:2.3.2")
+    implementation("org.asciidoctor:asciidoctorj-diagram:3.0.1")
 
     // Google
     implementation("com.google.guava:guava:33.4.8-jre")
