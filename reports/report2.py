@@ -137,7 +137,7 @@ def createReport(filename):
                 for k in jb['workflows'][wn][sname].keys():
                     nid = name_to_id(k)
                     fv = jb['workflows'][wn][sname][k]
-                    printf('A%d --> A%d: %.3f\n'%(mid,nid,fv))
+                    printf('A%d --> A%d: %.2f\n'%(mid,nid,fv))
             printf('@enduml\n')
             printf('----\n')
             printf('| \n')
