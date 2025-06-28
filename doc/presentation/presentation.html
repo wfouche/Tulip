@@ -416,40 +416,7 @@ ul.byline li + li {
 </style></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title"><h1>Tulip</h1><h2>Performance Testing Toolkit</h2><p class="byline">
   <span class="author">Werner Fouché, &lt;werner.fouche@gmail.com&gt;</span>
   </p></section><section id="_when_to_do_performance_testing"><h2>When to do Performance Testing?</h2><div class="slide-content"><div class="imageblock stretch"><img src="Screenshot_20241121_094554.png" alt="Screenshot 20241121 094554" height="100%"></div></div></section>
-<section id="_system_under_test"><h2>System Under Test</h2><div class="slide-content"><div class="literalblock"><div class="content"><pre>@startuml
-!include C4_Container.puml
-
-LAYOUT_TOP_DOWN()
-LAYOUT_WITH_LEGEND()
-
-title Container diagram for Internet Banking System
-
-Person(customer, Customer, "A customer of the bank, with personal bank accounts")
-
-System_Boundary(c1, "Internet Banking") {
-    Container(web_app, "Web Application", "Java, Spring MVC", "Delivers the static content and the Internet banking SPA")
-    Container(spa, "Single-Page App", "JavaScript, Angular", "Provides all the Internet banking functionality to cutomers via their web browser")
-    Container(mobile_app, "Mobile App", "C#, Xamarin", "Provides a limited subset of the Internet banking functionality to customers via their mobile device")
-    ContainerDb(database, "Database", "SQL Database", "Stores user registraion information, hased auth credentials, access logs, etc.")
-    Container(backend_api, "API Application", "Java, Docker Container", "Provides Internet banking functionality via API")
-}
-
-System_Ext(email_system, "E-Mail System", "The internal Microsoft Exchange system")
-System_Ext(banking_system, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
-
-Rel(customer, web_app, "Uses", "HTTPS")
-Rel(customer, spa, "Uses", "HTTPS")
-Rel(customer, mobile_app, "Uses")
-
-Rel_Neighbor(web_app, spa, "Delivers")
-Rel(spa, backend_api, "Uses", "async, JSON/HTTPS")
-Rel(mobile_app, backend_api, "Uses", "async, JSON/HTTPS")
-Rel_Back_Neighbor(database, backend_api, "Reads from and writes to", "sync, JDBC")
-
-Rel_Back(customer, email_system, "Sends e-mails to")
-Rel_Back(email_system, backend_api, "Sends e-mails using", "sync, SMTP")
-Rel_Neighbor(backend_api, banking_system, "Uses", "sync/async, XML/HTTPS")
-@enduml</pre></div></div></div></section>
+<section id="_system_under_test"><h2>System Under Test</h2><div class="slide-content"><div class="imageblock"><img src="diag00.svg" alt="diag00"></div></div></section>
 <section id="_performance_requirements"><h2>Performance Requirements</h2><div class="slide-content"><div class="ulist"><ul><li><p>Typically created by the Product Manager or Architect(s).</p><div class="ulist"><ul><li><p>Number of simultaneous users</p></li><li><p>Peak sustained throughput rate, and duration (hours)</p></li><li><p>Response times: average, percentile values and maximum</p></li><li><p>Cloud/hardware budget</p></li></ul></div></li></ul></div></div></section>
 <section id="_performance_testing"><h2>Performance Testing</h2><div class="slide-content"><div class="ulist"><ul><li><p>Simulate typical production or special conditions traffic with <strong>virtual users</strong></p></li><li><p>Validate that the application meets <strong>performance requirements</strong></p><div class="ulist"><ul><li><p>Analyze response times</p></li><li><p>Discover performance bottlenecks</p></li><li><p>Size the underlying infrastructure</p></li></ul></div></li><li><p>Reduce cloud hosting costs</p></li></ul></div></div></section>
 <section><section id="_abstract_user_class"><h2>Abstract User Class</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-line-numbers="" data-lang="java">public abstract class TulipUser {
@@ -750,40 +717,7 @@ public class App {
 <section id="_looking_for_something_simpler"><h2>Looking for something simpler &#8230;&#8203;</h2><div class="slide-content"><div class="imageblock"><img src="Screenshot_20241121_151010_a.png" alt="Screenshot 20241121 151010 a"></div>
 <div class="paragraph"><p><a href="https://x.com/gunnarmorling/status/1850492919926391015" class="bare">https://x.com/gunnarmorling/status/1850492919926391015</a></p></div></div></section>
 <section id=""><h2>&nbsp;</h2><div class="slide-content"><div class="dlist"><dl><dt class="hdlist1">[T]he</dt><dt class="hdlist1">[U]ltimate</dt><dt class="hdlist1">[L]oad</dt><dt class="hdlist1">[I]njection</dt><dt class="hdlist1">[P]rogram</dt><dd><p>&nbsp;</p></dd></dl></div></div></section>
-<section id="_enterprise_software_deployment"><h2>Enterprise Software Deployment</h2><div class="slide-content"><div class="literalblock"><div class="content"><pre>@startuml
-!include C4_Container.puml
-
-LAYOUT_TOP_DOWN()
-LAYOUT_WITH_LEGEND()
-
-title Container diagram for Internet Banking System
-
-Person(customer, Customer, "A customer of the bank, with personal bank accounts")
-
-System_Boundary(c1, "Internet Banking") {
-    Container(web_app, "Web Application", "Java, Spring MVC", "Delivers the static content and the Internet banking SPA")
-    Container(spa, "Single-Page App", "JavaScript, Angular", "Provides all the Internet banking functionality to cutomers via their web browser")
-    Container(mobile_app, "Mobile App", "C#, Xamarin", "Provides a limited subset of the Internet banking functionality to customers via their mobile device")
-    ContainerDb(database, "Database", "SQL Database", "Stores user registraion information, hased auth credentials, access logs, etc.")
-    Container(backend_api, "API Application", "Java, Docker Container", "Provides Internet banking functionality via API")
-}
-
-System_Ext(email_system, "E-Mail System", "The internal Microsoft Exchange system")
-System_Ext(banking_system, "Mainframe Banking System", "Stores all of the core banking information about customers, accounts, transactions, etc.")
-
-Rel(customer, web_app, "Uses", "HTTPS")
-Rel(customer, spa, "Uses", "HTTPS")
-Rel(customer, mobile_app, "Uses")
-
-Rel_Neighbor(web_app, spa, "Delivers")
-Rel(spa, backend_api, "Uses", "async, JSON/HTTPS")
-Rel(mobile_app, backend_api, "Uses", "async, JSON/HTTPS")
-Rel_Back_Neighbor(database, backend_api, "Reads from and writes to", "sync, JDBC")
-
-Rel_Back(customer, email_system, "Sends e-mails to")
-Rel_Back(email_system, backend_api, "Sends e-mails using", "sync, SMTP")
-Rel_Neighbor(backend_api, banking_system, "Uses", "sync/async, XML/HTTPS")
-@enduml</pre></div></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
+<section id="_enterprise_software_deployment"><h2>Enterprise Software Deployment</h2><div class="slide-content"><div class="imageblock"><img src="diag05.svg" alt="diag05"></div></div></section></div></div><script src="https://cdn.jsdelivr.net/npm/reveal.js@4.5.0/dist/reveal.js"></script><script>Array.prototype.slice.call(document.querySelectorAll('.slides section')).forEach(function(slide) {
   if (slide.getAttribute('data-background-color')) return;
   // user needs to explicitly say he wants CSS color to override otherwise we might break custom css or theme (#226)
   if (!(slide.classList.contains('canvas') || slide.classList.contains('background'))) return;
