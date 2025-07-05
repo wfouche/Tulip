@@ -21,7 +21,7 @@ import java.io.ByteArrayOutputStream as ByteArrayOutputStream
 # ///
 
 summary_html_1 = '''<!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
 <meta charset="UTF-8">
 <style type="text/css">
