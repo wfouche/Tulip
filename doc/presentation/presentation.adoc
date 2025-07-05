@@ -12,10 +12,10 @@ image::Screenshot_20241121_094554.png[]
 
 == System Under Test
 
-[c4plantuml,diag00,svg]
+[plantuml,diag00,svg]
 ....
 @startuml
-!include C4_Container.puml
+!include <C4/C4_Container>
 
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
@@ -689,10 +689,10 @@ https://x.com/gunnarmorling/status/1850492919926391015
 
 == Enterprise Software Deployment
 
-[c4plantuml,diag05,svg]
+[plantuml,diag05,svg]
 ....
 @startuml
-!include C4_Container.puml
+!include <C4/C4_Container>
 
 LAYOUT_TOP_DOWN()
 LAYOUT_WITH_LEGEND()
