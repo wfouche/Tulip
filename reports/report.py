@@ -455,7 +455,7 @@ summary_html_3 = '''</body>
 # <h2>__DESC1__ / __DESC2__</h2>
 
 header = '''<!DOCTYPE html>
-<html>
+<html lang="en">
 
 <style>
 table, th, td {
@@ -1036,7 +1036,7 @@ def createReport(filename, text):
             statsFilenameNext = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,page_id+1)
             text = "<a href='%s'>%s</a>"%(statsFilenameHtml,text)
             printStream = PrintStream(statsFilename)
-            printStream.println("<html>")
+            printStream.println("<html lang=\"en\">")
             printStream.println("<style>")
             printStream.println("table, th, td {")
             printStream.println("  border:1px solid black; font-size:16px; text-align: center;")
