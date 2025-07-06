@@ -1,7 +1,7 @@
 REM python3 jython/jython-cli.py report.py
-call jbang --fresh run python-jvm@wfouche --keep-java report.py
+call jbang run python_jvm_tulip.java --keep-java report.py
 REM python3 jython/jython-cli.py report2.py
-call jbang         run python-jvm@wfouche --keep-java report2.py
+call jbang run python_jvm_tulip.java --keep-java report2.py
 
 copy package.txt+report_py.java report.txt
 copy report.txt report_py.java
