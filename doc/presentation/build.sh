@@ -1,5 +1,5 @@
 #!/bin/bash
-jbang run asciidoctorj-cli@wfouche \
+jbang run asciidoctorj@wfouche \
     -r asciidoctor-revealjs \
     -r asciidoctor-diagram \
     presentation.adoc \
