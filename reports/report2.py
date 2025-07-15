@@ -19,7 +19,9 @@ from collections import OrderedDict
 header = '''= __DESCRIPTION__
 :toc: left
 :sectnums:
+:source-highlighter: rouge
 
+// :source-highlighter: highlight.js
 // :plantuml: http://localhost:8080/plantuml
 // :plantuml-fetch-diagram: true
 // :plantuml-size-limit: 8192
@@ -286,6 +288,16 @@ def createReport(filename):
             printf('!===\n')
 
         printf("|===\n")
+
+    # JSON Config
+    printf("\n")
+    printf("== JSON Configuration File\n")
+    printf("\n")
+    printf("[source,json,linenums]\n")
+    printf("----\n")
+    printf(json.dumps(jb, indent=4))
+    printf("\n")
+    printf("----\n")
 
     report_fh.close()
     return report_fp
