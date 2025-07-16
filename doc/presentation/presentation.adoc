@@ -519,6 +519,7 @@ end split
 :EXECUTE;
 #greenyellow:OUTPUT.JSON;
 #cadetblue:REPORT.HTML;
+#cadetblue:REPORT.JSON;
 @enduml
 ----
 
@@ -550,7 +551,7 @@ end split
 [source,bash,linenums]
 ----
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.github.wfouche.tulip:tulip-runtime:0.1.0-SNAPSHOT
+//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.7
 //SOURCES HttpUser.java
 
 import io.github.wfouche.tulip.api.TulipApi;
