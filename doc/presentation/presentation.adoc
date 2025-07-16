@@ -505,20 +505,21 @@ title rest-api1
 @startuml
 split
    -[hidden]->
-   #greenyellow:CONFIG.JSON;
+   #greenyellow:benchmark_config.json;
 split again
    -[hidden]->
-   #beige:APP;
+   #beige:User.class;
 split again
    -[hidden]->
-   #beige:USER.JAR;
+   #beige:App.class;
 split again
    -[hidden]->
-   #azure:TULIP-RUNTIME.JAR;
+   #azure:tulip-runtime.jar;
 end split
 :EXECUTE;
-#greenyellow:OUTPUT.JSON;
-#cadetblue:REPORT.HTML;
+#greenyellow:benchmark_output.json;
+#cadetblue:benchmark_report.html;
+#cadetblue:benchmark_report.json;
 @enduml
 ----
 
@@ -550,7 +551,7 @@ end split
 [source,bash,linenums]
 ----
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.github.wfouche.tulip:tulip-runtime:0.1.0-SNAPSHOT
+//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.7
 //SOURCES HttpUser.java
 
 import io.github.wfouche.tulip.api.TulipApi;
