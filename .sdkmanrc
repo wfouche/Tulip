@@ -16,7 +16,7 @@ jbang=0.127.18
 scalacli=1.8.4
 
 # MCS
-mcs=0.7.4
+mcs=0.7.6
 
 # Maven
 maven=3.9.11
