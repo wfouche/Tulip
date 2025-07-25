@@ -1,5 +1,4 @@
-call jbang cache clear
-call jbang --fresh run asciidoctorj@asciidoctor ^
+call jbang run asciidoctorj@asciidoctor ^
     -r asciidoctor-revealjs ^
     -r asciidoctor-diagram ^
     presentation.adoc ^

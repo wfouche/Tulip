@@ -1,6 +1,5 @@
 #!/bin/bash
-jbang cache clear
-jbang --fresh run asciidoctorj@asciidoctor \
+jbang run asciidoctorj@asciidoctor \
     -r asciidoctor-revealjs \
     -r asciidoctor-diagram \
     presentation.adoc \
