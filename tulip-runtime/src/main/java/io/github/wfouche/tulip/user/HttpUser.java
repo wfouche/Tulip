@@ -40,6 +40,14 @@ public class HttpUser extends HttpUser_RestClient {
         }
     }
 
+    /**
+     * http_POST() method
+     *
+     * @param reqBodyJson - JSON string
+     * @param uri - uri to invoke
+     * @param uriVariables - sequence of variables to replace in uri
+     * @return boolean
+     */
     @NotNull
     public String http_POST(String reqBodyJson, String uri, Object... uriVariables) {
         try {
@@ -62,6 +70,14 @@ public class HttpUser extends HttpUser_RestClient {
         }
     }
 
+    /**
+     * http_PUT() method
+     *
+     * @param reqBodyJson - JSON string
+     * @param uri - uri to invoke
+     * @param uriVariables - sequence of variables to replace in uri
+     * @return boolean
+     */
     @NotNull
     public String http_PUT(String reqBodyJson, String uri, Object... uriVariables) {
         try {
@@ -84,6 +100,14 @@ public class HttpUser extends HttpUser_RestClient {
         }
     }
 
+    /**
+     * http_PATCH() method
+     *
+     * @param reqBodyJson - JSON string
+     * @param uri - uri to invoke
+     * @param uriVariables - sequence of variables to replace in uri
+     * @return boolean
+     */
     @NotNull
     public String http_PATCH(String reqBodyJson, String uri, Object... uriVariables) {
         try {
@@ -106,6 +130,13 @@ public class HttpUser extends HttpUser_RestClient {
         }
     }
 
+    /**
+     * http_DELETE() method
+     *
+     * @param uri - uri to invoke
+     * @param uriVariables - sequence of variables to replace in uri
+     * @return boolean
+     */
     @NotNull
     public String http_DELETE(String uri, Object... uriVariables) {
         try {
