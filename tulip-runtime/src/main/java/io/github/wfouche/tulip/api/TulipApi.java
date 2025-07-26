@@ -76,13 +76,20 @@ public class TulipApi {
     /**
      * Creates a Configuration report from the benchmark config.
      *
-     * @param configFilename
+     * @param configFilename The name of the configuration file to generate a report for.
      */
     public static void createConfigReport(String configFilename) {
         String adocFilename = TulipReportKt.createConfigReport(configFilename);
         TulipReportKt.convertAdocToHtml(adocFilename);
     }
 
+    /**
+     * Reads a resource file from the classpath and returns its content as a string.
+     *
+     * @param fileName The name of the resource file to read, relative to the classpath.
+     * @return The content of the resource file as a string.
+     * @throws IOException If the resource cannot be read.
+     */
     public static String readResource(final String fileName) throws IOException {
         return Resources.toString(Resources.getResource(fileName), StandardCharsets.UTF_8);
     }
