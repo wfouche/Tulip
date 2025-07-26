@@ -180,18 +180,38 @@ public class HttpUser_RestClient extends TulipUser {
     // RestClient objects
     private static HttpRecord[] https = null;
 
+    /**
+     * getUrlProtocol() method
+     *
+     * @return String
+     */
     public String getUrlProtocol() {
         return https[getUserId() % https.length].urlProtocol;
     }
 
+    /**
+     * getUrlHost() method
+     *
+     * @return String
+     */
     public String getUrlHost() {
         return https[getUserId() % https.length].urlHost;
     }
 
+    /**
+     * getUrlPort() method
+     *
+     * @return int
+     */
     public int getUrlPort() {
         return https[getUserId() % https.length].urlPort;
     }
 
+    /**
+     * getUrlPath() method
+     *
+     * @return String
+     */
     public String getUrlPath() {
         return https[getUserId() % https.length].urlPath;
     }
