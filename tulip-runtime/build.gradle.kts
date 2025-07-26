@@ -67,6 +67,10 @@ dependencies {
     // implementation("net.sourceforge.plantuml:plantuml:1.2022.1")
 }
 
+tasks.withType<JavaCompile>().configureEach {
+    options.isDeprecation = true
+}
+
 tasks.jar {
     manifest {
         attributes["Main-Class"] = "io.github.wfouche.tulip.api.TulipApi"
