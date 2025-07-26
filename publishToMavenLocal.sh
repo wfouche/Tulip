@@ -16,7 +16,7 @@ popd
 ./gradlew spotlessApply
 
 echo ""
-read -p "Press ENTER to continue ..."
+# read -p "Press ENTER to continue ..."
 
 # Publish tulip-runtime.jar to local Maven
 ./gradlew clean
