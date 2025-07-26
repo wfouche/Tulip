@@ -11,8 +11,8 @@ public class HttpUserTest extends HttpUser {
     /**
      * init - set base class parameter values
      *
-     * @param userId
-     * @param threadId
+     * @param userId - Tulip userId
+     * @param threadId - Tulip threadId
      */
     public void init(int userId, int threadId) {
         setUserId(userId);
