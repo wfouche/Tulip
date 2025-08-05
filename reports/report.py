@@ -416,35 +416,6 @@ Percentile range:
     }
 </script>
 </p>
-<p>
-    <br>
-*** Note: Input files are expected to be in the .hgrm format produced by
-HistogramLogProcessor, or the percentile output format for HdrHistogram.
-See example file format
-    <a href="https://github.com/HdrHistogram/HdrHistogram/blob/master/GoogleChartsExample/example1.txt">here</a>
-</p>
-<!--<h4>Expected Service Level:</h4>-->
-<!--<input type="checkbox" name="ESL" value="ESL">Plot Expected Service Level<br>-->
-<!--Percentile:-->
-<!--<input type="text" id="ESLPercentile0" name="ESLPercentile0" size="6" value = 90 />-->
-<!--% &nbsp &nbsp &nbsp Limit:-->
-<!--<input type="text" id="ESLLimit0" name="ESLLimit0" size="12"/>-->
-<!--<br>-->
-<!--Percentile:-->
-<!--<input type="text" id="ESLPercentile1" name="ESLPercentile1" size="6" value = 99 />-->
-<!--% &nbsp &nbsp &nbsp Limit:-->
-<!--<input type="text" id="ESLLimit1" name="ESLLimit1" size="12"/>-->
-<!--<br>-->
-<!--Percentile:-->
-<!--<input type="text" id="ESLPercentile2" name="ESLPercentile2" size="6" value = 99.99 />-->
-<!--% &nbsp &nbsp &nbsp Limit:-->
-<!--<input type="text" id="ESLLimit2" name="ESLLimit2" size="12"/>-->
-<!--<br>-->
-<!--Percentile:-->
-<!--<input type="text" id="ESLPercentile3" name="ESLPercentile2" size="6" value="100.0" readonly/>-->
-<!--% &nbsp &nbsp &nbsp Limit:-->
-<!--<input type="text" id="ESLLimit3" name="ESLLimit2" size="12"/>-->
-
 '''
 
 summary_html_3 = '''</body>
