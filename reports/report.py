@@ -779,14 +779,14 @@ def createReport(filename, text):
     desc1 = 'Tulip ' + version
     rb = jb["results"]
 
-    report_fn = jb["config"]["actions"]["report_filename"]
-    report_fh = open(report_fn, "w+")
+    report_html_fn = jb["config"]["actions"]["report_filename"]
+    report_html_fh = open(report_html_fn, "w+")
 
-    report_json_fn = os.path.splitext(report_fn)[0] + ".json"
+    report_json_fn = os.path.splitext(report_html_fn)[0] + ".json"
     report_json_fh = open(report_json_fn, "w+")
 
     global report_dn
-    report_dn = os.path.splitext(report_fn)[0]
+    report_dn = os.path.splitext(report_html_fn)[0]
     try:
         os.makedirs(report_dn)
     except:
@@ -815,10 +815,10 @@ def createReport(filename, text):
     else:
         desc2 += jb["config"]["actions"]["description"] + " / " + jb["timestamp"][:-3]
 
-    print("Report filename = " + report_fn)
+    print("Report filename = " + report_html_fn)
 
     def printf(s):
-        report_fh.write(s)
+        report_html_fh.write(s)
 
     def actionName(s):
         return s.split(",")[0].strip()
@@ -847,8 +847,8 @@ def createReport(filename, text):
         else:
             cpu_t = str_from_cpu_time_ns(sm.cpu_time_ns)
 
-        statsFilename = '%s_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id)
-        statsFilenameHtml = '%s_%d.html'%(odirHtml(report_fn.split('.')[0]),benchmark_id)
+        statsFilename = '%s_%d.html'%(odir(report_html_fn.split('.')[0]),benchmark_id)
+        statsFilenameHtml = '%s_%d.html'%(odirHtml(report_html_fn.split('.')[0]),benchmark_id)
         text = "<a href='%s'>%s</a>"%(statsFilenameHtml,"[Summary]")
         printStream = PrintStream(statsFilename)
         printStream.print(summary_html_1)
@@ -892,10 +892,10 @@ def createReport(filename, text):
         printStream.println()
         printStream.print('    }')
         printStream.println()
-        tChartFilename = '%s_%d_t.js'%(odir(report_fn.split('.')[0]),benchmark_id)
-        tChartFilenameHtml = '%s_%d_t.js'%(odirHtml(report_fn.split('.')[0]),benchmark_id)
-        pChartFilename = '%s_%d_p.js'%(odir(report_fn.split('.')[0]),benchmark_id)
-        pChartFilenameHtml = '%s_%d_p.js'%(odirHtml(report_fn.split('.')[0]),benchmark_id)
+        tChartFilename = '%s_%d_t.js'%(odir(report_html_fn.split('.')[0]),benchmark_id)
+        tChartFilenameHtml = '%s_%d_t.js'%(odirHtml(report_html_fn.split('.')[0]),benchmark_id)
+        pChartFilename = '%s_%d_p.js'%(odir(report_html_fn.split('.')[0]),benchmark_id)
+        pChartFilenameHtml = '%s_%d_p.js'%(odirHtml(report_html_fn.split('.')[0]),benchmark_id)
         printStream.print(
             summary_html_2
                 .replace("__CHARTS_TEXT__",
@@ -1004,10 +1004,10 @@ def createReport(filename, text):
                 text = "[%s.%s]"%(key, actionName(jb["config"]["actions"]["user_actions"][key]))
             else:
                 text = "[%s]"%(key)
-            statsFilename = '%s_%d_%d.html'%(odir(report_fn.split('.')[0]),benchmark_id,page_id)
-            statsFilenameHtml = '%s_%d_%d.html'%(odirHtml(report_fn.split('.')[0]),benchmark_id,page_id)
-            statsFilenamePrev = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,abs(page_id-1))
-            statsFilenameNext = '%s_%d_%d.html'%(report_fn.split('.')[0],benchmark_id,page_id+1)
+            statsFilename = '%s_%d_%d.html'%(odir(report_html_fn.split('.')[0]),benchmark_id,page_id)
+            statsFilenameHtml = '%s_%d_%d.html'%(odirHtml(report_html_fn.split('.')[0]),benchmark_id,page_id)
+            statsFilenamePrev = '%s_%d_%d.html'%(report_html_fn.split('.')[0],benchmark_id,abs(page_id-1))
+            statsFilenameNext = '%s_%d_%d.html'%(report_html_fn.split('.')[0],benchmark_id,page_id+1)
             text = "<a href='%s'>%s</a>"%(statsFilenameHtml,text)
             printStream = PrintStream(statsFilename)
             printStream.println("<html lang=\"en\">")
@@ -1021,7 +1021,7 @@ def createReport(filename, text):
             printStream.println("}")
             printStream.println("</style>")
             printStream.println("<body>")
-            printStream.println('<a href="../%s">Up</a>'%(report_fn))
+            printStream.println('<a href="../%s">Up</a>'%(report_html_fn))
             if (page_id == 0) and (num_keys == 1):
                 printStream.println('<a href="#">Prev</a>')
                 printStream.println('<a href="#">Next</a>')
@@ -1300,7 +1300,7 @@ def createReport(filename, text):
     print_global_summary()
     printf(trailer)
 
-    report_fh.close()
+    report_html_fh.close()
     report_json_fh.close()
 
     os.chdir(cwd)
