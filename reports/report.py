@@ -1175,6 +1175,12 @@ def createReport(filename, text):
                 report_json_fh.write('    },\n')
             report_json_fh.write('    "%s": {\n'%(e["bm_name"]))
             report_json_fh.write('      "results": {\n')
+
+        if True:
+            if e["row_id"]+1 == 1:
+                report_json_fh.write('        "%d": {}\n'%(e["row_id"]+1))
+            else:
+                report_json_fh.write('        ,"%d": {}\n'%(e["row_id"]+1))
         if print_detail_rows:
             printf(benchmark_detail_row%( \
                 name2s,
