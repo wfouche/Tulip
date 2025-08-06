@@ -1171,8 +1171,10 @@ def createReport(filename, text):
         if not json_bm_names.has_key(e["bm_name"]):
             json_bm_names[e["bm_name"]] = 1
             if len(json_bm_names.keys()) > 1:
+                report_json_fh.write('      }\n')
                 report_json_fh.write('    },\n')
             report_json_fh.write('    "%s": {\n'%(e["bm_name"]))
+            report_json_fh.write('      "results": {\n')
         if print_detail_rows:
             printf(benchmark_detail_row%( \
                 name2s,
@@ -1310,6 +1312,7 @@ def createReport(filename, text):
 
     report_html_fh.close()
 
+    report_json_fh.write("      }\n")
     report_json_fh.write("    }\n")
     report_json_fh.write("  }\n")
     report_json_fh.write("}\n")
