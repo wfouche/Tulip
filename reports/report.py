@@ -782,6 +782,9 @@ def createReport(filename, text):
     report_fn = jb["config"]["actions"]["report_filename"]
     report_fh = open(report_fn, "w+")
 
+    report_json_fn = os.path.splitext(report_fn)[0] + ".json"
+    report_json_fh = open(report_json_fn, "w+")
+
     global report_dn
     report_dn = os.path.splitext(report_fn)[0]
     try:
@@ -1298,6 +1301,7 @@ def createReport(filename, text):
     printf(trailer)
 
     report_fh.close()
+    report_json_fh.close()
 
     os.chdir(cwd)
 
