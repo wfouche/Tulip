@@ -19,14 +19,6 @@ Update the Tulip version in the following files:
 
 Submit the changes to Git and push to Github.
 
-
-=== [Optionally] Update standalone benchmarks
-
-----
-cd tulip-standalone
-find . -name '*.*' -print -exec sed -i 's/2\.0\.0/2\.0\.1/g' {} \;
-----
-
 == Build Maven Artifacts
 
 Run one of the following scripts one Windows or Linux. It will create a ZIP architeve of signed artifacts to be uploaded to Maven Central.
