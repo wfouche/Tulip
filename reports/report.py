@@ -784,6 +784,9 @@ def createReport(filename, text):
 
     report_json_fn = os.path.splitext(report_html_fn)[0] + ".json"
     report_json_fh = open(report_json_fn, "w+")
+    report_json_fh.write("{\n")
+    report_json_fh.write('  "config": ' + json.dumps(jb["config"]) + ',\n')
+    report_json_fh.write('  "benchmarks": {\n')
 
     global report_dn
     report_dn = os.path.splitext(report_html_fn)[0]
@@ -1301,6 +1304,9 @@ def createReport(filename, text):
     printf(trailer)
 
     report_html_fh.close()
+
+    report_json_fh.write("  }\n")
+    report_json_fh.write("}\n")
     report_json_fh.close()
 
     os.chdir(cwd)
