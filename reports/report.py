@@ -1188,7 +1188,7 @@ def createReport(filename, text):
             rd["p90_rt"] = e["percentiles_rt"]["90.0"]
             rd["p99_rt"] = e["percentiles_rt"]["99.0"]
             rd["max_rt"] = e["max_rt"]
-            rd["max_rt_ts"] = e["max_rt_ts"]
+            rd["max_rt_ts"] = e["max_rt_ts"].replace("_","T")
             if e["row_id"]+1 == 1:
                 report_json_fh.write('        "%d": %s\n'%(e["row_id"]+1,json.dumps(rd)))
             else:
