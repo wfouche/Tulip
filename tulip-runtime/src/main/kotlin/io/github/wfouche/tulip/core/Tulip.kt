@@ -351,8 +351,8 @@ data class ConfigTest(
     @SerialName("save_stats") val logStats: Boolean = true,
     val time: ConfigDuration = ConfigDuration(),
     @SerialName("aps_rate") val throughputRate: Double = 0.0,
-    @SerialName("aps_rate_step_change") val throughputRateStepChange: Double = 0.0,
-    @SerialName("aps_rate_step_count") val throughputRateStepCount: Int = 1,
+    @SerialName("aps_step_change") val throughputRateStepChange: Double = 0.0,
+    @SerialName("aps_step_count") val throughputRateStepCount: Int = 1,
     @SerialName("worker_thread_queue_size") val workInProgress: Int = 0,
     @SerialName("scenario_actions") val actions: List<ConfigAction> = listOf(),
     @SerialName("scenario_workflow") val workflow: String = ""
