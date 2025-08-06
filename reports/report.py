@@ -1151,6 +1151,27 @@ def createReport(filename, text):
                 smx.cpu = 0.0
             else:
                 cpu_t = str_from_cpu_time_ns(smx.cpu_time_ns)
+
+            if True:
+                rd = {}
+                rd["num_actions"] = smx.num_actions
+                rd["num_failed"] = smx.num_failed
+                rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
+                rd["avg_aps"] = avg_aps
+                rd["avg_rt"] = jhx.getMean()/1000.0
+                rd["std_rt"] = jhx.getStdDeviation()/1000.0
+                rd["min_rt"] = smx.min_rt
+                rd["p90_rt"] = jhx.getValueAtPercentile(90.0)/1000.0
+                rd["p99_rt"] = jhx.getValueAtPercentile(99.0)/1000.0
+                rd["max_rt"] = smx.max_rt
+                rd["max_rt_ts"] = smx.max_rt_ts.replace("_","T")
+                if page_id == 0:
+                    report_json_fh.write('      }\n')
+                    report_json_fh.write('      ,"actions": {\n')
+                    report_json_fh.write('        "%s": %s\n'%(key,json.dumps(rd)))
+                else:
+                    report_json_fh.write('        ,"%s": %s\n'%(key,json.dumps(rd)))
+
             html = benchmark_summary_row%(name2s,text,smx.num_actions,smx.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:],smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
@@ -1168,6 +1189,7 @@ def createReport(filename, text):
                 del name2s_list[0]
 
             page_id += 1
+        #report_json_fh.write('      }\n')
 
     printf(header.replace("__DESC1__", desc1).replace("__DESC2__", desc2))
     json_bm_names = {}
