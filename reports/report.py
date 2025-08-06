@@ -1135,7 +1135,7 @@ def createReport(filename, text):
             page_id += 1
 
     printf(header.replace("__DESC1__", desc1).replace("__DESC2__", desc2))
-
+    json_bm_names = {}
     prev_row_id = 0
     for e in rb:
         current_row_id = int(e["row_id"])
@@ -1168,6 +1168,11 @@ def createReport(filename, text):
         else:
             cpu_t = str_from_cpu_time_ns(e["process_cpu_time_ns"])
             p_cpu = e["process_cpu_utilization"]
+        if not json_bm_names.has_key(e["bm_name"]):
+            json_bm_names[e["bm_name"]] = 1
+            if len(json_bm_names.keys()) > 1:
+                report_json_fh.write('    },\n')
+            report_json_fh.write('    "%s": {\n'%(e["bm_name"]))
         if print_detail_rows:
             printf(benchmark_detail_row%( \
                 name2s,
@@ -1305,6 +1310,7 @@ def createReport(filename, text):
 
     report_html_fh.close()
 
+    report_json_fh.write("    }\n")
     report_json_fh.write("  }\n")
     report_json_fh.write("}\n")
     report_json_fh.close()
