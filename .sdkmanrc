@@ -10,7 +10,7 @@ java=21.0.8-librca
 gradle=8.14.3
 
 # JBang
-jbang=0.128.7
+jbang=0.126.3
 
 # Scala
 scalacli=1.8.4
