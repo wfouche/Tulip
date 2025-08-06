@@ -1177,10 +1177,22 @@ def createReport(filename, text):
             report_json_fh.write('      "results": {\n')
 
         if True:
+            rd = {}
+            rd["num_actions"] = e["num_actions"]
+            rd["num_failed"] = e["num_failed"]
+            rd["duration"] = str(datetime.timedelta(seconds=int(e["duration"])))
+            rd["avg_aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
+            rd["avg_rt"] = e["avg_rt"]
+            rd["std_rt"] = ht.getStdDeviation()/1000.0
+            rd["min_rt"] = e["min_rt"]
+            rd["p90_rt"] = e["percentiles_rt"]["90.0"]
+            rd["p99_rt"] = e["percentiles_rt"]["99.0"]
+            rd["max_rt"] = e["max_rt"]
+            rd["max_rt_ts"] = e["max_rt_ts"]
             if e["row_id"]+1 == 1:
-                report_json_fh.write('        "%d": {}\n'%(e["row_id"]+1))
+                report_json_fh.write('        "%d": %s\n'%(e["row_id"]+1,json.dumps(rd)))
             else:
-                report_json_fh.write('        ,"%d": {}\n'%(e["row_id"]+1))
+                report_json_fh.write('        ,"%d": %s\n'%(e["row_id"]+1,json.dumps(rd)))
         if print_detail_rows:
             printf(benchmark_detail_row%( \
                 name2s,
