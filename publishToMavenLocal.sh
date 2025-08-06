@@ -23,3 +23,5 @@ echo ""
 ./gradlew :tulip-runtime:publishToMavenLocal
 
 find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
+
+date
