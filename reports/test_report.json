@@ -3,7 +3,7 @@
 
   },
   "benchmarks": {
-    "b1": {
+    "benchmark1": {
       "results": {
         "1": {},
         "2": {},
@@ -15,8 +15,7 @@
       },
       "summary": {}
     },
-    "b2": {
-
+    "benchmark2": {
     }
   }
 }
