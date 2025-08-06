@@ -958,7 +958,42 @@ def createReport(filename, text):
         printStream.flush()
         printStream.close()
 
-        html = benchmark_summary_row%(name2s,text,sm.num_actions,sm.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jh.getMean()/1000.0,jh.getStdDeviation()/1000.0,sm.min_rt,jh.getValueAtPercentile(90.0)/1000.0,jh.getValueAtPercentile(99.0)/1000.0,sm.max_rt,sm.max_rt_ts[8:],sm.avg_qs,sm.max_qs,sm.max_awt,sm.max_wt,cpu_t,sm.cpu,sm.mem)
+        if True:
+            rd = {}
+            rd["num_actions"] = sm.num_actions
+            rd["num_failed"] = sm.num_failed
+            rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
+            rd["avg_aps"] = avg_aps
+            rd["avg_rt"] = jh.getMean()/1000.0
+            rd["std_rt"] = jh.getStdDeviation()/1000.0
+            rd["min_rt"] = sm.min_rt
+            rd["p90_rt"] = jh.getValueAtPercentile(90.0)/1000.0
+            rd["p99_rt"] = jh.getValueAtPercentile(99.0)/1000.0
+            rd["max_rt"] = sm.max_rt
+            rd["max_rt_ts"] = sm.max_rt_ts.replace("_","T")
+            report_json_fh.write('      ,"summary": %s\n'%(json.dumps(rd)))
+
+        html = benchmark_summary_row%(
+            name2s,
+            text,
+            sm.num_actions,
+            sm.num_failed,
+            str(datetime.timedelta(seconds=int(sm.duration))),
+            avg_aps,
+            jh.getMean()/1000.0,
+            jh.getStdDeviation()/1000.0,
+            sm.min_rt,
+            jh.getValueAtPercentile(90.0)/1000.0,
+            jh.getValueAtPercentile(99.0)/1000.0,
+            sm.max_rt,
+            sm.max_rt_ts[8:],
+            sm.avg_qs,
+            sm.max_qs,
+            sm.max_awt,
+            sm.max_wt,
+            cpu_t,
+            sm.cpu,
+            sm.mem)
         if not print_detail_rows:
             html = html.replace("<b>","")
             html = html.replace("</b>","")
