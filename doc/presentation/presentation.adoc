@@ -666,11 +666,12 @@ Gatling (Scala)::
 * https://gatling.io
 Hyperfoil (Java, Vert.x)::
 * https://hyperfoil.io
+k6 (JavaScript)::
+* https://k6.io/open-source/
 Locust (Python)::
 * https://locust.io
 Tulip (Kotlin with a Java API)::
 * https://wfouche.github.io/Tulip
-* https://github.com/wfouche/Tulip.git
 
 == Looking for something simpler ...
 
