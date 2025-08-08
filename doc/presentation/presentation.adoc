@@ -20,32 +20,6 @@ Locust (Python)::
 Tulip (Kotlin with a Java API)::
 * https://wfouche.github.io/Tulip
 
-== Background
-
-[.stretch]
-image::image-2025-08-08-11-04-17-165.png[]
-
-=== Building Solutions
-
-[.stretch]
-image::image-2025-08-08-11-08-23-278.png[]
-
-=== Building Tools, Crafting Solutions
-
-[%step]
-* School - kites, electric motor, steam canon, maths as hobby
-* SROS - Stellenbosch Research OS (micro-kernel) (3 years)
-* V Distributed System (1 year, USA)
-* (Software Collage) Pre-Postilion, C++. (1y)
-* Oberon-2 (C backend) for Postilion Sink and Source Nodes
-* PODL (Persistent Object Definition Language) - Postilion 3.x
-* VOS (Virtual OS) - Postilion 3.0 portability layer
-* Postilion 4.0 (Java) (2 years) - Tech Lead
-* Technical Sales Support (4 years, USA)
-* ACI Grinder Benchmarking Toolkit (Python,Java,Jython,C)
-* ACI documentation from CMS to Asciidoc (5 years)
-* Tulip started as a mini-project to evaluate Kotlin
-
 == System Under Test
 
 [plantuml,diag00,svg]
@@ -877,8 +851,6 @@ Rel_Neighbor(backend_api, banking_system, "Uses", "sync/async, XML/HTTPS")
 == Next Steps?
 
 * Tulip is ready for prime time.
-
-** Help companies to implement Tulip load tests
 
 ** Build a benchmark results analysis tool (add-on)
 
