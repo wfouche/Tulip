@@ -1,11 +1,11 @@
-= Tulip: Performance Testing Toolkit
+= Tulip: Load Testing Toolkit
 Werner Fouché,  <werner.fouche@gmail.com>
 :revealjs_theme: beige
 :revealjs_width: 1408
 :revealjs_height: 992
 :source-highlighter: highlightjs
 
-== When to do Performance Testing?
+== When to do Load Testing?
 
 [.stretch]
 image::Screenshot_20241121_094554.png[]
@@ -224,7 +224,7 @@ Stateless Interactions - randomized::
 Stateful Interactions - workflows::
 * Actions have to be executed in a specific order (shared state)
 
-== [A] Stateless Interactions
+== [A.1] Stateless Interactions
 
 * Actions can be executed in any order
 * Execution order is randomized based on specified distribution / weight
@@ -245,7 +245,7 @@ Stateful Interactions - workflows::
 ** /comments	500 comments
 ** ...
 
-=== [A] Stateless Interactions
+=== [A.2] Stateless Interactions
 
 * Execution order is sequential, if distribution / weight not specified
 +
@@ -518,8 +518,8 @@ split again
 end split
 :EXECUTE;
 #greenyellow:benchmark_output.json;
-#cadetblue:benchmark_report.html;
 #cadetblue:benchmark_report.json;
+#cadetblue:benchmark_report.html;
 @enduml
 ----
 
@@ -545,21 +545,58 @@ end split
 @endmindmap
 ----
 
+== Benchmark User
+
+[.stretch]
+[source,java,linenums]
+----
+import io.github.wfouche.tulip.user.HttpUser;
+import java.util.concurrent.ThreadLocalRandom;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+public class JavaHttpUser extends HttpUser {
+
+    public JavaHttpUser(int userId, int threadId) {
+        super(userId, threadId);
+    }
+
+    public boolean onStart() {
+        if (getUserId() == 0) {
+            logger.info("Java");
+            super.onStart();
+        }
+        return true;
+    }
+
+    public boolean action1() {
+        int id = ThreadLocalRandom.current().nextInt(100)+1;
+        return !http_GET("/posts/{id}", id).isEmpty();
+    }
+
+    public boolean onStop() {
+        return true;
+    }
+
+    private static final Logger logger = LoggerFactory.getLogger(JavaHttpUser.class);
+}
+----
+
 == Benchmark App
 
-.App.java
+.App.java [Java_Script]
 [source,bash,linenums]
 ----
 ///usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.7
-//SOURCES HttpUser.java
+//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.8
+//SOURCES JavaHttpUser.java
 
 import io.github.wfouche.tulip.api.TulipApi;
 import io.github.wfouche.tulip.api.TulipUserFactory;
 
 public class App {
     public static void main(String[] args) {
-        TulipApi.runTulip("./benchmark_config.jsonc",
+        TulipApi.runTulip("benchmark_config.json",
             new TulipUserFactory());
     }
 }
@@ -575,10 +612,10 @@ echo ""
 w3m -dump -cols 200 benchmark_report.html
 ----
 
-=== Benchmark App
+== Benchmark Output - JSON
 
 [.stretch]
-image::Screenshot_20241121_122023.png[]
+image::Screenshot_20241121_143033.png[]
 
 == Benchmark Report - Console
 
@@ -590,10 +627,62 @@ image::Screenshot_20241121_115838.png[]
 [.stretch]
 image::Screenshot_20241121_120824.png[]
 
-== Benchmark Output - JSON
+== Benchmark Report - JSON
 
 [.stretch]
-image::Screenshot_20241121_143033.png[]
+[source,json,linenums]
+----
+{
+  "config": {
+
+  },
+  "benchmarks": {
+    "benchmark1": {
+      "results": {
+        "1": {},
+        "2": {},
+        "3": {},
+        "4": {}
+      },
+      "actions": {
+        "1": {},
+        "2": {},
+        "3": {},
+        "4": {},
+        "summary": {}
+      }
+    }
+    ,"benchmark2": {
+    }
+  }
+}
+----
+
+== Benchmark Execution
+
+[.stretch]
+[plantuml,diag03,svg]
+----
+@startuml
+split
+   -[hidden]->
+   #greenyellow:benchmark_config.json;
+split again
+   -[hidden]->
+   #beige:User.class;
+split again
+   -[hidden]->
+   #beige:App.class;
+split again
+   -[hidden]->
+   #azure:tulip-runtime.jar;
+end split
+:EXECUTE;
+#greenyellow:benchmark_output.json;
+#cadetblue:benchmark_report.json;
+#cadetblue:benchmark_report.html;
+@enduml
+----
 
 == Performance Regression Testing
 
@@ -611,7 +700,7 @@ Applications::
 == User Documentation
 
 [.stretch]
-image::Screenshot_20241121_133907.png[]
+image::Screenshot-2025-08-08-10-33-55-416.png[]
 
 == Maven Central
 
@@ -630,7 +719,7 @@ Gradle::
 +
 [source,toml]
 ----
-implementation("io.github.wfouche.tulip:tulip-runtime:0.1.0")
+implementation("io.github.wfouche.tulip:tulip-runtime:2.1.8")
 ----
 
 JBang::
@@ -638,7 +727,7 @@ JBang::
 [source,java]
 ----
 //usr/bin/env jbang "$0" "$@" ; exit $?
-//DEPS io.github.wfouche.tulip:tulip-runtime:0.1.0
+//DEPS io.github.wfouche.tulip:tulip-runtime:2.1.8
 //SOURCES HttpUser.java
 
 import io.github.wfouche.tulip.api.TulipApi;
@@ -658,7 +747,7 @@ public class App {
 [.stretch]
 image::Screenshot_20241121_130239.png[]
 
-== Performance Testing Programs
+== Load Testing Tools
 
 Apache JMeter (Java)::
 * https://jmeter.apache.org
@@ -688,6 +777,11 @@ https://x.com/gunnarmorling/status/1850492919926391015
 [P]rogram::
 
 &nbsp;
+
+== Tulip
+
+[.stretch]
+image::tulip_logo.png[]
 
 == Enterprise Software Deployment
 
