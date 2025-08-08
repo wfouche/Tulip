@@ -415,10 +415,12 @@ ul.byline li + li {
 }
 </style></head><body><div class="reveal"><div class="slides"><section class="title" data-state="title"><h1>Tulip</h1><h2>Load Testing Toolkit</h2><p class="byline">
   <span class="author">Werner Fouché, &lt;werner.fouche@gmail.com&gt;</span>
-  </p></section><section id="_when_to_do_load_testing"><h2>When to do Load Testing?</h2><div class="slide-content"><div class="imageblock stretch"><img src="Screenshot_20241121_094554.png" alt="Screenshot 20241121 094554" height="100%"></div></div></section>
-<section id="_system_under_test"><h2>System Under Test</h2><div class="slide-content"><div class="imageblock"><img src="diag00.svg" alt="diag00"></div></div></section>
+  </p></section><section id="_why"><h2>Why?</h2><div class="slide-content"><div class="dlist"><dl><dt class="hdlist1">Apache JMeter (Java)</dt><dd><div class="ulist"><ul><li><p><a href="https://jmeter.apache.org" class="bare">https://jmeter.apache.org</a></p></li></ul></div></dd><dt class="hdlist1">Gatling (Scala)</dt><dd><div class="ulist"><ul><li><p><a href="https://gatling.io" class="bare">https://gatling.io</a></p></li></ul></div></dd><dt class="hdlist1">Hyperfoil (Java, Vert.x)</dt><dd><div class="ulist"><ul><li><p><a href="https://hyperfoil.io" class="bare">https://hyperfoil.io</a></p></li></ul></div></dd><dt class="hdlist1">k6 (JavaScript)</dt><dd><div class="ulist"><ul><li><p><a href="https://k6.io/open-source/" class="bare">https://k6.io/open-source/</a></p></li></ul></div></dd><dt class="hdlist1">Locust (Python)</dt><dd><div class="ulist"><ul><li><p><a href="https://locust.io" class="bare">https://locust.io</a></p></li></ul></div></dd><dt class="hdlist1">Tulip (Kotlin with a Java API)</dt><dd><div class="ulist"><ul><li><p><a href="https://wfouche.github.io/Tulip" class="bare">https://wfouche.github.io/Tulip</a></p></li></ul></div></dd></dl></div></div></section>
+<section><section id="_background"><h2>Background</h2><div class="slide-content"><div class="imageblock stretch"><img src="image-2025-08-08-11-04-17-165.png" alt="image 2025 08 08 11 04 17 165" height="100%"></div></div></section><section id="_building_solutions"><h2>Building Solutions</h2><div class="slide-content"><div class="imageblock stretch"><img src="image-2025-08-08-11-08-23-278.png" alt="image 2025 08 08 11 08 23 278" height="100%"></div></div></section><section id="_building_tools_crafting_solutions"><h2>Building Tools, Crafting Solutions</h2><div class="slide-content"><div class="ulist"><ul><li class="fragment"><p>School - kites, electric motor, steam canon, maths as hobby</p></li><li class="fragment"><p>SROS - Stellenbosch Research OS (micro-kernel) (3 years)</p></li><li class="fragment"><p>V Distributed System (1 year, USA)</p></li><li class="fragment"><p>(Software Collage) Pre-Postilion, C++. (1y)</p></li><li class="fragment"><p>Oberon-2 (C backend) for Postilion Sink and Source Nodes</p></li><li class="fragment"><p>PODL (Persistent Object Definition Language) - Postilion 3.x</p></li><li class="fragment"><p>VOS (Virtual OS) - Postilion 3.0 portability layer</p></li><li class="fragment"><p>Postilion 4.0 (Java) (2 years) - Tech Lead</p></li><li class="fragment"><p>Technical Sales Support (4 years, USA)</p></li><li class="fragment"><p>ACI Grinder Benchmarking Toolkit (Python,Java,Jython,C)</p></li><li class="fragment"><p>ACI documentation from CMS to Asciidoc (5 years)</p></li><li class="fragment"><p>Tulip started as a mini-project to evaluate Kotlin</p></li></ul></div></div></section></section>
+<section id="_when_to_do_load_testing"><h2>When to do Load Testing?</h2><div class="slide-content"><div class="imageblock stretch"><img src="Screenshot_20241121_094554.png" alt="Screenshot 20241121 094554" height="100%"></div></div></section>
+<section><section id="_system_under_test"><h2>System Under Test</h2><div class="slide-content"><div class="imageblock"><img src="diag00.svg" alt="diag00"></div></div></section><section id="_functional_testing"><h2>Functional Testing</h2><div class="slide-content"><div class="imageblock stretch"><img src="image-2025-08-08-12-02-40-493.png" alt="image 2025 08 08 12 02 40 493" height="100%"></div></div></section><section id="_load_testing"><h2>Load Testing</h2><div class="slide-content"><div class="imageblock stretch"><img src="image-2025-08-08-12-04-21-792.png" alt="image 2025 08 08 12 04 21 792" height="100%"></div></div></section></section>
 <section id="_performance_requirements"><h2>Performance Requirements</h2><div class="slide-content"><div class="ulist"><ul><li><p>Typically created by the Product Manager or Architect(s).</p><div class="ulist"><ul><li><p>Number of simultaneous users</p></li><li><p>Peak sustained throughput rate, and duration (hours)</p></li><li><p>Response times: average, percentile values and maximum</p></li><li><p>Cloud/hardware budget</p></li></ul></div></li></ul></div></div></section>
-<section id="_performance_testing"><h2>Performance Testing</h2><div class="slide-content"><div class="ulist"><ul><li><p>Simulate typical production or special conditions traffic with <strong>virtual users</strong></p></li><li><p>Validate that the application meets <strong>performance requirements</strong></p><div class="ulist"><ul><li><p>Analyze response times</p></li><li><p>Discover performance bottlenecks</p></li><li><p>Size the underlying infrastructure</p></li></ul></div></li><li><p>Reduce cloud hosting costs</p></li></ul></div></div></section>
+<section id="_performance_testing"><h2>Performance Testing</h2><div class="slide-content"><div class="olist arabic"><ol class="arabic"><li><p>Simulate typical production or special conditions traffic with <strong>virtual users</strong></p></li><li><p>Validate that the application meets <strong>performance requirements</strong></p><div class="ulist"><ul><li><p>Analyze response times</p></li><li><p>Discover performance bottlenecks</p></li><li><p>Size the underlying infrastructure</p></li></ul></div></li><li><p>Reduce <strong>cloud hosting costs</strong></p></li></ol></div></div></section>
 <section><section id="_abstract_user_class"><h2>Abstract User Class</h2><div class="slide-content"><div class="listingblock stretch"><div class="content"><pre class="highlightjs highlight"><code class="language-java hljs" data-noescape="true" data-line-numbers="" data-lang="java">public abstract class TulipUser {
 
    boolean action0() { return true; }
@@ -454,7 +456,7 @@ ul.byline li + li {
         ::onStart,
         ::action1,
         ...
-        ::action98,
+        ::action99,
         ::onStop
     )
 
@@ -463,9 +465,9 @@ ul.byline li + li {
     open fun action1(): Boolean = false
     open fun action2(): Boolean = false
     ...
-    open fun action96(): Boolean = false
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
+    open fun action99(): Boolean = false
 
     open fun onStop(): Boolean = false
 
@@ -573,7 +575,7 @@ public class RedisUser extends TulipUser {
             "2": "HTTP-AUTH",
             "3": "HTTP-COMP",
             "4": "HTTP-REFD",
-            "99": "stop"
+            "100": "stop"
         }
     }
     "contexts": [],
@@ -620,7 +622,7 @@ public class RedisUser extends TulipUser {
         },
         {
             "name": "Shutdown", "enabled": true,
-            "actions": [ { "id": 99 } ]
+            "actions": [ { "id": 100 } ]
             },
         },
     ],
@@ -651,7 +653,7 @@ public class RedisUser extends TulipUser {
         },
         {
             "name": "Shutdown", "enabled": true,
-            "actions": [ { "id": 99 } ]
+            "actions": [ { "id": 100 } ]
             },
         },
     ],

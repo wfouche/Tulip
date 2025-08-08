@@ -5,6 +5,47 @@ Werner Fouché,  <werner.fouche@gmail.com>
 :revealjs_height: 992
 :source-highlighter: highlightjs
 
+== Why?
+
+Apache JMeter (Java)::
+* https://jmeter.apache.org
+Gatling (Scala)::
+* https://gatling.io
+Hyperfoil (Java, Vert.x)::
+* https://hyperfoil.io
+k6 (JavaScript)::
+* https://k6.io/open-source/
+Locust (Python)::
+* https://locust.io
+Tulip (Kotlin with a Java API)::
+* https://wfouche.github.io/Tulip
+
+== Background
+
+[.stretch]
+image::image-2025-08-08-11-04-17-165.png[]
+
+=== Building Solutions
+
+[.stretch]
+image::image-2025-08-08-11-08-23-278.png[]
+
+=== Building Tools, Crafting Solutions
+
+[%step]
+* School - kites, electric motor, steam canon, maths as hobby
+* SROS - Stellenbosch Research OS (micro-kernel) (3 years)
+* V Distributed System (1 year, USA)
+* (Software Collage) Pre-Postilion, C++. (1y)
+* Oberon-2 (C backend) for Postilion Sink and Source Nodes
+* PODL (Persistent Object Definition Language) - Postilion 3.x
+* VOS (Virtual OS) - Postilion 3.0 portability layer
+* Postilion 4.0 (Java) (2 years) - Tech Lead
+* Technical Sales Support (4 years, USA)
+* ACI Grinder Benchmarking Toolkit (Python,Java,Jython,C)
+* ACI documentation from CMS to Asciidoc (5 years)
+* Tulip started as a mini-project to evaluate Kotlin
+
 == When to do Load Testing?
 
 [.stretch]
@@ -50,6 +91,16 @@ Rel_Neighbor(backend_api, banking_system, "Uses", "sync/async, XML/HTTPS")
 @enduml
 ....
 
+=== Functional Testing
+
+[.stretch]
+image::image-2025-08-08-12-02-40-493.png[]
+
+=== Load Testing
+
+[.stretch]
+image::image-2025-08-08-12-04-21-792.png[]
+
 == Performance Requirements
 
 * Typically created by the Product Manager or Architect(s).
@@ -60,12 +111,12 @@ Rel_Neighbor(backend_api, banking_system, "Uses", "sync/async, XML/HTTPS")
 
 == Performance Testing
 
-* Simulate typical production or special conditions traffic with *virtual users*
-* Validate that the application meets *performance requirements*
+. Simulate typical production or special conditions traffic with *virtual users*
+. Validate that the application meets *performance requirements*
 ** Analyze response times
 ** Discover performance bottlenecks
 ** Size the underlying infrastructure
-* Reduce cloud hosting costs
+. Reduce *cloud hosting costs*
 
 == Abstract User Class
 
@@ -124,7 +175,7 @@ open class TulipUser(val userId: Int, val threadId: Int) {
         ::onStart,
         ::action1,
         ...
-        ::action98,
+        ::action99,
         ::onStop
     )
 
@@ -133,9 +184,9 @@ open class TulipUser(val userId: Int, val threadId: Int) {
     open fun action1(): Boolean = false
     open fun action2(): Boolean = false
     ...
-    open fun action96(): Boolean = false
     open fun action97(): Boolean = false
     open fun action98(): Boolean = false
+    open fun action99(): Boolean = false
 
     open fun onStop(): Boolean = false
 
@@ -364,7 +415,7 @@ title rest-api1
             "2": "HTTP-AUTH",
             "3": "HTTP-COMP",
             "4": "HTTP-REFD",
-            "99": "stop"
+            "100": "stop"
         }
     }
     "contexts": [],
@@ -427,7 +478,7 @@ title rest-api1
         },
         {
             "name": "Shutdown", "enabled": true,
-            "actions": [ { "id": 99 } ]
+            "actions": [ { "id": 100 } ]
             },
         },
     ],
@@ -466,7 +517,7 @@ title rest-api1
         },
         {
             "name": "Shutdown", "enabled": true,
-            "actions": [ { "id": 99 } ]
+            "actions": [ { "id": 100 } ]
             },
         },
     ],
