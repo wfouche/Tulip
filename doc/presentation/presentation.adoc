@@ -873,3 +873,23 @@ Rel_Back(email_system, backend_api, "Sends e-mails using", "sync, SMTP")
 Rel_Neighbor(backend_api, banking_system, "Uses", "sync/async, XML/HTTPS")
 @enduml
 ....
+
+== Next Steps?
+
+* Tulip is ready for prime time.
+
+** Help companies to implement Tulip load tests
+
+** Build a benchmark results analysis tool (add-on)
+
+* Write articles to promote Tulip (medium.com)
+
+** Open-source marketing
+
+* Tulip Foundation
+
+** Move Tulip its own Github account
+
+* AWS and other Cloud Platforms
+
+** https://s3.amazonaws.com/load-testing-tools/index.html
