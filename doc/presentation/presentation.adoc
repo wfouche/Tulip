@@ -46,11 +46,6 @@ image::image-2025-08-08-11-08-23-278.png[]
 * ACI documentation from CMS to Asciidoc (5 years)
 * Tulip started as a mini-project to evaluate Kotlin
 
-== When to do Load Testing?
-
-[.stretch]
-image::Screenshot_20241121_094554.png[]
-
 == System Under Test
 
 [plantuml,diag00,svg]
@@ -100,6 +95,11 @@ image::image-2025-08-08-12-02-40-493.png[]
 
 [.stretch]
 image::image-2025-08-08-12-04-21-792.png[]
+
+== When to do Load Testing?
+
+[.stretch]
+image::Screenshot_20241121_094554.png[]
 
 == Performance Requirements
 
@@ -888,7 +888,7 @@ Rel_Neighbor(backend_api, banking_system, "Uses", "sync/async, XML/HTTPS")
 
 * Tulip Foundation
 
-** Move Tulip its own Github account
+** Move Tulip to its own Github account
 
 * AWS and other Cloud Platforms
 
