@@ -971,7 +971,7 @@ def createReport(filename, text):
             rd["p99_rt"] = jh.getValueAtPercentile(99.0)/1000.0
             rd["max_rt"] = sm.max_rt
             rd["max_rt_ts"] = sm.max_rt_ts.replace("_","T")
-            report_json_fh.write('      ,"summary": %s\n'%(json.dumps(rd)))
+            report_json_fh.write('        ,"summary": %s\n'%(json.dumps(rd)))
 
         html = benchmark_summary_row%(
             name2s,
