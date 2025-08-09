@@ -24,18 +24,14 @@ public class HttpUser extends HttpUser_RestClient {
      * @param uri - uri to invoke
      * @param uriVariables - sequence of variables to replace in uri
      * @return boolean
+     * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_GET(String uri, Object... uriVariables) {
-        try {
-            String rsp = restClient().get().uri(uri, uriVariables).retrieve().body(String.class);
-            if (rsp != null && !rsp.isEmpty()) {
-                return rsp;
-            } else {
-                return "";
-            }
-        } catch (RestClientException e) {
-            e.printStackTrace();
+    public String http_GET(String uri, Object... uriVariables) throws RestClientException {
+        String rsp = restClient().get().uri(uri, uriVariables).retrieve().body(String.class);
+        if (rsp != null && !rsp.isEmpty()) {
+            return rsp;
+        } else {
             return "";
         }
     }
@@ -47,25 +43,22 @@ public class HttpUser extends HttpUser_RestClient {
      * @param uri - uri to invoke
      * @param uriVariables - sequence of variables to replace in uri
      * @return boolean
+     * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_POST(String reqBodyJson, String uri, Object... uriVariables) {
-        try {
-            String rsp =
-                    restClient()
-                            .post()
-                            .uri(uri, uriVariables)
-                            .contentType(APPLICATION_JSON)
-                            .body(reqBodyJson)
-                            .retrieve()
-                            .body(String.class);
-            if (rsp != null && !rsp.isEmpty()) {
-                return rsp;
-            } else {
-                return "";
-            }
-        } catch (RestClientException e) {
-            e.printStackTrace();
+    public String http_POST(String reqBodyJson, String uri, Object... uriVariables)
+            throws RestClientException {
+        String rsp =
+                restClient()
+                        .post()
+                        .uri(uri, uriVariables)
+                        .contentType(APPLICATION_JSON)
+                        .body(reqBodyJson)
+                        .retrieve()
+                        .body(String.class);
+        if (rsp != null && !rsp.isEmpty()) {
+            return rsp;
+        } else {
             return "";
         }
     }
@@ -77,25 +70,22 @@ public class HttpUser extends HttpUser_RestClient {
      * @param uri - uri to invoke
      * @param uriVariables - sequence of variables to replace in uri
      * @return boolean
+     * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_PUT(String reqBodyJson, String uri, Object... uriVariables) {
-        try {
-            String rsp =
-                    restClient()
-                            .put()
-                            .uri(uri, uriVariables)
-                            .contentType(APPLICATION_JSON)
-                            .body(reqBodyJson)
-                            .retrieve()
-                            .body(String.class);
-            if (rsp != null && !rsp.isEmpty()) {
-                return rsp;
-            } else {
-                return "";
-            }
-        } catch (RestClientException e) {
-            e.printStackTrace();
+    public String http_PUT(String reqBodyJson, String uri, Object... uriVariables)
+            throws RestClientException {
+        String rsp =
+                restClient()
+                        .put()
+                        .uri(uri, uriVariables)
+                        .contentType(APPLICATION_JSON)
+                        .body(reqBodyJson)
+                        .retrieve()
+                        .body(String.class);
+        if (rsp != null && !rsp.isEmpty()) {
+            return rsp;
+        } else {
             return "";
         }
     }
@@ -107,25 +97,22 @@ public class HttpUser extends HttpUser_RestClient {
      * @param uri - uri to invoke
      * @param uriVariables - sequence of variables to replace in uri
      * @return boolean
+     * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_PATCH(String reqBodyJson, String uri, Object... uriVariables) {
-        try {
-            String rsp =
-                    restClient()
-                            .patch()
-                            .uri(uri, uriVariables)
-                            .contentType(APPLICATION_JSON)
-                            .body(reqBodyJson)
-                            .retrieve()
-                            .body(String.class);
-            if (rsp != null && !rsp.isEmpty()) {
-                return rsp;
-            } else {
-                return "";
-            }
-        } catch (RestClientException e) {
-            e.printStackTrace();
+    public String http_PATCH(String reqBodyJson, String uri, Object... uriVariables)
+            throws RestClientException {
+        String rsp =
+                restClient()
+                        .patch()
+                        .uri(uri, uriVariables)
+                        .contentType(APPLICATION_JSON)
+                        .body(reqBodyJson)
+                        .retrieve()
+                        .body(String.class);
+        if (rsp != null && !rsp.isEmpty()) {
+            return rsp;
+        } else {
             return "";
         }
     }
@@ -136,26 +123,15 @@ public class HttpUser extends HttpUser_RestClient {
      * @param uri - uri to invoke
      * @param uriVariables - sequence of variables to replace in uri
      * @return boolean
+     * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_DELETE(String uri, Object... uriVariables) {
-        try {
-            String rsp = restClient().delete().uri(uri, uriVariables).retrieve().body(String.class);
-            if (rsp != null && !rsp.isEmpty()) {
-                return rsp;
-            } else {
-                return "";
-            }
-        } catch (RestClientException e) {
-            e.printStackTrace();
+    public String http_DELETE(String uri, Object... uriVariables) throws RestClientException {
+        String rsp = restClient().delete().uri(uri, uriVariables).retrieve().body(String.class);
+        if (rsp != null && !rsp.isEmpty()) {
+            return rsp;
+        } else {
             return "";
         }
     }
-
-    //    // Action 1: GET /posts/{id}
-    //    public boolean action1() {
-    //        int id = ThreadLocalRandom.current().nextInt(100)+1;
-    //        return !http_GET("/posts/{id}", id).isEmpty();
-    //    }
-
 }
