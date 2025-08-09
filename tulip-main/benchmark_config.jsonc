@@ -59,7 +59,7 @@
         },
         "1m TPS": {
             "enabled": true,
-            "aps_rate": 1000000.0,
+            "aps_rate": 100000.0,
             "worker_thread_queue_size": 0,
             "time": {
                 "pre_warmup_duration": 15,
