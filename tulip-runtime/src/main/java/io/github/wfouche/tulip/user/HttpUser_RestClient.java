@@ -216,15 +216,4 @@ public class HttpUser_RestClient extends TulipUser {
         return https[getUserId() % https.length].urlPath;
     }
 
-    /**
-     * logger() method
-     *
-     * @return Logger
-     */
-    public Logger logger() {
-        return logger;
-    }
-
-    // Logger
-    private static final Logger logger = LoggerFactory.getLogger(HttpUser_RestClient.class);
 }
