@@ -31,7 +31,7 @@ private fun serviceCall(request:HttpRequest): Boolean {
 
 /*-------------------------------------------------------------------------*/
 
-class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
+class TestHttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
@@ -132,7 +132,7 @@ class HttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     companion object {
-        private val logger: Logger = LoggerFactory.getLogger(HttpUser::class.java)
+        private val logger: Logger = LoggerFactory.getLogger(TestHttpUser::class.java)
     }
 
 }

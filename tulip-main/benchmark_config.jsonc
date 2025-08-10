@@ -3,7 +3,7 @@
         "description": "Micro-benchmarks",
         "output_filename": "benchmark_output.json",
         "report_filename": "benchmark_report.html",
-        "user_class": "org.example.user.HttpUser",
+        "user_class": "org.example.user.TestHttpUser",
         "user_params": {
             //"url": "https://jsonplaceholder.typicode.com",
             "url": "http://localhost:7070",
