@@ -4,6 +4,8 @@ import io.github.wfouche.tulip.core.Console
 import io.github.wfouche.tulip.core.actionNames
 import io.github.wfouche.tulip.core.g_config
 import io.github.wfouche.tulip.core.g_workflow
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
 
 abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
 
@@ -331,7 +333,7 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
         return try {
             map[actionId]()
         } catch (e: Exception) {
-            Console.put(
+            getLogger().info(
                 "actionId: ${actionId}, userId: ${userId}, threadId: ${threadId}, " + e.toString())
             false
         }
@@ -369,4 +371,10 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
             }
         }
     }
+
+    open fun getLogger(): Logger {
+        return logger;
+    }
+
+    private val logger: Logger = LoggerFactory.getLogger(TulipUser::class.java)
 }
