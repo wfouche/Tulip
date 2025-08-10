@@ -23,48 +23,80 @@ java {
 }
 
 dependencies {
+    // - Micrometer
+
     // https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-jmx
     // implementation("io.micrometer:micrometer-registry-jmx:1.14.3")
+
+    // - HdrHistogram
 
     // https://mvnrepository.com/artifact/org.hdrhistogram/HdrHistogram
     implementation("org.hdrhistogram:HdrHistogram:2.2.2")
 
+    // - Jython
+
     // https://mvnrepository.com/artifact/org.python/jython-standalone
     implementation("org.python:jython-slim:2.7.4")
+
+    // - Kotlin JSON Serialization
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
     implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
 
+    // - Leego Banana
+
     // https://mvnrepository.com/artifact/io.leego/banana
     implementation("io.leego:banana:2.1.0")
+
+    // - Google
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:2.13.1")
 
+    // https://mvnrepository.com/artifact/com.google.guava/guava
+    implementation("com.google.guava:guava:33.4.8-jre")
+
+    // - Html Mermaid Dokka Plugin
+
     // https://mvnrepository.com/artifact/com.glureau/html-mermaid-dokka-plugin
     dokkaPlugin("com.glureau:html-mermaid-dokka-plugin:0.6.0")
+
+    // - Kotlin Logging
 
     // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
     // implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
+    // - Spring Boot
+
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
     implementation("org.springframework.boot:spring-boot-starter-web:3.5.4")
+
+    // - SLF4J and Logback
+
+    // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
     implementation("org.slf4j:slf4j-api:2.0.17")
+
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
     implementation("ch.qos.logback:logback-core:1.5.18")
+
+    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
     implementation("ch.qos.logback:logback-classic:1.5.18")
 
-    // Apache HttpClient
+    // - Apache HttpClient
+
+    // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
     implementation("org.apache.httpcomponents.client5:httpclient5:5.5")
 
-    // Asciidoctor
+    // - Asciidoctor
+
+    // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj
     implementation("org.asciidoctor:asciidoctorj:3.0.0")
+
+    // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj-diagram
     implementation("org.asciidoctor:asciidoctorj-diagram:3.0.1")
+
+    // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj-diagram-plantuml
     implementation("org.asciidoctor:asciidoctorj-diagram-plantuml:1.2025.3")
-
-    // Google
-    implementation("com.google.guava:guava:33.4.8-jre")
-
-    // PlantUML
-    // implementation("net.sourceforge.plantuml:plantuml:1.2022.1")
 }
 
 tasks.withType<JavaCompile>().configureEach {
