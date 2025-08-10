@@ -455,8 +455,8 @@ td:nth-child(n+14) {
     <th>Avg_Rt</th>
     <th>Stdev</th>
     <th>Min_Rt</th>
-    <th>90p_Rt</th>
-    <th>99p_Rt</th>
+    <th>p90_Rt</th>
+    <th>p99_Rt</th>
     <th>Max_Rt</th>
     <th>Max_Rtt</th>
     <th>AQS</th>
@@ -480,8 +480,8 @@ benchmark_columns = '''
     <th>Avg_Rt</th>
     <th>Stdev</th>
     <th>Min_Rt</th>
-    <th>90p_Rt</th>
-    <th>99p_Rt</th>
+    <th>p90_Rt</th>
+    <th>p99_Rt</th>
     <th>Max_Rt</th>
     <th>Max_Rtt</th>
     <th>AQS</th>
@@ -963,14 +963,22 @@ def createReport(filename, text):
             rd["num_actions"] = sm.num_actions
             rd["num_failed"] = sm.num_failed
             rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
-            rd["avg_aps"] = avg_aps
+            rd["aps"] = avg_aps
             rd["avg_rt"] = jh.getMean()/1000.0
-            rd["std_rt"] = jh.getStdDeviation()/1000.0
+            rd["stdev"] = jh.getStdDeviation()/1000.0
             rd["min_rt"] = sm.min_rt
             rd["p90_rt"] = jh.getValueAtPercentile(90.0)/1000.0
             rd["p99_rt"] = jh.getValueAtPercentile(99.0)/1000.0
             rd["max_rt"] = sm.max_rt
-            rd["max_rt_ts"] = sm.max_rt_ts.replace("_","T")
+            rd["max_rtt"] = sm.max_rt_ts.replace("_","T")
+            rd["AQS"] = sm.avg_qs
+            rd["MQS"] = sm.max_qs
+            rd["AWT"] = sm.max_awt
+            rd["MWT"] = sm.max_wt
+            rd["CPU_T"] = cpu_t
+            rd["CPU"] = sm.cpu
+            rd["MEM"] = sm.mem
+
             report_json_fh.write('        ,"summary": %s\n'%(json.dumps(rd)))
 
         html = benchmark_summary_row%(
@@ -1157,14 +1165,14 @@ def createReport(filename, text):
                 rd["num_actions"] = smx.num_actions
                 rd["num_failed"] = smx.num_failed
                 rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
-                rd["avg_aps"] = avg_aps
+                rd["aps"] = avg_aps
                 rd["avg_rt"] = jhx.getMean()/1000.0
-                rd["std_rt"] = jhx.getStdDeviation()/1000.0
+                rd["stdev"] = jhx.getStdDeviation()/1000.0
                 rd["min_rt"] = smx.min_rt
                 rd["p90_rt"] = jhx.getValueAtPercentile(90.0)/1000.0
                 rd["p99_rt"] = jhx.getValueAtPercentile(99.0)/1000.0
                 rd["max_rt"] = smx.max_rt
-                rd["max_rt_ts"] = smx.max_rt_ts.replace("_","T")
+                rd["max_rtt"] = smx.max_rt_ts.replace("_","T")
                 if page_id == 0:
                     report_json_fh.write('      }\n')
                     report_json_fh.write('      ,"actions": {\n')
@@ -1238,14 +1246,21 @@ def createReport(filename, text):
             rd["num_actions"] = e["num_actions"]
             rd["num_failed"] = e["num_failed"]
             rd["duration"] = str(datetime.timedelta(seconds=int(e["duration"])))
-            rd["avg_aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
+            rd["aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
             rd["avg_rt"] = e["avg_rt"]
-            rd["std_rt"] = ht.getStdDeviation()/1000.0
+            rd["stdev"] = ht.getStdDeviation()/1000.0
             rd["min_rt"] = e["min_rt"]
             rd["p90_rt"] = e["percentiles_rt"]["90.0"]
             rd["p99_rt"] = e["percentiles_rt"]["99.0"]
             rd["max_rt"] = e["max_rt"]
-            rd["max_rt_ts"] = e["max_rt_ts"].replace("_","T")
+            rd["max_rtt"] = e["max_rt_ts"].replace("_","T")
+            rd["AQS"] = e["avg_wthread_qsize"]
+            rd["MQS"] = e["max_wthread_qsize"]
+            rd["AWT"] = e["avg_wt"]
+            rd["MWT"] = e["max_wt"]
+            rd["CPU_T"] = cpu_t
+            rd["CPU"] = p_cpu
+            rd["MEM"] = p_mem
             if e["row_id"]+1 == 1:
                 report_json_fh.write('         "%d": %s\n'%(e["row_id"]+1,json.dumps(rd)))
             else:
