@@ -18,6 +18,8 @@ class TestHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
         if (userId == 0) {
             logger.info("Kotlin")
             super.onStart()
+            // not required, just for testing
+            val s: String = getActionName(0);
         }
         return true
     }
