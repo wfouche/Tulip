@@ -8,12 +8,25 @@ group = "io.github.wfouche.tulip"
 version = "2.1.9-dev"
 
 plugins {
+    // https://plugins.gradle.org/plugin/com.github.ben-manes.versions
     id("com.github.ben-manes.versions") version "0.52.0"
+
+    // Gradle convention plugin for Kotlin libraries
     id("buildlogic.kotlin-library-conventions")
+    
+    // Core Gradle plugin
     `maven-publish`
+    
+    // https://plugins.gradle.org/plugin/org.jreleaser
     id("org.jreleaser") version "1.19.0"
+
+    // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
+
+    // https://plugins.gradle.org/plugin/org.jetbrains.dokka
     id("org.jetbrains.dokka") version "2.0.0"
+
+    // https://plugins.gradle.org/plugin/com.diffplug.spotless
     id("com.diffplug.spotless") version "7.2.1"
 }
 
