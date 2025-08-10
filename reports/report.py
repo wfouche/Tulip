@@ -1168,7 +1168,7 @@ def createReport(filename, text):
                 if page_id == 0:
                     report_json_fh.write('      }\n')
                     report_json_fh.write('      ,"actions": {\n')
-                    report_json_fh.write('        "%s": %s\n'%(key,json.dumps(rd)))
+                    report_json_fh.write('         "%s": %s\n'%(key,json.dumps(rd)))
                 else:
                     report_json_fh.write('        ,"%s": %s\n'%(key,json.dumps(rd)))
 
