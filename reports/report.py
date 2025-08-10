@@ -1247,7 +1247,7 @@ def createReport(filename, text):
             rd["max_rt"] = e["max_rt"]
             rd["max_rt_ts"] = e["max_rt_ts"].replace("_","T")
             if e["row_id"]+1 == 1:
-                report_json_fh.write('        "%d": %s\n'%(e["row_id"]+1,json.dumps(rd)))
+                report_json_fh.write('         "%d": %s\n'%(e["row_id"]+1,json.dumps(rd)))
             else:
                 report_json_fh.write('        ,"%d": %s\n'%(e["row_id"]+1,json.dumps(rd)))
         if print_detail_rows:
