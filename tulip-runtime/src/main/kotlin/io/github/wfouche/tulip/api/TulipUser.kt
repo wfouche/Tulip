@@ -332,8 +332,10 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
         return try {
             map[actionId]()
         } catch (e: Exception) {
-            getLogger().info(
-                "actionId: ${actionId}, userId: ${userId}, threadId: ${threadId}, " + e.toString())
+            getLogger()
+                .info(
+                    "actionId: ${actionId}, userId: ${userId}, threadId: ${threadId}, " +
+                        e.toString())
             false
         }
     }
@@ -372,7 +374,7 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
     }
 
     open fun getLogger(): Logger {
-        return logger;
+        return logger
     }
 
     companion object {
