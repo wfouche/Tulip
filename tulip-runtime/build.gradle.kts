@@ -13,10 +13,10 @@ plugins {
 
     // Gradle convention plugin for Kotlin libraries
     id("buildlogic.kotlin-library-conventions")
-    
+
     // Core Gradle plugin
     `maven-publish`
-    
+
     // https://plugins.gradle.org/plugin/org.jreleaser
     id("org.jreleaser") version "1.19.0"
 
