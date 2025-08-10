@@ -332,10 +332,8 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
         return try {
             map[actionId]()
         } catch (e: Exception) {
-            getLogger()
-                .info(
-                    "actionId: ${actionId}, userId: ${userId}, threadId: ${threadId}, " +
-                        e.toString())
+            val msg: String = "actionId: ${actionId}, userId: ${userId}, threadId: ${threadId}"
+            getLogger().error(msg, e)
             false
         }
     }
