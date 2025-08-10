@@ -5,6 +5,8 @@ import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.time.Duration;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
@@ -49,7 +51,7 @@ public class HttpUser_RestClient extends TulipUser {
         var httpVersion_ = getUserParamValue("httpVersion").toUpperCase();
 
         if (url_.isEmpty()) {
-            getLogger().error("\"url\" property is empty");
+            logger.error("\"url\" property is empty");
             return false;
         }
 
@@ -97,19 +99,19 @@ public class HttpUser_RestClient extends TulipUser {
         if (https[idx].urlPort != -1) {
             baseUrl += ":" + https[idx].urlPort;
         }
-        getLogger().info("[{}]baseUrl={}", idx, baseUrl);
+        logger.info("[{}]baseUrl={}", idx, baseUrl);
 
         if (httpVersion_.isEmpty()) {
             httpVersion_ = "*";
         }
-        getLogger().info("[{}]httpVersion={}", idx, httpVersion_);
+        logger.info("[{}]httpVersion={}", idx, httpVersion_);
 
         // HTTP 1.1 or HTTP/2
         HttpClient httpClient = null;
         if (httpVersion_.equals("HTTP_1_1")) {
             // HTTP 1.1
             if (!connectTimeout_.isEmpty()) {
-                getLogger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
+                logger.info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
                 httpClient =
                         HttpClient.newBuilder()
                                 .version(HttpClient.Version.HTTP_1_1)
@@ -122,7 +124,7 @@ public class HttpUser_RestClient extends TulipUser {
         } else if (httpVersion_.equals("HTTP_2")) {
             // HTTP/2
             if (!connectTimeout_.isEmpty()) {
-                getLogger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
+                logger.info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
                 httpClient =
                         HttpClient.newBuilder()
                                 .version(HttpClient.Version.HTTP_2)
@@ -137,12 +139,12 @@ public class HttpUser_RestClient extends TulipUser {
 
             if (!connectTimeout_.isEmpty()) {
                 factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-                getLogger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
+                logger.info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
             }
 
             if (!readTimeout_.isEmpty()) {
                 factory.setReadTimeout(Integer.parseInt(readTimeout_));
-                getLogger().info("[{}]readTimeoutMillis={}", idx, readTimeout_);
+                logger.info("[{}]readTimeoutMillis={}", idx, readTimeout_);
             }
             client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
         }
@@ -150,7 +152,7 @@ public class HttpUser_RestClient extends TulipUser {
             var factory = new JdkClientHttpRequestFactory(httpClient);
             if (!readTimeout_.isEmpty()) {
                 factory.setReadTimeout(Integer.parseInt(readTimeout_));
-                getLogger().info("[{}]readTimeoutMillis={}", idx, readTimeout_);
+                logger.info("[{}]readTimeoutMillis={}", idx, readTimeout_);
             }
             client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
         }
@@ -213,4 +215,7 @@ public class HttpUser_RestClient extends TulipUser {
     public String getUrlPath() {
         return https[getUserId() % https.length].urlPath;
     }
+
+    // Logger
+    private static final Logger logger = LoggerFactory.getLogger(HttpUser_RestClient.class);
 }
