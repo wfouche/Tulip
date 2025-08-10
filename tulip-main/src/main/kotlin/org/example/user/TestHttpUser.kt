@@ -17,7 +17,7 @@ class TestHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     override fun onStart(): Boolean {
         if (userId == 0) {
             logger.info("Kotlin")
-            super.onStop()
+            super.onStart()
         }
         return true
     }
