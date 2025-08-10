@@ -11,7 +11,7 @@ plugins {
     id("com.github.ben-manes.versions") version "0.52.0"
     id("buildlogic.kotlin-library-conventions")
     `maven-publish`
-    id("org.jreleaser") version "1.18.0"
+    id("org.jreleaser") version "1.19.0"
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
     id("org.jetbrains.dokka") version "2.0.0"
     id("com.diffplug.spotless") version "7.2.1"
