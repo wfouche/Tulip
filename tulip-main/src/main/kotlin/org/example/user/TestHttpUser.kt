@@ -2,6 +2,7 @@ package org.example.user
 
 /*-------------------------------------------------------------------------*/
 
+import io.github.wfouche.tulip.api.TulipUser
 import io.github.wfouche.tulip.api.TulipUtils
 import io.github.wfouche.tulip.user.HttpUser
 import java.util.concurrent.ThreadLocalRandom
@@ -93,6 +94,10 @@ class TestHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     }
 
     // ----------------------------------------------------------------- //
+
+    override fun getLogger(): Logger {
+        return logger;
+    }
 
     companion object {
         private val logger: Logger = LoggerFactory.getLogger(TestHttpUser::class.java)

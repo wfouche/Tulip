@@ -1,6 +1,5 @@
 package io.github.wfouche.tulip.api
 
-import io.github.wfouche.tulip.core.Console
 import io.github.wfouche.tulip.core.actionNames
 import io.github.wfouche.tulip.core.g_config
 import io.github.wfouche.tulip.core.g_workflow
@@ -376,5 +375,7 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
         return logger;
     }
 
-    private val logger: Logger = LoggerFactory.getLogger(TulipUser::class.java)
+    companion object {
+        private val logger: Logger = LoggerFactory.getLogger(TulipUser::class.java)
+    }
 }
