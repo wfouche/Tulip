@@ -29,6 +29,10 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         return true
     }
 
+    override fun getLogger(): Logger {
+        return logger
+    }
+
     companion object {
         private val logger: Logger = LoggerFactory.getLogger(DemoUser::class.java)
     }

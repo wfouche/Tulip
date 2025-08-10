@@ -95,7 +95,7 @@ class TestHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun getLogger(): Logger {
-        return logger;
+        return logger
     }
 
     companion object {
