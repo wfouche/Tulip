@@ -3,51 +3,21 @@ package org.example.user
 /*-------------------------------------------------------------------------*/
 
 import io.github.wfouche.tulip.api.TulipUtils
-import io.github.wfouche.tulip.api.TulipUser
-import java.net.URI
-import java.net.http.HttpClient
-import java.net.http.HttpRequest
-import java.net.http.HttpResponse
-
+import io.github.wfouche.tulip.user.HttpUser
+import java.util.concurrent.ThreadLocalRandom
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 /*-------------------------------------------------------------------------*/
 
-private val client = HttpClient.newHttpClient()
-
-private fun serviceCall(request:HttpRequest): Boolean {
-    // https://www.baeldung.com/java-httpclient-connection-management
-
-    val response = client.send(request, HttpResponse.BodyHandlers.ofString())
-
-    //println(id)
-    //println(name)
-    //println(response.statusCode())
-    //println(response.body())
-
-    return (response.statusCode() == 200)
-}
-
-/*-------------------------------------------------------------------------*/
-
-class TestHttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
+class TestHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     // ----------------------------------------------------------------- //
 
-    private val requestPosts = createRequest("posts")
-    private val requestComments = createRequest("comments")
-    private val requestAlbums = createRequest("albums")
-    private val requestPhotos = createRequest("photos")
-    private val requestTodos = createRequest("todos")
-
     override fun onStart(): Boolean {
         if (userId == 0) {
-            var s = ""
-            s = "debug: " + getUserParamValue("debug").toBoolean()
-            logger.info(s)
-            s = "http_port: " + getUserParamValue("http_port").toInt()
-            logger.info(s)
+            logger.info("Kotlin")
+            super.onStop()
         }
         return true
     }
@@ -71,23 +41,28 @@ class TestHttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     // ----------------------------------------------------------------- //
 
     override fun action3(): Boolean {
-        return serviceCall(requestPosts)
+        val id: Int = ThreadLocalRandom.current().nextInt(100)+1
+        return !http_GET("/posts/{id}", id).isEmpty()
     }
 
     override fun action4(): Boolean {
-        return serviceCall(requestComments)
+        val id: Int = ThreadLocalRandom.current().nextInt(500)+1
+        return !http_GET("/comments/{id}", id).isEmpty()
     }
 
     override fun action5(): Boolean {
-        return serviceCall(requestAlbums)
+        val id: Int = ThreadLocalRandom.current().nextInt(100)+1
+        return !http_GET("/albums/{id}", id).isEmpty()
     }
 
     override fun action6(): Boolean {
-        return serviceCall(requestPhotos)
+        val id: Int = ThreadLocalRandom.current().nextInt(5000)+1
+        return !http_GET("/photos/{id}", id).isEmpty()
     }
 
     override fun action7(): Boolean {
-        return serviceCall(requestTodos)
+        val id: Int = ThreadLocalRandom.current().nextInt(200)+1
+        return !http_GET("/todos/{id}", id).isEmpty()
     }
 
     // ----------------------------------------------------------------- //
@@ -115,18 +90,6 @@ class TestHttpUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         logger.info("  Terminate: UserId = $userId")
         Thread.sleep(100)
         return true
-    }
-
-    // ----------------------------------------------------------------- //
-
-    private fun createRequest(name: String): HttpRequest {
-        val id = userId + 1
-        val url: String = this.getUserParamValue("url")
-        val request:HttpRequest = HttpRequest.newBuilder()
-            .uri(URI("${url}/${name}/${id}"))
-            .GET()
-            .build()
-        return request
     }
 
     // ----------------------------------------------------------------- //
