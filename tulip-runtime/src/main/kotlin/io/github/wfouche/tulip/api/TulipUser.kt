@@ -333,7 +333,7 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
             map[actionId]()
         } catch (e: Exception) {
             val msg: String = "actionId: ${actionId}, userId: ${userId}, threadId: ${threadId}"
-            getLogger().error(msg, e)
+            logger().error(msg, e)
             false
         }
     }
@@ -371,7 +371,7 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
         }
     }
 
-    open fun getLogger(): Logger {
+    open fun logger(): Logger {
         return logger
     }
 

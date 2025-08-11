@@ -29,7 +29,7 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         return true
     }
 
-    override fun getLogger(): Logger {
+    override fun logger(): Logger {
         return logger
     }
 
