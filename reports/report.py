@@ -1252,6 +1252,7 @@ def createReport(filename, text):
             rd["num_failed"] = e["num_failed"]
             rd["duration"] = str(datetime.timedelta(seconds=int(e["duration"])))
             rd["aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
+            rd["aps_target_rate"] = e["aps_target_rate"]
             rd["avg_rt"] = e["avg_rt"]
             rd["stdev"] = ht.getStdDeviation()/1000.0
             rd["min_rt"] = e["min_rt"]
