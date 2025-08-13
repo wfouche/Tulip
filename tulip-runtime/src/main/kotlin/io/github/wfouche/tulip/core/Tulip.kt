@@ -510,6 +510,7 @@ private data class ActionSummary(
     var histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
     var durationSeconds: Double = 0.0,
     var aps: Double = 0.0,
+    var aps_target: Double = 0.0,
     var art: Double = 0.0,
     var sdev: Double = 0.0,
     var minRt: Double = 0.0,
@@ -559,7 +560,8 @@ private class ActionStats {
         tsEnd: String,
         testPhase: String,
         runId: Int,
-        cpuTime: Long
+        cpuTime: Long,
+        aps_target: Double
     ) {
         r.actionId = actionId
 
@@ -581,6 +583,7 @@ private class ActionStats {
 
         // actions per second (aps)
         r.aps = numActions / r.durationSeconds
+        r.aps_target = aps_target
 
         // average response time (art) in milliseconds
         r.art = histogram.mean / 1000.0
@@ -758,7 +761,7 @@ private class ActionStats {
 
         results += ", \"num_actions\": ${numActions}, \"num_failed\": ${numActions - numSuccess}"
         results +=
-            ", \"avg_aps\": ${r.aps}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
+            ", \"avg_aps\": ${r.aps}, \"aps_target_rate\": ${r.aps_target}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
 
         results += ", \"percentiles_rt\": {"
         var t = ""
@@ -843,7 +846,8 @@ private object DataCollector {
         tsEnd: String,
         testPhase: String,
         runId: Int,
-        cpuTime: Long
+        cpuTime: Long,
+        apsTarget: Double
     ) {
         actionStats[NUM_ACTIONS].createSummary(
             NUM_ACTIONS,
@@ -856,7 +860,8 @@ private object DataCollector {
             tsEnd,
             testPhase,
             runId,
-            cpuTime)
+            cpuTime,
+            apsTarget)
         actionStats.forEachIndexed { index, data ->
             if (data.numActions > 0) {
                 if (index != NUM_ACTIONS) {
@@ -871,7 +876,8 @@ private object DataCollector {
                         tsEnd,
                         testPhase,
                         -1,
-                        0L)
+                        0L,
+                        0.0)
                 }
             }
         }
@@ -1386,7 +1392,8 @@ private fun runTest(
                 tsEnd,
                 "Benchmark",
                 0,
-                cpuTime)
+                cpuTime,
+                0.0)
             DataCollector.printStats()
             if (testCase.saveStats) DataCollector.saveStatsJson(testCase.filename)
         }
@@ -1432,6 +1439,7 @@ private fun runTest(
         val nanosPerAction: Double
         val numActionsMax: Long
         var numActions: Long = 0
+        var apsRate: Double = 0.0
         if (arrivalRate > -1.0) {
             // Warm-up duration at max speed, ungoverned.
             nanosPerAction = 0.0
@@ -1445,6 +1453,7 @@ private fun runTest(
                 // rate limited, calculate time ns per action
                 nanosPerAction = 1000000000.0 / _arrivalRate
                 numActionsMax = (_arrivalRate * durationMillis / 1000.0).toLong()
+                apsRate = _arrivalRate
             } else {
                 // Not rate limited
                 nanosPerAction = 0.0
@@ -1499,7 +1508,8 @@ private fun runTest(
                 tsEnd,
                 testPhase,
                 runId,
-                cpuTime)
+                cpuTime,
+                apsRate)
             DataCollector.printStats()
             if (testPhase == "Benchmark") {
                 if (testCase.saveStats) DataCollector.saveStatsJson(testCase.filename)
