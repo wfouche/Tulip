@@ -1239,6 +1239,11 @@ def createReport(filename, text):
                 report_json_fh.write('      }\n')
                 report_json_fh.write('    },\n')
             report_json_fh.write('    "%s": {\n'%(e["bm_name"]))
+            context = {}
+            context["name"] = e["context_name"]
+            context["num_users"] = e["num_users"]
+            context["num_threads"] = e["num_threads"]
+            report_json_fh.write('      "context": %s,'%(json.dumps(context)))
             report_json_fh.write('      "results": {\n')
 
         if True:
