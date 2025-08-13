@@ -743,6 +743,8 @@ class Summary:
         self.cpu_time_ns = 0
         self.chart_t_list = []   # ['2018-04-10T20:40:33.100', 1100, 0]
         self.chart_p_list = []   # ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30]
+        self.aps_count = 0.0
+        self.aps_target_sum = 0.0
 
 def createReport(filename, text):
 
@@ -964,6 +966,7 @@ def createReport(filename, text):
             rd["num_failed"] = sm.num_failed
             rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
             rd["aps"] = avg_aps
+            rd["aps_target_rate"] = sm.aps_target_sum / sm.aps_count
             rd["avg_rt"] = jh.getMean()/1000.0
             rd["stdev"] = jh.getStdDeviation()/1000.0
             rd["min_rt"] = sm.min_rt
@@ -1318,6 +1321,8 @@ def createReport(filename, text):
         if sm.cpu < p_cpu:
             sm.cpu = p_cpu
         sm.cpu_time_ns += e["process_cpu_time_ns"]
+        sm.aps_count += 1.0
+        sm.aps_target_sum += e["aps_target_rate"]
 
         if len(sm.chart_t_list) == -1:
             sm.chart_t_list.append(
