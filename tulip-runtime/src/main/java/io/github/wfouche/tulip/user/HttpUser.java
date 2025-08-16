@@ -2,6 +2,7 @@ package io.github.wfouche.tulip.user;
 
 import static org.springframework.http.MediaType.APPLICATION_JSON;
 
+import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
 import org.springframework.web.client.RestClientException;
 
@@ -16,6 +17,16 @@ public class HttpUser extends HttpUser_RestClient {
      */
     public HttpUser(int userId, int threadId) {
         super(userId, threadId);
+    }
+
+    /**
+     * HttpUser() constructor
+     *
+     * @param config - test config
+     */
+    public HttpUser(HashMap<String, String> config) {
+        super(0, 0);
+        this.config = config;
     }
 
     /**
@@ -134,4 +145,20 @@ public class HttpUser extends HttpUser_RestClient {
             return "";
         }
     }
+
+    /**
+     * getUserParamValue() method
+     *
+     * @param paramName - key to return value for from config
+     */
+    @NotNull
+    public String getUserParamValue(@NotNull String paramName) {
+        String value = config.get(paramName);
+        if (value == null) {
+            return "";
+        }
+        return value;
+    }
+
+    private HashMap<String, String> config = null;
 }
