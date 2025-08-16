@@ -1,0 +1,106 @@
+package org.example.lib
+
+import io.github.wfouche.tulip.user.HttpUser
+import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.Test
+import org.slf4j.Logger
+import org.slf4j.LoggerFactory
+import java.util.concurrent.ThreadLocalRandom
+
+class TulipLibHttpUserTest {
+
+    val config: HashMap<String, String> = HashMap<String, String>()
+    val user: HttpUser
+
+    init {
+        config.put("url", "http://jsonplaceholder.typicode.com/posts/1")
+        config.put("httpVersion", "HTTP_1_1")
+        config.put("connectTimeoutMillis", "500")
+        config.put("readTimeoutMillis", "2000")
+
+        user = HttpUser(config)
+        user.onStart()
+    }
+
+    // Action 1: GET /posts/{id}
+    @Test
+    fun action1() {
+        logger().info("action1: GET /posts/{id}")
+        val id = ThreadLocalRandom.current().nextInt(100) + 1
+        val rsp: String = user.http_GET("/posts/{id}", id)
+        if (rsp.isEmpty()) {
+            logger().error("Failed to GET /posts/{}", id)
+            assertEquals(0, 1)
+        }
+        logger().info("GET /posts/{} response: {}", id, rsp)
+        assertEquals(0, 0)
+    }
+
+    // Action 2: POST /posts
+    @Test
+    fun action2() {
+        logger().info("action2: POST /posts")
+        val body = "{\"title\": \"foo\", \"body\": \"bar\", \"userId\": 1}"
+        val rsp: String = user.http_POST(body, "/posts")
+        if (rsp.isEmpty()) {
+            logger().error("Failed to POST /posts")
+            assertEquals(0, 1)
+        }
+        logger().info("POST /posts response: {}", rsp)
+        assertEquals(0, 0)
+    }
+
+    // Action 3: PUT /posts/{id}
+    @Test
+    fun action3() {
+        logger().info("action3: PUT /posts/{id}")
+        val id = ThreadLocalRandom.current().nextInt(100) + 1
+        val body = "{\"id\": " + id + ", \"title\": \"updated title\"" + ", \"body\": \"updated body\", \"userId\": 1}"
+        val rsp: String = user.http_PUT(body, "/posts/{id}", id)
+        if (rsp.isEmpty()) {
+            logger().error("Failed to PUT /posts/{}", id)
+            assertEquals(0, 1)
+        }
+        logger().info("PUT /posts/{} response: {}", id, rsp)
+        assertEquals(0, 0)
+    }
+
+    // Action 4: PATCH /posts/{id}
+    @Test
+    fun action4() {
+        logger().info("action4: PATCH /posts/{id}")
+        val id = ThreadLocalRandom.current().nextInt(100) + 1
+        val body = "{\"title\": \"patched title\"}"
+        val rsp: String = user.http_PATCH(body, "/posts/{id}", id)
+        if (rsp.isEmpty()) {
+            logger().error("Failed to PATCH /posts/{}", id)
+            assertEquals(0, 1)
+        }
+        logger().info("PATCH /posts/{} response: {}", id, rsp)
+        assertEquals(0, 0)
+    }
+
+    // Action 5: DELETE /posts/{id}T
+    @Test
+    fun action5() {
+        logger().info("action5: DELETE /posts/{id}")
+        val id = ThreadLocalRandom.current().nextInt(100) + 1
+        val rsp: String = user.http_DELETE("/posts/{id}", id)
+        if (rsp.isEmpty()) {
+            logger().error("Failed to DELETE /posts/{}", id)
+            assertEquals(0, 1)
+        }
+        logger().info("DELETE /posts/{} response: {}", id, rsp)
+        assertEquals(0, 0)
+    }
+
+    fun logger(): Logger {
+        return logger
+    }
+
+    // RestClient object
+    companion object {
+        private val logger = LoggerFactory.getLogger(TulipLibHttpUserTest::class.java)
+    }
+
+}
