@@ -1,11 +1,11 @@
 package org.example.lib
 
 import io.github.wfouche.tulip.user.HttpUser
+import java.util.concurrent.ThreadLocalRandom
 import org.junit.jupiter.api.Assertions.*
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.concurrent.ThreadLocalRandom
 
 class TulipLibHttpUserTest {
 
@@ -15,8 +15,8 @@ class TulipLibHttpUserTest {
     init {
         config.put("url", "http://jsonplaceholder.typicode.com/posts/1")
         config.put("httpVersion", "HTTP_1_1")
-        config.put("connectTimeoutMillis", "500")
-        config.put("readTimeoutMillis", "2000")
+        config.put("connectTimeoutMillis", "5000")
+        config.put("readTimeoutMillis", "10000")
 
         user = HttpUser(config)
         user.onStart()
@@ -55,7 +55,11 @@ class TulipLibHttpUserTest {
     fun action3() {
         logger().info("action3: PUT /posts/{id}")
         val id = ThreadLocalRandom.current().nextInt(100) + 1
-        val body = "{\"id\": " + id + ", \"title\": \"updated title\"" + ", \"body\": \"updated body\", \"userId\": 1}"
+        val body =
+            "{\"id\": " +
+                id +
+                ", \"title\": \"updated title\"" +
+                ", \"body\": \"updated body\", \"userId\": 1}"
         val rsp: String = user.http_PUT(body, "/posts/{id}", id)
         if (rsp.isEmpty()) {
             logger().error("Failed to PUT /posts/{}", id)
@@ -102,5 +106,4 @@ class TulipLibHttpUserTest {
     companion object {
         private val logger = LoggerFactory.getLogger(TulipLibHttpUserTest::class.java)
     }
-
 }
