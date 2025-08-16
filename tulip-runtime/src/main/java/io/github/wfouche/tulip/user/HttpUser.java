@@ -153,6 +153,9 @@ public class HttpUser extends HttpUser_RestClient {
      */
     @NotNull
     public String getUserParamValue(@NotNull String paramName) {
+        if (config == null) {
+            return super.getUserParamValue(paramName);
+        }
         String value = config.get(paramName);
         if (value == null) {
             return "";
