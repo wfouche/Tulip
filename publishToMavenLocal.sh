@@ -20,6 +20,7 @@ echo ""
 
 # Publish tulip-runtime.jar to local Maven
 ./gradlew clean
+./gradlew :tulip-runtime:build
 ./gradlew :tulip-runtime:publishToMavenLocal
 
 find ~/.m2 -name 'tulip-runtime*.jar' -print | sort

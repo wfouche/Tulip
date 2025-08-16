@@ -13,6 +13,7 @@ call .\gradlew spotlessApply
 
 pause
 
+call .\gradlew :tulip-runtime:build
 call .\gradlew :tulip-runtime:publishToMavenLocal
 dir /s %USERPROFILE%\.m2\tulip-runtime*.jar
 REM echo.
