@@ -102,8 +102,6 @@ public class HttpUserTest extends HttpUser {
         user.action3();
         user.action4();
         user.action5();
-
-        out.println("Hello World");
     }
 
     @Override public Logger logger() {
