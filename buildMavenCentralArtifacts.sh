@@ -3,7 +3,7 @@ source "$HOME/.sdkman/bin/sdkman-init.sh"
 sdk env
 
 # Tulip version
-export version="2.1.9"
+export version="2.1.10-dev"
 
 # Remove staging folder
 rm -f -r tulip-runtime/build/staging-deploy
