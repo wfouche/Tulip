@@ -70,7 +70,18 @@ image::image-2025-08-08-12-02-40-493.png[]
 [.stretch]
 image::image-2025-08-08-12-04-21-792.png[]
 
-== Abstract User Class
+== Load Test Driven Development
+
+* TDD - Test driven development (TDD) is a software development process where tests are written before the actual code is written
+* LTDD - "Load test driven development"
+** https://blog.octoperf.com/load-test-driven-development/
+
+== When to do Load Testing?
+
+[.stretch]
+image::Screenshot_20241121_094554.png[]
+
+== Virtual User Class
 
 [.stretch]
 [source,java,linenums]
@@ -89,7 +100,7 @@ public abstract class TulipUser {
 }
 ----
 
-=== Abstract User Class 
+=== Virtual User Class
 
 [.stretch]
 [source,java,linenums]
@@ -114,7 +125,7 @@ public abstract class TulipUser {
 <1> Initialize or restore object state
 <2> (Optionally) Save object state
 
-=== Abstract User Class 
+=== Virtual User Class
 
 [.stretch]
 [source,java,linenums]
