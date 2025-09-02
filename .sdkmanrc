@@ -11,7 +11,7 @@ gradle=8.14.3
 jbang=0.129.0
 
 # Scala
-scalacli=1.8.5
+scalacli=1.9.0
 
 # MCS
 mcs=0.7.6
