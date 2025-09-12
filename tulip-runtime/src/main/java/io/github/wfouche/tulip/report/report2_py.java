@@ -3,10 +3,10 @@ package io.github.wfouche.tulip.report;
 /// usr/bin/env jbang "$0" "$@" ; exit $?
 
 // spotless:off
-// DEPS com.google.code.gson:gson:2.13.1
-// DEPS org.hdrhistogram:HdrHistogram:2.2.2
-// DEPS org.python:jython-slim:2.7.4
-// JAVA 21
+//DEPS com.google.code.gson:gson:2.13.1
+//DEPS org.hdrhistogram:HdrHistogram:2.2.2
+//DEPS org.python:jython-slim:2.7.4
+//JAVA 21
 // spotless:on
 
 import java.util.Base64;
