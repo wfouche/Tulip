@@ -209,7 +209,8 @@ jreleaser {
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
-        googleJavaFormat("1.27.0").aosp()
+        googleJavaFormat("1.28.0").aosp()
+        toggleOffOn()
     }
     kotlin {
         // version, style and all configurations here are optional
@@ -223,7 +224,6 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     }
     kotlinGradle {
         target("*.gradle.kts")
-        ktlint() // or ktfmt() or prettier()
         trimTrailingWhitespace()
         endWithNewline()
     }
