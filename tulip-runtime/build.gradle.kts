@@ -18,7 +18,7 @@ plugins {
     `maven-publish`
 
     // https://plugins.gradle.org/plugin/org.jreleaser
-    id("org.jreleaser") version "1.19.0"
+    id("org.jreleaser") version "1.20.0"
 
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
