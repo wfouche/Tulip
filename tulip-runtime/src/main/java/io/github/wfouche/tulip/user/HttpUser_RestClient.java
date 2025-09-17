@@ -10,7 +10,7 @@ import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 class HttpRecord {
-    public RestClient client = null;
+    public RestClient restClient = null;
     public String url = "";
     public String urlProtocol = "";
     public String urlHost = "";
@@ -58,7 +58,7 @@ public class HttpUser_RestClient extends TulipUser {
         int idx = 0;
         for (String url : urls) {
             https[idx] = new HttpRecord();
-            https[idx].client =
+            https[idx].restClient =
                     createRestClient(idx, url.trim(), connectTimeout_, readTimeout_, httpVersion_);
             idx += 1;
         }
@@ -79,7 +79,8 @@ public class HttpUser_RestClient extends TulipUser {
             String connectTimeout_,
             String readTimeout_,
             String httpVersion_) {
-        RestClient client = null;
+
+        RestClient restClient = null;
 
         https[idx].url = url_;
         try {
@@ -144,17 +145,17 @@ public class HttpUser_RestClient extends TulipUser {
                 factory.setReadTimeout(Integer.parseInt(readTimeout_));
                 logger().info("[{}]readTimeoutMillis={}", idx, readTimeout_);
             }
-            client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
+            restClient = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
         }
-        if (client == null) {
+        if (restClient == null) {
             var factory = new JdkClientHttpRequestFactory(httpClient);
             if (!readTimeout_.isEmpty()) {
                 factory.setReadTimeout(Integer.parseInt(readTimeout_));
                 logger().info("[{}]readTimeoutMillis={}", idx, readTimeout_);
             }
-            client = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
+            restClient = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
         }
-        return client;
+        return restClient;
     }
 
     /**
@@ -172,7 +173,7 @@ public class HttpUser_RestClient extends TulipUser {
      * @return RestClient
      */
     public RestClient restClient() {
-        return https[getUserId() % https.length].client;
+        return https[getUserId() % https.length].restClient;
     }
 
     // RestClient objects
