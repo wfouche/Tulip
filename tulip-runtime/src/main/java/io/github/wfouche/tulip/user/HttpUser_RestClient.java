@@ -107,7 +107,7 @@ public class HttpUser_RestClient extends TulipUser {
 
         // HTTP 1.1 or HTTP/2
         HttpClient httpClient = null;
-        if (httpVersion_.equals("HTTP_1_1")) {
+        if (httpVersion_.equalsIgnoreCase("HTTP_1_1")) {
             // HTTP 1.1
             if (!connectTimeout_.isEmpty()) {
                 logger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
@@ -120,7 +120,7 @@ public class HttpUser_RestClient extends TulipUser {
             } else {
                 httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
             }
-        } else if (httpVersion_.equals("HTTP_2")) {
+        } else if (httpVersion_.equalsIgnoreCase("HTTP_2")) {
             // HTTP/2
             if (!connectTimeout_.isEmpty()) {
                 logger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
@@ -134,6 +134,9 @@ public class HttpUser_RestClient extends TulipUser {
                 httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
             }
         } else {
+            // HTTP version is not specified
+            // Neither HTTP 1.1 nor HTTP/2
+            // Use SimpleClientHttpRequestFactory()
             var factory = new SimpleClientHttpRequestFactory();
 
             if (!connectTimeout_.isEmpty()) {
