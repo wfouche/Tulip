@@ -8,6 +8,7 @@ package io.github.wfouche.tulip.core
 // import io.micrometer.core.instrument.Tag
 // import io.micrometer.jmx.JmxConfig
 // import io.micrometer.jmx.JmxMeterRegistry
+
 import com.google.gson.JsonParser
 import com.sun.management.OperatingSystemMXBean
 import io.github.wfouche.tulip.api.TulipApi
@@ -826,6 +827,7 @@ private class ActionStats {
 /*-------------------------------------------------------------------------*/
 
 private object DataCollector {
+    private var lock: String = "lock"
     private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
 
@@ -849,216 +851,228 @@ private object DataCollector {
         cpuTime: Long,
         apsTarget: Double
     ) {
-        actionStats[NUM_ACTIONS].createSummary(
-            NUM_ACTIONS,
-            durationMillis,
-            testCase,
-            indexTestCase,
-            indexUserProfile,
-            queueLength,
-            tsBegin,
-            tsEnd,
-            testPhase,
-            runId,
-            cpuTime,
-            apsTarget)
-        actionStats.forEachIndexed { index, data ->
-            if (data.numActions > 0) {
-                if (index != NUM_ACTIONS) {
-                    data.createSummary(
-                        index,
-                        durationMillis,
-                        testCase,
-                        indexTestCase,
-                        indexUserProfile,
-                        queueLength,
-                        tsBegin,
-                        tsEnd,
-                        testPhase,
-                        -1,
-                        0L,
-                        0.0)
+        synchronized(lock) {
+            actionStats[NUM_ACTIONS].createSummary(
+                NUM_ACTIONS,
+                durationMillis,
+                testCase,
+                indexTestCase,
+                indexUserProfile,
+                queueLength,
+                tsBegin,
+                tsEnd,
+                testPhase,
+                runId,
+                cpuTime,
+                apsTarget)
+            actionStats.forEachIndexed { index, data ->
+                if (data.numActions > 0) {
+                    if (index != NUM_ACTIONS) {
+                        data.createSummary(
+                            index,
+                            durationMillis,
+                            testCase,
+                            indexTestCase,
+                            indexUserProfile,
+                            queueLength,
+                            tsBegin,
+                            tsEnd,
+                            testPhase,
+                            -1,
+                            0L,
+                            0.0)
+                    }
                 }
             }
         }
     }
 
     fun printStats() {
-        actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
-        //        if (printDetails) {
-        //            actionStats.forEachIndexed { index, data ->
-        //                if (data.numActions > 0) {
-        //                    if (index != NUM_ACTIONS) {
-        //                        data.printStats(index)
-        //                    }
-        //                }
-        //            }
-        //        }
+        synchronized(lock) {
+            actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
+            //        if (printDetails) {
+            //            actionStats.forEachIndexed { index, data ->
+            //                if (data.numActions > 0) {
+            //                    if (index != NUM_ACTIONS) {
+            //                        data.printStats(index)
+            //                    }
+            //                }
+            //            }
+            //        }
+        }
     }
 
     fun saveStatsJson(filename: String) {
-
-        fun outputFilename(): String {
-            return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
-        }
-
-        if (filename != "") {
-            val rt = Runtime.getRuntime()
-            val fm = rt.freeMemory()
-            val tm = rt.totalMemory()
-            val mm = rt.maxMemory()
-
-            val r = actionStats[NUM_ACTIONS].r
-
-            var json = "{"
-
-            val workflowName: String
-            if (g_workflow == null) {
-                workflowName = ""
-            } else {
-                workflowName = g_workflow!!.name
+        synchronized(lock) {
+            fun outputFilename(): String {
+                return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
             }
 
-            json += "\"context_name\": \"$TULIP_CONTEXT_NAME\", "
-            json += "\"context_id\": $TULIP_CONTEXT_ID, "
-            json += "\"bm_name\": \"${r.testName}\", "
-            json += "\"bm_id\": ${r.testId}, "
-            json += "\"row_id\": ${r.rowId}, "
+            if (filename != "") {
+                val rt = Runtime.getRuntime()
+                val fm = rt.freeMemory()
+                val tm = rt.totalMemory()
+                val mm = rt.maxMemory()
 
-            json += "\"num_users\": $MAX_NUM_USERS, "
-            json += "\"num_threads\": $MAX_NUM_THREADS, "
-            json += "\"queue_length\": ${r.queueLength}, "
+                val r = actionStats[NUM_ACTIONS].r
 
-            json += "\"workflow_name\": \"$workflowName\", "
+                var json = "{"
 
-            json += "\"test_begin\": \"${r.testBegin}\", "
-            json += "\"test_end\": \"${r.testEnd}\", "
+                val workflowName: String
+                if (g_workflow == null) {
+                    workflowName = ""
+                } else {
+                    workflowName = g_workflow!!.name
+                }
 
-            json += "\"java\": { "
-            json += "\"java.vendor\": \"${System.getProperty("java.vendor")}\", "
-            json += "\"java.runtime.version\": \"${System.getProperty("java.runtime.version")}\", "
-            json += "\"kotlin.version\": \"${KotlinVersion.CURRENT}\""
+                json += "\"context_name\": \"$TULIP_CONTEXT_NAME\", "
+                json += "\"context_id\": $TULIP_CONTEXT_ID, "
+                json += "\"bm_name\": \"${r.testName}\", "
+                json += "\"bm_id\": ${r.testId}, "
+                json += "\"row_id\": ${r.rowId}, "
 
-            json += "}, "
+                json += "\"num_users\": $MAX_NUM_USERS, "
+                json += "\"num_threads\": $MAX_NUM_THREADS, "
+                json += "\"queue_length\": ${r.queueLength}, "
 
-            json += "\"duration\": ${r.durationSeconds}, "
+                json += "\"workflow_name\": \"$workflowName\", "
 
-            // json += "\"avg_cpu_process\": ${r.avgCpuProcess},
-            // \"avg_cpu_system\": ${r.avgCpuSystem}, "
+                json += "\"test_begin\": \"${r.testBegin}\", "
+                json += "\"test_end\": \"${r.testEnd}\", "
 
-            json += "\"jvm_memory_used\": ${tm-fm}, "
-            json += "\"jvm_memory_free\": $fm, "
-            json += "\"jvm_memory_total\": $tm, "
-            json += "\"jvm_memory_maximum\": $mm, "
+                json += "\"java\": { "
+                json += "\"java.vendor\": \"${System.getProperty("java.vendor")}\", "
+                json +=
+                    "\"java.runtime.version\": \"${System.getProperty("java.runtime.version")}\", "
+                json += "\"kotlin.version\": \"${KotlinVersion.CURRENT}\""
 
-            json += "\"process_cpu_utilization\": ${r.processCpuUtilization}, "
-            json += "\"process_cpu_cores\": ${r.processCpuCores}, "
-            json += "\"process_cpu_time_ns\": ${r.processCpuTime}"
+                json += "}, "
 
-            val awqs: Double = wthread_queue_stats.mean
-            val mwqs: Long = wthread_queue_stats.maxValue
-            json += ", \"avg_wthread_qsize\": ${awqs}"
-            json += ", \"max_wthread_qsize\": ${mwqs}"
+                json += "\"duration\": ${r.durationSeconds}, "
 
-            json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
+                // json += "\"avg_cpu_process\": ${r.avgCpuProcess},
+                // \"avg_cpu_system\": ${r.avgCpuSystem}, "
 
-            json += actionStats[NUM_ACTIONS].toJson(-1)
+                json += "\"jvm_memory_used\": ${tm - fm}, "
+                json += "\"jvm_memory_free\": $fm, "
+                json += "\"jvm_memory_total\": $tm, "
+                json += "\"jvm_memory_maximum\": $mm, "
 
-            json += ", \"user_actions\": {"
+                json += "\"process_cpu_utilization\": ${r.processCpuUtilization}, "
+                json += "\"process_cpu_cores\": ${r.processCpuCores}, "
+                json += "\"process_cpu_time_ns\": ${r.processCpuTime}"
 
-            var t = ""
-            actionStats.forEachIndexed { index, data ->
-                if (data.numActions > 0) {
-                    if (index != NUM_ACTIONS) {
-                        if (t != "") {
-                            t += ","
+                val awqs: Double = wthread_queue_stats.mean
+                val mwqs: Long = wthread_queue_stats.maxValue
+                json += ", \"avg_wthread_qsize\": ${awqs}"
+                json += ", \"max_wthread_qsize\": ${mwqs}"
+
+                json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
+
+                json += actionStats[NUM_ACTIONS].toJson(-1)
+
+                json += ", \"user_actions\": {"
+
+                var t = ""
+                actionStats.forEachIndexed { index, data ->
+                    if (data.numActions > 0) {
+                        if (index != NUM_ACTIONS) {
+                            if (t != "") {
+                                t += ","
+                            }
+                            t += "\"${index}\": {" + data.toJson(index) + "}"
                         }
-                        t += "\"${index}\": {" + data.toJson(index) + "}"
                     }
                 }
-            }
-            json += t
-            json += "}"
+                json += t
+                json += "}"
 
-            json += "}"
+                json += "}"
+
+                val fw = FileWriter(outputFilename(), true)
+                val bw =
+                    BufferedWriter(fw).apply {
+                        when (fileWriteId) {
+                            0 -> {
+                                // val gson =
+                                // GsonBuilder().setPrettyPrinting().create()
+                                // val jsonString = gson.toJson(g_config)
+                                val jsonString = Json.encodeToString(g_config)
+                                // val jsonString = "${g_config}"
+                                write("{  ")
+                                newLine()
+                                write("  \"version\": \"${VERSION}\"")
+                                newLine()
+                                write(
+                                    ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
+                                newLine()
+                                write(", \"config\": ${jsonString}")
+                                newLine()
+                                write(", \"results\":[")
+                                newLine()
+                                write(" ${json}")
+                            }
+
+                            else -> {
+                                write(",${json}")
+                            }
+                        }
+                        newLine()
+                    }
+                fileWriteId += 1
+                bw.close()
+                fw.close()
+            }
+        }
+    }
+
+    fun closeStatsJson(filename: String) {
+        synchronized(lock) {
+            fun outputFilename(): String {
+                return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
+            }
 
             val fw = FileWriter(outputFilename(), true)
             val bw =
                 BufferedWriter(fw).apply {
-                    when (fileWriteId) {
-                        0 -> {
-                            // val gson =
-                            // GsonBuilder().setPrettyPrinting().create()
-                            // val jsonString = gson.toJson(g_config)
-                            val jsonString = Json.encodeToString(g_config)
-                            // val jsonString = "${g_config}"
-                            write("{  ")
-                            newLine()
-                            write("  \"version\": \"${VERSION}\"")
-                            newLine()
-                            write(
-                                ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
-                            newLine()
-                            write(", \"config\": ${jsonString}")
-                            newLine()
-                            write(", \"results\":[")
-                            newLine()
-                            write(" ${json}")
-                        }
-                        else -> {
-                            write(",${json}")
-                        }
-                    }
+                    write("]")
+                    newLine()
+                    write("}")
                     newLine()
                 }
-            fileWriteId += 1
             bw.close()
             fw.close()
         }
     }
 
-    fun closeStatsJson(filename: String) {
-
-        fun outputFilename(): String {
-            return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
-        }
-
-        val fw = FileWriter(outputFilename(), true)
-        val bw =
-            BufferedWriter(fw).apply {
-                write("]")
-                newLine()
-                write("}")
-                newLine()
-            }
-        bw.close()
-        fw.close()
-    }
-
     fun updateStats(task: Task) {
-        require(task.actionId < NUM_ACTIONS)
-        if (task.actionId < 0) {
-            // Unused task drained from the rsp queue.
-            return
-        }
-        actionStats[NUM_ACTIONS].updateStats(task)
-        actionStats[task.actionId].updateStats(task)
+        synchronized(lock) {
+            require(task.actionId < NUM_ACTIONS)
+            if (task.actionId < 0) {
+                // Unused task drained from the rsp queue.
+                return
+            }
+            actionStats[NUM_ACTIONS].updateStats(task)
+            actionStats[task.actionId].updateStats(task)
 
-        //        Counter.builder("Tulip")
-        //            .tags("action", task.actionId.toString())
-        //            .register(registry)
-        //            .increment()
-        //
-        //        Counter.builder("Tulip")
-        //            .tags("action", "aps")
-        //            .register(registry)
-        //            .increment()
+            //        Counter.builder("Tulip")
+            //            .tags("action", task.actionId.toString())
+            //            .register(registry)
+            //            .increment()
+            //
+            //        Counter.builder("Tulip")
+            //            .tags("action", "aps")
+            //            .register(registry)
+            //            .increment()
+        }
     }
 
     fun clearStats() {
-        actionStats.forEach { it.clearStats() }
-        waitTimeMicrosHistogram.reset()
-        wthread_queue_stats.reset()
+        synchronized(lock) {
+            actionStats.forEach { it.clearStats() }
+            waitTimeMicrosHistogram.reset()
+            wthread_queue_stats.reset()
+        }
     }
 }
 
@@ -1138,6 +1152,35 @@ private class UserThread(private val threadId: Int) : Thread() {
             }
         }
         userThreads!![threadId] = null
+    }
+}
+
+/*-------------------------------------------------------------------------*/
+
+private class StatsThread(val itq: MPSC_Queue<Task>, val otq: MPSC_Queue<Task>) : Thread() {
+
+    init {
+        name = "stats-thread"
+    }
+
+    var running = true
+
+    override fun run() {
+        // Console.put("Thread ${name} is starting.")
+        while (running) {
+            //
+            // Wait for a new task to be assigned to this thread.
+            //
+            val task: Task = itq.take()
+
+            if (task.status == 999) {
+                // Console.put("Thread ${name} is stopping.")
+                running = false
+            } else {
+                DataCollector.updateStats(task)
+                otq.put(task)
+            }
+        }
     }
 }
 
@@ -1307,11 +1350,16 @@ private fun runTest(
     //
     val rspQueue = MPSC_Queue<Task>(queueLength)
     var rspQueueInitialized = false
+    val rstQueue = MPSC_Queue<Task>(queueLength)
+    var statsThread: StatsThread? = null
 
     fun initRspQueue() {
         if (rspQueueInitialized) return
         repeat(queueLength) { rspQueue.put(Task()) }
         rspQueueInitialized = true
+        statsThread = StatsThread(rstQueue, rspQueue)
+        statsThread!!.setPriority(Thread.MAX_PRIORITY)
+        statsThread!!.start()
     }
 
     fun drainRspQueue() {
@@ -1321,6 +1369,11 @@ private fun runTest(
             DataCollector.updateStats(task)
         }
         rspQueueInitialized = false
+        statsThread!!.itq!!.put(Task(status = 999))
+        while (statsThread!!.running) {
+            Thread.sleep(10)
+        }
+        statsThread = null
     }
 
     fun getProcessCpuTime(): Long {
@@ -1332,7 +1385,7 @@ private fun runTest(
         val task: Task = rspQueue.take()
 
         // ...
-        DataCollector.updateStats(task)
+        // DataCollector.updateStats(task)
 
         // Assign the task to the user object.
         task.apply {
@@ -1340,7 +1393,7 @@ private fun runTest(
             numUsers = MAX_NUM_USERS
             numThreads = MAX_NUM_THREADS
             actionId = aid
-            this.rspQueue = rspQueue
+            this.rspQueue = rstQueue
         }
         assignTask(task)
 
