@@ -1358,7 +1358,7 @@ private fun runTest(
         repeat(queueLength) { rspQueue.put(Task()) }
         rspQueueInitialized = true
         statsThread = StatsThread(rstQueue, rspQueue)
-        statsThread!!.setPriority(Thread.MAX_PRIORITY)
+        statsThread!!.setPriority(Thread.NORM_PRIORITY + 1)
         statsThread!!.start()
     }
 
@@ -1683,8 +1683,17 @@ private fun runBenchmarks(
 }
 
 fun runBenchmarks(userFactory: TulipUserFactory) {
+    // Save current thread priority
+    val ctp: Int = Thread.currentThread().priority
+
+    // main-thread and stats-thread have the same priority
+    Thread.currentThread().setPriority(Thread.NORM_PRIORITY + 1)
+
     runBenchmarks(userFactory, ::getTest)
     // logger.info { "Done" }
+
+    // Restore original thread priority
+    Thread.currentThread().setPriority(ctp)
 }
 
 /*-------------------------------------------------------------------------*/
