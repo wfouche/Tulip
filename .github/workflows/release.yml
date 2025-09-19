@@ -15,8 +15,8 @@ jobs:
         with:
           java-version: '21.0.8'
           distribution: 'temurin'
-      - name: Install w3m
-        run: sudo apt-get -y install w3m
+      - name: Install lynx
+        run: sudo apt-get -y install lynx
       - name: Run chmod to make gradlew executable
         run: chmod +x ./gradlew
       - name: Publish package to local staging directory
@@ -35,4 +35,4 @@ jobs:
       - name: Run Tulip test benchmark at 100 TPS
         run: ./gradlew -q :tulip-main:run --args="--config benchmark_config_test.jsonc"
       - name: Display the Tulip HTML report
-        run: w3m -dump -cols 200 ./tulip-main/benchmark_report.html
+        run: lynx -dump -width 200 ./tulip-main/benchmark_report.html
