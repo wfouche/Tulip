@@ -4,11 +4,17 @@
 # Java
 java=21.0.8-tem
 
+# Groovy
+groovy=5.0.1
+
 # Gradle
-gradle=8.14.3
+gradle=9.1.0
 
 # JBang
 jbang=0.131.0
+
+# Kotlin
+kotlin=2.1.21
 
 # Scala
 scalacli=1.9.1
