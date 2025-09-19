@@ -9,15 +9,14 @@ import org.slf4j.LoggerFactory
 
 class TulipLibHttpUserTest {
 
-    val config: HashMap<String, String> = HashMap<String, String>()
+    val config = HashMap<String, String>()
     val user: HttpUser
 
     init {
-        config.put("url", "http://jsonplaceholder.typicode.com/posts/1")
-        config.put("httpVersion", "HTTP_1_1")
-        config.put("connectTimeoutMillis", "5000")
-        config.put("readTimeoutMillis", "10000")
-
+        config["url"] = "http://jsonplaceholder.typicode.com/posts/1"
+        config["httpVersion"] = "HTTP_1_1"
+        config["connectTimeoutMillis"] = "5000"
+        config["readTimeoutMillis"] = "10000"
         user = HttpUser(config)
         user.onStart()
     }
