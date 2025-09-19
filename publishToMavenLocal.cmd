@@ -11,7 +11,7 @@ REM popd
 
 call .\gradlew spotlessApply
 
-pause
+timeout /t 5
 
 call .\gradlew :tulip-runtime:build
 call .\gradlew :tulip-runtime:publishToMavenLocal
