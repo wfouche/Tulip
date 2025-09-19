@@ -16,7 +16,12 @@ popd
 ./gradlew spotlessApply
 
 echo ""
-# read -p "Press ENTER to continue ..."
+echo "Waiting for 5 seconds..."
+for i in {5..1}; do
+    echo -n "$i "
+    sleep 1
+done
+echo "done."
 
 # Publish tulip-runtime.jar to local Maven
 ./gradlew clean
