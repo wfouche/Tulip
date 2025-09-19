@@ -438,14 +438,12 @@ fun initConfig(text: String): String {
                 saveStats = e.logStats,
                 name = key,
                 duration =
-                    if (e.time == null) Duration(0, 0, 0, 1, TimeUnit.SECONDS)
-                    else
-                        Duration(
-                            e.time.startupDuration,
-                            e.time.warmupDuration,
-                            e.time.mainDuration,
-                            e.time.mainDurationRepeatCount,
-                            TimeUnit.SECONDS),
+                    Duration(
+                        e.time.startupDuration,
+                        e.time.warmupDuration,
+                        e.time.mainDuration,
+                        e.time.mainDurationRepeatCount,
+                        TimeUnit.SECONDS),
                 arrivalRate = e.throughputRate,
                 arrivalRateStepChange = e.throughputRateStepChange,
                 arrivalRateStepCount = e.throughputRateStepCount,
