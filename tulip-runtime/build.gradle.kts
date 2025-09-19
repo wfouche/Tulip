@@ -153,7 +153,6 @@ publishing {
                     developer {
                         id.set("wfouche")
                         name.set("Werner Fouché")
-                        email.set("werner.fouche@gmail.com")
                     }
                 }
                 scm {
