@@ -13,7 +13,7 @@ jobs:
       - name: Set up Java
         uses: actions/setup-java@v4
         with:
-          java-version: '21.0.5'
+          java-version: '21.0.8'
           distribution: 'temurin'
       - name: Install w3m
         run: sudo apt-get -y install w3m
