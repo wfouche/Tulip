@@ -650,8 +650,8 @@ private class ActionStats {
             // Benchmark
             output.add("  duration    = ${r.durationSeconds} seconds")
         }
-        output.add("  num_actions = ${r.numActions}")
         output.add("  num_failed  = ${r.numActions - r.numSuccess}")
+        output.add("  num_actions = ${r.numActions}")
         output.add("")
         output.add("  avg_aps  = ${"%.3f".format(Locale.US, r.aps)} actions per second")
         output.add("  avg_rt   = ${"%.3f".format(Locale.US, r.art)} ms")
