@@ -1,3 +1,3 @@
 pushd ./tulip-main
-google-chrome benchmark_report.html
+firefox benchmark_report.html
 popd
