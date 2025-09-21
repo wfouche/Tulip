@@ -106,7 +106,11 @@ public class TulipApi {
         return Resources.toString(Resources.getResource(fileName), StandardCharsets.UTF_8);
     }
 
-    /** displayElapsedTime */
+    /**
+     * displayElapsedTime
+     *
+     * @param durationNano total elapsed time in nano seconds
+     */
     public static void displayElapsedTime(long durationNano) {
         double durationSeconds = (double) durationNano / 1_000_000_000.0;
 
