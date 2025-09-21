@@ -642,36 +642,30 @@ private class ActionStats {
         if (actionId != NUM_ACTIONS) {
             output.add("  action_id = ${r.actionId}")
         }
-        output.add("  num_actions = ${r.numActions}")
-        output.add("  num_failed  = ${r.numActions - r.numSuccess}")
-        output.add("")
-        output.add(
-            "  average number of actions completed per second = ${"%.3f".format(Locale.US, r.aps)}")
+
         if (r.processCpuTime == 0L) {
             // Init, or Shutdown
-            output.add(
-                "  duration of actions (in seconds)               = ${r.durationSeconds} seconds")
+            output.add("  duration    = ${r.durationSeconds} seconds")
         } else {
             // Benchmark
-            output.add(
-                "  duration of benchmark (in seconds)             = ${r.durationSeconds} seconds")
+            output.add("  duration    = ${r.durationSeconds} seconds")
         }
+        output.add("  num_failed  = ${r.numActions - r.numSuccess}")
+        output.add("  num_actions = ${r.numActions}")
         output.add("")
-        output.add(
-            "  average latency     (response time)  (millis)  = ${"%.3f".format(Locale.US, r.art)} ms")
-        output.add(
-            "  standard deviation  (response time)  (millis)  = ${"%.3f".format(Locale.US, r.sdev)} ms")
+        output.add("  avg_aps  = ${"%.3f".format(Locale.US, r.aps)} actions per second")
+        output.add("  avg_rt   = ${"%.3f".format(Locale.US, r.art)} ms")
+        output.add("  std_dev  = ${"%.3f".format(Locale.US, r.sdev)} ms")
+        output.add("  min_rt   = ${"%.3f".format(Locale.US, r.minRt)} ms")
         output.add("")
         r.pk.forEachIndexed { index, percentile ->
             val px = r.pv.elementAt(index)
             output.add(
-                "  ${percentile}th percentile (response time) (millis) = ${"%.3f".format(Locale.US, px)} ms")
+                "  ${percentile}th percentile = ${"%.3f".format(Locale.US, px)} ms")
         }
-
         output.add("")
-        output.add("  minimum response time (millis) = ${"%.3f".format(Locale.US, r.minRt)} ms")
         output.add(
-            "  maximum response time (millis) = ${
+            "  max_rt = ${
                 "%.3f".format(
                     Locale.US,
                     r.maxRt
