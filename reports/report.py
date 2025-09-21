@@ -453,7 +453,7 @@ td:nth-child(n+14) {
     <th>Duration</th>
     <th>Aps</th>
     <th>Avg_Rt</th>
-    <th>Stdev</th>
+    <th>Std_Dev</th>
     <th>Min_Rt</th>
     <th>p90_Rt</th>
     <th>p99_Rt</th>
@@ -478,7 +478,7 @@ benchmark_columns = '''
     <th>Duration</th>
     <th>Aps</th>
     <th>Avg_Rt</th>
-    <th>Stdev</th>
+    <th>Std_Dev</th>
     <th>Min_Rt</th>
     <th>p90_Rt</th>
     <th>p99_Rt</th>
@@ -968,7 +968,7 @@ def createReport(filename, text):
             rd["aps"] = avg_aps
             rd["aps_target_rate"] = sm.aps_target_sum / sm.aps_count
             rd["avg_rt"] = jh.getMean()/1000.0
-            rd["stdev"] = jh.getStdDeviation()/1000.0
+            rd["std_dev"] = jh.getStdDeviation()/1000.0
             rd["min_rt"] = sm.min_rt
             rd["p90_rt"] = jh.getValueAtPercentile(90.0)/1000.0
             rd["p99_rt"] = jh.getValueAtPercentile(99.0)/1000.0
@@ -1164,7 +1164,7 @@ def createReport(filename, text):
                 rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
                 rd["aps"] = avg_aps
                 rd["avg_rt"] = jhx.getMean()/1000.0
-                rd["stdev"] = jhx.getStdDeviation()/1000.0
+                rd["std_dev"] = jhx.getStdDeviation()/1000.0
                 rd["min_rt"] = smx.min_rt
                 rd["p90_rt"] = jhx.getValueAtPercentile(90.0)/1000.0
                 rd["p99_rt"] = jhx.getValueAtPercentile(99.0)/1000.0
@@ -1251,7 +1251,7 @@ def createReport(filename, text):
             rd["aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
             rd["aps_target_rate"] = e["aps_target_rate"]
             rd["avg_rt"] = e["avg_rt"]
-            rd["stdev"] = ht.getStdDeviation()/1000.0
+            rd["std_dev"] = ht.getStdDeviation()/1000.0
             rd["min_rt"] = e["min_rt"]
             rd["p90_rt"] = e["percentiles_rt"]["90.0"]
             rd["p99_rt"] = e["percentiles_rt"]["99.0"]
