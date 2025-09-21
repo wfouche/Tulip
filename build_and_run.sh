@@ -15,5 +15,3 @@ else
 fi
 
 ./gradlew -q --stop
-
-./text_report.sh
