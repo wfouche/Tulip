@@ -1364,7 +1364,6 @@ private fun runTest(
         if (!rspQueueInitialized) return
         repeat(queueLength) {
             val task: Task = rspQueue.take()
-            DataCollector.updateStats(task)
         }
         rspQueueInitialized = false
         statsThread!!.itq!!.put(Task(status = 999))
