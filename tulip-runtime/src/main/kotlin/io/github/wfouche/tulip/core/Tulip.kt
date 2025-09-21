@@ -660,8 +660,7 @@ private class ActionStats {
         output.add("")
         r.pk.forEachIndexed { index, percentile ->
             val px = r.pv.elementAt(index)
-            output.add(
-                "  ${percentile}th percentile = ${"%.3f".format(Locale.US, px)} ms")
+            output.add("  ${percentile}th percentile = ${"%.3f".format(Locale.US, px)} ms")
         }
         output.add("")
         output.add(
