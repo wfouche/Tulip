@@ -43,9 +43,15 @@ public class TulipApi {
      * @param userFactory A TulipUserFactory object responsible for creating Tulip users.
      */
     public static void runTulip(String text, TulipUserFactory userFactory) {
+        // Record the start time in nanoseconds
+        long startTime = System.nanoTime();
+
         String outputFilename = TulipKt.initConfig(text);
         TulipKt.runBenchmarks(userFactory);
         createHtmlReport(outputFilename, text);
+
+        long durationNano = System.nanoTime() - startTime;
+        displayElapsedTime(durationNano);
     }
 
     /**
@@ -56,10 +62,16 @@ public class TulipApi {
      *     with {.
      */
     public static void runTulip(String text) {
+        // Record the start time in nanoseconds
+        long startTime = System.nanoTime();
+
         String outputFilename = TulipKt.initConfig(text);
         TulipUserFactory userFactory = new TulipUserFactory();
         TulipKt.runBenchmarks(userFactory);
         createHtmlReport(outputFilename, text);
+
+        long durationNano = System.nanoTime() - startTime;
+        displayElapsedTime(durationNano);
     }
 
     /**
@@ -92,6 +104,20 @@ public class TulipApi {
      */
     public static String readResource(final String fileName) throws IOException {
         return Resources.toString(Resources.getResource(fileName), StandardCharsets.UTF_8);
+    }
+
+    /** displayElapsedTime */
+    public static void displayElapsedTime(long durationNano) {
+        double durationSeconds = (double) durationNano / 1_000_000_000.0;
+
+        // Calculate hours, minutes, and seconds for the hh:mm:ss format
+        long totalSeconds = durationNano / 1_000_000_000;
+        long hours = totalSeconds / 3600;
+        long minutes = (totalSeconds % 3600) / 60;
+        long seconds = totalSeconds % 60;
+
+        String formattedTime = String.format("%02d:%02d:%02d", hours, minutes, seconds);
+        System.out.println("\nElapsed time (hh:mm:ss): " + formattedTime);
     }
 
     /**
