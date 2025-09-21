@@ -647,19 +647,14 @@ private class ActionStats {
         output.add("")
         if (r.processCpuTime == 0L) {
             // Init, or Shutdown
-            output.add(
-                "  duration = ${r.durationSeconds} seconds")
+            output.add("  duration = ${r.durationSeconds} seconds")
         } else {
             // Benchmark
-            output.add(
-                "  duration = ${r.durationSeconds} seconds")
+            output.add("  duration = ${r.durationSeconds} seconds")
         }
-        output.add(
-            "  avg_aps  = ${"%.3f".format(Locale.US, r.aps)} actions per second")
-        output.add(
-            "  avg_rt   = ${"%.3f".format(Locale.US, r.art)} ms")
-        output.add(
-            "  std_dev  = ${"%.3f".format(Locale.US, r.sdev)} ms")
+        output.add("  avg_aps  = ${"%.3f".format(Locale.US, r.aps)} actions per second")
+        output.add("  avg_rt   = ${"%.3f".format(Locale.US, r.art)} ms")
+        output.add("  std_dev  = ${"%.3f".format(Locale.US, r.sdev)} ms")
         output.add("")
         r.pk.forEachIndexed { index, percentile ->
             val px = r.pv.elementAt(index)
