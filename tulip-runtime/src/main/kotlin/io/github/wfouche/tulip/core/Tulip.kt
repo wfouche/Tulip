@@ -655,6 +655,7 @@ private class ActionStats {
         output.add("  avg_aps  = ${"%.3f".format(Locale.US, r.aps)} actions per second")
         output.add("  avg_rt   = ${"%.3f".format(Locale.US, r.art)} ms")
         output.add("  std_dev  = ${"%.3f".format(Locale.US, r.sdev)} ms")
+        output.add("  min_rt   = ${"%.3f".format(Locale.US, r.minRt)} ms")
         output.add("")
         r.pk.forEachIndexed { index, percentile ->
             val px = r.pv.elementAt(index)
@@ -663,7 +664,6 @@ private class ActionStats {
         }
 
         output.add("")
-        output.add("  min_rt = ${"%.3f".format(Locale.US, r.minRt)} ms")
         output.add(
             "  max_rt = ${
                 "%.3f".format(
