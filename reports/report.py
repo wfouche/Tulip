@@ -26,7 +26,7 @@ summary_html_1 = '''<!DOCTYPE html>
 <meta charset="UTF-8">
 <style type="text/css">
     div.histo {
-        visibility: hidden
+         display: none
     }
 </style>
 
