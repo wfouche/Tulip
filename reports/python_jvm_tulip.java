@@ -101,6 +101,13 @@ public class python_jvm_tulip {
     private static final String textJythonApp = """
             import org.python.util.PythonInterpreter;
             import java.util.Base64;
+            import java.io.ByteArrayInputStream;
+            import java.io.ByteArrayOutputStream;
+            import java.io.IOException;
+            import java.nio.charset.StandardCharsets;
+            import java.util.Base64;
+            import java.util.zip.GZIPInputStream;
+            import java.util.zip.GZIPOutputStream;
             
             /**
              * The class provides a main method to run a Python script
@@ -117,6 +124,21 @@ public class python_jvm_tulip {
                 public __CLASSNAME__() {
                     // Private constructor to prevent instantiation
                 }
+                
+                public static String decompress(byte[] compressedData) throws IOException {
+                    ByteArrayInputStream bis = new ByteArrayInputStream(compressedData);
+                    GZIPInputStream gzip = new GZIPInputStream(bis);
+                    ByteArrayOutputStream bos = new ByteArrayOutputStream();
+                    byte[] buffer = new byte[1024];
+                    int len;
+                    while ((len = gzip.read(buffer)) != -1) {
+                        bos.write(buffer, 0, len);
+                    }
+                    gzip.close();
+                    bis.close();
+                    bos.close();
+                    return bos.toString(StandardCharsets.UTF_8.name());
+                }
                     
                 /**
                  * The main method that serves as the entry point for the application.
@@ -124,7 +146,7 @@ public class python_jvm_tulip {
                  *
                  * @param args Command-line arguments passed to the application.
                  */
-                public static void main(String... args) {
+                public static void main(String... args) throws IOException {
                     String mainScriptFilename = "__MAIN_SCRIPT_FILENAME__";
                     String mainScript = "";
                     String pythonArgsScript = "";
@@ -144,7 +166,7 @@ public class python_jvm_tulip {
                     pythonArgsScript = "import sys; sys.argv = [" + pythonArgsScript + "]";
                     {
                         byte[] decodedBytes = Base64.getDecoder().decode(mainScriptTextBase64);
-                        String text = new String(decodedBytes);
+                        String text = new String(decompress(decodedBytes));
                         mainScript = text;
                     }
                     {
@@ -333,7 +355,9 @@ public class python_jvm_tulip {
         byte[] data0 = Files.readAllBytes(Paths.get(scriptFilename));
         String data1 = new String(data0, StandardCharsets.UTF_8);
         data1 = data1.replace("\r", "");
-        String scriptFileTextB64 = Base64.getEncoder().encodeToString(data1.getBytes(StandardCharsets.UTF_8));
+        String scriptFileTextB64 = Base64.getEncoder().encodeToString(compress(data1));
+        //System.out.println(data1.length());
+        //System.out.println(scriptFileTextB64.length());
 
         try (BufferedWriter jf = new BufferedWriter(new FileWriter(javaFilename))) {
             jf.write("///usr/bin/env jbang \"$0\" \"$@\" ; exit $?" + lineSep + lineSep);
