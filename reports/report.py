@@ -26,7 +26,7 @@ summary_html_1 = '''<!DOCTYPE html>
 <meta charset="UTF-8">
 <style type="text/css">
     div.histo {
-        visibility: hidden
+         display: none
     }
 </style>
 
@@ -416,6 +416,20 @@ Percentile range:
     }
 </script>
 </p>
+'''
+
+summary_html_table_1 = '''
+<style>
+table, th, td {
+  border:1px solid black; font-size:16px; text-align: center;
+}
+mark {
+  background-color: LightGray;
+  color: black;
+}
+</style>
+
+<h2>Percentile Response Time Distribution</h2>
 '''
 
 summary_html_3 = '''</body>
@@ -927,7 +941,9 @@ def createReport(filename, text):
         printStream.print('</div>')
         printStream.println()
 
-        printStream.print(summary_html_3)
+        printStream.print(summary_html_table_1)
+        print_percentile_table(printStream,jh)
+
         printStream.println()
         printStream.flush()
         printStream.close()
@@ -1034,6 +1050,64 @@ def createReport(filename, text):
             name2s = name2s_list[0]
             del name2s_list[0]
 
+    def print_percentile_table(printStream, jhx):
+        bos = ByteArrayOutputStream()
+        ox = PrintStream(bos)
+        jhx.outputPercentileDistribution(ox, 1000.0)
+        ox.flush()
+        ox.close()
+        ptext = bos.toString()
+        lines = ptext.split('\n')
+        tcount = jhx.getTotalCount()
+        header = True
+        rlist = []
+        for line in lines:
+            if len(line) == 0:
+                continue
+            if line[0] != "#":
+                e = line.split()
+                if header:
+                    printStream.println('<table style="width:600px">')
+                    printStream.println('  <tr>')
+                    printStream.println('    <th>%s</th>'%(e[0]))
+                    printStream.println('    <th>%s</th>'%(e[1]))
+                    printStream.println('    <th>%s</th>'%(e[2]))
+                    printStream.println('    <th>%s</th>'%(e[3]))
+                    printStream.println('    <th>AboveCount</th>')
+                    printStream.println('  </tr>')
+                    header = False
+                else:
+                    if len(e) == 3:
+                        e.append('')
+                    rlist.append(e)
+        rlist.reverse()
+        for e in rlist:
+            mark = False
+            if e[1].startswith("0.9990"):
+                mark = True
+            if e[1].startswith("0.990"):
+                mark = True
+            if e[1] == "0.950000000000":
+                mark = True
+            if e[1] == "0.900000000000":
+                mark = True
+            if e[1] == "0.800000000000":
+                mark = True
+            if e[1] == "0.500000000000":
+                mark = True
+            printStream.println('  <tr>')
+            if mark:
+                printStream.println('    <td><mark>%s</mark></td>'%(e[0]))
+                printStream.println('    <td><mark>%s</mark></td>'%(e[1]))
+            else:
+                printStream.println('    <td>%s</td>'%(e[0]))
+                printStream.println('    <td>%s</td>'%(e[1]))
+            printStream.println('    <td>%s</td>'%(e[2]))
+            printStream.println('    <td>%s</td>'%(e[3]))
+            printStream.println('    <td>%s</td>'%(tcount-int(e[2])))
+            printStream.println('  </tr>')
+        printStream.println("</table>")
+
     def print_action_summary():
         global name2s
         global name2s_list
@@ -1087,62 +1161,7 @@ def createReport(filename, text):
             #printStream.println("<pre>")
             #jhx.outputPercentileDistribution(printStream, 1000.0)
 
-            bos = ByteArrayOutputStream()
-            ox = PrintStream(bos)
-            jhx.outputPercentileDistribution(ox, 1000.0)
-            ox.flush()
-            ox.close()
-            ptext = bos.toString()
-            lines = ptext.split('\n')
-            tcount = jhx.getTotalCount()
-            header = True
-            rlist = []
-            for line in lines:
-              if len(line) == 0:
-                continue
-              if line[0] != "#":
-                e = line.split()
-                if header:
-                  printStream.println('<table style="width:600px">')
-                  printStream.println('  <tr>')
-                  printStream.println('    <th>%s</th>'%(e[0]))
-                  printStream.println('    <th>%s</th>'%(e[1]))
-                  printStream.println('    <th>%s</th>'%(e[2]))
-                  printStream.println('    <th>%s</th>'%(e[3]))
-                  printStream.println('    <th>AboveCount</th>')
-                  printStream.println('  </tr>')
-                  header = False
-                else:
-                  if len(e) == 3:
-                    e.append('')
-                  rlist.append(e)
-            rlist.reverse()
-            for e in rlist:
-                mark = False
-                if e[1].startswith("0.9990"):
-                    mark = True
-                if e[1].startswith("0.990"):
-                    mark = True
-                if e[1] == "0.950000000000":
-                    mark = True
-                if e[1] == "0.900000000000":
-                    mark = True
-                if e[1] == "0.800000000000":
-                    mark = True
-                if e[1] == "0.500000000000":
-                    mark = True
-                printStream.println('  <tr>')
-                if mark:
-                    printStream.println('    <td><mark>%s</mark></td>'%(e[0]))
-                    printStream.println('    <td><mark>%s</mark></td>'%(e[1]))
-                else:
-                    printStream.println('    <td>%s</td>'%(e[0]))
-                    printStream.println('    <td>%s</td>'%(e[1]))
-                printStream.println('    <td>%s</td>'%(e[2]))
-                printStream.println('    <td>%s</td>'%(e[3]))
-                printStream.println('    <td>%s</td>'%(tcount-int(e[2])))
-                printStream.println('  </tr>')
-            printStream.println("</table>")
+            print_percentile_table(printStream,jhx)
 
             #printStream.println("</pre>")
 
