@@ -418,7 +418,7 @@ Percentile range:
 </p>
 '''
 
-summary_html_table = '''
+summary_html_table_1 = '''
 <style>
 table, th, td {
   border:1px solid black; font-size:16px; text-align: center;
@@ -429,114 +429,7 @@ mark {
 }
 </style>
 
-<h2>[TESTCODE] Percentile Response Time Distribution</h2>
-<table style="width:600px">
-  <tr>
-    <th>Value</th>
-    <th>Percentile</th>
-    <th>TotalCount</th>
-    <th>1/(1-Percentile)</th>
-    <th>AboveCount</th>
-  </tr>
-  <tr>
-    <td>1286.143</td>
-    <td>1.000000000000</td>
-    <td>2363</td>
-    <td></td>
-    <td>0</td>
-  </tr>
-  <tr>
-    <td>1286.143</td>
-    <td>0.999609375000</td>
-    <td>2363</td>
-    <td>2560.00</td>
-    <td>0</td>
-  </tr>
-  <tr>
-    <td>1273.855</td>
-    <td>0.999560546875</td>
-    <td>2362</td>
-    <td>2275.56</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>1273.855</td>
-    <td>0.999511718750</td>
-    <td>2362</td>
-    <td>2048.00</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>1273.855</td>
-    <td>0.999414062500</td>
-    <td>2362</td>
-    <td>1706.67</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>1273.855</td>
-    <td>0.999316406250</td>
-    <td>2362</td>
-    <td>1462.86</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>1273.855</td>
-    <td>0.999218750000</td>
-    <td>2362</td>
-    <td>1280.00</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>1273.855</td>
-    <td>0.999121093750</td>
-    <td>2362</td>
-    <td>1137.78</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td><mark>1273.855</mark></td>
-    <td><mark>0.999023437500</mark></td>
-    <td>2362</td>
-    <td>1024.00</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>1273.855</td>
-    <td>0.998828125000</td>
-    <td>2362</td>
-    <td>853.33</td>
-    <td>1</td>
-  </tr>
-  <tr>
-    <td>1271.807</td>
-    <td>0.998632812500</td>
-    <td>2360</td>
-    <td>731.43</td>
-    <td>3</td>
-  </tr>
-  <tr>
-    <td>1271.807</td>
-    <td>0.998437500000</td>
-    <td>2360</td>
-    <td>640.00</td>
-    <td>3</td>
-  </tr>
-  <tr>
-    <td>1247.231</td>
-    <td>0.998242187500</td>
-    <td>2359</td>
-    <td>568.89</td>
-    <td>4</td>
-  </tr>
-  <tr>
-    <td>1247.231</td>
-    <td>0.998046875000</td>
-    <td>2359</td>
-    <td>512.00</td>
-    <td>4</td>
-  </tr>
-</table>
+<h2>Percentile Response Time Distribution</h2>
 '''
 
 summary_html_3 = '''</body>
@@ -1048,9 +941,9 @@ def createReport(filename, text):
         printStream.print('</div>')
         printStream.println()
 
-        printStream.print(summary_html_table)
+        printStream.print(summary_html_table_1)
+        print_percentile_table(printStream,jh)
 
-        printStream.print(summary_html_3)
         printStream.println()
         printStream.flush()
         printStream.close()
@@ -1157,6 +1050,64 @@ def createReport(filename, text):
             name2s = name2s_list[0]
             del name2s_list[0]
 
+    def print_percentile_table(printStream, jhx):
+        bos = ByteArrayOutputStream()
+        ox = PrintStream(bos)
+        jhx.outputPercentileDistribution(ox, 1000.0)
+        ox.flush()
+        ox.close()
+        ptext = bos.toString()
+        lines = ptext.split('\n')
+        tcount = jhx.getTotalCount()
+        header = True
+        rlist = []
+        for line in lines:
+            if len(line) == 0:
+                continue
+            if line[0] != "#":
+                e = line.split()
+                if header:
+                    printStream.println('<table style="width:600px">')
+                    printStream.println('  <tr>')
+                    printStream.println('    <th>%s</th>'%(e[0]))
+                    printStream.println('    <th>%s</th>'%(e[1]))
+                    printStream.println('    <th>%s</th>'%(e[2]))
+                    printStream.println('    <th>%s</th>'%(e[3]))
+                    printStream.println('    <th>AboveCount</th>')
+                    printStream.println('  </tr>')
+                    header = False
+                else:
+                    if len(e) == 3:
+                        e.append('')
+                    rlist.append(e)
+        rlist.reverse()
+        for e in rlist:
+            mark = False
+            if e[1].startswith("0.9990"):
+                mark = True
+            if e[1].startswith("0.990"):
+                mark = True
+            if e[1] == "0.950000000000":
+                mark = True
+            if e[1] == "0.900000000000":
+                mark = True
+            if e[1] == "0.800000000000":
+                mark = True
+            if e[1] == "0.500000000000":
+                mark = True
+            printStream.println('  <tr>')
+            if mark:
+                printStream.println('    <td><mark>%s</mark></td>'%(e[0]))
+                printStream.println('    <td><mark>%s</mark></td>'%(e[1]))
+            else:
+                printStream.println('    <td>%s</td>'%(e[0]))
+                printStream.println('    <td>%s</td>'%(e[1]))
+            printStream.println('    <td>%s</td>'%(e[2]))
+            printStream.println('    <td>%s</td>'%(e[3]))
+            printStream.println('    <td>%s</td>'%(tcount-int(e[2])))
+            printStream.println('  </tr>')
+        printStream.println("</table>")
+
     def print_action_summary():
         global name2s
         global name2s_list
@@ -1210,62 +1161,7 @@ def createReport(filename, text):
             #printStream.println("<pre>")
             #jhx.outputPercentileDistribution(printStream, 1000.0)
 
-            bos = ByteArrayOutputStream()
-            ox = PrintStream(bos)
-            jhx.outputPercentileDistribution(ox, 1000.0)
-            ox.flush()
-            ox.close()
-            ptext = bos.toString()
-            lines = ptext.split('\n')
-            tcount = jhx.getTotalCount()
-            header = True
-            rlist = []
-            for line in lines:
-              if len(line) == 0:
-                continue
-              if line[0] != "#":
-                e = line.split()
-                if header:
-                  printStream.println('<table style="width:600px">')
-                  printStream.println('  <tr>')
-                  printStream.println('    <th>%s</th>'%(e[0]))
-                  printStream.println('    <th>%s</th>'%(e[1]))
-                  printStream.println('    <th>%s</th>'%(e[2]))
-                  printStream.println('    <th>%s</th>'%(e[3]))
-                  printStream.println('    <th>AboveCount</th>')
-                  printStream.println('  </tr>')
-                  header = False
-                else:
-                  if len(e) == 3:
-                    e.append('')
-                  rlist.append(e)
-            rlist.reverse()
-            for e in rlist:
-                mark = False
-                if e[1].startswith("0.9990"):
-                    mark = True
-                if e[1].startswith("0.990"):
-                    mark = True
-                if e[1] == "0.950000000000":
-                    mark = True
-                if e[1] == "0.900000000000":
-                    mark = True
-                if e[1] == "0.800000000000":
-                    mark = True
-                if e[1] == "0.500000000000":
-                    mark = True
-                printStream.println('  <tr>')
-                if mark:
-                    printStream.println('    <td><mark>%s</mark></td>'%(e[0]))
-                    printStream.println('    <td><mark>%s</mark></td>'%(e[1]))
-                else:
-                    printStream.println('    <td>%s</td>'%(e[0]))
-                    printStream.println('    <td>%s</td>'%(e[1]))
-                printStream.println('    <td>%s</td>'%(e[2]))
-                printStream.println('    <td>%s</td>'%(e[3]))
-                printStream.println('    <td>%s</td>'%(tcount-int(e[2])))
-                printStream.println('  </tr>')
-            printStream.println("</table>")
+            print_percentile_table(printStream,jhx)
 
             #printStream.println("</pre>")
 
