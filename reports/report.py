@@ -418,6 +418,127 @@ Percentile range:
 </p>
 '''
 
+summary_html_table = '''
+<style>
+table, th, td {
+  border:1px solid black; font-size:16px; text-align: center;
+}
+mark {
+  background-color: LightGray;
+  color: black;
+}
+</style>
+
+<h2>[TESTCODE] Percentile Response Time Distribution</h2>
+<table style="width:600px">
+  <tr>
+    <th>Value</th>
+    <th>Percentile</th>
+    <th>TotalCount</th>
+    <th>1/(1-Percentile)</th>
+    <th>AboveCount</th>
+  </tr>
+  <tr>
+    <td>1286.143</td>
+    <td>1.000000000000</td>
+    <td>2363</td>
+    <td></td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>1286.143</td>
+    <td>0.999609375000</td>
+    <td>2363</td>
+    <td>2560.00</td>
+    <td>0</td>
+  </tr>
+  <tr>
+    <td>1273.855</td>
+    <td>0.999560546875</td>
+    <td>2362</td>
+    <td>2275.56</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>1273.855</td>
+    <td>0.999511718750</td>
+    <td>2362</td>
+    <td>2048.00</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>1273.855</td>
+    <td>0.999414062500</td>
+    <td>2362</td>
+    <td>1706.67</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>1273.855</td>
+    <td>0.999316406250</td>
+    <td>2362</td>
+    <td>1462.86</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>1273.855</td>
+    <td>0.999218750000</td>
+    <td>2362</td>
+    <td>1280.00</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>1273.855</td>
+    <td>0.999121093750</td>
+    <td>2362</td>
+    <td>1137.78</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td><mark>1273.855</mark></td>
+    <td><mark>0.999023437500</mark></td>
+    <td>2362</td>
+    <td>1024.00</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>1273.855</td>
+    <td>0.998828125000</td>
+    <td>2362</td>
+    <td>853.33</td>
+    <td>1</td>
+  </tr>
+  <tr>
+    <td>1271.807</td>
+    <td>0.998632812500</td>
+    <td>2360</td>
+    <td>731.43</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>1271.807</td>
+    <td>0.998437500000</td>
+    <td>2360</td>
+    <td>640.00</td>
+    <td>3</td>
+  </tr>
+  <tr>
+    <td>1247.231</td>
+    <td>0.998242187500</td>
+    <td>2359</td>
+    <td>568.89</td>
+    <td>4</td>
+  </tr>
+  <tr>
+    <td>1247.231</td>
+    <td>0.998046875000</td>
+    <td>2359</td>
+    <td>512.00</td>
+    <td>4</td>
+  </tr>
+</table>
+'''
+
 summary_html_3 = '''</body>
 </html>
 '''
@@ -926,6 +1047,8 @@ def createReport(filename, text):
         jh.outputPercentileDistribution(printStream, 1000.0)
         printStream.print('</div>')
         printStream.println()
+
+        printStream.print(summary_html_table)
 
         printStream.print(summary_html_3)
         printStream.println()
