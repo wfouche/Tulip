@@ -144,7 +144,7 @@ public class python_jvm_tulip {
         String javaVersion = "21";
         String javaRuntimeOptions = "";
         String jbangIntegrations = "true";
-        String ls = "\n"; // System.lineSeparator();
+        String lineSep = String.valueOf((char) 10);
         boolean debug = false;
         boolean keepJava = false;
 
@@ -188,7 +188,7 @@ public class python_jvm_tulip {
                             if (tomlText.length() == 0) {
                                 tomlText.append(line.substring(2));
                             } else {
-                                tomlText.append(ls + line.substring(2));
+                                tomlText.append(lineSep + line.substring(2));
                             }
                         }
                     }
@@ -267,19 +267,19 @@ public class python_jvm_tulip {
         String scriptFileTextB64 = Base64.getEncoder().encodeToString(data);
 
         try (BufferedWriter jf = new BufferedWriter(new FileWriter(javaFilename))) {
-            jf.write("///usr/bin/env jbang \"$0\" \"$@\" ; exit $?" + ls + ls);
-            jf.write("// spotless:off" + ls);
+            jf.write("///usr/bin/env jbang \"$0\" \"$@\" ; exit $?" + lineSep + lineSep);
+            jf.write("// spotless:off" + lineSep);
             for (String dependency : deps) {
-                jf.write("//DEPS " + dependency + ls);
+                jf.write("//DEPS " + dependency + lineSep);
             }
-            jf.write("//JAVA " + javaVersion + ls);
+            jf.write("//JAVA " + javaVersion + lineSep);
             if (javaRuntimeOptions.length() > 0) {
-                jf.write("//RUNTIME_OPTIONS " + javaRuntimeOptions + ls);
+                jf.write("//RUNTIME_OPTIONS " + javaRuntimeOptions + lineSep);
             }
             if (jbangIntegrations.equals("false")) {
-                jf.write("//NOINTEGRATIONS" + ls);
+                jf.write("//NOINTEGRATIONS" + lineSep);
             }
-            jf.write("// spotless:on" + ls + ls);
+            jf.write("// spotless:on" + lineSep + lineSep);
             String text = textJythonApp;
             if (graalpyVersion.length() > 0) {
                 text = textGraalpyApp;
