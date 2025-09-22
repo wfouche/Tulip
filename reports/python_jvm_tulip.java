@@ -16,6 +16,13 @@ import dev.jbang.jash.Jash;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
 import org.tomlj.TomlTable;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.Base64;
+import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import org.python.util.jython;
 
@@ -30,6 +37,65 @@ public class python_jvm_tulip {
             version = "0/2025-05-02T17:58:14";
         }
         System.out.println(appName + "/" + version);
+    }
+
+    /**
+     * Compresses a string using GZIP compression.
+     *
+     * @param data The string to be compressed.
+     * @return A byte array containing the compressed data.
+     * @throws IOException if an I/O error occurs during compression.
+     */
+    public static byte[] compress(String data) throws IOException {
+        ByteArrayOutputStream bos = new ByteArrayOutputStream(data.length());
+        GZIPOutputStream gzip = new GZIPOutputStream(bos);
+        gzip.write(data.getBytes(StandardCharsets.UTF_8));
+        gzip.close();
+        byte[] compressedData = bos.toByteArray();
+        bos.close();
+        return compressedData;
+    }
+
+    /**
+     * Decompresses a byte array that was compressed using GZIP.
+     *
+     * @param compressedData The byte array containing the compressed data.
+     * @return The decompressed string.
+     * @throws IOException if an I/O error occurs during decompression.
+     */
+    public static String decompress(byte[] compressedData) throws IOException {
+        ByteArrayInputStream bis = new ByteArrayInputStream(compressedData);
+        GZIPInputStream gzip = new GZIPInputStream(bis);
+        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        byte[] buffer = new byte[1024];
+        int len;
+        while ((len = gzip.read(buffer)) != -1) {
+            bos.write(buffer, 0, len);
+        }
+        gzip.close();
+        bis.close();
+        bos.close();
+        return bos.toString(StandardCharsets.UTF_8.name());
+    }
+
+    /**
+     * Base64 encodes a byte array.
+     *
+     * @param data The byte array to be encoded.
+     * @return A Base64 encoded string.
+     */
+    public static String encodeBase64(byte[] data) {
+        return Base64.getEncoder().encodeToString(data);
+    }
+
+    /**
+     * Decodes a Base64 encoded string back into a byte array.
+     *
+     * @param encodedData The Base64 encoded string.
+     * @return A byte array containing the decoded data.
+     */
+    public static byte[] decodeBase64(String encodedData) {
+        return Base64.getDecoder().decode(encodedData);
     }
 
     private static final String textJythonApp = """
