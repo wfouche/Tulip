@@ -10,6 +10,8 @@ rm -f -r ~/.m2/repository/io/github/wfouche/tulip/tulip-runtime
 # reports
 pushd ./reports
 ./update_runtime.sh
+rm report_py.java
+rm report2_py.java
 popd
 
 # spotless

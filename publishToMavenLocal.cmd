@@ -7,6 +7,8 @@ rd/q/s %USERPROFILE%\.m2\repository\io\github\wfouche\tulip\tulip-runtime
 REM To be fixed, currently adding extra blank lines
 pushd .\reports
 call .\update_runtime.cmd
+del report_py.java
+del report2_py.java
 popd
 
 call .\gradlew spotlessApply
