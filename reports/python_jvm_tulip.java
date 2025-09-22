@@ -11,6 +11,7 @@ import java.io.*;
 import java.nio.file.*;
 import java.util.*;
 import java.util.stream.Stream;
+import java.nio.charset.StandardCharsets;
 import dev.jbang.jash.Jash;
 import org.tomlj.Toml;
 import org.tomlj.TomlParseResult;
@@ -144,7 +145,7 @@ public class python_jvm_tulip {
         String javaVersion = "21";
         String javaRuntimeOptions = "";
         String jbangIntegrations = "true";
-        String lineSep = String.valueOf((char) 10);
+        String lineSep = "\n"; // String.valueOf((char) 10);
         boolean debug = false;
         boolean keepJava = false;
 
@@ -263,8 +264,10 @@ public class python_jvm_tulip {
         }
         deps.add(dep);
 
-        byte[] data = Files.readAllBytes(Paths.get(scriptFilename));
-        String scriptFileTextB64 = Base64.getEncoder().encodeToString(data);
+        byte[] data0 = Files.readAllBytes(Paths.get(scriptFilename));
+        String data1 = new String(data0, StandardCharsets.UTF_8);
+        data1 = data1.replace("\r", "");
+        String scriptFileTextB64 = Base64.getEncoder().encodeToString(data1.getBytes(StandardCharsets.UTF_8));
 
         try (BufferedWriter jf = new BufferedWriter(new FileWriter(javaFilename))) {
             jf.write("///usr/bin/env jbang \"$0\" \"$@\" ; exit $?" + lineSep + lineSep);
