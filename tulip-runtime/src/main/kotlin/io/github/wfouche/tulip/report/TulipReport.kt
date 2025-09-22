@@ -1,7 +1,12 @@
 package io.github.wfouche.tulip.report
 
+import java.io.ByteArrayInputStream
+import java.io.ByteArrayOutputStream
 import java.io.File
+import java.io.IOException
+import java.nio.charset.StandardCharsets
 import java.util.*
+import java.util.zip.GZIPInputStream
 import org.asciidoctor.Asciidoctor
 import org.asciidoctor.Options
 import org.asciidoctor.SafeMode
@@ -13,10 +18,8 @@ fun createHtmlReport(outputFilename: String, text1: String) {
     if (text2.startsWith("{")) {
         text2 = "{}"
     }
-
     val decodedBytes = Base64.getDecoder().decode(report_py.mainScriptTextBase64)
-    val jythonCode = String(decodedBytes)
-
+    val jythonCode = decompress(decodedBytes)
     PythonInterpreter().use { pyInterp ->
         pyInterp.exec("__name__=\"\"")
         pyInterp.exec(jythonCode)
@@ -26,7 +29,7 @@ fun createHtmlReport(outputFilename: String, text1: String) {
 
 fun createConfigReport(configFilename: String): String {
     val decodedBytes = Base64.getDecoder().decode(report2_py.mainScriptTextBase64)
-    val jythonCode = String(decodedBytes)
+    val jythonCode = decompress(decodedBytes)
     PythonInterpreter().use { pyInterp ->
         // Ensure that check for main in Jython script is not executed
         pyInterp.exec("__name__=\"\"")
@@ -52,4 +55,20 @@ fun convertAdocToHtml(adocFilename: String) {
         File(adocFilename), Options.builder().toFile(true).safe(SafeMode.UNSAFE).build())
     asciidoctor.shutdown()
     // println("debug: end adoc to html")
+}
+
+@Throws(IOException::class)
+fun decompress(compressedData: ByteArray): String? {
+    val bis = ByteArrayInputStream(compressedData)
+    val gzip = GZIPInputStream(bis)
+    val bos = ByteArrayOutputStream()
+    val buffer = ByteArray(1024)
+    var len: Int
+    while ((gzip.read(buffer).also { len = it }) != -1) {
+        bos.write(buffer, 0, len)
+    }
+    gzip.close()
+    bis.close()
+    bos.close()
+    return bos.toString(StandardCharsets.UTF_8.name())
 }
