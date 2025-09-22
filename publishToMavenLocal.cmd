@@ -5,9 +5,11 @@ dir /s %USERPROFILE%\.m2\tulip-runtime*.jar
 rd/q/s %USERPROFILE%\.m2\repository\io\github\wfouche\tulip\tulip-runtime
 
 REM To be fixed, currently adding extra blank lines
-REM pushd .\reports
-REM call .\update_runtime.cmd
-REM popd
+pushd .\reports
+call .\update_runtime.cmd
+del report_py.java
+del report2_py.java
+popd
 
 call .\gradlew spotlessApply
 
