@@ -33,6 +33,13 @@ public class report_py {
         // Private constructor to prevent instantiation
     }
 
+    /**
+     * Decompresses a byte array that was compressed using GZIP.
+     *
+     * @param compressedData The byte array containing the compressed data.
+     * @return The decompressed string.
+     * @throws IOException if an I/O error occurs during decompression.
+     */
     public static String decompress(byte[] compressedData) throws IOException {
         ByteArrayInputStream bis = new ByteArrayInputStream(compressedData);
         GZIPInputStream gzip = new GZIPInputStream(bis);
@@ -53,6 +60,7 @@ public class report_py {
      * interpreter and executes the embedded script.
      *
      * @param args Command-line arguments passed to the application.
+     * @throws IOException Due to decompress failure.
      */
     public static void main(String... args) throws IOException {
         String mainScriptFilename = "report.py";
