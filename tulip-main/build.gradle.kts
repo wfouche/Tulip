@@ -40,9 +40,15 @@ application {
         // ZGC - https://joelsiks.com/posts/zgc-heap-memory-allocation/
         //
         // "-XX:+UseParallelGC",
-        // "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
-        // "-XX:+UseZGC", "-XX:+ZGenerational", "-XX:+UseDynamicNumberOfGCThreads",
-        "-XX:+UseZGC", "-XX:+ZGenerational",
+
+        // Java 17
+        "-XX:+UseG1GC", "-XX:+UseDynamicNumberOfGCThreads",
+
+        // Java 21
+        // "-XX:+UseZGC", "-XX:+ZGenerational",
+
+        // Java 25
+        // "-XX:+UseZGC",
 
         // VisualVM
         // "-Dcom.sun.management.jmxremote.port=3333",

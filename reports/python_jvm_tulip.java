@@ -4,7 +4,7 @@
 //DEPS org.tomlj:tomlj:1.1.1
 //DEPS org.python:jython-slim:2.7.4
 //DEPS org.graalvm.python:jbang:24.2.1
-//JAVA 21
+//JAVA 17+
 //NOINTEGRATIONS
 
 import java.io.*;
