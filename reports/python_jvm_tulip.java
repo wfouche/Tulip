@@ -153,7 +153,7 @@ public class python_jvm_tulip {
                  *
                  * @param args Command-line arguments passed to the application.
                  *
-                 * @throws IOException Due to decompress failure.
+                 * @throws IOException if an I/O error occurs during decompression.
                  */
                 public static void main(String... args) throws IOException {
                     String mainScriptFilename = "__MAIN_SCRIPT_FILENAME__";
