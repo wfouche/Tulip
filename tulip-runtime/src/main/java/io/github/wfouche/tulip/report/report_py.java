@@ -60,7 +60,7 @@ public class report_py {
      * interpreter and executes the embedded script.
      *
      * @param args Command-line arguments passed to the application.
-     * @throws IOException Due to decompress failure.
+     * @throws IOException if an I/O error occurs during decompression.
      */
     public static void main(String... args) throws IOException {
         String mainScriptFilename = "report.py";
