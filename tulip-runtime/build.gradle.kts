@@ -9,7 +9,7 @@ version = "2.1.12-dev"
 
 plugins {
     // https://plugins.gradle.org/plugin/com.github.ben-manes.versions
-    id("com.github.ben-manes.versions") version "0.52.0"
+    id("com.github.ben-manes.versions") version "0.53.0"
 
     // Gradle convention plugin for Kotlin libraries
     id("buildlogic.kotlin-library-conventions")
@@ -67,7 +67,7 @@ dependencies {
     implementation("com.google.code.gson:gson:2.13.2")
 
     // https://mvnrepository.com/artifact/com.google.guava/guava
-    implementation("com.google.guava:guava:33.4.8-jre")
+    implementation("com.google.guava:guava:33.5.0-jre")
 
     // - Html Mermaid Dokka Plugin
 
