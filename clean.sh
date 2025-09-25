@@ -1,13 +1,13 @@
 ./gradlew  --stop
 
 rm -f -r .gradle
-rm -f -r .idea
+#m -f -r .idea
 rm -f -r .kotlin
 
-pushd ./tulip-runtime
+pushd ./tulip-runtime || exit
 source clean.sh
-popd
+popd || exit
 
-pushd ./tulip-main
+pushd ./tulip-main || exit
 source clean.sh
-popd
+popd || exit
