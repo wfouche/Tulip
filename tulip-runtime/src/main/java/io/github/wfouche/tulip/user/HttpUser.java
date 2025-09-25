@@ -42,9 +42,8 @@ public class HttpUser extends HttpUser_RestClient {
         String rsp = restClient().get().uri(uri, uriVariables).retrieve().body(String.class);
         if (rsp != null && !rsp.isEmpty()) {
             return rsp;
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
@@ -69,9 +68,8 @@ public class HttpUser extends HttpUser_RestClient {
                         .body(String.class);
         if (rsp != null && !rsp.isEmpty()) {
             return rsp;
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
@@ -96,9 +94,8 @@ public class HttpUser extends HttpUser_RestClient {
                         .body(String.class);
         if (rsp != null && !rsp.isEmpty()) {
             return rsp;
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
@@ -123,9 +120,8 @@ public class HttpUser extends HttpUser_RestClient {
                         .body(String.class);
         if (rsp != null && !rsp.isEmpty()) {
             return rsp;
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
@@ -141,9 +137,8 @@ public class HttpUser extends HttpUser_RestClient {
         String rsp = restClient().delete().uri(uri, uriVariables).retrieve().body(String.class);
         if (rsp != null && !rsp.isEmpty()) {
             return rsp;
-        } else {
-            return "";
         }
+        return "";
     }
 
     /**
