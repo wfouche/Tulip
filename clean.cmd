@@ -4,4 +4,4 @@ REM rd/q/s %USERPROFILE%\.gradle
 timeout 5
 rd/q/s .gradle
 timeout 5
-rd/q/s .idea
+REM rd/q/s .idea

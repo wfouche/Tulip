@@ -1,7 +1,7 @@
 ./gradlew  --stop
 
 rm -f -r .gradle
-rm -f -r .idea
+#m -f -r .idea
 rm -f -r .kotlin
 
 pushd ./tulip-runtime
