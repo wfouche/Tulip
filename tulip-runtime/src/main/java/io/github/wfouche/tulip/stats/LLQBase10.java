@@ -2,14 +2,13 @@ package io.github.wfouche.tulip.stats;
 
 // DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
 
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
-
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import java.io.IOException;
 import java.util.Map;
 
 public class LLQBase10 {
@@ -80,7 +79,7 @@ public class LLQBase10 {
     }
 
     public void update(long n) {
-        update(n,1);
+        update(n, 1);
     }
 
     public void update(long n, long count) {
@@ -121,7 +120,8 @@ public class LLQBase10 {
 
     public long percentileValue(double percentile) {
         if (percentile < 0.0 || percentile > 100.0) {
-            throw new IllegalArgumentException("Percentile must be between 0.0 and 100.0 (inclusive).");
+            throw new IllegalArgumentException(
+                    "Percentile must be between 0.0 and 100.0 (inclusive).");
         }
 
         // Step 1: Combine and Sort Bins
@@ -138,7 +138,6 @@ public class LLQBase10 {
 
         // Handle empty dataset
         if (totalCount == 0) {
-            System.err.println("Warning: Total count of data points is zero. Returning 0L for percentile.");
             return 0L;
         }
 
@@ -155,7 +154,8 @@ public class LLQBase10 {
 
         // Step 2: Determine Target Rank (R)
         // Standard method (R=ceil(P/100 * N)): finds the rank (1-based index) we are looking for.
-        // The value is the smallest value whose cumulative frequency distribution is greater than or equal to R.
+        // The value is the smallest value whose cumulative frequency distribution is greater than
+        // or equal to R.
         long targetRank = (long) Math.ceil((percentile / 100.0) * totalCount);
         long cumulativeCount = 0L;
 
@@ -172,10 +172,6 @@ public class LLQBase10 {
     }
 
     public double standardDeviationValue() {
-        if (qValues.length != qCounts.length) {
-            throw new IllegalArgumentException("The quantizedValues array and the counts array must have the same length.");
-        }
-
         // 1. Calculate the mean (mu). This also validates array length.
         double mean = averageValue();
 
@@ -191,22 +187,22 @@ public class LLQBase10 {
                 totalCount += count;
 
                 // Difference (Value_i - Mean)
-                double difference = (double)value - mean;
+                double difference = (double) value - mean;
 
                 // Squared Difference * Count
                 // We use (double)count here to ensure the calculation is done in double precision.
-                sumOfSquaredDifferences += Math.pow(difference, 2) * (double)count;
+                sumOfSquaredDifferences += Math.pow(difference, 2) * (double) count;
             }
         }
 
         // Standard deviation is 0 if N=0 or N=1 (no variance)
         if (totalCount <= 1) {
-            System.err.println("Warning: Total count of data points is " + totalCount + ". Returning 0.0 for standard deviation.");
             return 0.0;
         }
 
         // 3. Calculate Variance (sum of squared diff / N)
-        // Using totalCount for population standard deviation (assuming the histogram represents the whole population)
+        // Using totalCount for population standard deviation (assuming the histogram represents the
+        // whole population)
         double variance = sumOfSquaredDifferences / totalCount;
 
         // 4. Calculate Standard Deviation (sqrt(Variance))
@@ -223,7 +219,7 @@ public class LLQBase10 {
         for (int i = 0; i != qCounts.length; i++) {
             if (qCounts[i] != 0) {
                 if (count > 0) {
-                    jsonString.append(",");
+                    jsonString.append(", ");
                 }
                 jsonString.append("\"");
                 jsonString.append(qValues[i]);
@@ -259,27 +255,21 @@ public class LLQBase10 {
     }
 
     public void display() {
-        for (int i = 0; i != qCounts.length; i++) {
-            System.out.println(qValues[i] + " = " + qCounts[i]);
-        }
+        // for (int i = 0; i != qCounts.length; i++) {
+        //     System.out.println(qValues[i] + " = " + qCounts[i]);
+        // }
         System.out.println("AVG: " + averageValue());
         System.out.println("STD: " + standardDeviationValue());
-        System.out.println("000: " + percentileValue(0.0));
+        System.out.println("P00: " + percentileValue(0.0));
         System.out.println("P50: " + percentileValue(50.0));
         System.out.println("P90: " + percentileValue(90.0));
         System.out.println("P95: " + percentileValue(95.0));
         System.out.println("P99: " + percentileValue(99.0));
-        System.out.println("999: " + percentileValue(99.9));
-        System.out.println("100: " + percentileValue(100.0));
         System.out.println("MIN: " + minValue);
         System.out.println("MAX: " + maxValue);
         System.out.println("NUM: " + numValues);
         String json = toJsonString();
-        System.out.println("JS1: " + json);
-        reset();
-        System.out.println("JS2: " + toJsonString());
-        fromJsonString(json);
-        System.out.println("JS3: " + toJsonString());
+        System.out.println("JSN: " + json);
     }
 
     static {
@@ -310,5 +300,4 @@ public class LLQBase10 {
 
         hist.display();
     }
-
 }
