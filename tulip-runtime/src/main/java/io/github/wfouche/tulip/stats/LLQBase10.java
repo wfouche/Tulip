@@ -29,6 +29,7 @@ public class LLQBase10 {
     public long[] qCounts = new long[137];
     public long minValue = Long.MAX_VALUE;
     public long maxValue = Long.MIN_VALUE;
+    public long numValues = 0;
 
     // Precomputed powers of 10 up to 10^13
     private static final long[] POW10 = {
@@ -77,6 +78,7 @@ public class LLQBase10 {
         if (n > maxValue) {
             maxValue = n;
         }
+        numValues += 1;
     }
 
     public double minValue() {
@@ -194,6 +196,10 @@ public class LLQBase10 {
 
         // 4. Calculate Standard Deviation (sqrt(Variance))
         return Math.sqrt(variance);
+    }
+
+    public long numberOfValues() {
+        return numValues;
     }
 
     public void display() {
