@@ -57,7 +57,7 @@ public class LLQBase10 {
         for (int i = 0; i != llqhist.length; i++) {
             long qvalue = idx2llq[i];
             long qcount = llqhist[i];
-            totalSum += qvalue * qcount;
+            totalSum += (double) qvalue * (double) qcount;
             totalCount += qcount;
         }
         if (totalCount == 0) {
