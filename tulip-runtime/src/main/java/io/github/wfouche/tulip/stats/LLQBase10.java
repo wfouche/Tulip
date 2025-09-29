@@ -217,6 +217,7 @@ public class LLQBase10 {
         System.out.println("100: " + percentileValue(100.0));
         System.out.println("MIN: " + minValue);
         System.out.println("MAX: " + maxValue);
+        System.out.println("NUM: " + numValues);
     }
 
     static {
