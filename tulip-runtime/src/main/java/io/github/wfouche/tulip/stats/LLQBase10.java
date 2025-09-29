@@ -51,10 +51,26 @@ public class LLQBase10 {
         llqhist[index] += 1;
     }
 
+    public double averageValue() {
+        double totalSum = 0.0;
+        long totalCount = 0;
+        for (int i = 0; i != llqhist.length; i++) {
+            long qvalue = idx2llq[i];
+            long qcount = llqhist[i];
+            totalSum += qvalue * qcount;
+            totalCount += qcount;
+        }
+        if (totalCount == 0) {
+            return 0.0;
+        }
+        return totalSum / totalCount;
+    }
+
     public void display() {
         for (int i = 0; i != llqhist.length; i++) {
             System.out.println(idx2llq[i] + " = " + llqhist[i]);
         }
+        System.out.println("AVG: " + averageValue());
     }
 
     static {
@@ -79,7 +95,7 @@ public class LLQBase10 {
     public static void main(String[] args) {
         LLQBase10 hist = new LLQBase10();
 
-        for (long i = 0; i < 100000001; i++) {
+        for (long i = 0; i < 100000001L; i++) {
             hist.update(i);
         }
 
