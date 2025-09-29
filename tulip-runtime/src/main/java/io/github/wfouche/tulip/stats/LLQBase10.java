@@ -1,9 +1,16 @@
 package io.github.wfouche.tulip.stats;
 
+// DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
+
+import com.fasterxml.jackson.core.type.TypeReference;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import java.io.IOException;
+import java.util.Map;
 
 public class LLQBase10 {
 
@@ -68,10 +75,18 @@ public class LLQBase10 {
         return (((n * 10 + v25) / v50) * v50) / 10;
     }
 
+    public void reset() {
+        Arrays.fill(qCounts, 0L);
+    }
+
     public void update(long n) {
+        update(n,1);
+    }
+
+    public void update(long n, long count) {
         long q = llq(n);
         int index = Arrays.binarySearch(qValues, q);
-        qCounts[index] += 1;
+        qCounts[index] += count;
         if (n < minValue) {
             minValue = n;
         }
@@ -205,8 +220,8 @@ public class LLQBase10 {
     public String toJsonString() {
         StringBuilder jsonString = new StringBuilder("{");
         int count = 0;
-        for (int i = 0; i != qValues.length; i++) {
-            if (qValues[i] != 0) {
+        for (int i = 0; i != qCounts.length; i++) {
+            if (qCounts[i] != 0) {
                 if (count > 0) {
                     jsonString.append(",");
                 }
@@ -222,8 +237,25 @@ public class LLQBase10 {
         return jsonString.toString();
     }
 
-    public void fromJsonString(String json) {
+    public void fromJsonString(String jsonString) {
+        TypeReference<Map<Long, Long>> typeRef = new TypeReference<Map<Long, Long>>() {};
+        try {
+            // 0. Zero values array
+            reset();
 
+            // 1. Initialize the ObjectMapper
+            ObjectMapper objectMapper = new ObjectMapper();
+
+            // 2. Deserialize the JSON string using the TypeReference
+            Map<Long, Long> longMap = objectMapper.readValue(jsonString, typeRef);
+
+            // 3. Restore counts
+            longMap.forEach(this::update);
+
+        } catch (IOException e) {
+            System.err.println("Error reading JSON string: " + e.getMessage());
+            e.printStackTrace();
+        }
     }
 
     public void display() {
@@ -242,7 +274,12 @@ public class LLQBase10 {
         System.out.println("MIN: " + minValue);
         System.out.println("MAX: " + maxValue);
         System.out.println("NUM: " + numValues);
-        System.out.println("JSN: " + toJsonString());
+        String json = toJsonString();
+        System.out.println("JS1: " + json);
+        reset();
+        System.out.println("JS2: " + toJsonString());
+        fromJsonString(json);
+        System.out.println("JS3: " + toJsonString());
     }
 
     static {
