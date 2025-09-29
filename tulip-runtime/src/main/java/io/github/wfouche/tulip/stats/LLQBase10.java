@@ -202,6 +202,30 @@ public class LLQBase10 {
         return numValues;
     }
 
+    public String toJsonString() {
+        StringBuilder jsonString = new StringBuilder("{");
+        int count = 0;
+        for (int i = 0; i != qValues.length; i++) {
+            if (qValues[i] != 0) {
+                if (count > 0) {
+                    jsonString.append(",");
+                }
+                jsonString.append("\"");
+                jsonString.append(qValues[i]);
+                jsonString.append("\"");
+                jsonString.append(": ");
+                jsonString.append(qCounts[i]);
+                count += 1;
+            }
+        }
+        jsonString.append("}");
+        return jsonString.toString();
+    }
+
+    public void fromJsonString(String json) {
+
+    }
+
     public void display() {
         for (int i = 0; i != qCounts.length; i++) {
             System.out.println(qValues[i] + " = " + qCounts[i]);
@@ -218,6 +242,7 @@ public class LLQBase10 {
         System.out.println("MIN: " + minValue);
         System.out.println("MAX: " + maxValue);
         System.out.println("NUM: " + numValues);
+        System.out.println("JSN: " + toJsonString());
     }
 
     static {
