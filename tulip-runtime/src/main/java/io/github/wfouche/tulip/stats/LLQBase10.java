@@ -31,8 +31,8 @@ public class LLQBase10 {
     }
 
     // ....
-    static long[] qValues = new long[137];
-    public long[] qCounts = new long[137];
+    static long[] qValues = new long[156];
+    public long[] qCounts = new long[156];
     public long minValue = Long.MAX_VALUE;
     public long maxValue = Long.MIN_VALUE;
     public long numValues = 0;
@@ -46,8 +46,8 @@ public class LLQBase10 {
         10000L,
         100000L,
         1000000L, // 1 second
-        10000000L,
-        100000000L,
+        10000000L, // 10 seconds
+        100000000L, // 100 seconds
         1000000000L, // 16.67 minutes
         10000000000L, // 166.67 minutes
         100000000000L, // 27.777 hours  = 1 day + 3.777 hours
@@ -281,7 +281,7 @@ public class LLQBase10 {
 
         long num = 10L;
         long step = 5L;
-        while (num < 100000000L) {
+        while (num < 1000000001L) {
             num += step;
             qValues[idx] = num;
             idx += 1;
@@ -294,7 +294,7 @@ public class LLQBase10 {
     public static void main(String[] args) {
         LLQBase10 hist = new LLQBase10();
 
-        for (long i = 0; i < 100000001L; i++) {
+        for (long i = 0; i < 1000000001L; i++) {
             hist.update(i);
         }
 
