@@ -11,7 +11,7 @@ groovy=5.0.1
 gradle=9.1.0
 
 # JBang
-jbang=0.131.0
+jbang=0.132.0
 
 # Kotlin
 kotlin=2.1.21
