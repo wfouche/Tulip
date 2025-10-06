@@ -124,7 +124,8 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
             ::action97,
             ::action98,
             ::action99,
-            ::onStop)
+            ::onStop,
+        )
 
     abstract fun onStart(): Boolean
 

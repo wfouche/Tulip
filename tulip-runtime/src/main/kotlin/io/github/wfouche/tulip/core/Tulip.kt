@@ -149,7 +149,7 @@ private fun runtimeInit(
     context: RuntimeContext,
     tests: List<TestProfile>,
     actionDesc: Map<Int, String>,
-    userFactory: TulipUserFactory
+    userFactory: TulipUserFactory,
 ) {
     TULIP_CONTEXT_ID = contextId
     TULIP_CONTEXT_NAME = context.name
@@ -184,7 +184,7 @@ private fun runtimeDone() {
 private data class RuntimeContext(
     val name: String = "",
     val numUsers: Int = 0,
-    val numThreads: Int = 0
+    val numThreads: Int = 0,
 )
 
 /*-------------------------------------------------------------------------*/
@@ -199,7 +199,7 @@ private data class Action(
     // Number of occurrences of this action relative to other actions.
     // Set weight to 0 (or use default value) when a workflow should be
     // specified.
-    val weight: Int = 0
+    val weight: Int = 0,
 )
 
 /*-------------------------------------------------------------------------*/
@@ -227,7 +227,7 @@ private data class Duration(
 
     val startupDurationMillis: Long = timeUnit.toMillis(startupDurationUnits),
     val warmupDurationMillis: Long = timeUnit.toMillis(warmupDurationUnits),
-    val mainDurationMillis: Long = timeUnit.toMillis(mainDurationUnits)
+    val mainDurationMillis: Long = timeUnit.toMillis(mainDurationUnits),
 )
 
 /*-------------------------------------------------------------------------*/
@@ -270,7 +270,7 @@ private data class TestProfile(
     val filename: String = "",
 
     // (Optional) Name of the workflow to execute
-    val workflow: String = ""
+    val workflow: String = "",
 )
 
 /*-------------------------------------------------------------------------*/
@@ -298,7 +298,7 @@ data class Task(
     var waitTimeNanos: Long = 0,
     var rspQueue: MPSC_Queue<Task>? = null,
     var status: Int = -1,
-    var beginQueueTimeNanos: Long = 0
+    var beginQueueTimeNanos: Long = 0,
 )
 
 /*-------------------------------------------------------------------------*/
@@ -333,7 +333,7 @@ private val g_tests = mutableListOf<TestProfile>()
 data class ConfigContext(
     val enabled: Boolean = false,
     @SerialName("num_users") val numUsers: Int = 0,
-    @SerialName("num_threads") val numThreads: Int = 0
+    @SerialName("num_threads") val numThreads: Int = 0,
 )
 
 @Serializable
@@ -341,7 +341,7 @@ data class ConfigDuration(
     @SerialName("pre_warmup_duration") val startupDuration: Long = 0,
     @SerialName("warmup_duration") val warmupDuration: Long = 0,
     @SerialName("benchmark_duration") val mainDuration: Long = 0,
-    @SerialName("benchmark_iterations") val mainDurationRepeatCount: Int = 1
+    @SerialName("benchmark_iterations") val mainDurationRepeatCount: Int = 1,
 )
 
 @Serializable data class ConfigAction(val id: Int, val weight: Int = 0)
@@ -356,7 +356,7 @@ data class ConfigTest(
     @SerialName("aps_rate_step_count") val throughputRateStepCount: Int = 1,
     @SerialName("worker_thread_queue_size") val workInProgress: Int = 0,
     @SerialName("scenario_actions") val actions: List<ConfigAction> = listOf(),
-    @SerialName("scenario_workflow") val workflow: String = ""
+    @SerialName("scenario_workflow") val workflow: String = "",
 )
 
 @Serializable
@@ -366,7 +366,7 @@ data class ActionsConfig(
     @SerialName("report_filename") val htmlFilename: String = "",
     @SerialName("user_class") val userClass: String = "",
     @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
-    @SerialName("user_actions") val userActions: Map<Int, String> = mapOf()
+    @SerialName("user_actions") val userActions: Map<Int, String> = mapOf(),
 )
 
 @Serializable
@@ -374,7 +374,7 @@ data class TulipConfig(
     val actions: ActionsConfig = ActionsConfig(),
     val contexts: Map<String, ConfigContext> = mapOf(),
     val benchmarks: Map<String, ConfigTest> = mapOf(),
-    val workflows: Map<String, Map<String, Map<String, Double>>> = mapOf()
+    val workflows: Map<String, Map<String, Map<String, Double>>> = mapOf(),
 )
 
 fun initConfig(text: String): String {
@@ -443,7 +443,8 @@ fun initConfig(text: String): String {
                         e.time.warmupDuration,
                         e.time.mainDuration,
                         e.time.mainDurationRepeatCount,
-                        TimeUnit.SECONDS),
+                        TimeUnit.SECONDS,
+                    ),
                 arrivalRate = e.throughputRate,
                 arrivalRateStepChange = e.throughputRateStepChange,
                 arrivalRateStepCount = e.throughputRateStepCount,
@@ -461,7 +462,8 @@ fun initConfig(text: String): String {
                         }
                     },
                 filename = g_config.actions.jsonFilename,
-                workflow = e.workflow)
+                workflow = e.workflow,
+            )
         g_tests.add(v)
     }
     for (wn in g_config.workflows.keys) {
@@ -524,7 +526,7 @@ private data class ActionSummary(
     // var avgCpuProcess: Double = 0.0
     var processCpuTime: Long = 0,
     var processCpuCores: Double = 0.0,
-    var processCpuUtilization: Double = 0.0
+    var processCpuUtilization: Double = 0.0,
 )
 
 /*-------------------------------------------------------------------------*/
@@ -560,7 +562,7 @@ private class ActionStats {
         testPhase: String,
         runId: Int,
         cpuTime: Long,
-        aps_target: Double
+        aps_target: Double,
     ) {
         r.actionId = actionId
 
@@ -661,9 +663,10 @@ private class ActionStats {
             "  max_rt  = ${
                 "%.3f".format(
                     Locale.US,
-                    r.maxRt
+                    r.maxRt,
                 )
-            } ms at $histogramMaxRtTs")
+            } ms at $histogramMaxRtTs"
+        )
 
         if (actionId == NUM_ACTIONS) {
             val rt = Runtime.getRuntime()
@@ -689,16 +692,19 @@ private class ActionStats {
             output.add("")
             val cpu_time_secs: Double = r.processCpuTime / 1000000000.0
             output.add(
-                "  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds")
+                "  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds"
+            )
             r.processCpuCores = cpu_time_secs / r.durationSeconds
             output.add(
-                "  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores")
+                "  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores"
+            )
             r.processCpuUtilization = 100.0 * r.processCpuCores
             // if (r.processCpuUtilization > 100.0) r.processCpuUtilization =
             // 100.0
             // support > 100.0 utilization due to hyper-threading
             output.add(
-                "  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}%")
+                "  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}%"
+            )
 
             //            output.add("")
             //            val awqs: Double = wthread_queue_stats.mean
@@ -834,7 +840,7 @@ private object DataCollector {
         testPhase: String,
         runId: Int,
         cpuTime: Long,
-        apsTarget: Double
+        apsTarget: Double,
     ) {
         synchronized(lock) {
             actionStats[NUM_ACTIONS].createSummary(
@@ -849,7 +855,8 @@ private object DataCollector {
                 testPhase,
                 runId,
                 cpuTime,
-                apsTarget)
+                apsTarget,
+            )
             actionStats.forEachIndexed { index, data ->
                 if (data.numActions > 0) {
                     if (index != NUM_ACTIONS) {
@@ -865,7 +872,8 @@ private object DataCollector {
                             testPhase,
                             -1,
                             0L,
-                            0.0)
+                            0.0,
+                        )
                     }
                 }
             }
@@ -989,7 +997,8 @@ private object DataCollector {
                                 write("  \"version\": \"${VERSION}\"")
                                 newLine()
                                 write(
-                                    ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"")
+                                    ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\""
+                                )
                                 newLine()
                                 write(", \"config\": ${jsonString}")
                                 newLine()
@@ -1065,7 +1074,7 @@ private object DataCollector {
 
 private class RateGovernor(
     private val averageRate: Double,
-    private val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
+    private val timeMillisStart: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime()),
 ) {
 
     private var count: Long = 0
@@ -1225,7 +1234,8 @@ private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<In
                 queueLength == 0 -> context.numThreads * USER_THREAD_QSIZE // 11
                 queueLength > 0 -> context.numThreads * queueLength // Actions per Thread
                 else -> abs(queueLength) // Actions across all Threads
-            })
+            }
+        )
     }
     return list
 }
@@ -1283,14 +1293,15 @@ private fun runTest(
     contextId: Int,
     indexTestCase: Int,
     indexUserProfile: Int,
-    queueLength: Int
+    queueLength: Int,
 ) {
     var cpuTime: Long = 0
     var tsBegin = java.time.LocalDateTime.now().format(formatter)
     val output = mutableListOf("")
     output.add("======================================================================")
     output.add(
-        "= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - $tsBegin")
+        "= [${contextId}][${indexTestCase}][${indexUserProfile}][${queueLength}] ${testCase.name} - $tsBegin"
+    )
     output.add("======================================================================")
     Console.put(output)
 
@@ -1322,8 +1333,10 @@ private fun runTest(
         actionList.shuffle(rnd)
     }
     repeat(MAX_NUM_USERS) { idx ->
-        if ((testCase.duration.warmupDurationUnits == 0L) &&
-            (testCase.duration.mainDurationUnits == 0L)) {
+        if (
+            (testCase.duration.warmupDurationUnits == 0L) &&
+                (testCase.duration.mainDurationUnits == 0L)
+        ) {
             userActions!![idx] = null
         } else {
             userActions!![idx] = createActionGenerator(actionList)
@@ -1385,8 +1398,9 @@ private fun runTest(
         rateGovernor?.pace()
     }
 
-    if ((testCase.duration.warmupDurationUnits == 0L) &&
-        (testCase.duration.mainDurationUnits == 0L)) {
+    if (
+        (testCase.duration.warmupDurationUnits == 0L) && (testCase.duration.mainDurationUnits == 0L)
+    ) {
 
         DataCollector.clearStats()
 
@@ -1430,7 +1444,8 @@ private fun runTest(
                 "Benchmark",
                 0,
                 cpuTime,
-                0.0)
+                0.0,
+            )
             DataCollector.printStats()
             if (testCase.saveStats) DataCollector.saveStatsJson(testCase.filename)
         }
@@ -1448,7 +1463,7 @@ private fun runTest(
         testPhase: String,
         runId: Int,
         runIdMax: Int,
-        arrivalRate: Double = -1.0
+        arrivalRate: Double = -1.0,
     ) {
 
         if (durationMillis == 0L) {
@@ -1464,9 +1479,11 @@ private fun runTest(
         val tsEndPredicted =
             java.time.LocalDateTime.now().plusSeconds(durationMillis / 1000).format(formatter)
         Console.put(
-            "\n${testPhase} (${testCase.name}), run ${runId+1} of ${runIdMax+1}: begin (${tsBegin})")
+            "\n${testPhase} (${testCase.name}), run ${runId+1} of ${runIdMax+1}: begin (${tsBegin})"
+        )
         Console.put(
-            "${testPhase} (${testCase.name}), run ${runId+1} of ${runIdMax+1}:       (${tsEndPredicted})")
+            "${testPhase} (${testCase.name}), run ${runId+1} of ${runIdMax+1}:       (${tsEndPredicted})"
+        )
 
         timeMillisStart = timeMillisEnd
         timeMillisEnd = timeMillisStart + durationMillis
@@ -1532,7 +1549,8 @@ private fun runTest(
         val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
         Console.put(
-            "$testPhase (${testCase.name}), run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})")
+            "$testPhase (${testCase.name}), run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})"
+        )
 
         elapsedTimeNanos {
             DataCollector.createSummary(
@@ -1546,7 +1564,8 @@ private fun runTest(
                 testPhase,
                 runId,
                 cpuTime,
-                apsRate)
+                apsRate,
+            )
             DataCollector.printStats()
             if (testPhase == "Benchmark") {
                 if (testCase.saveStats) DataCollector.saveStatsJson(testCase.filename)
@@ -1586,7 +1605,8 @@ private fun runTest(
 private fun initTulip() {
     Console.put(TulipApi.getVersionBanner())
     Console.put(
-        "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})")
+        "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})"
+    )
 }
 
 /*-------------------------------------------------------------------------*/
@@ -1597,7 +1617,7 @@ private fun runTulip(
     tests: List<TestProfile>,
     actionNames: Map<Int, String>,
     userFactory: TulipUserFactory,
-    getTest: (RuntimeContext, TestProfile) -> TestProfile
+    getTest: (RuntimeContext, TestProfile) -> TestProfile,
 ) {
     Console.put("")
 
@@ -1638,7 +1658,7 @@ private fun runTulip(
 
 private fun runBenchmarks(
     userFactory: TulipUserFactory,
-    getTest: (RuntimeContext, TestProfile) -> TestProfile
+    getTest: (RuntimeContext, TestProfile) -> TestProfile,
 ) {
     fun outputFilename(filename: String): String {
         return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
