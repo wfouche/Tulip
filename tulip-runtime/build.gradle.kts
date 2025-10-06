@@ -27,7 +27,7 @@ plugins {
     // id("org.jetbrains.dokka") version "2.0.0"
 
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
-    id("com.diffplug.spotless") version "7.2.1"
+    id("com.diffplug.spotless") version "8.0.0"
 }
 
 java {
@@ -90,16 +90,15 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
-    implementation("ch.qos.logback:logback-core:1.5.18")
+    implementation("ch.qos.logback:logback-core:1.5.19")
 
-    // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation("ch.qos.logback:logback-classic:1.5.18")
+    // https://mvnrepository.com/artifact/ch.qos.logback/logack-classic
+    implementation("ch.qos.logback:logback-classic:1.5.19")
 
     // - Apache HttpClient
 
     // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.5")
-
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.5.1")
     // - Asciidoctor
 
     // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj
@@ -213,12 +212,11 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     }
     kotlin {
         // version, style and all configurations here are optional
-        ktfmt("0.54").googleStyle().configure {
+        ktfmt("0.58").googleStyle().configure {
             it.setMaxWidth(100)
             it.setBlockIndent(4)
             it.setContinuationIndent(4)
             it.setRemoveUnusedImports(true)
-            it.setManageTrailingCommas(false)
         }
     }
     kotlinGradle {
