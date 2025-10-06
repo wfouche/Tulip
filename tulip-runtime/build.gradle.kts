@@ -207,7 +207,7 @@ jreleaser {
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
-        googleJavaFormat("1.28.0").aosp()
+        googleJavaFormat("1.29.0").aosp()
         toggleOffOn()
     }
     kotlin {
