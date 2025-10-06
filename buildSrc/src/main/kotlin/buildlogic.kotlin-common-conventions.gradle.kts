@@ -28,7 +28,7 @@ dependencies {
 java {
     toolchain {
         languageVersion = JavaLanguageVersion.of(17)
-        vendor.set(JvmVendorSpec.BELLSOFT)
+        vendor.set(JvmVendorSpec.ADOPTIUM)
     }
 }
 
