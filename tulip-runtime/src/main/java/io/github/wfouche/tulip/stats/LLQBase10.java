@@ -82,6 +82,7 @@ public class LLQBase10 {
         maxIndex = -1;
         minValue = Long.MAX_VALUE;
         maxValue = Long.MIN_VALUE;
+        numValues = 0;
     }
 
     public void update(long n) {
