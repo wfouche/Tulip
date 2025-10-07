@@ -10,14 +10,13 @@ import java.io.PrintStream as PrintStream
 import java.io.ByteArrayOutputStream as ByteArrayOutputStream
 
 # /// jbang
-# requires-jython = "==2.7.4"
-# requires-java = ">=21"
+# requires-jython = "2.7.4"
+# requires-java = "21"
 # dependencies = [
 #   "com.google.code.gson:gson:2.13.1",
-#   "org.hdrhistogram:HdrHistogram:2.2.2"
+#   "org.hdrhistogram:HdrHistogram:2.2.2",
+#   "io.github.wfouche.tulip:tulip-runtime:2.1.12-dev"
 # ]
-# [python-jvm]
-#   debug = false
 # ///
 
 summary_html_1 = '''<!DOCTYPE html>

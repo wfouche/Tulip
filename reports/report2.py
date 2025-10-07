@@ -6,14 +6,12 @@ import os
 from collections import OrderedDict
 
 # /// jbang
-# requires-jython = "==2.7.4"
-# requires-java = ">=21"
+# requires-jython = "2.7.4"
+# requires-java = "21"
 # dependencies = [
 #   "com.google.code.gson:gson:2.13.1",
 #   "org.hdrhistogram:HdrHistogram:2.2.2"
 # ]
-# [python-jvm]
-#   debug = false
 # ///
 
 header = '''= __DESCRIPTION__
