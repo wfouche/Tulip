@@ -8,6 +8,7 @@ import os
 from collections import OrderedDict
 import java.io.PrintStream as PrintStream
 import java.io.ByteArrayOutputStream as ByteArrayOutputStream
+import io.github.wfouche.tulip.stats.LlqHistogram as LlqHistogram
 
 # /// jbang
 # requires-jython = "2.7.4"
@@ -431,6 +432,11 @@ mark {
 <h2>Percentile Response Time Distribution</h2>
 '''
 
+summary_html_table_2 = '''
+<h2>Log/Linear Quantized Response Time Distribution</h2>
+
+'''
+
 summary_html_3 = '''</body>
 </html>
 '''
@@ -788,6 +794,7 @@ def createReport(filename, text):
 
     sm = None
     jh = Histogram(1, 3600*1000*1000, 3)
+    llq_jh = LlqHistogram()
     fileObj = open(filename)
     jb = json.load(fileObj, object_pairs_hook=OrderedDict)
     version = jb['version']
@@ -942,6 +949,8 @@ def createReport(filename, text):
 
         printStream.print(summary_html_table_1)
         print_percentile_table(printStream,jh)
+        printStream.print(summary_html_table_2)
+        print_llq_histogram_table(printStream)
 
         printStream.println()
         printStream.flush()
@@ -1048,6 +1057,11 @@ def createReport(filename, text):
         if len(name2s_list) > 0:
             name2s = name2s_list[0]
             del name2s_list[0]
+
+    def print_llq_histogram_table(printStream):
+        printStream.println('<table style="width:600px">')
+        printStream.println(llq_jh.toHtmlString())
+        printStream.println("</table>")
 
     def print_percentile_table(printStream, jhx):
         bos = ByteArrayOutputStream()
@@ -1228,6 +1242,7 @@ def createReport(filename, text):
             sm = Summary()
             sm.name = e["bm_name"]
             jh.reset()
+            llq_jh.reset()
             benchmark_id += 1
             jhh = {}
             jss = {}
@@ -1240,6 +1255,9 @@ def createReport(filename, text):
             del name2s_list[0]
         ht = Histogram.fromString(e["histogram_rt"])
         jh.add(ht)
+        llq_ht = LlqHistogram()
+        llq_ht.fromJsonString(json.dumps(e["llq_histogram_rt"]))
+        llq_jh.add(llq_ht)
         p_mem = 100.0 * e["jvm_memory_used"] / e["jvm_memory_maximum"]
         p_cpu = e["process_cpu_utilization"]
         if e["bm_name"] in ["onStart", "onStop"]:
