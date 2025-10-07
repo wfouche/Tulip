@@ -6,13 +6,13 @@ package io.github.wfouche.tulip.stats;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import io.github.wfouche.tulip.core.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
-import io.github.wfouche.tulip.core.Console;
 
 public class LLQBase10 {
 
