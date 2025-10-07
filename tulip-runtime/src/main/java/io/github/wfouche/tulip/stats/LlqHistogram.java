@@ -265,10 +265,14 @@ public class LlqHistogram {
 
                 // Value
                 if (qv < 1000) {
+                    // μs - microseconds
                     htmlString.append(String.format("    <td>%d μs</td>\n", qv));
                 } else if (qv < 1000000) {
-                    htmlString.append(String.format("    <td>%d ms</td>\n", qv / 1000));
+                    // ms - milliseconds
+                    htmlString.append(
+                            String.format(Locale.US, "    <td>%.1f ms</td>\n", qv / 1000.0));
                 } else {
+                    // s - seconds
                     htmlString.append(
                             String.format(Locale.US, "    <td>%.1f s</td>\n", qv / 1000000.0));
                 }
