@@ -18,7 +18,7 @@ import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
 import io.github.wfouche.tulip.report.convertAdocToHtml
 import io.github.wfouche.tulip.report.createConfigReport
-import io.github.wfouche.tulip.stats.LLQBase10
+import io.github.wfouche.tulip.stats.LlqHistogram
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.lang.management.ManagementFactory
@@ -814,7 +814,7 @@ private object DataCollector {
     private var lock: String = "lock"
     private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
-    private val llq = LLQBase10()
+    private val llq = LlqHistogram()
 
     // val a = arrayOf<Array<ActionStats>>()
     // init {

@@ -13,7 +13,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-public class LLQBase10 {
+public class LlqHistogram {
 
     // Helper class to group value and count for sorting
     private static class Bin implements Comparable<Bin> {
@@ -124,7 +124,7 @@ public class LLQBase10 {
     public double averageValue() {
         double totalSum = 0.0;
         long totalCount = 0;
-        for (int i = 0; i < maxIndex; i++) {
+        for (int i = 0; i < maxIndex+1; i++) {
             long qvalue = qValues[i];
             long qcount = qCounts[i];
             totalSum += (double) qvalue * (double) qcount;
@@ -146,7 +146,7 @@ public class LLQBase10 {
         List<Bin> bins = new ArrayList<>(qValues.length);
         long totalCount = 0L;
 
-        for (int i = 0; i < maxIndex; i++) {
+        for (int i = 0; i < maxIndex+1; i++) {
             long count = qCounts[i];
             if (count > 0) {
                 bins.add(new Bin(qValues[i], count));
@@ -197,7 +197,7 @@ public class LLQBase10 {
         // Sum of (Value - Mean)^2 * Count
         double sumOfSquaredDifferences = 0.0;
 
-        for (int i = 0; i < maxIndex; i++) {
+        for (int i = 0; i < maxIndex+1; i++) {
             long value = qValues[i];
             long count = qCounts[i];
 
@@ -227,14 +227,10 @@ public class LLQBase10 {
         return Math.sqrt(variance);
     }
 
-    public long numberOfValues() {
-        return numValues;
-    }
-
     public String toJsonString() {
         StringBuilder jsonString = new StringBuilder("{");
         int count = 0;
-        for (int i = 0; i < maxIndex; i++) {
+        for (int i = 0; i < maxIndex+1; i++) {
             if (qCounts[i] != 0) {
                 if (count > 0) {
                     jsonString.append(", ");
@@ -309,12 +305,13 @@ public class LLQBase10 {
     }
 
     public static void main(String[] args) {
-        LLQBase10 hist = new LLQBase10();
+        LlqHistogram hist = new LlqHistogram();
 
-        for (long i = 0; i < 1000000001L; i++) {
-            hist.update(i);
-        }
-
+        //for (long i = 0; i < 1000000001L; i++) {
+        //    hist.update(i);
+        //}
+        System.out.println("LLQ(1460139) = " + llq(1460139));
+        hist.update(1460139);
         hist.display();
     }
 }
