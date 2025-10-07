@@ -77,6 +77,12 @@ public class LlqHistogram {
         return (((n * 10 + v25) / v50) * v50) / 10;
     }
 
+    public void add(LlqHistogram llqh) {
+        for (int i = 0; i != qCounts.length; i++) {
+            qCounts[i] += llqh.qCounts[i];
+        }
+    }
+
     public void reset() {
         Arrays.fill(qCounts, 0L);
         maxIndex = -1;
