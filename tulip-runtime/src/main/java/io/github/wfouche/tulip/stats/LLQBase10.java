@@ -80,6 +80,8 @@ public class LLQBase10 {
     public void reset() {
         Arrays.fill(qCounts, 0L);
         maxIndex = -1;
+        minValue = Long.MAX_VALUE;
+        maxValue = Long.MIN_VALUE;
     }
 
     public void update(long n) {
