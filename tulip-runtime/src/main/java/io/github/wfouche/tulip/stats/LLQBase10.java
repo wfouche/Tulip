@@ -6,7 +6,6 @@ package io.github.wfouche.tulip.stats;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import io.github.wfouche.tulip.core.Console;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -109,6 +108,14 @@ public class LLQBase10 {
 
     public double maxValue() {
         return maxValue;
+    }
+
+    public int maxIndex() {
+        return maxIndex;
+    }
+
+    public long numValues() {
+        return numValues;
     }
 
     public double averageValue() {
@@ -262,21 +269,21 @@ public class LLQBase10 {
         }
     }
 
-    public void printStats() {
-        Console.put("");
-        Console.put("  IDX: " + maxIndex);
-        Console.put("  AVG: " + averageValue());
-        Console.put("  STD: " + standardDeviationValue());
-        Console.put("  P00: " + percentileValue(0.0));
-        Console.put("  P50: " + percentileValue(50.0));
-        Console.put("  P90: " + percentileValue(90.0));
-        Console.put("  P95: " + percentileValue(95.0));
-        Console.put("  P99: " + percentileValue(99.0));
-        Console.put("  MIN: " + minValue);
-        Console.put("  MAX: " + maxValue);
-        Console.put("  NUM: " + numValues);
+    public void display() {
+        System.out.println();
+        System.out.println("  IDX: " + maxIndex());
+        System.out.println("  AVG: " + averageValue());
+        System.out.println("  STD: " + standardDeviationValue());
+        System.out.println("  P00: " + percentileValue(0.0));
+        System.out.println("  P50: " + percentileValue(50.0));
+        System.out.println("  P90: " + percentileValue(90.0));
+        System.out.println("  P95: " + percentileValue(95.0));
+        System.out.println("  P99: " + percentileValue(99.0));
+        System.out.println("  MIN: " + minValue());
+        System.out.println("  MAX: " + maxValue());
+        System.out.println("  NUM: " + numValues());
         String json = toJsonString();
-        Console.put("  JSN: " + json);
+        System.out.println("  JSN: " + json);
     }
 
     static {
@@ -305,6 +312,6 @@ public class LLQBase10 {
             hist.update(i);
         }
 
-        hist.printStats();
+        hist.display();
     }
 }

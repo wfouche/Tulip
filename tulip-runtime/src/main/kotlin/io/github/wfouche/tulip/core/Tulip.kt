@@ -28,7 +28,6 @@ import java.util.*
 import java.util.concurrent.LinkedBlockingQueue as BlockingQueue
 import java.util.concurrent.ThreadLocalRandom
 import java.util.concurrent.TimeUnit
-import kotlin.collections.mutableListOf
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import kotlin.math.abs
@@ -875,8 +874,23 @@ private object DataCollector {
 
     fun printStats() {
         synchronized(lock) {
+            // hdrh
             actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
-            llq.printStats()
+            // llqh
+            Console.put("")
+            Console.put("  IDX: " + llq.maxIndex())
+            Console.put("  AVG: " + llq.averageValue())
+            Console.put("  STD: " + llq.standardDeviationValue())
+            Console.put("  P00: " + llq.percentileValue(0.0))
+            Console.put("  P50: " + llq.percentileValue(50.0))
+            Console.put("  P90: " + llq.percentileValue(90.0))
+            Console.put("  P95: " + llq.percentileValue(95.0))
+            Console.put("  P99: " + llq.percentileValue(99.0))
+            Console.put("  MIN: " + llq.minValue())
+            Console.put("  MAX: " + llq.maxValue())
+            Console.put("  NUM: " + llq.numValues())
+            val json: String = llq.toJsonString()
+            Console.put("  JSN: " + json)
         }
     }
 
