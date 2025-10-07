@@ -877,19 +877,18 @@ private object DataCollector {
             // hdrh
             actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
             // llqh
-            Console.put("")
-            Console.put("  IDX: " + llq.maxIndex())
-            Console.put("  AVG: " + llq.averageValue())
-            Console.put("  STD: " + llq.standardDeviationValue())
-            Console.put("  P50: " + llq.percentileValue(50.0))
-            Console.put("  P90: " + llq.percentileValue(90.0))
-            Console.put("  P95: " + llq.percentileValue(95.0))
-            Console.put("  P99: " + llq.percentileValue(99.0))
-            Console.put("  MIN: " + llq.minValue())
-            Console.put("  MAX: " + llq.maxValue())
-            Console.put("  NUM: " + llq.numValues())
-            val json: String = llq.toJsonString()
-            Console.put("  JSN: " + json)
+            //            Console.put("")
+            //            Console.put("  AVG: " + llq.averageValue())
+            //            Console.put("  STD: " + llq.standardDeviationValue())
+            //            Console.put("  P50: " + llq.percentileValue(50.0))
+            //            Console.put("  P90: " + llq.percentileValue(90.0))
+            //            Console.put("  P95: " + llq.percentileValue(95.0))
+            //            Console.put("  P99: " + llq.percentileValue(99.0))
+            //            Console.put("  MIN: " + llq.minValue())
+            //            Console.put("  MAX: " + llq.maxValue())
+            //            Console.put("  NUM: " + llq.numValues())
+            //            val json: String = llq.toJsonString()
+            //            Console.put("  JSN: " + json)
         }
     }
 
@@ -961,6 +960,8 @@ private object DataCollector {
                 json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
 
                 json += actionStats[NUM_ACTIONS].toJson(-1)
+
+                json += ", \"llq_histogram_rt\": " + llq.toJsonString()
 
                 json += ", \"user_actions\": {"
 

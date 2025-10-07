@@ -7,11 +7,7 @@ package io.github.wfouche.tulip.stats;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class LlqHistogram {
 
@@ -35,10 +31,6 @@ public class LlqHistogram {
     // ....
     static long[] qValues = new long[156];
     public long[] qCounts = new long[156];
-    public int maxIndex = -1;
-    public long minValue = Long.MAX_VALUE;
-    public long maxValue = Long.MIN_VALUE;
-    public long numValues = 0;
 
     // Precomputed powers of 10 up to 10^13
     private static final long[] POW10 = {
@@ -77,12 +69,14 @@ public class LlqHistogram {
         return (((n * 10 + v25) / v50) * v50) / 10;
     }
 
+    public void add(LlqHistogram llqh) {
+        for (int i = 0; i != qCounts.length; i++) {
+            qCounts[i] += llqh.qCounts[i];
+        }
+    }
+
     public void reset() {
         Arrays.fill(qCounts, 0L);
-        maxIndex = -1;
-        minValue = Long.MAX_VALUE;
-        maxValue = Long.MIN_VALUE;
-        numValues = 0;
     }
 
     public void update(long n) {
@@ -92,45 +86,41 @@ public class LlqHistogram {
     public void update(long n, long count) {
         long q = llq(n);
         int index = Arrays.binarySearch(qValues, q);
-        if (index > maxIndex) {
-            maxIndex = index;
-        }
         qCounts[index] += count;
-        if (n < minValue) {
-            minValue = n;
-        }
-        if (n > maxValue) {
-            maxValue = n;
-        }
-        numValues += 1;
     }
 
     public long minValue() {
-        if (minValue == Long.MAX_VALUE) {
-            return 0;
+        for (int i = 0; i < qCounts.length; i++) {
+            if (qCounts[i] != 0) {
+                return qValues[i];
+            }
         }
-        return minValue;
+        return 0;
     }
 
     public long maxValue() {
-        if (maxValue == Long.MIN_VALUE) {
-            return 0;
+        for (int i = qCounts.length - 1; i >= 0; i--) {
+            if (qCounts[i] != 0) {
+                return qValues[i];
+            }
         }
-        return maxValue;
-    }
-
-    public int maxIndex() {
-        return maxIndex;
+        return 0;
     }
 
     public long numValues() {
-        return numValues;
+        long totalSum = 0;
+
+        for (long value : qCounts) {
+            totalSum += value;
+        }
+
+        return totalSum;
     }
 
     public double averageValue() {
         double totalSum = 0.0;
         long totalCount = 0;
-        for (int i = 0; i < maxIndex + 1; i++) {
+        for (int i = 0; i < qCounts.length; i++) {
             long qvalue = qValues[i];
             long qcount = qCounts[i];
             totalSum += (double) qvalue * (double) qcount;
@@ -152,7 +142,7 @@ public class LlqHistogram {
         List<Bin> bins = new ArrayList<>(qValues.length);
         long totalCount = 0L;
 
-        for (int i = 0; i < maxIndex + 1; i++) {
+        for (int i = 0; i < qCounts.length; i++) {
             long count = qCounts[i];
             if (count > 0) {
                 bins.add(new Bin(qValues[i], count));
@@ -203,7 +193,7 @@ public class LlqHistogram {
         // Sum of (Value - Mean)^2 * Count
         double sumOfSquaredDifferences = 0.0;
 
-        for (int i = 0; i < maxIndex + 1; i++) {
+        for (int i = 0; i < qCounts.length; i++) {
             long value = qValues[i];
             long count = qCounts[i];
 
@@ -236,7 +226,7 @@ public class LlqHistogram {
     public String toJsonString() {
         StringBuilder jsonString = new StringBuilder("{");
         int count = 0;
-        for (int i = 0; i < maxIndex + 1; i++) {
+        for (int i = 0; i < qCounts.length; i++) {
             if (qCounts[i] != 0) {
                 if (count > 0) {
                     jsonString.append(", ");
@@ -251,6 +241,59 @@ public class LlqHistogram {
         }
         jsonString.append("}");
         return jsonString.toString();
+    }
+
+    public String toHtmlString() {
+        long nv = numValues();
+        long cv = 0;
+        long av = 0;
+        StringBuilder htmlString = new StringBuilder();
+        htmlString.append("  <tr>\n");
+        htmlString.append("    <th>Value</th>\n");
+        htmlString.append("    <th>Percentile</th>\n");
+        htmlString.append("    <th>Total Count</th>\n");
+        htmlString.append("    <th>Bucket Size</th>\n");
+        htmlString.append("    <th>Percentage</th>\n");
+        htmlString.append("    <th>Above Count</th>\n");
+        htmlString.append("  </tr>\n");
+        for (int i = qCounts.length - 1; i >= 0; i--) {
+            if (qCounts[i] != 0) {
+                av = cv;
+                cv += qCounts[i];
+                htmlString.append("  <tr>\n");
+                long qv = qValues[i];
+
+                // Value
+                if (qv < 1000) {
+                    htmlString.append(String.format("    <td>%d μs</td>\n", qv));
+                } else if (qv < 1000000) {
+                    htmlString.append(String.format("    <td>%d ms</td>\n", qv / 1000));
+                } else {
+                    htmlString.append(
+                            String.format(Locale.US, "    <td>%.1f s</td>\n", qv / 1000000.0));
+                }
+
+                // Percentile
+                htmlString.append(
+                        String.format(Locale.US, "    <td>%.1f</td>\n", 100 - 100.0 * av / nv));
+
+                // Total Count
+                htmlString.append(String.format("    <td>%d</td>\n", nv - av));
+
+                // Bucket Size
+                htmlString.append(String.format("    <td>%d</td>\n", qCounts[i]));
+
+                // Percentage
+                htmlString.append(
+                        String.format(Locale.US, "    <td>%.1f</td>\n", 100.0 * qCounts[i] / nv));
+
+                // Above Count
+                htmlString.append(String.format("    <td>%d</td>\n", av));
+
+                htmlString.append("  </tr>\n");
+            }
+        }
+        return htmlString.toString();
     }
 
     public void fromJsonString(String jsonString) {
@@ -276,7 +319,6 @@ public class LlqHistogram {
 
     public void display() {
         System.out.println();
-        System.out.println("  IDX: " + maxIndex());
         System.out.println("  AVG: " + averageValue());
         System.out.println("  STD: " + standardDeviationValue());
         System.out.println("  P50: " + percentileValue(50.0));
