@@ -1,6 +1,8 @@
 package io.github.wfouche.tulip.stats;
 
-// DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
+// spotless:off
+//DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
+// spotless:on
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -33,6 +35,7 @@ public class LLQBase10 {
     // ....
     static long[] qValues = new long[156];
     public long[] qCounts = new long[156];
+    public int maxIndex = -1;
     public long minValue = Long.MAX_VALUE;
     public long maxValue = Long.MIN_VALUE;
     public long numValues = 0;
@@ -76,6 +79,7 @@ public class LLQBase10 {
 
     public void reset() {
         Arrays.fill(qCounts, 0L);
+        maxIndex = -1;
     }
 
     public void update(long n) {
@@ -85,6 +89,9 @@ public class LLQBase10 {
     public void update(long n, long count) {
         long q = llq(n);
         int index = Arrays.binarySearch(qValues, q);
+        if (index > maxIndex) {
+            maxIndex = index;
+        }
         qCounts[index] += count;
         if (n < minValue) {
             minValue = n;
@@ -106,7 +113,7 @@ public class LLQBase10 {
     public double averageValue() {
         double totalSum = 0.0;
         long totalCount = 0;
-        for (int i = 0; i != qCounts.length; i++) {
+        for (int i = 0; i < maxIndex; i++) {
             long qvalue = qValues[i];
             long qcount = qCounts[i];
             totalSum += (double) qvalue * (double) qcount;
@@ -128,7 +135,7 @@ public class LLQBase10 {
         List<Bin> bins = new ArrayList<>(qValues.length);
         long totalCount = 0L;
 
-        for (int i = 0; i < qValues.length; i++) {
+        for (int i = 0; i < maxIndex; i++) {
             long count = qCounts[i];
             if (count > 0) {
                 bins.add(new Bin(qValues[i], count));
@@ -179,7 +186,7 @@ public class LLQBase10 {
         // Sum of (Value - Mean)^2 * Count
         double sumOfSquaredDifferences = 0.0;
 
-        for (int i = 0; i < qValues.length; i++) {
+        for (int i = 0; i < maxIndex; i++) {
             long value = qValues[i];
             long count = qCounts[i];
 
@@ -216,7 +223,7 @@ public class LLQBase10 {
     public String toJsonString() {
         StringBuilder jsonString = new StringBuilder("{");
         int count = 0;
-        for (int i = 0; i != qCounts.length; i++) {
+        for (int i = 0; i < maxIndex; i++) {
             if (qCounts[i] != 0) {
                 if (count > 0) {
                     jsonString.append(", ");
@@ -255,9 +262,7 @@ public class LLQBase10 {
     }
 
     public void display() {
-        // for (int i = 0; i != qCounts.length; i++) {
-        //     System.out.println(qValues[i] + " = " + qCounts[i]);
-        // }
+        System.out.println("IDX: " + maxIndex);
         System.out.println("AVG: " + averageValue());
         System.out.println("STD: " + standardDeviationValue());
         System.out.println("P00: " + percentileValue(0.0));
@@ -268,8 +273,8 @@ public class LLQBase10 {
         System.out.println("MIN: " + minValue);
         System.out.println("MAX: " + maxValue);
         System.out.println("NUM: " + numValues);
-        String json = toJsonString();
-        System.out.println("JSN: " + json);
+        // String json = toJsonString();
+        // System.out.println("JSN: " + json);
     }
 
     static {
