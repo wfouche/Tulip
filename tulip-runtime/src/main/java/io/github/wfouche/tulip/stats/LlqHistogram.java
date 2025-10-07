@@ -105,11 +105,17 @@ public class LlqHistogram {
         numValues += 1;
     }
 
-    public double minValue() {
+    public long minValue() {
+        if (minValue == Long.MAX_VALUE) {
+            return 0;
+        }
         return minValue;
     }
 
-    public double maxValue() {
+    public long maxValue() {
+        if (maxValue == Long.MIN_VALUE) {
+            return 0;
+        }
         return maxValue;
     }
 
