@@ -273,7 +273,6 @@ public class LlqHistogram {
         System.out.println("  IDX: " + maxIndex());
         System.out.println("  AVG: " + averageValue());
         System.out.println("  STD: " + standardDeviationValue());
-        System.out.println("  P00: " + percentileValue(0.0));
         System.out.println("  P50: " + percentileValue(50.0));
         System.out.println("  P90: " + percentileValue(90.0));
         System.out.println("  P95: " + percentileValue(95.0));
