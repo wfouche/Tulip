@@ -881,7 +881,6 @@ private object DataCollector {
             Console.put("  IDX: " + llq.maxIndex())
             Console.put("  AVG: " + llq.averageValue())
             Console.put("  STD: " + llq.standardDeviationValue())
-            Console.put("  P00: " + llq.percentileValue(0.0))
             Console.put("  P50: " + llq.percentileValue(50.0))
             Console.put("  P90: " + llq.percentileValue(90.0))
             Console.put("  P95: " + llq.percentileValue(95.0))
