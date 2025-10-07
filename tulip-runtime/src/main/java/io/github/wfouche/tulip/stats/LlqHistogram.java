@@ -246,6 +246,7 @@ public class LlqHistogram {
     public String toHtmlString() {
         long nv = numValues();
         long cv = 0;
+        long av = 0;
         StringBuilder htmlString = new StringBuilder();
         htmlString.append("  <tr>\n");
         htmlString.append("    <th>Value</th>\n");
@@ -253,12 +254,16 @@ public class LlqHistogram {
         htmlString.append("    <th>Total Count</th>\n");
         htmlString.append("    <th>Bucket Size</th>\n");
         htmlString.append("    <th>Percentage</th>\n");
+        htmlString.append("    <th>Above Count</th>\n");
         htmlString.append("  </tr>\n");
-        for (int i = 0; i < qCounts.length; i++) {
+        for (int i = qCounts.length - 1; i >= 0; i--) {
             if (qCounts[i] != 0) {
+                av = cv;
                 cv += qCounts[i];
                 htmlString.append("  <tr>\n");
                 long qv = qValues[i];
+
+                // Value
                 if (qv < 1000) {
                     htmlString.append(String.format("    <td>%d μs</td>\n", qv));
                 } else if (qv < 1000000) {
@@ -267,11 +272,24 @@ public class LlqHistogram {
                     htmlString.append(
                             String.format(Locale.US, "    <td>%.1f s</td>\n", qv / 1000000.0));
                 }
-                htmlString.append(String.format(Locale.US, "    <td>%.1f</td>\n", 100.0 * cv / nv));
-                htmlString.append(String.format("    <td>%d</td>\n", cv));
+
+                // Percentile
+                htmlString.append(
+                        String.format(Locale.US, "    <td>%.1f</td>\n", 100 - 100.0 * av / nv));
+
+                // Total Count
+                htmlString.append(String.format("    <td>%d</td>\n", nv - av));
+
+                // Bucket Size
                 htmlString.append(String.format("    <td>%d</td>\n", qCounts[i]));
+
+                // Percentage
                 htmlString.append(
                         String.format(Locale.US, "    <td>%.1f</td>\n", 100.0 * qCounts[i] / nv));
+
+                // Above Count
+                htmlString.append(String.format("    <td>%d</td>\n", av));
+
                 htmlString.append("  </tr>\n");
             }
         }
