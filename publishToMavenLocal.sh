@@ -7,6 +7,8 @@ mkdir -p ~/.m2
 find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
 rm -f -r ~/.m2/repository/io/github/wfouche/tulip/tulip-runtime
 
+# ---------------------------------------------------------------
+
 # reports
 pushd ./reports
 ./update_runtime.sh
@@ -33,3 +35,25 @@ echo "done."
 find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
 
 date
+
+# ---------------------------------------------------------------
+
+# reports
+pushd ./reports
+./update_runtime.sh
+rm report_py.java
+rm report2_py.java
+popd
+
+# spotless
+./gradlew spotlessApply
+
+# Publish tulip-runtime.jar to local Maven
+./gradlew clean
+./gradlew :tulip-runtime:build
+./gradlew :tulip-runtime:publishToMavenLocal
+
+find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
+
+date
+
