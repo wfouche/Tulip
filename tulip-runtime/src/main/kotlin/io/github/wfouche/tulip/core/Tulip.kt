@@ -962,6 +962,8 @@ private object DataCollector {
 
                 json += actionStats[NUM_ACTIONS].toJson(-1)
 
+                json += ", \"llq_histogram_rt\": " + llq.toJsonString()
+
                 json += ", \"user_actions\": {"
 
                 var t = ""
