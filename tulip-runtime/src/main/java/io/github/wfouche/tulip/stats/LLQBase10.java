@@ -12,6 +12,7 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.Map;
+import io.github.wfouche.tulip.core.Console;
 
 public class LLQBase10 {
 
@@ -261,20 +262,21 @@ public class LLQBase10 {
         }
     }
 
-    public void display() {
-        System.out.println("IDX: " + maxIndex);
-        System.out.println("AVG: " + averageValue());
-        System.out.println("STD: " + standardDeviationValue());
-        System.out.println("P00: " + percentileValue(0.0));
-        System.out.println("P50: " + percentileValue(50.0));
-        System.out.println("P90: " + percentileValue(90.0));
-        System.out.println("P95: " + percentileValue(95.0));
-        System.out.println("P99: " + percentileValue(99.0));
-        System.out.println("MIN: " + minValue);
-        System.out.println("MAX: " + maxValue);
-        System.out.println("NUM: " + numValues);
-        // String json = toJsonString();
-        // System.out.println("JSN: " + json);
+    public void printStats() {
+        Console.put("");
+        Console.put("  IDX: " + maxIndex);
+        Console.put("  AVG: " + averageValue());
+        Console.put("  STD: " + standardDeviationValue());
+        Console.put("  P00: " + percentileValue(0.0));
+        Console.put("  P50: " + percentileValue(50.0));
+        Console.put("  P90: " + percentileValue(90.0));
+        Console.put("  P95: " + percentileValue(95.0));
+        Console.put("  P99: " + percentileValue(99.0));
+        Console.put("  MIN: " + minValue);
+        Console.put("  MAX: " + maxValue);
+        Console.put("  NUM: " + numValues);
+        String json = toJsonString();
+        Console.put("  JSN: " + json);
     }
 
     static {
@@ -303,6 +305,6 @@ public class LLQBase10 {
             hist.update(i);
         }
 
-        hist.display();
+        hist.printStats();
     }
 }

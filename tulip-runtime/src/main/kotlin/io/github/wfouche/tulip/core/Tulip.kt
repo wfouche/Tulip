@@ -18,6 +18,7 @@ import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
 import io.github.wfouche.tulip.report.convertAdocToHtml
 import io.github.wfouche.tulip.report.createConfigReport
+import io.github.wfouche.tulip.stats.LLQBase10
 import java.io.BufferedWriter
 import java.io.FileWriter
 import java.lang.management.ManagementFactory
@@ -34,7 +35,6 @@ import kotlin.math.abs
 import kotlin.system.exitProcess
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
-import kotlinx.serialization.encodeToString
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import org.HdrHistogram.Histogram
@@ -815,6 +815,7 @@ private object DataCollector {
     private var lock: String = "lock"
     private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
+    private val llq = LLQBase10()
 
     // val a = arrayOf<Array<ActionStats>>()
     // init {
@@ -875,15 +876,7 @@ private object DataCollector {
     fun printStats() {
         synchronized(lock) {
             actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
-            //        if (printDetails) {
-            //            actionStats.forEachIndexed { index, data ->
-            //                if (data.numActions > 0) {
-            //                    if (index != NUM_ACTIONS) {
-            //                        data.printStats(index)
-            //                    }
-            //                }
-            //            }
-            //        }
+            llq.printStats()
         }
     }
 
@@ -1039,6 +1032,7 @@ private object DataCollector {
             }
             actionStats[NUM_ACTIONS].updateStats(task)
             actionStats[task.actionId].updateStats(task)
+            llq.update(task.serviceTimeNanos / 1000)
 
             //        Counter.builder("Tulip")
             //            .tags("action", task.actionId.toString())
@@ -1057,6 +1051,7 @@ private object DataCollector {
             actionStats.forEach { it.clearStats() }
             waitTimeMicrosHistogram.reset()
             wthread_queue_stats.reset()
+            llq.reset()
         }
     }
 }
