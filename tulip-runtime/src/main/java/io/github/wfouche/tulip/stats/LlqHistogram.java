@@ -29,25 +29,25 @@ public class LlqHistogram {
     }
 
     // ....
-    static long[] qValues = new long[156];
-    public long[] qCounts = new long[156];
+    static long[] qValues = new long[210];
+    public long[] qCounts = new long[210];
 
     // Precomputed powers of 10 up to 10^13
     private static final long[] POW10 = {
-        1L, // 1 microsecond
+        1L, // 1 nanosecond
         10L,
         100L,
-        1000L,
-        10000L,
-        100000L,
-        1000000L, // 1 second
-        10000000L, // 10 seconds
-        100000000L, // 100 seconds
-        1000000000L, // 16.67 minutes
-        10000000000L, // 166.67 minutes
-        100000000000L, // 27.777 hours  = 1 day + 3.777 hours
-        1000000000000L, // 277.77 hours = 11 days + 13.77 hours
-        10000000000000L // 2777.7 hours = 115
+        1_000L, // 1 microsecond
+        10_000L,
+        100_000L,
+        1_000_000L, // 1 millisecond
+        10_000_000L,
+        100_000_000L,
+        1_000_000_000L, // 1 second
+        10_000_000_000L,
+        100_000_000_000L,
+        1_000_000_000_000L, // 1000 seconds
+        10_000_000_000_000L  // 10_1000 seconds
     };
 
     public static long llq(long n) {
@@ -353,7 +353,7 @@ public class LlqHistogram {
 
         long num = 10L;
         long step = 5L;
-        while (num < 1000000001L) {
+        while (num < 1_000_000_000_001L) {
             num += step;
             qValues[idx] = num;
             idx += 1;
@@ -361,13 +361,14 @@ public class LlqHistogram {
                 step *= 10L;
             }
         }
+        // System.out.println("idx = " + idx);
     }
 
     public static void main(String[] args) {
         LlqHistogram hist = new LlqHistogram();
 
-        // for (long i = 0; i < 1000000001L; i++) {
-        //    hist.update(i);
+        // for (long i = 0; i < 1_000_000_0000_001L; i++) {
+        //     hist.update(i);
         // }
         System.out.println("LLQ(1460139) = " + llq(1460139));
         hist.update(1460139);
