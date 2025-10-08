@@ -1046,7 +1046,7 @@ private object DataCollector {
             }
             actionStats[NUM_ACTIONS].updateStats(task)
             actionStats[task.actionId].updateStats(task)
-            llq.update(task.serviceTimeNanos / 1000)
+            llq.update(task.serviceTimeNanos)
 
             //        Counter.builder("Tulip")
             //            .tags("action", task.actionId.toString())
