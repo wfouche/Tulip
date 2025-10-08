@@ -264,21 +264,25 @@ public class LlqHistogram {
                 long qv = qValues[i];
 
                 // Value
-                if (qv < 1000) {
-                    // μs - microseconds
-                    if (qv == 0) {
-                        htmlString.append(String.format("    <td>&lt; 1 μs</td>\n"));
+                if (qv < 1000L) {
+                    // ns - nanoseconds
+                    if (qv == 0L) {
+                        htmlString.append(String.format(Locale.US, "    <td>&lt; 1 ns</td>\n"));
                     } else {
-                        htmlString.append(String.format("    <td>%d μs</td>\n", qv));
+                        htmlString.append(String.format(Locale.US, "    <td>%d ns</td>\n", qv));
                     }
-                } else if (qv < 1000000) {
+                } else if (qv < 1_000_000L) {
+                    // μs - microseconds
+                    htmlString.append(
+                            String.format(Locale.US, "    <td>%.1f μs</td>\n", qv / 1000.0));
+                } else if (qv < 1_000_000_000L) {
                     // ms - milliseconds
                     htmlString.append(
-                            String.format(Locale.US, "    <td>%.1f ms</td>\n", qv / 1000.0));
+                            String.format(Locale.US, "    <td>%.1f ms</td>\n", qv / 1000000.0));
                 } else {
                     // s - seconds
                     htmlString.append(
-                            String.format(Locale.US, "    <td>%.1f s</td>\n", qv / 1000000.0));
+                            String.format(Locale.US, "    <td>%.1f s</td>\n", qv / 1000000000.0));
                 }
 
                 // Percentile
