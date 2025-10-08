@@ -288,7 +288,7 @@ public class LlqHistogram {
 
                 // Percentile
                 htmlString.append(
-                        String.format(Locale.US, "    <td>%.3f</td>\n", 1.0 - 1.0 * av / nv));
+                        String.format(Locale.US, "    <td>%.6f</td>\n", 1.0 - 1.0 * av / nv));
 
                 // Total Count
                 htmlString.append(String.format("    <td>%d</td>\n", nv - av));
@@ -298,7 +298,7 @@ public class LlqHistogram {
 
                 // Percentage
                 htmlString.append(
-                        String.format(Locale.US, "    <td>%.1f</td>\n", 100.0 * qCounts[i] / nv));
+                        String.format(Locale.US, "    <td>%.3f</td>\n", 100.0 * qCounts[i] / nv));
 
                 // Above Count
                 htmlString.append(String.format("    <td>%d</td>\n", av));
