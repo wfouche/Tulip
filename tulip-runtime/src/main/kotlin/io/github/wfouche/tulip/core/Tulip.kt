@@ -759,7 +759,7 @@ private class ActionStats {
         results += t
         results += "}"
 
-        results += ", \"histogram_rt\": "
+        results += ", \"hdr_histogram_rt\": "
 
         val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
         val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
