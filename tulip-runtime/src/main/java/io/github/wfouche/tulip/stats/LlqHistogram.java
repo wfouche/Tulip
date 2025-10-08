@@ -29,8 +29,9 @@ public class LlqHistogram {
     }
 
     // ....
-    static long[] qValues = new long[210];
-    public long[] qCounts = new long[210];
+    private static long minNanos = 0;
+    private static long[] qValues = new long[210];
+    private long[] qCounts = new long[210];
 
     // Precomputed powers of 10 up to 10^13
     private static final long[] POW10 = {
@@ -70,7 +71,7 @@ public class LlqHistogram {
     }
 
     public void add(LlqHistogram llqh) {
-        for (int i = 0; i != qCounts.length; i++) {
+        for (int i = 0; i < qCounts.length; i++) {
             qCounts[i] += llqh.qCounts[i];
         }
     }
@@ -267,7 +268,7 @@ public class LlqHistogram {
                 if (qv < 1000L) {
                     // ns - nanoseconds
                     if (qv == 0L) {
-                        htmlString.append(String.format(Locale.US, "    <td>&lt; 1 ns</td>\n"));
+                        htmlString.append(String.format("    <td>&lt; %d ns</td>\n", minNanos));
                     } else {
                         htmlString.append(String.format(Locale.US, "    <td>%d ns</td>\n", qv));
                     }
@@ -345,6 +346,7 @@ public class LlqHistogram {
     }
 
     static {
+        // initialize qValues
         int idx = 0;
         while (idx < 11) {
             qValues[idx] = idx;
@@ -362,6 +364,26 @@ public class LlqHistogram {
             }
         }
         // System.out.println("idx = " + idx);
+
+        // determine minNanos - smallest duration nanoTime can measure
+        long[] duration = new long[1_000_000];
+        long min = Long.MAX_VALUE;
+        long max = Long.MIN_VALUE;
+
+        long t0 = System.nanoTime();
+        long t1 = t0;
+        for (int i = 0; i < duration.length; i++) {
+            while (t1 == t0) {
+                t1 = System.nanoTime();
+            }
+            duration[i] = t1 - t0;
+            t0 = t1;
+        }
+        for (long value : duration) {
+            if (value < min) min = value;
+            if (value > max) max = value;
+        }
+        minNanos = llq(min);
     }
 
     public static void main(String[] args) {
