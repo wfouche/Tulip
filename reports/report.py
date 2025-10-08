@@ -429,11 +429,11 @@ mark {
 }
 </style>
 
-<h2>Percentile Response Time Distribution</h2>
+<h2>Percentile Response Time Distribution (Log Scale)</h2>
 '''
 
 summary_html_table_2 = '''
-<h2>Log/Linear Quantized Response Time Distribution</h2>
+<h2>Percentile Response Time Distribution (Log/Linear Scale)</h2>
 
 '''
 
