@@ -270,7 +270,7 @@ public class LlqHistogram {
                     if (qv == 0L) {
                         htmlString.append(String.format("    <td>&lt; %d ns</td>\n", minNanos));
                     } else {
-                        htmlString.append(String.format(Locale.US, "    <td>%d ns</td>\n", qv));
+                        htmlString.append(String.format("    <td>%d ns</td>\n", qv));
                     }
                 } else if (qv < 1_000_000L) {
                     // μs - microseconds
