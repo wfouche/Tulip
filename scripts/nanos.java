@@ -1,9 +1,10 @@
 class nanos {
     public static void main(String[] args) {
-        long[] duration = new long[1000];
+        long[] duration = new long[1_000_000];
 
-        for (int j = 0; j < 1000; j++) {
-            for (int i = 0; i < 100; i++) {
+        // ....
+        for (int j = 0; j < 10; j++) {
+            for (int i = 0; i < duration.length; i++) {
                 long t0 = System.nanoTime();
                 long t1 = System.nanoTime();
                 while (t1 == t0) {
@@ -12,6 +13,8 @@ class nanos {
                 duration[i] = t1-t0;
             }
         }
+
+        // ....
         long min = Long.MAX_VALUE;
         long max = Long.MIN_VALUE;
         for (long value : duration) {
