@@ -1253,7 +1253,7 @@ def createReport(filename, text):
                 name2s_list = ["u:%d, t:%d"%(e["num_users"],e["num_threads"]), "c:%d"%(e["context_id"]),""]
             name2s = name2s_list[0]
             del name2s_list[0]
-        ht = Histogram.fromString(e["histogram_rt"])
+        ht = Histogram.fromString(e["hdr_histogram_rt"])
         jh.add(ht)
         llq_ht = LlqHistogram()
         llq_ht.fromJsonString(json.dumps(e["llq_histogram_rt"]))
@@ -1396,7 +1396,7 @@ def createReport(filename, text):
         # jhh ...
         for key in e["user_actions"].keys():
             ar = e["user_actions"][key]
-            htt = Histogram.fromString(ar["histogram_rt"])
+            htt = Histogram.fromString(ar["hdr_histogram_rt"])
             #print(ar["name"] + " - " + "%.3f"%(htt.getMean()/1000.0))
             if jhh.has_key(key):
                 jhh[key].add(htt)
