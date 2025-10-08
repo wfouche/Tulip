@@ -47,7 +47,7 @@ public class LlqHistogram {
         10_000_000_000L, // 10 seconds
         100_000_000_000L, // 100 seconds
         1_000_000_000_000L, // 1000 seconds
-        10_000_000_000_000L  // 10_1000 seconds
+        10_000_000_000_000L // 10_1000 seconds
     };
 
     public static long llq(long n) {
