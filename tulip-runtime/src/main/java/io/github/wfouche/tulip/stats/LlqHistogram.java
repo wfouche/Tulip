@@ -246,19 +246,19 @@ public class LlqHistogram {
         if (qv < 1000L) {
             // ns - nanoseconds
             if (qv == 0L) {
-                return String.format(prefix + "    <td>&lt; %d ns</td>\n", minNanos);
+                return String.format("    <td>%s &lt; %d ns</td>\n", prefix, minNanos);
             } else {
-                return String.format(prefix + "    <td>%d ns</td>\n", qv);
+                return String.format("    <td>%s %d ns</td>\n", prefix, qv);
             }
         } else if (qv < 1_000_000L) {
             // μs - microseconds
-            return String.format(Locale.US, prefix + "    <td>%.1f μs</td>\n", qv / 1000.0);
+            return String.format(Locale.US, "    <td>%s %.1f μs</td>\n", prefix, qv / 1000.0);
         } else if (qv < 1_000_000_000L) {
             // ms - milliseconds
-            return String.format(Locale.US, prefix + "    <td>%.1f ms</td>\n", qv / 1000000.0);
+            return String.format(Locale.US, "    <td>%s %.1f ms</td>\n", prefix, qv / 1000000.0);
         } else {
             // s - seconds
-            return String.format(Locale.US, prefix + "    <td>%.1f s</td>\n", qv / 1000000000.0);
+            return String.format(Locale.US, "    <td>%s %.1f s</td>\n", prefix, qv / 1000000000.0);
         }
     }
 
@@ -305,14 +305,25 @@ public class LlqHistogram {
                 htmlString.append("  </tr>\n");
             }
         }
+
         htmlString.append("  <tr>\n");
-        htmlString.append(formatTimeValue(minValue(), "min: "));
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("  </tr>\n");
+
+        htmlString.append("  <tr>\n");
         htmlString.append(formatTimeValue((long) averageValue(), "avg: "));
         htmlString.append(formatTimeValue((long) standardDeviationValue(), "sd: "));
         htmlString.append(formatTimeValue(percentileValue(90.0), "p90: "));
+        htmlString.append(formatTimeValue(percentileValue(95.0), "p95: "));
         htmlString.append(formatTimeValue(percentileValue(99.0), "p99: "));
         htmlString.append(formatTimeValue(maxValue(), "max: "));
         htmlString.append("  </tr>\n");
+
         return htmlString.toString();
     }
 
