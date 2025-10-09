@@ -109,13 +109,13 @@ public class LlqHistogram {
     }
 
     public long numValues() {
-        long num = 0;
+        long totalCount = 0;
 
         for (long count : qCounts) {
-            num += count;
+            totalCount += count;
         }
 
-        return num;
+        return totalCount;
     }
 
     public double averageValue() {
