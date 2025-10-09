@@ -429,7 +429,7 @@ mark {
 }
 </style>
 
-<h2>Percentile Response Time Distribution (Log Scale)</h2>
+<h2>Percentile Response Time Distribution</h2>
 '''
 
 summary_html_table_2 = '''
@@ -1119,6 +1119,23 @@ def createReport(filename, text):
             printStream.println('    <td>%s</td>'%(e[3]))
             printStream.println('    <td>%s</td>'%(tcount-int(e[2])))
             printStream.println('  </tr>')
+
+        printStream.println('  <tr>')
+        printStream.println('    <td></td>')
+        printStream.println('    <td></td>')
+        printStream.println('    <td></td>')
+        printStream.println('    <td></td>')
+        printStream.println('    <td></td>')
+        printStream.println('  </tr>')
+
+        printStream.println('  <tr>')
+        printStream.println('    <td>avg: %.3f</td>'%(jhx.getMean()/1000.0))
+        printStream.println('    <td>sd: %.1f</td>'%(jhx.getStdDeviation()/1000.0))
+        printStream.println('    <td>p90: %.1f</td>'%(jhx.getValueAtPercentile(90)/1000.0))
+        printStream.println('    <td>p95: %.1f</td>'%(jhx.getValueAtPercentile(95)/1000.0))
+        printStream.println('    <td>p99: %.1f</td>'%(jhx.getValueAtPercentile(99)/1000.0))
+        printStream.println('  </tr>')
+
         printStream.println("</table>")
 
     def print_action_summary():

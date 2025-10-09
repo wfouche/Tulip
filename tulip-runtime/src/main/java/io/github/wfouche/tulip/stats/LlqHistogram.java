@@ -242,6 +242,26 @@ public class LlqHistogram {
         return jsonString.toString();
     }
 
+    private String formatTimeValue(long qv, String prefix) {
+        if (qv < 1000L) {
+            // ns - nanoseconds
+            if (qv == 0L) {
+                return String.format("    <td>%s &lt; %d ns</td>\n", prefix, minNanos);
+            } else {
+                return String.format("    <td>%s %d ns</td>\n", prefix, qv);
+            }
+        } else if (qv < 1_000_000L) {
+            // μs - microseconds
+            return String.format(Locale.US, "    <td>%s %.1f μs</td>\n", prefix, qv / 1000.0);
+        } else if (qv < 1_000_000_000L) {
+            // ms - milliseconds
+            return String.format(Locale.US, "    <td>%s %.1f ms</td>\n", prefix, qv / 1000000.0);
+        } else {
+            // s - seconds
+            return String.format(Locale.US, "    <td>%s %.1f s</td>\n", prefix, qv / 1000000000.0);
+        }
+    }
+
     public String toHtmlString() {
         long nv = numValues();
         long cv = 0;
@@ -263,26 +283,7 @@ public class LlqHistogram {
                 long qv = qValues[i];
 
                 // Value
-                if (qv < 1000L) {
-                    // ns - nanoseconds
-                    if (qv == 0L) {
-                        htmlString.append(String.format("    <td>&lt; %d ns</td>\n", minNanos));
-                    } else {
-                        htmlString.append(String.format("    <td>%d ns</td>\n", qv));
-                    }
-                } else if (qv < 1_000_000L) {
-                    // μs - microseconds
-                    htmlString.append(
-                            String.format(Locale.US, "    <td>%.1f μs</td>\n", qv / 1000.0));
-                } else if (qv < 1_000_000_000L) {
-                    // ms - milliseconds
-                    htmlString.append(
-                            String.format(Locale.US, "    <td>%.1f ms</td>\n", qv / 1000000.0));
-                } else {
-                    // s - seconds
-                    htmlString.append(
-                            String.format(Locale.US, "    <td>%.1f s</td>\n", qv / 1000000000.0));
-                }
+                htmlString.append(formatTimeValue(qv, ""));
 
                 // Percentile
                 htmlString.append(
@@ -304,6 +305,25 @@ public class LlqHistogram {
                 htmlString.append("  </tr>\n");
             }
         }
+
+        htmlString.append("  <tr>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("    <td></td>\n");
+        htmlString.append("  </tr>\n");
+
+        htmlString.append("  <tr>\n");
+        htmlString.append(formatTimeValue((long) averageValue(), "avg: "));
+        htmlString.append(formatTimeValue((long) standardDeviationValue(), "sd: "));
+        htmlString.append(formatTimeValue(percentileValue(50.0), "p50: "));
+        htmlString.append(formatTimeValue(percentileValue(90.0), "p90: "));
+        htmlString.append(formatTimeValue(percentileValue(95.0), "p95: "));
+        htmlString.append(formatTimeValue(percentileValue(99.0), "p99: "));
+        htmlString.append("  </tr>\n");
+
         return htmlString.toString();
     }
 
@@ -331,7 +351,7 @@ public class LlqHistogram {
     public void display() {
         System.out.println();
         System.out.println("  AVG: " + averageValue());
-        System.out.println("  STD: " + standardDeviationValue());
+        System.out.println("   SD: " + standardDeviationValue());
         System.out.println("  P50: " + percentileValue(50.0));
         System.out.println("  P90: " + percentileValue(90.0));
         System.out.println("  P95: " + percentileValue(95.0));
