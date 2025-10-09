@@ -318,10 +318,10 @@ public class LlqHistogram {
         htmlString.append("  <tr>\n");
         htmlString.append(formatTimeValue((long) averageValue(), "avg: "));
         htmlString.append(formatTimeValue((long) standardDeviationValue(), "sd: "));
+        htmlString.append(formatTimeValue(percentileValue(50.0), "p50: "));
         htmlString.append(formatTimeValue(percentileValue(90.0), "p90: "));
         htmlString.append(formatTimeValue(percentileValue(95.0), "p95: "));
         htmlString.append(formatTimeValue(percentileValue(99.0), "p99: "));
-        htmlString.append(formatTimeValue(maxValue(), "max: "));
         htmlString.append("  </tr>\n");
 
         return htmlString.toString();
