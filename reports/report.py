@@ -1110,10 +1110,10 @@ def createReport(filename, text):
                 mark = True
             printStream.println('  <tr>')
             if mark:
-                printStream.println('    <td><mark>%s</mark></td>'%(e[0]))
+                printStream.println('    <td><mark>%s ms</mark></td>'%(e[0]))
                 printStream.println('    <td><mark>%s</mark></td>'%(e[1]))
             else:
-                printStream.println('    <td>%s</td>'%(e[0]))
+                printStream.println('    <td>%s ms</td>'%(e[0]))
                 printStream.println('    <td>%s</td>'%(e[1]))
             printStream.println('    <td>%s</td>'%(e[2]))
             printStream.println('    <td>%s</td>'%(e[3]))
