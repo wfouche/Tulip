@@ -351,7 +351,7 @@ public class LlqHistogram {
     public void display() {
         System.out.println();
         System.out.println("  AVG: " + averageValue());
-        System.out.println("  STD: " + standardDeviationValue());
+        System.out.println("   SD: " + standardDeviationValue());
         System.out.println("  P50: " + percentileValue(50.0));
         System.out.println("  P90: " + percentileValue(90.0));
         System.out.println("  P95: " + percentileValue(95.0));
