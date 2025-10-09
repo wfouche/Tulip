@@ -1059,7 +1059,7 @@ def createReport(filename, text):
             del name2s_list[0]
 
     def print_llq_histogram_table(printStream):
-        printStream.println('<table style="width:600px">')
+        printStream.println('<table style="width:800px">')
         printStream.println(llq_jh.toHtmlString())
         printStream.println("</table>")
 
@@ -1080,7 +1080,7 @@ def createReport(filename, text):
             if line[0] != "#":
                 e = line.split()
                 if header:
-                    printStream.println('<table style="width:600px">')
+                    printStream.println('<table style="width:800px">')
                     printStream.println('  <tr>')
                     printStream.println('    <th>%s</th>'%(e[0]))
                     printStream.println('    <th>%s</th>'%(e[1]))
