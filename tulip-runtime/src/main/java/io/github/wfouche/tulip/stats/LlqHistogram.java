@@ -110,11 +110,9 @@ public class LlqHistogram {
 
     public long numValues() {
         long totalCount = 0;
-
         for (long count : qCounts) {
             totalCount += count;
         }
-
         return totalCount;
     }
 
