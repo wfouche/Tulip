@@ -505,7 +505,8 @@ private data class ActionSummary(
     var queueLength: Int = 0,
     var numActions: Int = 0,
     var numSuccess: Int = 0,
-    var histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
+    var hdr_histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
+    var llq_histogram: LlqHistogram = LlqHistogram(),
     var durationSeconds: Double = 0.0,
     var aps: Double = 0.0,
     var aps_target: Double = 0.0,
@@ -537,7 +538,8 @@ private class ActionStats {
     // (default, optimal)
     // private val NUM_DIGITS=3  // Tested - great results, large results file,
     // histogram_rt
-    private val histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits)
+    private val hdr_histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits)
+    private val llq_histogram: LlqHistogram = LlqHistogram()
     private var histogramMinRt: Long = Long.MAX_VALUE
     private var histogramMaxRt: Long = Long.MIN_VALUE
     private var histogramMaxRtTs = ""
@@ -584,10 +586,10 @@ private class ActionStats {
         r.aps_target = aps_target
 
         // average response time (art) in milliseconds
-        r.art = histogram.mean / 1000.0
+        r.art = hdr_histogram.mean / 1000.0
 
         // standard deviation
-        r.sdev = histogram.stdDeviation / 1000.0
+        r.sdev = hdr_histogram.stdDeviation / 1000.0
 
         // min rt
         r.minRt = histogramMinRt / 1000.0
@@ -603,13 +605,14 @@ private class ActionStats {
         r.pv =
             mutableListOf<Double>().apply {
                 r.pk.forEach {
-                    var px = histogram.getValueAtPercentile(it) / 1000.0
+                    var px = hdr_histogram.getValueAtPercentile(it) / 1000.0
                     if (px > r.maxRt) px = r.maxRt
                     this.add(px)
                 }
             }
 
-        r.histogram = histogram
+        r.hdr_histogram = hdr_histogram
+        r.llq_histogram = llq_histogram
 
         r.awt = waitTimeMicrosHistogram.mean / 1000.0
         r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
@@ -761,8 +764,8 @@ private class ActionStats {
 
         results += ", \"hdr_histogram_rt\": "
 
-        val b = ByteBuffer.allocate(histogram.neededByteBufferCapacity)
-        val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
+        val b = ByteBuffer.allocate(hdr_histogram.neededByteBufferCapacity)
+        val numBytes = hdr_histogram.encodeIntoCompressedByteBuffer(b)
         val b64s = Base64.encode(b.array(), 0, numBytes)
         results += '\"' + b64s + '\"'
 
@@ -776,12 +779,15 @@ private class ActionStats {
         //            results += "\"\""
         //        }
 
+        results += ", \"llq_histogram_rt\": " + llq_histogram.toJsonString()
+
         return results
     }
 
     fun updateStats(task: Task) {
         val durationMicros = (task.serviceTimeNanos) / 1000
-        histogram.recordValue(durationMicros)
+        hdr_histogram.recordValue(durationMicros)
+        llq_histogram.update(task.serviceTimeNanos)
 
         if (durationMicros < histogramMinRt) {
             histogramMinRt = durationMicros
@@ -798,10 +804,11 @@ private class ActionStats {
     }
 
     fun clearStats() {
-        histogram.reset()
+        hdr_histogram.reset()
         histogramMinRt = Long.MAX_VALUE
         histogramMaxRt = Long.MIN_VALUE
         histogramMaxRtTs = ""
+        llq_histogram.reset()
 
         numActions = 0
         numSuccess = 0
@@ -814,7 +821,6 @@ private object DataCollector {
     private var lock: String = "lock"
     private var fileWriteId: Int = 0
     private val actionStats = Array(NUM_ACTIONS + 1) { ActionStats() }
-    private val llq = LlqHistogram()
 
     // val a = arrayOf<Array<ActionStats>>()
     // init {
@@ -874,21 +880,7 @@ private object DataCollector {
 
     fun printStats() {
         synchronized(lock) {
-            // hdrh
             actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
-            // llqh
-            //            Console.put("")
-            //            Console.put("  AVG: " + llq.averageValue())
-            //            Console.put("  STD: " + llq.standardDeviationValue())
-            //            Console.put("  P50: " + llq.percentileValue(50.0))
-            //            Console.put("  P90: " + llq.percentileValue(90.0))
-            //            Console.put("  P95: " + llq.percentileValue(95.0))
-            //            Console.put("  P99: " + llq.percentileValue(99.0))
-            //            Console.put("  MIN: " + llq.minValue())
-            //            Console.put("  MAX: " + llq.maxValue())
-            //            Console.put("  NUM: " + llq.numValues())
-            //            val json: String = llq.toJsonString()
-            //            Console.put("  JSN: " + json)
         }
     }
 
@@ -960,8 +952,6 @@ private object DataCollector {
                 json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
 
                 json += actionStats[NUM_ACTIONS].toJson(-1)
-
-                json += ", \"llq_histogram_rt\": " + llq.toJsonString()
 
                 json += ", \"user_actions\": {"
 
@@ -1046,7 +1036,6 @@ private object DataCollector {
             }
             actionStats[NUM_ACTIONS].updateStats(task)
             actionStats[task.actionId].updateStats(task)
-            llq.update(task.serviceTimeNanos)
 
             //        Counter.builder("Tulip")
             //            .tags("action", task.actionId.toString())
@@ -1065,7 +1054,6 @@ private object DataCollector {
             actionStats.forEach { it.clearStats() }
             waitTimeMicrosHistogram.reset()
             wthread_queue_stats.reset()
-            llq.reset()
         }
     }
 }
