@@ -75,6 +75,21 @@
             {"id": 9}
           ]
         },
+        "Histogram3": {
+          "enabled": true,
+          "time": {
+            "pre_warmup_duration": 5,
+            "warmup_duration": 10,
+            "benchmark_duration": 30,
+            "benchmark_iterations": 3
+          },
+          "aps_rate": 100000.0,
+          "scenario_actions": [
+            {"id": 7},
+            {"id": 8},
+            {"id": 9}
+          ]
+        },
         "Maximum Rate": {
             "enabled": false,
             "time": {

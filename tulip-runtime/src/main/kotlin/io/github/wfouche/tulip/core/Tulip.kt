@@ -879,9 +879,7 @@ private object DataCollector {
     }
 
     fun printStats() {
-        synchronized(lock) {
-            actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS)
-        }
+        synchronized(lock) { actionStats[NUM_ACTIONS].printStats(NUM_ACTIONS) }
     }
 
     fun saveStatsJson(filename: String) {
