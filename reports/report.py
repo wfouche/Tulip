@@ -483,7 +483,7 @@ td:nth-child(n+14) {
     <th>AWT</th>
     <th>MWT</th>
     <th>CPU_T</th>
-    <th>CPU</th>
+    <th>CPU_M</th>
     <th>MEM</th>
   </tr>
 '''
@@ -508,7 +508,7 @@ benchmark_columns = '''
     <th>AWT</th>
     <th>MWT</th>
     <th>CPU_T</th>
-    <th>CPU</th>
+    <th>CPU_M</th>
     <th>MEM</th>
   </tr>
 '''
