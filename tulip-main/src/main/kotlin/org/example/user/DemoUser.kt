@@ -13,6 +13,8 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     val llqh = LlqHistogram()
     val hdrh = HdrHistogram(3)
+    val rnd = ThreadLocalRandom.current()
+    var num = 1450312123L
 
     override fun onStart(): Boolean {
         return true
@@ -32,18 +34,21 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
         return true
     }
 
+    override fun action7(): Boolean {
+        num = rnd.nextLong(1, 1_000_000_000L)
+        return true
+    }
+
     override fun action8(): Boolean {
         for (i in 1..1000) {
-            val t = ThreadLocalRandom.current().nextLong(1, 1_000_000_000L)
-            hdrh.recordValue(t)
+            hdrh.recordValue(num)
         }
         return true
     }
 
     override fun action9(): Boolean {
         for (i in 1..1000) {
-            val t = ThreadLocalRandom.current().nextLong(1, 1_000_000_000L)
-            llqh.update(t)
+            llqh.update(num)
         }
         return true
     }
