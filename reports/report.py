@@ -1129,11 +1129,11 @@ def createReport(filename, text):
         printStream.println('  </tr>')
 
         printStream.println('  <tr>')
-        printStream.println('    <td>avg: %.1f ms</td>'%(jhx.getMean()/1000.0))
-        printStream.println('    <td>sd: %.1f ms</td>'%(jhx.getStdDeviation()/1000.0))
-        printStream.println('    <td>p90: %.1f ms</td>'%(jhx.getValueAtPercentile(90)/1000.0))
-        printStream.println('    <td>p95: %.1f ms</td>'%(jhx.getValueAtPercentile(95)/1000.0))
-        printStream.println('    <td>p99: %.1f ms</td>'%(jhx.getValueAtPercentile(99)/1000.0))
+        printStream.println('    <td>avg: %.3f ms</td>'%(jhx.getMean()/1000.0))
+        printStream.println('    <td>sd: %.3f ms</td>'%(jhx.getStdDeviation()/1000.0))
+        printStream.println('    <td>p90: %.3f ms</td>'%(jhx.getValueAtPercentile(90)/1000.0))
+        printStream.println('    <td>p95: %.3f ms</td>'%(jhx.getValueAtPercentile(95)/1000.0))
+        printStream.println('    <td>p99: %.3f ms</td>'%(jhx.getValueAtPercentile(99)/1000.0))
         printStream.println('  </tr>')
 
         printStream.println("</table>")

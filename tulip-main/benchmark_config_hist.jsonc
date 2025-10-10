@@ -57,7 +57,7 @@
                 "benchmark_duration": 30,
                 "benchmark_iterations": 3
             },
-            "aps_rate": 0.0,
+            "aps_rate": 100000.0,
             "scenario_actions": [
                 {"id": 8}
             ]
@@ -70,7 +70,7 @@
             "benchmark_duration": 30,
             "benchmark_iterations": 3
           },
-          "aps_rate": 0.0,
+          "aps_rate": 100000.0,
           "scenario_actions": [
             {"id": 9}
           ]

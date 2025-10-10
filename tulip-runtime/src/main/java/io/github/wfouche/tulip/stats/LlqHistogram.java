@@ -57,8 +57,12 @@ public class LlqHistogram {
         }
         long scale = 0;
 
+        // #0 - logarithmic scale calculation
+        // CPU time: 03:11.9
 //        scale = (long) Math.pow(10, Math.floor(Math.log10(n)) - 1);
 
+        // #1 - binary search - slower than linear search for this small array
+        // CPU time: 03:17.4
 //        int index = Arrays.binarySearch(POW10, n);
 //        //System.out.println("index: " + index);
 //        if (index < 0) {
@@ -68,40 +72,44 @@ public class LlqHistogram {
 //            scale = POW10[index - 1];
 //        }
 
-//        for (int i = 1; i < POW10.length; i++) {
-//            if (n < POW10[i]) {
-//                scale = POW10[i - 2];
-//                break;
-//            }
-//        }
-
-        if (n < 100L) {
-            scale = 1;
-        } else if (n < 1_000L) {
-            scale = 10L;
-        } else if (n < 10_000L) {
-            scale = 100L;
-        } else if (n < 100_000L) {
-            scale = 1000L;
-        } else if (n < 1_000_000L) {
-            scale = 10_000L;
-        } else if (n < 10_000_000L) {
-            scale = 100_000L;
-        } else if (n < 100_000_000L) {
-            scale = 1_000_000L;
-        } else if (n < 1_000_000_000L) {
-            scale = 10_000_000L;
-        } else if (n < 10_000_000_000L) {
-            scale = 100_000_000L;
-        } else if (n < 100_000_000_000L) {
-            scale = 1_000_000_000L;
-        } else if (n < 1_000_000_000_000L) {
-            scale = 10_000_000_000L;
-        } else if (n < 10_000_000_000_000L) {
-            scale = 100_000_000_000L;
-        } else {
-            scale = 1_000_000_000_000L;
+        // #2 - linear search - faster than binary search for this small array
+        // CPU time: 02:26.5
+        for (int i = 2; i < POW10.length; i++) {
+            if (n < POW10[i]) {
+                scale = POW10[i - 2];
+                break;
+            }
         }
+
+        // #3 - hardcoded linear search - faster than binary search for this small array
+        // CPU time: 02:33.7
+//        if (n < 100L) {
+//            scale = 1;
+//        } else if (n < 1_000L) {
+//            scale = 10L;
+//        } else if (n < 10_000L) {
+//            scale = 100L;
+//        } else if (n < 100_000L) {
+//            scale = 1000L;
+//        } else if (n < 1_000_000L) {
+//            scale = 10_000L;
+//        } else if (n < 10_000_000L) {
+//            scale = 100_000L;
+//        } else if (n < 100_000_000L) {
+//            scale = 1_000_000L;
+//        } else if (n < 1_000_000_000L) {
+//            scale = 10_000_000L;
+//        } else if (n < 10_000_000_000L) {
+//            scale = 100_000_000L;
+//        } else if (n < 100_000_000_000L) {
+//            scale = 1_000_000_000L;
+//        } else if (n < 1_000_000_000_000L) {
+//            scale = 10_000_000_000L;
+//        } else if (n < 10_000_000_000_000L) {
+//            scale = 100_000_000_000L;
+//        } else {
+//            scale = 1_000_000_000_000L;
+//        }
 
         // v25 = 25 * scale, v50 = 50 * scale
         long v25 = 25 * scale;
