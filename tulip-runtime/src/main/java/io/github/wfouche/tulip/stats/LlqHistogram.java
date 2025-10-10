@@ -55,16 +55,16 @@ public class LlqHistogram {
         if (n < 10) {
             return n;
         }
-        long scale = 0;
+        long scale = (long) Math.pow(10, Math.floor(Math.log10(n)) - 1);
 
-        int index = Arrays.binarySearch(POW10, n);
-        //System.out.println("index: " + index);
-        if (index < 0) {
-            //System.out.println(POW10[-index-2]);
-            scale = POW10[-index - 3];
-        } else {
-            scale = POW10[index - 1];
-        }
+//        int index = Arrays.binarySearch(POW10, n);
+//        //System.out.println("index: " + index);
+//        if (index < 0) {
+//            //System.out.println(POW10[-index-2]);
+//            scale = POW10[-index - 3];
+//        } else {
+//            scale = POW10[index - 1];
+//        }
 
 //        for (int i = 1; i < POW10.length; i++) {
 //            if (n < POW10[i]) {
