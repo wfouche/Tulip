@@ -33,14 +33,18 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     }
 
     override fun action8(): Boolean {
-        val t = ThreadLocalRandom.current().nextLong(1, 1_000_000_000L)
-        hdrh.recordValue(t)
+        for (i in 1..1000) {
+            val t = ThreadLocalRandom.current().nextLong(1, 1_000_000_000L)
+            hdrh.recordValue(t)
+        }
         return true
     }
 
     override fun action9(): Boolean {
-        val t = ThreadLocalRandom.current().nextLong(1, 1_000_000_000L)
-        llqh.update(t)
+        for (i in 1..1000) {
+            val t = ThreadLocalRandom.current().nextLong(1, 1_000_000_000L)
+            llqh.update(t)
+        }
         return true
     }
 
