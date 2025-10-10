@@ -781,6 +781,7 @@ def createReport(filename, text):
         config_filename2 = os.path.basename(config_filename)
 
     jhh = {}
+    jhq = {}
     jss = {}
 
     print_detail_rows = True
@@ -894,6 +895,7 @@ def createReport(filename, text):
             idx += 1
             smx = jss[key]
             jhx = jhh[key]
+            llq = jhq[key]
             if len(actionsString) > 0:
                 actionsString += ', '
                 histosString += ', '
@@ -950,7 +952,7 @@ def createReport(filename, text):
         printStream.print(summary_html_table_1)
         print_percentile_table(printStream,jh)
         printStream.print(summary_html_table_2)
-        print_llq_histogram_table(printStream)
+        print_llq_histogram_table(printStream, llq_jh)
 
         printStream.println()
         printStream.flush()
@@ -1058,9 +1060,9 @@ def createReport(filename, text):
             name2s = name2s_list[0]
             del name2s_list[0]
 
-    def print_llq_histogram_table(printStream):
+    def print_llq_histogram_table(printStream, llq_histogram):
         printStream.println('<table style="width:800px">')
-        printStream.println(llq_jh.toHtmlString())
+        printStream.println(llq_histogram.toHtmlString())
         printStream.println("</table>")
 
     def print_percentile_table(printStream, jhx):
@@ -1147,6 +1149,7 @@ def createReport(filename, text):
         for key in jss.keys():
             smx = jss[key]
             jhx = jhh[key]
+            llq = jhq[key]
             if jb["config"]["actions"]["user_actions"].has_key(key):
                 text = "[%s.%s]"%(key, actionName(jb["config"]["actions"]["user_actions"][key]))
             else:
@@ -1192,6 +1195,9 @@ def createReport(filename, text):
             #jhx.outputPercentileDistribution(printStream, 1000.0)
 
             print_percentile_table(printStream,jhx)
+
+            printStream.println("<h2>%s Percentile Response Time Distribution (Log/Linear Scale)</h2>"%(desc))
+            print_llq_histogram_table(printStream, llq)
 
             #printStream.println("</pre>")
 
@@ -1262,6 +1268,7 @@ def createReport(filename, text):
             llq_jh.reset()
             benchmark_id += 1
             jhh = {}
+            jhq = {}
             jss = {}
             printf(benchmark_header%(name_to_href(e["bm_name"])))
             if len(e["workflow_name"]) > 0:
@@ -1414,12 +1421,19 @@ def createReport(filename, text):
         for key in e["user_actions"].keys():
             ar = e["user_actions"][key]
             htt = Histogram.fromString(ar["hdr_histogram_rt"])
+            llq = LlqHistogram()
+            llq.fromJsonString(json.dumps(ar["llq_histogram_rt"]))
             #print(ar["name"] + " - " + "%.3f"%(htt.getMean()/1000.0))
             if jhh.has_key(key):
                 jhh[key].add(htt)
             else:
                 jhh[key] = Histogram(1, 3600*1000*1000, 3)
                 jhh[key].add(htt)
+            if jhq.has_key(key):
+                jhq[key].add(llq)
+            else:
+                jhq[key] = LlqHistogram()
+                jhq[key].add(llq)
             #print(ar["name"] + " - " + "%.3f"%(jhh[key].getMean()/1000.0) + " - %d"%(jhh[key].getTotalCount()))
 
         # jss ...
