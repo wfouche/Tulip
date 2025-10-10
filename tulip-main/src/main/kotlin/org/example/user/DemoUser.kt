@@ -4,8 +4,15 @@ import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
 import io.github.wfouche.tulip.api.TulipUser
+import java.util.concurrent.ThreadLocalRandom
+
+import io.github.wfouche.tulip.stats.LlqHistogram
+import org.HdrHistogram.Histogram as HdrHistogram
 
 class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
+
+    val llqh = LlqHistogram()
+    val hdrh = HdrHistogram(3)
 
     override fun onStart(): Boolean {
         return true
@@ -22,6 +29,18 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     }
 
     override fun action3(): Boolean {
+        return true
+    }
+
+    override fun action8(): Boolean {
+        val t = ThreadLocalRandom.current().nextLong(1, 1_000_000_000L)
+        hdrh.recordValue(t)
+        return true
+    }
+
+    override fun action9(): Boolean {
+        val t = ThreadLocalRandom.current().nextLong(1, 1_000_000_000L)
+        llqh.update(t)
         return true
     }
 
