@@ -13,6 +13,7 @@ dependencies {
     implementation("ch.qos.logback:logback-core:1.5.18")
     implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation(project(":tulip-runtime"))
+    implementation("org.hdrhistogram:HdrHistogram:2.2.2")
 }
 
 application {
