@@ -55,41 +55,51 @@ public class LlqHistogram {
         if (n < 10) {
             return n;
         }
-        long scale;
-        //        for (int i = 1; i < POW10.length; i++) {
-        //            if (n < POW10[i]) {
-        //                scale = POW10[i - 2];
-        //                break;
-        //            }
-        //        }
+        long scale = 0;
 
-        if (n < 100L) {
-            scale = 1;
-        } else if (n < 1_000L) {
-            scale = 10L;
-        } else if (n < 10_000L) {
-            scale = 100L;
-        } else if (n < 100_000L) {
-            scale = 1000L;
-        } else if (n < 1_000_000L) {
-            scale = 10_000L;
-        } else if (n < 10_000_000L) {
-            scale = 100_000L;
-        } else if (n < 100_000_000L) {
-            scale = 1_000_000L;
-        } else if (n < 1_000_000_000L) {
-            scale = 10_000_000L;
-        } else if (n < 10_000_000_000L) {
-            scale = 100_000_000L;
-        } else if (n < 100_000_000_000L) {
-            scale = 1_000_000_000L;
-        } else if (n < 1_000_000_000_000L) {
-            scale = 10_000_000_000L;
-        } else if (n < 10_000_000_000_000L) {
-            scale = 100_000_000_000L;
+        int index = Arrays.binarySearch(POW10, n);
+        //System.out.println("index: " + index);
+        if (index < 0) {
+            //System.out.println(POW10[-index-2]);
+            scale = POW10[-index - 3];
         } else {
-            scale = 1_000_000_000_000L;
+            scale = POW10[index - 1];
         }
+
+//        for (int i = 1; i < POW10.length; i++) {
+//            if (n < POW10[i]) {
+//                scale = POW10[i - 2];
+//                break;
+//            }
+//        }
+
+//        if (n < 100L) {
+//            scale = 1;
+//        } else if (n < 1_000L) {
+//            scale = 10L;
+//        } else if (n < 10_000L) {
+//            scale = 100L;
+//        } else if (n < 100_000L) {
+//            scale = 1000L;
+//        } else if (n < 1_000_000L) {
+//            scale = 10_000L;
+//        } else if (n < 10_000_000L) {
+//            scale = 100_000L;
+//        } else if (n < 100_000_000L) {
+//            scale = 1_000_000L;
+//        } else if (n < 1_000_000_000L) {
+//            scale = 10_000_000L;
+//        } else if (n < 10_000_000_000L) {
+//            scale = 100_000_000L;
+//        } else if (n < 100_000_000_000L) {
+//            scale = 1_000_000_000L;
+//        } else if (n < 1_000_000_000_000L) {
+//            scale = 10_000_000_000L;
+//        } else if (n < 10_000_000_000_000L) {
+//            scale = 100_000_000_000L;
+//        } else {
+//            scale = 1_000_000_000_000L;
+//        }
 
         // v25 = 25 * scale, v50 = 50 * scale
         long v25 = 25 * scale;
@@ -440,6 +450,7 @@ public class LlqHistogram {
         //     hist.update(i);
         // }
         System.out.println("LLQ(1460139) = " + llq(1460139));
+        System.out.println("LLQ(1000000) = " + llq(1000000));
         hist.update(1460139);
         hist.display();
     }
