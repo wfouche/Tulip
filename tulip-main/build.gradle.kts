@@ -35,7 +35,7 @@ application {
         //
         // "-XX:+UseLargePages",
 
-        //"-Xms2048m",
+        "-Xms2048m",
         "-Xmx2048m",
 
         // ZGC - https://joelsiks.com/posts/zgc-heap-memory-allocation/
