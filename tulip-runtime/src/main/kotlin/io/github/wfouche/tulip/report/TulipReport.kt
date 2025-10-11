@@ -55,6 +55,7 @@ fun convertAdocToHtml(adocFilename: String) {
         "https://raw.githubusercontent.com/wfouche/Tulip/refs/heads/main/docs/css/adoc-foundation.css"
     val attributes: Attributes =
         Attributes.builder()
+            .attribute("data-uri", true)
             .attribute("allow-uri-read", true) // Use external CSS file
             .attribute("stylesheet", stylesheetUrl) // Path to your custom CSS file
             .build()
