@@ -2,10 +2,13 @@ package io.github.wfouche.tulip.stats;
 
 // spotless:off
 //DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
+//DEPS org.hdrhistogram:HdrHistogram:2.2.2
 // spotless:on
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.HdrHistogram.HistogramIterationValue;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -394,6 +397,16 @@ public class LlqHistogram {
         } catch (IOException e) {
             System.err.println("Error reading JSON string: " + e.getMessage());
             e.printStackTrace();
+        }
+    }
+
+    public void fromHdrHdrHistogram(org.HdrHistogram.Histogram hdr) {
+        // 0. Zero values array
+        reset();
+
+        // 1. Iterate through the histogram and update counts
+        for (HistogramIterationValue v : hdr.recordedValues()) {
+            update(v.getValueIteratedTo(), v.getCountAddedInThisIterationStep());
         }
     }
 
