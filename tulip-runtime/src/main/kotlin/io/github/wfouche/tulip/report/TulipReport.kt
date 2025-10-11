@@ -51,12 +51,12 @@ fun convertAdocToHtml(adocFilename: String) {
     //        Thread.sleep(1000)
     //    }
     val asciidoctor = Asciidoctor.Factory.create()
+    val stylesheetUrl =
+        "https://raw.githubusercontent.com/wfouche/Tulip/refs/heads/main/docs/css/adoc-foundation.css"
     val attributes: Attributes =
         Attributes.builder()
             .attribute("allow-uri-read", true) // Use external CSS file
-            .attribute(
-                "stylesheet",
-                "https://raw.githubusercontent.com/darshandsoni/asciidoctor-skins/refs/heads/gh-pages/css/adoc-foundation.css") // Path to your custom CSS file
+            .attribute("stylesheet", stylesheetUrl) // Path to your custom CSS file
             .build()
 
     asciidoctor.requireLibrary("asciidoctor-diagram")
