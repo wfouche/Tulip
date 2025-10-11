@@ -53,6 +53,7 @@ fun convertAdocToHtml(adocFilename: String) {
     val asciidoctor = Asciidoctor.Factory.create()
     val attributes: Attributes =
         Attributes.builder()
+            .attribute("data-uri", true)
             .attribute("allow-uri-read", true) // Use external CSS file
             .attribute(
                 "stylesheet",
