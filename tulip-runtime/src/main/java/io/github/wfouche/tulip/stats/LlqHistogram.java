@@ -401,7 +401,7 @@ public class LlqHistogram {
         }
     }
 
-    public void fromHdrHdrHistogram(org.HdrHistogram.Histogram hdr) {
+    public void fromHdrHistogram(org.HdrHistogram.Histogram hdr) {
         // 0. Zero values array
         reset();
 
@@ -479,7 +479,7 @@ public class LlqHistogram {
         hist.display();
         System.out.println();
         LlqHistogram hist2 = new LlqHistogram();
-        hist2.fromHdrHdrHistogram(hdr);
+        hist2.fromHdrHistogram(hdr);
         hist2.display();
     }
 }
