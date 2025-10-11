@@ -2,10 +2,14 @@ package io.github.wfouche.tulip.stats;
 
 // spotless:off
 //DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
+//DEPS org.hdrhistogram:HdrHistogram:2.2.2
 // spotless:on
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.HdrHistogram.Histogram;
+import org.HdrHistogram.HistogramIterationValue;
+
 import java.io.IOException;
 import java.util.*;
 
@@ -397,6 +401,16 @@ public class LlqHistogram {
         }
     }
 
+    public void fromHdrHistogram(org.HdrHistogram.Histogram hdr) {
+        // 0. Zero values array
+        reset();
+
+        // 1. Iterate through the histogram and update counts
+        for (HistogramIterationValue v : hdr.recordedValues()) {
+            update(v.getValueIteratedTo(), v.getCountAddedInThisIterationStep());
+        }
+    }
+
     public void display() {
         System.out.println();
         System.out.println("  AVG: " + averageValue());
@@ -455,13 +469,17 @@ public class LlqHistogram {
 
     public static void main(String[] args) {
         LlqHistogram hist = new LlqHistogram();
+        Histogram hdr = new Histogram(4);
 
-        // for (long i = 0; i < 1_000_000_0000_001L; i++) {
-        //     hist.update(i);
-        // }
-        System.out.println("LLQ(1460139) = " + llq(1460139));
-        System.out.println("LLQ(1000000) = " + llq(1000000));
-        hist.update(1460139);
+         for (long i = 0; i < 1_000_000_001L; i++) {
+             hist.update(i);
+             hdr.recordValue(i);
+        }
+        //hist.update(1460139);
         hist.display();
+        System.out.println();
+        LlqHistogram hist2 = new LlqHistogram();
+        hist2.fromHdrHistogram(hdr);
+        hist2.display();
     }
 }
