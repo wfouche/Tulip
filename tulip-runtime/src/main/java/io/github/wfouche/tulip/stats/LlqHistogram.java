@@ -7,11 +7,10 @@ package io.github.wfouche.tulip.stats;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import org.HdrHistogram.Histogram;
-import org.HdrHistogram.HistogramIterationValue;
-
 import java.io.IOException;
 import java.util.*;
+import org.HdrHistogram.Histogram;
+import org.HdrHistogram.HistogramIterationValue;
 
 public class LlqHistogram {
 
@@ -471,11 +470,11 @@ public class LlqHistogram {
         LlqHistogram hist = new LlqHistogram();
         Histogram hdr = new Histogram(4);
 
-         for (long i = 0; i < 1_000_000_001L; i++) {
-             hist.update(i);
-             hdr.recordValue(i);
+        for (long i = 0; i < 1_000_000_001L; i++) {
+            hist.update(i);
+            hdr.recordValue(i);
         }
-        //hist.update(1460139);
+        // hist.update(1460139);
         hist.display();
         System.out.println();
         LlqHistogram hist2 = new LlqHistogram();
