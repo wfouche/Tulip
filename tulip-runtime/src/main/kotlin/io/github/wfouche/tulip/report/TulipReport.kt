@@ -8,6 +8,7 @@ import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.zip.GZIPInputStream
 import org.asciidoctor.Asciidoctor
+import org.asciidoctor.Attributes
 import org.asciidoctor.Options
 import org.asciidoctor.SafeMode
 import org.python.core.PyObject
@@ -50,9 +51,18 @@ fun convertAdocToHtml(adocFilename: String) {
     //        Thread.sleep(1000)
     //    }
     val asciidoctor = Asciidoctor.Factory.create()
+    val attributes: Attributes =
+        Attributes.builder()
+            .attribute("allow-uri-read", true) // Use external CSS file
+            .attribute(
+                "stylesheet",
+                "https://raw.githubusercontent.com/darshandsoni/asciidoctor-skins/refs/heads/gh-pages/css/adoc-foundation.css") // Path to your custom CSS file
+            .build()
+
     asciidoctor.requireLibrary("asciidoctor-diagram")
     asciidoctor.convertFile(
-        File(adocFilename), Options.builder().toFile(true).safe(SafeMode.UNSAFE).build())
+        File(adocFilename),
+        Options.builder().toFile(true).attributes(attributes).safe(SafeMode.UNSAFE).build())
     asciidoctor.shutdown()
     // println("debug: end adoc to html")
 }
