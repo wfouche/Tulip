@@ -207,7 +207,8 @@ public class LlqHistogram {
         }
 
         // Sort the bins by value. This is crucial for percentile calculation.
-        Collections.sort(bins);
+        // Bins are already sorted, no need to sort again.
+        // Collections.sort(bins);
 
         // Handle 0th and 100th percentile edge cases for quick return
         if (percentile == 0.0) {
