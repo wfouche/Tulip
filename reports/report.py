@@ -429,11 +429,11 @@ mark {
 }
 </style>
 
-<h2>Percentile Response Time Distribution</h2>
+<h2>Percentile Response Time Distribution (HDR)</h2>
 '''
 
 summary_html_table_2 = '''
-<h2>Percentile Response Time Distribution (Log/Linear Scale)</h2>
+<h2>Percentile Response Time Distribution (LLQ)</h2>
 
 '''
 
@@ -939,13 +939,13 @@ def createReport(filename, text):
             jhx = jhh[key]
             printStream.print('<div id="data_%d" class="histo">'%(idx))
             printStream.println()
-            jhx.outputPercentileDistribution(printStream, 1000.0)
+            jhx.outputPercentileDistribution(printStream, 1000000.0)
             printStream.print('</div>')
             printStream.println()
 
         printStream.print('<div id="data_0" class="histo">')
         printStream.println()
-        jh.outputPercentileDistribution(printStream, 1000.0)
+        jh.outputPercentileDistribution(printStream, 1000000.0)
         printStream.print('</div>')
         printStream.println()
 
@@ -993,11 +993,11 @@ def createReport(filename, text):
             rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
             rd["aps"] = avg_aps
             rd["aps_target_rate"] = sm.aps_target_sum / sm.aps_count
-            rd["avg_rt"] = jh.getMean()/1000.0
-            rd["std_dev"] = jh.getStdDeviation()/1000.0
+            rd["avg_rt"] = jh.getMean()/1000000.0
+            rd["std_dev"] = jh.getStdDeviation()/1000000.0
             rd["min_rt"] = sm.min_rt
-            rd["p90_rt"] = jh.getValueAtPercentile(90.0)/1000.0
-            rd["p99_rt"] = jh.getValueAtPercentile(99.0)/1000.0
+            rd["p90_rt"] = jh.getValueAtPercentile(90.0)/1000000.0
+            rd["p99_rt"] = jh.getValueAtPercentile(99.0)/1000000.0
             rd["max_rt"] = sm.max_rt
             rd["max_rtt"] = sm.max_rt_ts.replace("_","T")
             rd["AQS"] = sm.avg_qs
@@ -1017,11 +1017,11 @@ def createReport(filename, text):
             sm.num_failed,
             str(datetime.timedelta(seconds=int(sm.duration))),
             avg_aps,
-            jh.getMean()/1000.0,
-            jh.getStdDeviation()/1000.0,
+            jh.getMean()/1000000.0,
+            jh.getStdDeviation()/1000000.0,
             sm.min_rt,
-            jh.getValueAtPercentile(90.0)/1000.0,
-            jh.getValueAtPercentile(99.0)/1000.0,
+            jh.getValueAtPercentile(90.0)/1000000.0,
+            jh.getValueAtPercentile(99.0)/1000000.0,
             sm.max_rt,
             sm.max_rt_ts[8:],
             sm.avg_qs,
@@ -1068,7 +1068,7 @@ def createReport(filename, text):
     def print_percentile_table(printStream, jhx):
         bos = ByteArrayOutputStream()
         ox = PrintStream(bos)
-        jhx.outputPercentileDistribution(ox, 1000.0)
+        jhx.outputPercentileDistribution(ox, 1000000.0)
         ox.flush()
         ox.close()
         ptext = bos.toString()
@@ -1131,11 +1131,11 @@ def createReport(filename, text):
         printStream.println('  </tr>')
 
         printStream.println('  <tr>')
-        printStream.println('    <td>avg: %.3f ms</td>'%(jhx.getMean()/1000.0))
-        printStream.println('    <td>sd: %.3f ms</td>'%(jhx.getStdDeviation()/1000.0))
-        printStream.println('    <td>p90: %.3f ms</td>'%(jhx.getValueAtPercentile(90)/1000.0))
-        printStream.println('    <td>p95: %.3f ms</td>'%(jhx.getValueAtPercentile(95)/1000.0))
-        printStream.println('    <td>p99: %.3f ms</td>'%(jhx.getValueAtPercentile(99)/1000.0))
+        printStream.println('    <td>avg: %.3f ms</td>'%(jhx.getMean()/1000000.0))
+        printStream.println('    <td>sd: %.3f ms</td>'%(jhx.getStdDeviation()/1000000.0))
+        printStream.println('    <td>p90: %.3f ms</td>'%(jhx.getValueAtPercentile(90)/1000000.0))
+        printStream.println('    <td>p95: %.3f ms</td>'%(jhx.getValueAtPercentile(95)/1000000.0))
+        printStream.println('    <td>p99: %.3f ms</td>'%(jhx.getValueAtPercentile(99)/1000000.0))
         printStream.println('  </tr>')
 
         printStream.println("</table>")
@@ -1190,10 +1190,10 @@ def createReport(filename, text):
             else:
                 desc = "[A%s]"%(key)
 
-            printStream.println("<h2>%s Percentile Response Time Distribution (Log/Linear Scale)</h2>"%(desc))
+            printStream.println("<h2>%s Percentile Response Time Distribution (LLQ)</h2>"%(desc))
             print_llq_histogram_table(printStream, llq)
 
-            printStream.println("<h2>%s Percentile Response Time Distribution</h2>"%(desc))
+            printStream.println("<h2>%s Percentile Response Time Distribution (HDR)</h2>"%(desc))
             print_percentile_table(printStream,jhx)
 
             printStream.println("</body>")
@@ -1213,11 +1213,11 @@ def createReport(filename, text):
                 rd["num_failed"] = smx.num_failed
                 rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
                 rd["aps"] = avg_aps
-                rd["avg_rt"] = jhx.getMean()/1000.0
-                rd["std_dev"] = jhx.getStdDeviation()/1000.0
+                rd["avg_rt"] = jhx.getMean()/1000000.0
+                rd["std_dev"] = jhx.getStdDeviation()/1000000.0
                 rd["min_rt"] = smx.min_rt
-                rd["p90_rt"] = jhx.getValueAtPercentile(90.0)/1000.0
-                rd["p99_rt"] = jhx.getValueAtPercentile(99.0)/1000.0
+                rd["p90_rt"] = jhx.getValueAtPercentile(90.0)/1000000.0
+                rd["p99_rt"] = jhx.getValueAtPercentile(99.0)/1000000.0
                 rd["max_rt"] = smx.max_rt
                 rd["max_rtt"] = smx.max_rt_ts.replace("_","T")
                 if page_id == 0:
@@ -1227,7 +1227,7 @@ def createReport(filename, text):
                 else:
                     report_json_fh.write('        ,"%s": %s\n'%(key,json.dumps(rd)))
 
-            html = benchmark_summary_row%(name2s,text,smx.num_actions,smx.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:],smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
+            html = benchmark_summary_row%(name2s,text,smx.num_actions,smx.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jhx.getMean()/1000000.0,jhx.getStdDeviation()/1000000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000000.0,jhx.getValueAtPercentile(99.0)/1000000.0,smx.max_rt,smx.max_rt_ts[8:],smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -1306,7 +1306,7 @@ def createReport(filename, text):
             rd["aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
             rd["aps_target_rate"] = e["aps_target_rate"]
             rd["avg_rt"] = e["avg_rt"]
-            rd["std_dev"] = ht.getStdDeviation()/1000.0
+            rd["std_dev"] = ht.getStdDeviation()/1000000.0
             rd["min_rt"] = e["min_rt"]
             rd["p90_rt"] = e["percentiles_rt"]["90.0"]
             rd["p99_rt"] = e["percentiles_rt"]["99.0"]
@@ -1332,7 +1332,7 @@ def createReport(filename, text):
                 str(datetime.timedelta(seconds=int(e["duration"]))),
                 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"],
                 e["avg_rt"],
-                ht.getStdDeviation()/1000.0,
+                ht.getStdDeviation()/1000000.0,
                 e["min_rt"],
                 e["percentiles_rt"]["90.0"],
                 e["percentiles_rt"]["99.0"],
@@ -1395,9 +1395,9 @@ def createReport(filename, text):
                     '%s'%(e["test_begin"].replace("_", "T")),
                     float("%.1f"%(e["min_rt"])),
                     float("%.1f"%(e["avg_rt"])),
-                    float("%.1f"%(ht.getValueAtPercentile(90.0)/1000.0)),
-                    float("%.1f"%(ht.getValueAtPercentile(95.0)/1000.0)),
-                    float("%.1f"%(ht.getValueAtPercentile(99.0)/1000.0)),
+                    float("%.1f"%(ht.getValueAtPercentile(90.0)/1000000.0)),
+                    float("%.1f"%(ht.getValueAtPercentile(95.0)/1000000.0)),
+                    float("%.1f"%(ht.getValueAtPercentile(99.0)/1000000.0)),
                     float("%.1f"%(e["max_rt"]))
                 ])
 
@@ -1406,9 +1406,9 @@ def createReport(filename, text):
                 '%s'%(e["test_end"].replace("_", "T")),
                 float("%.1f"%(e["min_rt"])),
                 float("%.1f"%(e["avg_rt"])),
-                float("%.1f"%(ht.getValueAtPercentile(90.0)/1000.0)),
-                float("%.1f"%(ht.getValueAtPercentile(95.0)/1000.0)),
-                float("%.1f"%(ht.getValueAtPercentile(99.0)/1000.0)),
+                float("%.1f"%(ht.getValueAtPercentile(90.0)/1000000.0)),
+                float("%.1f"%(ht.getValueAtPercentile(95.0)/1000000.0)),
+                float("%.1f"%(ht.getValueAtPercentile(99.0)/1000000.0)),
                 float("%.1f"%(e["max_rt"]))
             ])
 
@@ -1418,7 +1418,7 @@ def createReport(filename, text):
             htt = Histogram.fromString(ar["hdr_histogram_rt"])
             llq = LlqHistogram()
             llq.fromJsonString(json.dumps(ar["llq_histogram_rt"]))
-            #print(ar["name"] + " - " + "%.3f"%(htt.getMean()/1000.0))
+            #print(ar["name"] + " - " + "%.3f"%(htt.getMean()/1000000.0))
             if jhh.has_key(key):
                 jhh[key].add(htt)
             else:
@@ -1429,7 +1429,7 @@ def createReport(filename, text):
             else:
                 jhq[key] = LlqHistogram()
                 jhq[key].add(llq)
-            #print(ar["name"] + " - " + "%.3f"%(jhh[key].getMean()/1000.0) + " - %d"%(jhh[key].getTotalCount()))
+            #print(ar["name"] + " - " + "%.3f"%(jhh[key].getMean()/1000000.0) + " - %d"%(jhh[key].getTotalCount()))
 
         # jss ...
         for key in e["user_actions"].keys():

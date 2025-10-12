@@ -506,7 +506,7 @@ private data class ActionSummary(
     var numActions: Int = 0,
     var numSuccess: Int = 0,
     var hdr_histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
-    var llq_histogram: LlqHistogram = LlqHistogram(),
+    // var llq_histogram: LlqHistogram = LlqHistogram(),
     var durationSeconds: Double = 0.0,
     var aps: Double = 0.0,
     var aps_target: Double = 0.0,
@@ -586,10 +586,10 @@ private class ActionStats {
         r.aps_target = aps_target
 
         // average response time (art) in milliseconds
-        r.art = hdr_histogram.mean / 1000.0
+        r.art = hdr_histogram.mean / 1000000.0
 
         // standard deviation
-        r.sdev = hdr_histogram.stdDeviation / 1000.0
+        r.sdev = hdr_histogram.stdDeviation / 1000000.0
 
         // min rt
         r.minRt = histogramMinRt / 1000.0
@@ -605,14 +605,14 @@ private class ActionStats {
         r.pv =
             mutableListOf<Double>().apply {
                 r.pk.forEach {
-                    var px = hdr_histogram.getValueAtPercentile(it) / 1000.0
+                    var px = hdr_histogram.getValueAtPercentile(it) / 1000000.0
                     if (px > r.maxRt) px = r.maxRt
                     this.add(px)
                 }
             }
 
         r.hdr_histogram = hdr_histogram
-        r.llq_histogram = llq_histogram
+        // r.llq_histogram.fromHdrHistogram(hdr_histogram)
 
         r.awt = waitTimeMicrosHistogram.mean / 1000.0
         r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
@@ -779,15 +779,17 @@ private class ActionStats {
         //            results += "\"\""
         //        }
 
+        llq_histogram.fromHdrHistogram((hdr_histogram))
         results += ", \"llq_histogram_rt\": " + llq_histogram.toJsonString()
 
         return results
     }
 
     fun updateStats(task: Task) {
-        val durationMicros = (task.serviceTimeNanos) / 1000
-        hdr_histogram.recordValue(durationMicros)
-        llq_histogram.update(task.serviceTimeNanos)
+        val durationNanos = task.serviceTimeNanos
+        val durationMicros = durationNanos / 1000
+        hdr_histogram.recordValue(durationNanos)
+        // llq_histogram.update(task.serviceTimeNanos)
 
         if (durationMicros < histogramMinRt) {
             histogramMinRt = durationMicros
@@ -808,7 +810,7 @@ private class ActionStats {
         histogramMinRt = Long.MAX_VALUE
         histogramMaxRt = Long.MIN_VALUE
         histogramMaxRtTs = ""
-        llq_histogram.reset()
+        // llq_histogram.reset()
 
         numActions = 0
         numSuccess = 0
