@@ -429,11 +429,11 @@ mark {
 }
 </style>
 
-<h2>Percentile Response Time Distribution</h2>
+<h2>Percentile Response Time Distribution (HDR)</h2>
 '''
 
 summary_html_table_2 = '''
-<h2>Percentile Response Time Distribution (Log/Linear Scale)</h2>
+<h2>Percentile Response Time Distribution (LLQ)</h2>
 
 '''
 
@@ -1190,10 +1190,10 @@ def createReport(filename, text):
             else:
                 desc = "[A%s]"%(key)
 
-            printStream.println("<h2>%s Percentile Response Time Distribution (Log/Linear Scale)</h2>"%(desc))
+            printStream.println("<h2>%s Percentile Response Time Distribution (LLQ)</h2>"%(desc))
             print_llq_histogram_table(printStream, llq)
 
-            printStream.println("<h2>%s Percentile Response Time Distribution</h2>"%(desc))
+            printStream.println("<h2>%s Percentile Response Time Distribution (HDR)</h2>"%(desc))
             print_percentile_table(printStream,jhx)
 
             printStream.println("</body>")
