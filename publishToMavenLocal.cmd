@@ -25,19 +25,3 @@ REM echo.
 REM echo "jbang io.github.wfouche.tulip:tulip-runtime:<version>"
 
 REM -------------------------------------------------------------
-
-pushd .\reports
-call .\update_runtime.cmd
-del report_py.java
-del report2_py.java
-popd
-
-call .\gradlew spotlessApply
-
-call .\gradlew :tulip-runtime:build
-call .\gradlew :tulip-runtime:publishToMavenLocal
-dir /s %USERPROFILE%\.m2\tulip-runtime*.jar
-REM echo.
-REM echo "jbang io.github.wfouche.tulip:tulip-runtime:<version>"
-
-REM -------------------------------------------------------------

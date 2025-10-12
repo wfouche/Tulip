@@ -8,7 +8,10 @@ import os
 from collections import OrderedDict
 import java.io.PrintStream as PrintStream
 import java.io.ByteArrayOutputStream as ByteArrayOutputStream
-import io.github.wfouche.tulip.stats.LlqHistogram as LlqHistogram
+try:
+    import io.github.wfouche.tulip.stats.LlqHistogram as LlqHistogram
+except:
+    print("LlqHistogram class not found, LLQ stats will be missing.")
 
 # /// jbang
 # requires-jython = "2.7.4"
@@ -16,7 +19,7 @@ import io.github.wfouche.tulip.stats.LlqHistogram as LlqHistogram
 # dependencies = [
 #   "com.google.code.gson:gson:2.13.1",
 #   "org.hdrhistogram:HdrHistogram:2.2.2",
-#   "io.github.wfouche.tulip:tulip-runtime:2.1.12-dev"
+#   "io.github.wfouche.tulip:tulip-runtime:2.1.11"
 # ]
 # ///
 
