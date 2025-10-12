@@ -5,7 +5,7 @@
 import org.jreleaser.model.Active
 
 group = "io.github.wfouche.tulip"
-version = "2.1.12-dev"
+version = "2.1.12"
 
 plugins {
     // https://plugins.gradle.org/plugin/com.github.ben-manes.versions
