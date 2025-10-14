@@ -1,4 +1,3 @@
-/// usr/bin/env jbang "$0" "$@" ; exit $?
 package io.github.wfouche.tulip.report;
 
 // spotless:off

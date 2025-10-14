@@ -369,7 +369,7 @@ public class python_jvm_tulip {
         //System.out.println(scriptFileTextB64.length());
 
         try (BufferedWriter jf = new BufferedWriter(new FileWriter(javaFilename))) {
-            jf.write("///usr/bin/env jbang \"$0\" \"$@\" ; exit $?" + lineSep + lineSep);
+            // jf.write("///usr/bin/env jbang \"$0\" \"$@\" ; exit $?" + lineSep + lineSep);
             jf.write("// spotless:off" + lineSep);
             for (String dependency : deps) {
                 jf.write("//DEPS " + dependency + lineSep);
