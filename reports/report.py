@@ -906,7 +906,7 @@ def createReport(filename, text):
             histosString += "data%dStr"%(idx)
             printStream.print('    var data%dStr = document.querySelector("div#data_%d").innerHTML.trim();'%(idx,idx))
             printStream.println()
-        if idx > 1:
+        if False: # if idx > 1: # Summary graph line (disabled)
             actionsString += ', ' + "'S'"
             histosString += ', ' + "data%dStr"%(0)
             printStream.print('    var data%dStr = document.querySelector("div#data_%d").innerHTML.trim();'%(0,0))
