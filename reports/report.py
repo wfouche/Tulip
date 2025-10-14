@@ -952,11 +952,11 @@ def createReport(filename, text):
         printStream.print('</div>')
         printStream.println()
 
-        printStream.print(summary_html_table_1)
-        print_percentile_table(printStream,jh)
-
         printStream.print(summary_html_table_2)
         print_llq_histogram_table(printStream, llq_jh)
+
+        printStream.print(summary_html_table_1)
+        print_percentile_table(printStream,jh)
 
         printStream.println()
         printStream.flush()
@@ -1194,11 +1194,11 @@ def createReport(filename, text):
             else:
                 desc = "[A%s]"%(key)
 
-            printStream.println("<h2>%s Percentile Response Time Distribution (HDR)</h2>"%(desc))
-            print_percentile_table(printStream,jhx)
-
             printStream.println("<h2>%s Percentile Response Time Distribution (LLQ)</h2>"%(desc))
             print_llq_histogram_table(printStream, llq)
+
+            printStream.println("<h2>%s Percentile Response Time Distribution (HDR)</h2>"%(desc))
+            print_percentile_table(printStream,jhx)
 
             printStream.println("</body>")
             printStream.println("</html>")
