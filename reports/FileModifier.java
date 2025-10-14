@@ -51,7 +51,7 @@ public class FileModifier {
             Files.write(path, lines);
 
             System.out.println("Successfully modified file: " + filePath);
-            System.out.println("Inserted line '" + NEW_LINE_CONTENT + "' after the first line.");
+            System.out.println("Add line '" + NEW_LINE_CONTENT + "' as the first line.");
 
         } catch (IOException e) {
             System.err.println("An error occurred while accessing the file: " + filePath);
