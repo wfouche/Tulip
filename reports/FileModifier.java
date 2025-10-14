@@ -45,7 +45,6 @@ public class FileModifier {
             // [0] -> Original first line content
             // [1] -> "// hi" (new content)
             // [2] -> Original second line content (if present)
-            lines.add(1, ""); // Add an empty line for better readability
             lines.add(1, NEW_LINE_CONTENT);
 
             // 4. Write the modified list of lines back to the same file (overwriting it)

@@ -15,7 +15,7 @@ del report2_py.java
 popd
 
 call .\gradlew spotlessApply
-call .\gradlew fixJbangMarker
+REM call .\gradlew fixJbangMarker
 timeout /t 5
 
 call .\gradlew :tulip-runtime:build

@@ -18,7 +18,7 @@ popd
 
 # spotless
 ./gradlew spotlessApply
-./gradlew fixJbangMarker
+# ./gradlew fixJbangMarker
 
 echo ""
 echo "Waiting for 5 seconds..."
