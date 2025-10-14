@@ -1,6 +1,5 @@
+///usr/bin/env jbang "$0" "$@" ; exit $?
 package io.github.wfouche.tulip.report;
-
-/// usr/bin/env jbang "$0" "$@" ; exit $?
 
 // spotless:off
 //DEPS com.google.code.gson:gson:2.13.1

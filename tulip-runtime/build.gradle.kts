@@ -3,6 +3,7 @@
  */
 //import org.jetbrains.dokka.gradle.DokkaTask
 import org.jreleaser.model.Active
+import java.util.Locale
 
 group = "io.github.wfouche.tulip"
 version = "2.1.12"
@@ -225,5 +226,36 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         target("*.gradle.kts")
         trimTrailingWhitespace()
         endWithNewline()
+    }
+}
+
+tasks.register("fixJbangMarker") {
+    description = "Fixes the JBang marker line in Java source files if necessary."
+    group = "build"
+    doLast {
+        // Define the file collection using fileTree and setFrom
+        val javaFiles = fileTree(mapOf("dir" to "src")).apply {
+            include("**/*.java")
+        }
+
+        val markerString = """///usr/bin/env jbang "$0" "$@" ; exit $?"""
+
+        javaFiles.forEach { file ->
+            // Use Kotlin's standard library for file IO and list manipulation
+            val lines = file.readLines().toMutableList()
+
+            if (lines.isNotEmpty() &&
+                lines[0] != markerString &&
+                lines[0].startsWith("//") &&
+                lines[0].lowercase(Locale.getDefault()).contains("jbang")
+            ) {
+                // If the conditions are met, replace the first line
+                lines[0] = markerString
+
+                // Write the modified content back to the file
+                file.writeText(lines.joinToString("\n"))
+                println("Fixed JBang marker in: $file")
+            }
+        }
     }
 }
