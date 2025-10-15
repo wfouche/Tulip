@@ -793,7 +793,7 @@ private class ActionStats {
     fun updateStats(task: Task) {
         val durationMicros = (task.serviceTimeNanos) / 1000
         hdr_histogram.recordValue(durationMicros)
-        llq_histogram.update(task.serviceTimeNanos)
+        llq_histogram.recordValue(task.serviceTimeNanos)
 
         if (durationMicros < histogramMinRt) {
             histogramMinRt = durationMicros

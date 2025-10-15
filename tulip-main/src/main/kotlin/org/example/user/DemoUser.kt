@@ -48,7 +48,7 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     override fun action9(): Boolean {
         for (i in 1..1000) {
-            llqh.update(num)
+            llqh.recordValue(num)
         }
         return true
     }
