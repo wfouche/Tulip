@@ -1134,9 +1134,12 @@ private class UserThread(private val threadId: Int) : Thread() {
                     task.actionId = u!!.nextAction(task.actionId)
                 }
                 task.serviceTimeNanos = elapsedTimeNanos {
-                    if (u!!.processAction(task.actionId)) task.status = 1 else task.status = 0
+                    if (u.processAction(task.actionId)) {
+                        task.status = 1
+                    } else {
+                        task.status = 0
+                    }
                 }
-
                 task.rspQueue!!.put(task)
             }
         }
