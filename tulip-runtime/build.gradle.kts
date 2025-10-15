@@ -28,7 +28,7 @@ plugins {
     // id("org.jetbrains.dokka") version "2.0.0"
 
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
-    id("com.diffplug.spotless") version "7.2.1"
+    id("com.diffplug.spotless") version "8.0.0"
 }
 
 java {
@@ -209,17 +209,17 @@ jreleaser {
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
-        googleJavaFormat("1.28.0").aosp()
+        googleJavaFormat("1.30.0").aosp()
         toggleOffOn()
     }
     kotlin {
         // version, style and all configurations here are optional
-        ktfmt("0.54").googleStyle().configure {
+        ktfmt("0.59").googleStyle().configure {
             it.setMaxWidth(100)
             it.setBlockIndent(4)
             it.setContinuationIndent(4)
             it.setRemoveUnusedImports(true)
-            it.setManageTrailingCommas(false)
+            //it.setManageTrailingCommas(false)
         }
     }
     kotlinGradle {
