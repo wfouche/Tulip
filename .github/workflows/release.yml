@@ -22,6 +22,7 @@ jobs:
       - name: Publish package to local staging directory
         run: ./gradlew :tulip-runtime:publish
       - name: Sign and Deploy Maven Artifacts
+        if: ${{ false }}
         env:
           JRELEASER_NEXUS2_USERNAME: ${{ secrets.JRELEASER_NEXUS2_USERNAME }}
           JRELEASER_NEXUS2_PASSWORD: ${{ secrets.JRELEASER_NEXUS2_PASSWORD }}
@@ -31,6 +32,7 @@ jobs:
           JRELEASER_GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: ./gradlew :tulip-runtime:jreleaserDeploy --dryrun -DaltDeploymentRepository=local::file:./tulip-runtime/build/staging-deploy --stacktrace
       - name: List all Maven Artifacts
+        if: ${{ false }}
         run: find ./tulip-runtime/build/staging-deploy -print | sort
       - name: Run Tulip test benchmark at 100 APS
         run: ./gradlew -q :tulip-main:run --args="--config benchmark_config_test.jsonc"
