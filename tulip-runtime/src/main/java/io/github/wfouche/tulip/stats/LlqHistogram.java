@@ -128,15 +128,21 @@ public class LlqHistogram {
         }
     }
 
+    public void add(org.HdrHistogram.Histogram hdr, long scaleFactor) {
+        for (HistogramIterationValue v : hdr.recordedValues()) {
+            recordValue(scaleFactor * v.getValueIteratedTo(), v.getCountAddedInThisIterationStep());
+        }
+    }
+
     public void reset() {
         Arrays.fill(qCounts, 0L);
     }
 
-    public void update(long n) {
-        update(n, 1);
+    public void recordValue(long n) {
+        recordValue(n, 1);
     }
 
-    public void update(long n, long count) {
+    public void recordValue(long n, long count) {
         long q = llq(n);
         int index = Arrays.binarySearch(qValues, q);
         qCounts[index] += count;
@@ -275,26 +281,6 @@ public class LlqHistogram {
         return Math.sqrt(variance);
     }
 
-    public String toJsonString() {
-        StringBuilder jsonString = new StringBuilder("{");
-        int count = 0;
-        for (int i = 0; i < qCounts.length; i++) {
-            if (qCounts[i] != 0) {
-                if (count > 0) {
-                    jsonString.append(", ");
-                }
-                jsonString.append("\"");
-                jsonString.append(qValues[i]);
-                jsonString.append("\"");
-                jsonString.append(": ");
-                jsonString.append(qCounts[i]);
-                count += 1;
-            }
-        }
-        jsonString.append("}");
-        return jsonString.toString();
-    }
-
     private String formatTimeValue(long qv, String prefix) {
         if (qv < 1000L) {
             // ns - nanoseconds
@@ -399,7 +385,7 @@ public class LlqHistogram {
             Map<Long, Long> longMap = objectMapper.readValue(jsonString, typeRef);
 
             // 3. Restore counts
-            longMap.forEach(this::update);
+            longMap.forEach(this::recordValue);
 
         } catch (IOException e) {
             System.err.println("Error reading JSON string: " + e.getMessage());
@@ -407,14 +393,24 @@ public class LlqHistogram {
         }
     }
 
-    public void fromHdrHistogram(org.HdrHistogram.Histogram hdr) {
-        // 0. Zero values array
-        reset();
-
-        // 1. Iterate through the histogram and update counts
-        for (HistogramIterationValue v : hdr.recordedValues()) {
-            update(v.getValueIteratedTo(), v.getCountAddedInThisIterationStep());
+    public String toJsonString() {
+        StringBuilder jsonString = new StringBuilder("{");
+        int count = 0;
+        for (int i = 0; i < qCounts.length; i++) {
+            if (qCounts[i] != 0) {
+                if (count > 0) {
+                    jsonString.append(", ");
+                }
+                jsonString.append("\"");
+                jsonString.append(qValues[i]);
+                jsonString.append("\"");
+                jsonString.append(": ");
+                jsonString.append(qCounts[i]);
+                count += 1;
+            }
         }
+        jsonString.append("}");
+        return jsonString.toString();
     }
 
     public void display() {
@@ -478,14 +474,14 @@ public class LlqHistogram {
         Histogram hdr = new Histogram(4);
 
         for (long i = 0; i < 1_000_000_001L; i++) {
-            hist.update(i);
+            hist.recordValue(i);
             hdr.recordValue(i);
         }
         // hist.update(1460139);
         hist.display();
         System.out.println();
         LlqHistogram hist2 = new LlqHistogram();
-        hist2.fromHdrHistogram(hdr);
+        hist2.add(hdr, 1);
         hist2.display();
     }
 }
