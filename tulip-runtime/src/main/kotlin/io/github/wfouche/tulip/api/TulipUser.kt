@@ -3,6 +3,7 @@ package io.github.wfouche.tulip.api
 import io.github.wfouche.tulip.core.actionNames
 import io.github.wfouche.tulip.core.g_config
 import io.github.wfouche.tulip.core.g_workflow
+import kotlinx.serialization.json.JsonPrimitive
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
@@ -348,10 +349,7 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
     }
 
     open fun getUserParamValue(paramName: String): String {
-        val o: kotlinx.serialization.json.JsonPrimitive? = g_config.actions.userParams[paramName]
-        if (o == null) {
-            return ""
-        }
+        val o: JsonPrimitive = g_config.actions.userParams[paramName] ?: return ""
         var s = o.toString() // s = '"value"', the double quotes must be removed
         if (o.isString) {
             // s = '"value"', the double quotes must be removed
