@@ -37,22 +37,22 @@ public class LlqHistogram {
     private final long[] qCounts = new long[210];
 
     // Precomputed powers of 10 up to 10^13
-//    private static final long[] POW10 = {
-//        1L, // 1 nanosecond
-//        10L,
-//        100L,
-//        1_000L, // 1 microsecond
-//        10_000L,
-//        100_000L,
-//        1_000_000L, // 1 millisecond
-//        10_000_000L,
-//        100_000_000L,
-//        1_000_000_000L, // 1 second
-//        10_000_000_000L, // 10 seconds
-//        100_000_000_000L, // 100 seconds
-//        1_000_000_000_000L, // 1000 seconds
-//        10_000_000_000_000L // 10_1000 seconds
-//    };
+    //    private static final long[] POW10 = {
+    //        1L, // 1 nanosecond
+    //        10L,
+    //        100L,
+    //        1_000L, // 1 microsecond
+    //        10_000L,
+    //        100_000L,
+    //        1_000_000L, // 1 millisecond
+    //        10_000_000L,
+    //        100_000_000L,
+    //        1_000_000_000L, // 1 second
+    //        10_000_000_000L, // 10 seconds
+    //        100_000_000_000L, // 100 seconds
+    //        1_000_000_000_000L, // 1000 seconds
+    //        10_000_000_000_000L // 10_1000 seconds
+    //    };
 
     public static long llq(long n) {
         if (n < 10) {
