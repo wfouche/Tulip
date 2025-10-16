@@ -58,7 +58,12 @@ public class LlqHistogram {
         if (n < 10) {
             return n;
         }
-        long scale = 0;
+
+        long p = 1;
+        while (p * 10 <= n) {
+            p *= 10;
+        }
+        long scale = p / 10;
 
         // #0 - logarithmic scale calculation
         // CPU time: 03:11.9
@@ -77,12 +82,12 @@ public class LlqHistogram {
 
         // #2 - linear search - faster than binary search for this small array
         // CPU time: 02:26.5
-        for (int i = 2; i < POW10.length; i++) {
-            if (n < POW10[i]) {
-                scale = POW10[i - 2];
-                break;
-            }
-        }
+        //        for (int i = 2; i < POW10.length; i++) {
+        //            if (n < POW10[i]) {
+        //                scale = POW10[i - 2];
+        //                break;
+        //            }
+        //        }
 
         // #3 - hardcoded linear search - faster than binary search for this small array
         // CPU time: 02:33.7
