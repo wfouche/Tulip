@@ -32,27 +32,27 @@ public class LlqHistogram {
     }
 
     // ....
-    private static long minNanos = 0;
-    private static long[] qValues = new long[210];
-    private long[] qCounts = new long[210];
+    private static long minNanos;
+    private static final long[] qValues = new long[210];
+    private final long[] qCounts = new long[210];
 
     // Precomputed powers of 10 up to 10^13
-    private static final long[] POW10 = {
-        1L, // 1 nanosecond
-        10L,
-        100L,
-        1_000L, // 1 microsecond
-        10_000L,
-        100_000L,
-        1_000_000L, // 1 millisecond
-        10_000_000L,
-        100_000_000L,
-        1_000_000_000L, // 1 second
-        10_000_000_000L, // 10 seconds
-        100_000_000_000L, // 100 seconds
-        1_000_000_000_000L, // 1000 seconds
-        10_000_000_000_000L // 10_1000 seconds
-    };
+//    private static final long[] POW10 = {
+//        1L, // 1 nanosecond
+//        10L,
+//        100L,
+//        1_000L, // 1 microsecond
+//        10_000L,
+//        100_000L,
+//        1_000_000L, // 1 millisecond
+//        10_000_000L,
+//        100_000_000L,
+//        1_000_000_000L, // 1 second
+//        10_000_000_000L, // 10 seconds
+//        100_000_000_000L, // 100 seconds
+//        1_000_000_000_000L, // 1000 seconds
+//        10_000_000_000_000L // 10_1000 seconds
+//    };
 
     public static long llq(long n) {
         if (n < 10) {
@@ -309,7 +309,7 @@ public class LlqHistogram {
     public String toHtmlString() {
         long nv = numValues();
         long cv = 0;
-        long av = 0;
+        long av;
         StringBuilder htmlString = new StringBuilder();
         htmlString.append("  <tr>\n");
         htmlString.append("    <th>Value</th>\n");
@@ -377,25 +377,19 @@ public class LlqHistogram {
         return htmlString.toString();
     }
 
-    public void fromJsonString(String jsonString) {
-        TypeReference<Map<Long, Long>> typeRef = new TypeReference<Map<Long, Long>>() {};
-        try {
-            // 0. Zero values array
-            reset();
+    public void fromJsonString(String jsonString) throws IOException {
+        TypeReference<Map<Long, Long>> typeRef = new TypeReference<>() {};
+        // 0. Zero values array
+        reset();
 
-            // 1. Initialize the ObjectMapper
-            ObjectMapper objectMapper = new ObjectMapper();
+        // 1. Initialize the ObjectMapper
+        ObjectMapper objectMapper = new ObjectMapper();
 
-            // 2. Deserialize the JSON string using the TypeReference
-            Map<Long, Long> longMap = objectMapper.readValue(jsonString, typeRef);
+        // 2. Deserialize the JSON string using the TypeReference
+        Map<Long, Long> longMap = objectMapper.readValue(jsonString, typeRef);
 
-            // 3. Restore counts
-            longMap.forEach(this::recordValue);
-
-        } catch (IOException e) {
-            System.err.println("Error reading JSON string: " + e.getMessage());
-            e.printStackTrace();
-        }
+        // 3. Restore counts
+        longMap.forEach(this::recordValue);
     }
 
     public String toJsonString() {
