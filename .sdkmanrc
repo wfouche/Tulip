@@ -10,7 +10,7 @@ java=21.0.8-tem
 groovy=5.0.1
 
 # Gradle
-gradle=9.1.0
+gradle=8.14.3
 
 # JBang
 jbang=0.132.1
