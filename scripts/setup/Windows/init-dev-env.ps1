@@ -1,5 +1,9 @@
-Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
-Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
+# Description: Initializes a development environment on Windows using Scoop.
+# Prerequisites: PowerShell, Windows OS
+# Note: First install http://scoop.sh by running the following commands in PowerShell:
+#
+#> Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser
+#> Invoke-RestMethod -Uri https://get.scoop.sh | Invoke-Expression
 
 scoop install git
 
@@ -13,6 +17,6 @@ scoop install zip
 scoop install unzip
 
 scoop install scoop-search
-scoop install unigetui
+scoop install UniGetUI
 
 bash -c "curl -s https://get.sdkman.io | bash"
