@@ -19,4 +19,7 @@ scoop install unzip
 scoop install scoop-search
 scoop install UniGetUI
 
+scoop install scala-cli
+scoop install extras/vcredist2022
+
 bash -c "curl -s https://get.sdkman.io | bash"
