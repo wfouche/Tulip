@@ -83,7 +83,7 @@ dependencies {
     // - Spring Boot
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    implementation("org.springframework.boot:spring-boot-starter-web:3.5.6")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.5.7")
 
     // - SLF4J and Logback
 
