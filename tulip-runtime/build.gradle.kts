@@ -83,7 +83,7 @@ dependencies {
     // - Spring Boot
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    implementation("org.springframework.boot:spring-boot-starter-web:3.5.6")
+    implementation("org.springframework.boot:spring-boot-starter-web:3.5.7")
 
     // - SLF4J and Logback
 
@@ -91,10 +91,10 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
-    implementation("ch.qos.logback:logback-core:1.5.19")
+    implementation("ch.qos.logback:logback-core:1.5.20")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation("ch.qos.logback:logback-classic:1.5.19")
+    implementation("ch.qos.logback:logback-classic:1.5.20")
 
     // - Apache HttpClient
 
