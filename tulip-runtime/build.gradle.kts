@@ -6,7 +6,7 @@ import org.jreleaser.model.Active
 import java.util.Locale
 
 group = "io.github.wfouche.tulip"
-version = "2.1.12"
+version = "2.1.13"
 
 plugins {
     id("com.github.ben-manes.versions") version "0.53.0"
