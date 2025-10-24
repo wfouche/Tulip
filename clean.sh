@@ -11,3 +11,9 @@ popd || exit
 pushd ./tulip-main || exit
 source clean.sh
 popd || exit
+
+# Clean
+mkdir -p ~/.m2
+find ~/.m2 -name 'tulip-runtime*.jar' -print | sort
+rm -f -r ~/.m2/repository/io/github/wfouche/tulip/tulip-runtime
+
