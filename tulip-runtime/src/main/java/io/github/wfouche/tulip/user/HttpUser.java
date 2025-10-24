@@ -39,7 +39,13 @@ public class HttpUser extends HttpUser_RestClient {
      */
     @NotNull
     public String http_GET(String uri, Object... uriVariables) throws RestClientException {
-        String rsp = restClient().get().uri(uri, uriVariables).retrieve().body(String.class);
+        String rsp =
+                restClient()
+                        .get()
+                        .uri(uri, uriVariables)
+                        .header(http_header_key, http_header_val)
+                        .retrieve()
+                        .body(String.class);
         if (rsp != null && !rsp.isEmpty()) {
             return rsp;
         }
@@ -62,6 +68,7 @@ public class HttpUser extends HttpUser_RestClient {
                 restClient()
                         .post()
                         .uri(uri, uriVariables)
+                        .header(http_header_key, http_header_val)
                         .contentType(APPLICATION_JSON)
                         .body(reqBodyJson)
                         .retrieve()
@@ -88,6 +95,7 @@ public class HttpUser extends HttpUser_RestClient {
                 restClient()
                         .put()
                         .uri(uri, uriVariables)
+                        .header(http_header_key, http_header_val)
                         .contentType(APPLICATION_JSON)
                         .body(reqBodyJson)
                         .retrieve()
@@ -114,6 +122,7 @@ public class HttpUser extends HttpUser_RestClient {
                 restClient()
                         .patch()
                         .uri(uri, uriVariables)
+                        .header(http_header_key, http_header_val)
                         .contentType(APPLICATION_JSON)
                         .body(reqBodyJson)
                         .retrieve()
@@ -134,7 +143,13 @@ public class HttpUser extends HttpUser_RestClient {
      */
     @NotNull
     public String http_DELETE(String uri, Object... uriVariables) throws RestClientException {
-        String rsp = restClient().delete().uri(uri, uriVariables).retrieve().body(String.class);
+        String rsp =
+                restClient()
+                        .delete()
+                        .uri(uri, uriVariables)
+                        .header(http_header_key, http_header_val)
+                        .retrieve()
+                        .body(String.class);
         if (rsp != null && !rsp.isEmpty()) {
             return rsp;
         }
