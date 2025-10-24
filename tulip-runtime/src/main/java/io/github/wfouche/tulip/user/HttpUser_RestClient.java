@@ -63,6 +63,16 @@ public class HttpUser_RestClient extends TulipUser {
             idx += 1;
         }
 
+        var httpHeader_ = getUserParamValue("httpHeader");
+        if (httpHeader_.isEmpty()) {
+            httpHeader_ = "User-Agent: Tulip";
+        }
+        if (httpHeader_.contains(":")) {
+            var L = httpHeader_.split(":");
+            http_header_key = L[0].trim();
+            http_header_val = L[1].trim();
+        }
+
         return true;
     }
 
@@ -218,6 +228,9 @@ public class HttpUser_RestClient extends TulipUser {
         return https[getUserId() % https.length].urlPath;
     }
 
-    // Logger
-    // private static final Logger logger = LoggerFactory.getLogger(HttpUser_RestClient.class);
+    /** */
+    public static String http_header_key = "";
+
+    /** */
+    public static String http_header_val = "";
 }
