@@ -50,6 +50,18 @@ private const val histogramNumberOfSignificantValueDigits = 4
 private val osBean: OperatingSystemMXBean =
     ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
 
+fun getProcessCpuTime(): Long {
+    return osBean.processCpuTime
+}
+
+fun getCpuLoad(): Double {
+    return osBean.cpuLoad
+}
+
+fun getProcessCpuLoad(): Double {
+    return osBean.processCpuLoad
+}
+
 // private val isWindows: Boolean =
 // System.getProperty("os.name").lowercase().contains("windows")
 
@@ -166,6 +178,11 @@ private fun runtimeInit(
     //    mg_num_threads?.set(MAX_NUM_THREADS)
     //    mg_num_users?.set(MAX_NUM_USERS)
     //    mg_context_id?.set(contextId)
+    for (i in 1 .. 10) {
+        val l0 = getCpuLoad()
+        val l1 = getProcessCpuTime()
+        val l2 = getProcessCpuLoad()
+    }
 }
 
 private fun runtimeDone() {
@@ -705,8 +722,10 @@ private class ActionStats {
             // 100.0
             // support > 100.0 utilization due to hyper-threading
             output.add(
-                "  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}%"
+                "  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}"
             )
+            output.add("  avg process cpu load = ${"%.1f".format(Locale.US, getProcessCpuLoad())}")
+            output.add("  avg  system cpu load = ${"%.1f".format(Locale.US, getCpuLoad())}")
 
             //            output.add("")
             //            val awqs: Double = wthread_queue_stats.mean
@@ -1369,10 +1388,6 @@ private fun runTest(
             Thread.sleep(10)
         }
         statsThread = null
-    }
-
-    fun getProcessCpuTime(): Long {
-        return osBean.processCpuTime
     }
 
     fun startTask(uid: Int, aid: Int, rateGovernor: RateGovernor?) {
