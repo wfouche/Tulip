@@ -15,6 +15,7 @@ scoop install jbang
 scoop install curl
 scoop install zip
 scoop install unzip
+scoop install lynx
 
 scoop install scoop-search
 scoop install UniGetUI
