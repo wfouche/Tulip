@@ -3,11 +3,11 @@
 
 # Java
 #ava=17.0.17-tem
-java=21.0.8-tem
+java=21.0.9-amzn
 #ava=25.0.1-tem
 
 # Groovy
-groovy=5.0.1
+groovy=5.0.2
 
 # Gradle
 gradle=8.14.3
@@ -22,7 +22,7 @@ kotlin=2.1.21
 scalacli=1.9.1
 
 # MCS
-mcs=0.9.0
+mcs=0.9.1
 
 # Maven
 maven=3.9.11
