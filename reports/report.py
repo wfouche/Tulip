@@ -682,7 +682,7 @@ var option = {
   },
   dataset: {
     source:data,
-    dimensions: ['timestamp', 'sensor1', 'sensor2', 'sensor3', 'sensor4', 'sensor5', 'sensor6'],
+    dimensions: ['timestamp', 'sensor1', 'sensor2', 'sensor3', 'sensor4', 'sensor5', 'sensor6', 'sensor7'],
   },
   xAxis: { type: 'time' },
   yAxis: { },
@@ -693,7 +693,7 @@ var option = {
      smooth: true,
      encode: {
        x: 'timestamp',
-       y: 'sensor6' // refer sensor 1 value
+       y: 'sensor7' // refer sensor 1 value
      }
   },{
      name: 'p99',
@@ -701,10 +701,19 @@ var option = {
      smooth: true,
      encode: {
        x: 'timestamp',
-       y: 'sensor5' // refer sensor 1 value
+       y: 'sensor6' // refer sensor 1 value
      }
   },{
      name: 'p95',
+     type: 'line',
+     smooth: true,
+     encode: {
+       x: 'timestamp',
+       y: 'sensor5' // refer sensor 1 value
+     }
+
+  },{
+     name: 'p90',
      type: 'line',
      smooth: true,
      encode: {
@@ -713,7 +722,7 @@ var option = {
      }
 
   },{
-     name: 'p90',
+     name: 'p50',
      type: 'line',
      smooth: true,
      encode: {
@@ -971,11 +980,11 @@ def createReport(filename, text):
         #    ['2018-04-10T20:45:03.500', 1306, 0]
         #]
         chart_p_list = [
-            ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30 ],
-            ['2018-04-10T20:40:53Z', 2, 6, 15, 25, 30, 35],
-            ['2018-04-10T20:41:03Z', 2, 5, 20, 30, 35, 40],
-            ['2018-04-10T20:44:03Z', 3, 7, 12, 22, 30, 32],
-            ['2018-04-10T20:45:03Z', 2, 10, 13, 23, 30, 33]
+            ['2018-04-10T20:40:33Z', 1, 5, 6, 10, 20, 25, 30 ],
+            ['2018-04-10T20:40:53Z', 2, 6, 7, 15, 25, 30, 35],
+            ['2018-04-10T20:41:03Z', 2, 5, 6, 20, 30, 35, 40],
+            ['2018-04-10T20:44:03Z', 3, 7, 8, 12, 22, 30, 32],
+            ['2018-04-10T20:45:03Z', 2, 10, 11, 13, 23, 30, 33]
         ]
         printStream = PrintStream(tChartFilename)
         printStream.print(chart_t_html.replace("__DATA__",("%s"%(sm.chart_t_list)).replace("u'","'")))
@@ -1399,6 +1408,7 @@ def createReport(filename, text):
                     '%s'%(e["test_begin"].replace("_", "T")),
                     float("%.1f"%(e["min_rt"])),
                     float("%.1f"%(e["avg_rt"])),
+                    float("%.1f"%(ht.getValueAtPercentile(50.0)/1000.0)),
                     float("%.1f"%(ht.getValueAtPercentile(90.0)/1000.0)),
                     float("%.1f"%(ht.getValueAtPercentile(95.0)/1000.0)),
                     float("%.1f"%(ht.getValueAtPercentile(99.0)/1000.0)),
@@ -1410,6 +1420,7 @@ def createReport(filename, text):
                 '%s'%(e["test_end"].replace("_", "T")),
                 float("%.1f"%(e["min_rt"])),
                 float("%.1f"%(e["avg_rt"])),
+                float("%.1f"%(ht.getValueAtPercentile(50.0)/1000.0)),
                 float("%.1f"%(ht.getValueAtPercentile(90.0)/1000.0)),
                 float("%.1f"%(ht.getValueAtPercentile(95.0)/1000.0)),
                 float("%.1f"%(ht.getValueAtPercentile(99.0)/1000.0)),
