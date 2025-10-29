@@ -4,7 +4,6 @@
 //DEPS org.tomlj:tomlj:1.1.1
 //DEPS org.python:jython-slim:2.7.4
 //DEPS org.graalvm.python:jbang:24.2.2
-//JAVA 17+
 //NOINTEGRATIONS
 
 import java.io.*;
@@ -374,7 +373,7 @@ public class python_jvm_tulip {
             for (String dependency : deps) {
                 jf.write("//DEPS " + dependency + lineSep);
             }
-            jf.write("//JAVA " + javaVersion + lineSep);
+            // jf.write("//JAVA " + javaVersion + lineSep);
             if (javaRuntimeOptions.length() > 0) {
                 jf.write("//RUNTIME_OPTIONS " + javaRuntimeOptions + lineSep);
             }

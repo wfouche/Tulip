@@ -4,7 +4,6 @@
 //DEPS com.google.code.gson:gson:2.11.0
 //DEPS org.hdrhistogram:HdrHistogram:2.2.2
 //DEPS io.github.wfouche.tulip:tulip-runtime:2.1.12-dev
-//JAVA 21
 
 import org.python.util.jython;
 
