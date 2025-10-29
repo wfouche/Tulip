@@ -178,7 +178,7 @@ private fun runtimeInit(
     //    mg_num_threads?.set(MAX_NUM_THREADS)
     //    mg_num_users?.set(MAX_NUM_USERS)
     //    mg_context_id?.set(contextId)
-    for (i in 1 .. 10) {
+    for (i in 1..10) {
         val l0 = getCpuLoad()
         val l1 = getProcessCpuTime()
         val l2 = getProcessCpuLoad()
