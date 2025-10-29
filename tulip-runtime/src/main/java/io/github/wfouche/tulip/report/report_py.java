@@ -5,7 +5,6 @@ package io.github.wfouche.tulip.report;
 //DEPS org.hdrhistogram:HdrHistogram:2.2.2
 //DEPS io.github.wfouche.tulip:tulip-runtime:2.1.12
 //DEPS org.python:jython-slim:2.7.4
-//JAVA 21
 // spotless:on
 
 import java.io.ByteArrayInputStream;
