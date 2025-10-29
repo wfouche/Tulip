@@ -17,16 +17,26 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
     var num = 1450312123L
 
     override fun onStart(): Boolean {
+        if (userId == 0) {
+            val delay1_ = getUserParamValue("delay1")
+            if (delay1_.length > 0) {
+                delay1 = delay1_.toLong()
+            }
+            val delay2_ = getUserParamValue("delay2")
+            if (delay2_.length > 0) {
+                delay2 = delay2_.toLong()
+            }
+        }
         return true
     }
 
     override fun action1(): Boolean {
-        Thread.sleep(10)
+        Thread.sleep(delay1)
         return true
     }
 
     override fun action2(): Boolean {
-        Thread.sleep(20)
+        Thread.sleep(delay2)
         return true
     }
 
@@ -63,5 +73,7 @@ class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
 
     companion object {
         private val logger: Logger = LoggerFactory.getLogger(DemoUser::class.java)
+        private var delay1: Long = 0
+        private var delay2: Long = 0
     }
 }
