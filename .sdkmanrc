@@ -3,8 +3,8 @@
 
 # Java
 #ava=17.0.17-librca
-#ava=21.0.9-librca
-java=25.0.1-librca
+java=21.0.9-librca
+#ava=25.0.1-librca
 
 # Groovy
 groovy=5.0.2
