@@ -1,2 +1,3 @@
 REM .\gradlew.bat wrapper --gradle-version latest
-.\gradlew.bat --no-daemon wrapper --gradle-version 8.12.1
+call .\gradlew.bat --no-daemon wrapper --gradle-version 9.1.0
+call .\gradlew.bat --no-daemon wrapper
