@@ -10,7 +10,7 @@ java=21.0.9-librca
 groovy=5.0.2
 
 # Gradle
-gradle=8.14.3
+gradle=9.2.0
 
 # JBang
 jbang=0.132.1
