@@ -20,6 +20,7 @@ scoop install lynx
 scoop install scoop-search
 scoop install UniGetUI
 
+scoop install groovy
 scoop install scala-cli
 scoop install extras/vcredist2022
 
