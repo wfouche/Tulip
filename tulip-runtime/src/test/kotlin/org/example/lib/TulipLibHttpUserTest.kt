@@ -83,7 +83,7 @@ class TulipLibHttpUserTest {
         assertEquals(0, 0)
     }
 
-    // Action 5: DELETE /posts/{id}T
+    // Action 5: DELETE /posts/{id}
     @Test
     fun action5() {
         logger().info("action5: DELETE /posts/{id}")
