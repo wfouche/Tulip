@@ -24,4 +24,9 @@ scoop install groovy
 scoop install scala-cli
 scoop install extras/vcredist2022
 
+# For PlantUML support using graphviz/dot on Windows
+# in IntelliJ/Asciidoc plugin / preview using Asciidoctor-Diagram
+# and not Kroki.
+scoop install graphviz
+
 bash -c "curl -s https://get.sdkman.io | bash"
