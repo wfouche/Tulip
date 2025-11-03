@@ -9,6 +9,7 @@ scoop install git
 
 scoop bucket add extras
 scoop bucket add java
+scoop bucket add versions
 
 scoop install microsoft21-jdk
 scoop install jbang
@@ -20,7 +21,7 @@ scoop install lynx
 scoop install scoop-search
 scoop install UniGetUI
 
-scoop install groovy
+scoop install groovy@4.0
 scoop install scala-cli
 scoop install extras/vcredist2022
 
