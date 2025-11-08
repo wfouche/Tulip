@@ -1,3 +1,4 @@
+// language: java
 package io.github.wfouche.tulip.stats;
 
 // spotless:off
@@ -12,48 +13,82 @@ import java.util.*;
 import org.HdrHistogram.Histogram;
 import org.HdrHistogram.HistogramIterationValue;
 
+/**
+ * LlqHistogram provides a lightweight quantized histogram optimized for recording time durations
+ * (in nanoseconds) and computing aggregates such as percentiles, average and standard deviation on
+ * quantized buckets.
+ *
+ * <p>The histogram uses a precomputed set of quantized values ({@code qValues}) and maintains
+ * counts per bucket in {@code qCounts}. Values recorded are quantized via {@link #llq(long)} before
+ * being counted. Typical use-cases: recording many latency measurements, serializing/deserializing
+ * counts, combining histograms, and generating simple HTML reports.
+ *
+ * <p>Important characteristics:
+ *
+ * <ul>
+ *   <li>Quantization is deterministic and designed for time units (ns, μs, ms, s).
+ *   <li>Thread-safety is <b>not</b> provided by this class; external synchronization is required
+ *       for concurrent updates.
+ *   <li>Serialization methods provide simple JSON mapping keyed by quantized value.
+ * </ul>
+ */
 public class LlqHistogram {
 
-    // Helper class to group value and count for sorting
+    /**
+     * Internal helper grouping a quantized bucket value and its count. Used for percentile
+     * computation.
+     */
     private static class Bin implements Comparable<Bin> {
         final long value;
         final long count;
 
+        /**
+         * Create a Bin for a quantized value and its observed count.
+         *
+         * @param value quantized bucket value
+         * @param count number of observations in the bucket
+         */
         public Bin(long value, long count) {
             this.value = value;
             this.count = count;
         }
 
-        // Sorts based on the quantized value (ascending order)
+        /**
+         * Compare bins by their quantized value (ascending).
+         *
+         * @param other other bin to compare with
+         * @return negative if this.value < other.value, 0 if equal, positive otherwise
+         */
         @Override
         public int compareTo(Bin other) {
             return Long.compare(this.value, other.value);
         }
     }
 
-    // ....
+    /**
+     * Smallest measurable duration (in nanoseconds) observed during static initialization and
+     * quantized using {@link #llq(long)}. This value is used for display formatting of
+     * sub-nanosecond buckets.
+     */
     private static long minNanos;
+
+    /**
+     * Precomputed quantized values used as bucket keys. Length is 210 to cover the range needed by
+     * this histogram implementation.
+     */
     private static final long[] qValues = new long[210];
+
+    /** Counts for each bucket in {@link #qValues}. Instance-level; not shared. */
     private final long[] qCounts = new long[210];
 
-    // Precomputed powers of 10 up to 10^13
-    //    private static final long[] POW10 = {
-    //        1L, // 1 nanosecond
-    //        10L,
-    //        100L,
-    //        1_000L, // 1 microsecond
-    //        10_000L,
-    //        100_000L,
-    //        1_000_000L, // 1 millisecond
-    //        10_000_000L,
-    //        100_000_000L,
-    //        1_000_000_000L, // 1 second
-    //        10_000_000_000L, // 10 seconds
-    //        100_000_000_000L, // 100 seconds
-    //        1_000_000_000_000L, // 1000 seconds
-    //        10_000_000_000_000L // 10_1000 seconds
-    //    };
-
+    /**
+     * Quantize a raw value {@code n} into the histogram's low-latency quantization bucket. The
+     * method reduces resolution for large values while preserving readable scale transitions (ns →
+     * μs → ms → s).
+     *
+     * @param n raw value (typically nanoseconds)
+     * @return quantized value used as a bucket key
+     */
     public static long llq(long n) {
         if (n < 10) {
             return n;
@@ -65,60 +100,6 @@ public class LlqHistogram {
         }
         long scale = p / 10;
 
-        // #0 - logarithmic scale calculation
-        // CPU time: 03:11.9
-        //        scale = (long) Math.pow(10, Math.floor(Math.log10(n)) - 1);
-
-        // #1 - binary search - slower than linear search for this small array
-        // CPU time: 03:17.4
-        //        int index = Arrays.binarySearch(POW10, n);
-        //        //System.out.println("index: " + index);
-        //        if (index < 0) {
-        //            //System.out.println(POW10[-index-2]);
-        //            scale = POW10[-index - 3];
-        //        } else {
-        //            scale = POW10[index - 1];
-        //        }
-
-        // #2 - linear search - faster than binary search for this small array
-        // CPU time: 02:26.5
-        //        for (int i = 2; i < POW10.length; i++) {
-        //            if (n < POW10[i]) {
-        //                scale = POW10[i - 2];
-        //                break;
-        //            }
-        //        }
-
-        // #3 - hardcoded linear search - faster than binary search for this small array
-        // CPU time: 02:33.7
-        //        if (n < 100L) {
-        //            scale = 1;
-        //        } else if (n < 1_000L) {
-        //            scale = 10L;
-        //        } else if (n < 10_000L) {
-        //            scale = 100L;
-        //        } else if (n < 100_000L) {
-        //            scale = 1000L;
-        //        } else if (n < 1_000_000L) {
-        //            scale = 10_000L;
-        //        } else if (n < 10_000_000L) {
-        //            scale = 100_000L;
-        //        } else if (n < 100_000_000L) {
-        //            scale = 1_000_000L;
-        //        } else if (n < 1_000_000_000L) {
-        //            scale = 10_000_000L;
-        //        } else if (n < 10_000_000_000L) {
-        //            scale = 100_000_000L;
-        //        } else if (n < 100_000_000_000L) {
-        //            scale = 1_000_000_000L;
-        //        } else if (n < 1_000_000_000_000L) {
-        //            scale = 10_000_000_000L;
-        //        } else if (n < 10_000_000_000_000L) {
-        //            scale = 100_000_000_000L;
-        //        } else {
-        //            scale = 1_000_000_000_000L;
-        //        }
-
         // v25 = 25 * scale, v50 = 50 * scale
         long v25 = 25 * scale;
         long v50 = 50 * scale;
@@ -127,32 +108,63 @@ public class LlqHistogram {
         return (((n * 10 + v25) / v50) * v50) / 10;
     }
 
+    /**
+     * Merge another LlqHistogram into this histogram by summing corresponding bucket counts.
+     *
+     * @param llqh the other histogram to add into this one
+     */
     public void add(LlqHistogram llqh) {
         for (int i = 0; i < qCounts.length; i++) {
             qCounts[i] += llqh.qCounts[i];
         }
     }
 
+    /**
+     * Record counts from an HdrHistogram instance into this histogram. Each value from {@code hdr}
+     * will be scaled by {@code scaleFactor} before recording.
+     *
+     * @param hdr the HdrHistogram source of recorded values
+     * @param scaleFactor multiplier applied to each iterated value before quantizing
+     */
     public void add(org.HdrHistogram.Histogram hdr, long scaleFactor) {
         for (HistogramIterationValue v : hdr.recordedValues()) {
             recordValue(scaleFactor * v.getValueIteratedTo(), v.getCountAddedInThisIterationStep());
         }
     }
 
+    /** Reset this histogram by zeroing all bucket counts. */
     public void reset() {
         Arrays.fill(qCounts, 0L);
     }
 
+    /**
+     * Record a single observation of raw value {@code n} (count = 1).
+     *
+     * @param n raw value to record
+     */
     public void recordValue(long n) {
         recordValue(n, 1);
     }
 
+    /**
+     * Record {@code count} observations of raw value {@code n}. The value will be quantized and the
+     * appropriate bucket count incremented.
+     *
+     * @param n raw value to record
+     * @param count number of observations to add
+     * @throws ArrayIndexOutOfBoundsException if quantized value does not map to an index
+     */
     public void recordValue(long n, long count) {
         long q = llq(n);
         int index = Arrays.binarySearch(qValues, q);
         qCounts[index] += count;
     }
 
+    /**
+     * Return the smallest quantized value that currently has a non-zero count.
+     *
+     * @return minimum recorded quantized value, or 0 if histogram is empty
+     */
     public long minValue() {
         for (int i = 0; i < qCounts.length; i++) {
             if (qCounts[i] != 0) {
@@ -162,6 +174,11 @@ public class LlqHistogram {
         return 0;
     }
 
+    /**
+     * Return the largest quantized value that currently has a non-zero count.
+     *
+     * @return maximum recorded quantized value, or 0 if histogram is empty
+     */
     public long maxValue() {
         for (int i = qCounts.length - 1; i >= 0; i--) {
             if (qCounts[i] != 0) {
@@ -171,6 +188,11 @@ public class LlqHistogram {
         return 0;
     }
 
+    /**
+     * Return the total number of recorded observations across all buckets.
+     *
+     * @return total count of observations
+     */
     public long numValues() {
         long totalCount = 0;
         for (long count : qCounts) {
@@ -179,6 +201,12 @@ public class LlqHistogram {
         return totalCount;
     }
 
+    /**
+     * Compute the average (mean) value across all recorded observations. The returned value is
+     * based on the quantized bucket values and their counts.
+     *
+     * @return arithmetic mean of recorded values (0.0 if no observations)
+     */
     public double averageValue() {
         double totalSum = 0.0;
         long totalCount = 0;
@@ -194,6 +222,14 @@ public class LlqHistogram {
         return totalSum / totalCount;
     }
 
+    /**
+     * Estimate a percentile value (by quantized bucket) using the inclusive definition: the
+     * smallest value whose cumulative count is >= the target rank.
+     *
+     * @param percentile percentile in range [0.0, 100.0]
+     * @return quantized bucket value corresponding to the requested percentile
+     * @throws IllegalArgumentException if {@code percentile} is out of range
+     */
     public long percentileValue(double percentile) {
         if (percentile < 0.0 || percentile > 100.0) {
             throw new IllegalArgumentException(
@@ -217,10 +253,6 @@ public class LlqHistogram {
             return 0L;
         }
 
-        // Sort the bins by value. This is crucial for percentile calculation.
-        // Bins are already sorted, no need to sort again.
-        // Collections.sort(bins);
-
         // Handle 0th and 100th percentile edge cases for quick return
         if (percentile == 0.0) {
             return bins.get(0).value; // Minimum value
@@ -230,9 +262,6 @@ public class LlqHistogram {
         }
 
         // Step 2: Determine Target Rank (R)
-        // Standard method (R=ceil(P/100 * N)): finds the rank (1-based index) we are looking for.
-        // The value is the smallest value whose cumulative frequency distribution is greater than
-        // or equal to R.
         long targetRank = (long) Math.ceil((percentile / 100.0) * totalCount);
         long cumulativeCount = 0L;
 
@@ -244,16 +273,20 @@ public class LlqHistogram {
             }
         }
 
-        // Fallback (should only be reached due to precision issues near 100%)
+        // Fallback
         return bins.get(bins.size() - 1).value;
     }
 
+    /**
+     * Compute the population standard deviation of recorded values (based on quantized bucket
+     * values and counts). Returns 0.0 when fewer than two observations exist.
+     *
+     * @return population standard deviation (0.0 if not enough observations)
+     */
     public double standardDeviationValue() {
-        // 1. Calculate the mean (mu). This also validates array length.
         double mean = averageValue();
 
         long totalCount = 0L;
-        // Sum of (Value - Mean)^2 * Count
         double sumOfSquaredDifferences = 0.0;
 
         for (int i = 0; i < qCounts.length; i++) {
@@ -262,50 +295,48 @@ public class LlqHistogram {
 
             if (count > 0) {
                 totalCount += count;
-
-                // Difference (Value_i - Mean)
                 double difference = (double) value - mean;
-
-                // Squared Difference * Count
-                // We use (double)count here to ensure the calculation is done in double precision.
                 sumOfSquaredDifferences += Math.pow(difference, 2) * (double) count;
             }
         }
 
-        // Standard deviation is 0 if N=0 or N=1 (no variance)
         if (totalCount <= 1) {
             return 0.0;
         }
 
-        // 3. Calculate Variance (sum of squared diff / N)
-        // Using totalCount for population standard deviation (assuming the histogram represents the
-        // whole population)
         double variance = sumOfSquaredDifferences / totalCount;
-
-        // 4. Calculate Standard Deviation (sqrt(Variance))
         return Math.sqrt(variance);
     }
 
+    /**
+     * Format a quantized time value for HTML display, choosing appropriate units.
+     *
+     * @param qv quantized value in nanoseconds
+     * @param prefix label prefix (e.g. "avg: ") inserted before the value
+     * @return an HTML table cell fragment with formatted time
+     */
     private String formatTimeValue(long qv, String prefix) {
         if (qv < 1000L) {
-            // ns - nanoseconds
             if (qv == 0L) {
                 return String.format("    <td>%s &lt; %d ns</td>\n", prefix, minNanos);
             } else {
                 return String.format("    <td>%s %d ns</td>\n", prefix, qv);
             }
         } else if (qv < 1_000_000L) {
-            // μs - microseconds
             return String.format(Locale.US, "    <td>%s %.1f μs</td>\n", prefix, qv / 1000.0);
         } else if (qv < 1_000_000_000L) {
-            // ms - milliseconds
             return String.format(Locale.US, "    <td>%s %.1f ms</td>\n", prefix, qv / 1000000.0);
         } else {
-            // s - seconds
             return String.format(Locale.US, "    <td>%s %.1f s</td>\n", prefix, qv / 1000000000.0);
         }
     }
 
+    /**
+     * Produce a simple HTML table fragment summarizing the histogram buckets and a small set of
+     * summary statistics (average, sd, p50, p90, p95, p99).
+     *
+     * @return HTML string fragment (table rows) summarizing the histogram
+     */
     public String toHtmlString() {
         long nv = numValues();
         long cv = 0;
@@ -377,21 +408,28 @@ public class LlqHistogram {
         return htmlString.toString();
     }
 
+    /**
+     * Populate this histogram from a JSON string where keys are quantized values (as numbers)
+     * mapped to counts. Existing counts are cleared before loading.
+     *
+     * @param jsonString JSON string mapping quantized value → count
+     * @throws IOException on JSON parsing errors
+     */
     public void fromJsonString(String jsonString) throws IOException {
         TypeReference<Map<Long, Long>> typeRef = new TypeReference<>() {};
-        // 0. Zero values array
         reset();
-
-        // 1. Initialize the ObjectMapper
         ObjectMapper objectMapper = new ObjectMapper();
-
-        // 2. Deserialize the JSON string using the TypeReference
         Map<Long, Long> longMap = objectMapper.readValue(jsonString, typeRef);
-
-        // 3. Restore counts
         longMap.forEach(this::recordValue);
     }
 
+    /**
+     * Serialize the non-zero buckets to a compact JSON string mapping quantized value → count.
+     * Note: this method constructs JSON manually; for robust serialization prefer {@link
+     * #fromJsonString(String)} + ObjectMapper.
+     *
+     * @return JSON string representation of non-zero buckets
+     */
     public String toJsonString() {
         StringBuilder jsonString = new StringBuilder("{");
         int count = 0;
@@ -412,6 +450,10 @@ public class LlqHistogram {
         return jsonString.toString();
     }
 
+    /**
+     * Print a human-readable summary of key statistics and the JSON representation to standard out.
+     * Intended for quick debugging; use programmatic accessors for production code.
+     */
     public void display() {
         System.out.println();
         System.out.println("  AVG: " + averageValue());
@@ -445,7 +487,6 @@ public class LlqHistogram {
                 step *= 10L;
             }
         }
-        // System.out.println("idx = " + idx);
 
         // determine minNanos - smallest duration nanoTime can measure
         long[] duration = new long[1_000_000];
@@ -468,6 +509,12 @@ public class LlqHistogram {
         minNanos = llq(min);
     }
 
+    /**
+     * Simple command-line exercise of the LlqHistogram class. Not intended for production use;
+     * included for convenience when running the class directly.
+     *
+     * @param args command-line arguments (ignored)
+     */
     public static void main(String[] args) {
         LlqHistogram hist = new LlqHistogram();
         Histogram hdr = new Histogram(4);
@@ -476,7 +523,6 @@ public class LlqHistogram {
             hist.recordValue(i);
             hdr.recordValue(i);
         }
-        // hist.update(1460139);
         hist.display();
         System.out.println();
         LlqHistogram hist2 = new LlqHistogram();
