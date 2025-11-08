@@ -1,0 +1,299 @@
+package io.github.wfouche.tulip.core
+
+import io.github.wfouche.tulip.stats.LlqHistogram
+import java.nio.ByteBuffer
+import java.util.Locale
+import kotlin.io.encoding.Base64
+import kotlin.io.encoding.ExperimentalEncodingApi
+import kotlin.text.plus
+import org.HdrHistogram.Histogram
+
+class ActionStats {
+    // <numberOfSignificantValueDigits>
+    // private val NUM_DIGITS=1  // Tested - inaccurate results, don't use
+    // private val NUM_DIGITS=2  // Tested - good results, small results file
+    // (default, optimal)
+    // private val NUM_DIGITS=3  // Tested - great results, large results file,
+    // histogram_rt
+    private val hdr_histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits)
+    private val llq_histogram: LlqHistogram = LlqHistogram()
+    private var histogramMinRt: Long = Long.MAX_VALUE
+    private var histogramMaxRt: Long = Long.MIN_VALUE
+    private var histogramMaxRtTs = ""
+
+    var numActions: Int = 0
+    private var numSuccess: Int = 0
+
+    val r = ActionSummary()
+
+    fun createSummary(
+        actionId: Int,
+        durationMillis: Int,
+        testCase: TestProfile,
+        indexTestCase: Int,
+        indexUserProfile: Int,
+        queueLength: Int,
+        tsBegin: String,
+        tsEnd: String,
+        testPhase: String,
+        runId: Int,
+        cpuTime: Long,
+        aps_target: Double,
+    ) {
+        r.actionId = actionId
+
+        r.rowId = runId
+
+        r.testName = testCase.name
+        r.testBegin = tsBegin
+        r.testEnd = tsEnd
+        r.testPhase = testPhase
+
+        r.testId = indexTestCase
+        r.indexUserProfile = indexUserProfile
+        r.queueLength = queueLength
+
+        r.numActions = numActions
+        r.numSuccess = numSuccess
+
+        r.durationSeconds = durationMillis.toDouble() / 1000.0
+
+        // actions per second (aps)
+        r.aps = numActions / r.durationSeconds
+        r.aps_target = aps_target
+
+        // average response time (art) in milliseconds
+        r.art = hdr_histogram.mean / 1000.0
+
+        // standard deviation
+        r.sdev = hdr_histogram.stdDeviation / 1000.0
+
+        // min rt
+        r.minRt = histogramMinRt / 1000.0
+
+        // max rt
+        r.maxRt = histogramMaxRt / 1000.0
+
+        // max rt timestamp
+        r.maxRtTs = histogramMaxRtTs
+
+        // percentiles
+        r.pk = testCase.percentiles
+        r.pv =
+            mutableListOf<Double>().apply {
+                r.pk.forEach {
+                    var px = hdr_histogram.getValueAtPercentile(it) / 1000.0
+                    if (px > r.maxRt) px = r.maxRt
+                    this.add(px)
+                }
+            }
+
+        r.hdr_histogram = hdr_histogram
+        r.llq_histogram = llq_histogram
+
+        r.awt = waitTimeMicrosHistogram.mean / 1000.0
+        r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
+
+        // Summarize CPU usage for global stats only.
+        // if (actionId == NUM_ACTIONS) {
+        //    // average process CPU load.
+        //    // r.avgCpuProcess = 0.0
+        //
+        //    // average system CPU load.
+        //    // r.avgCpuSystem = 0.0
+        // }
+        if (actionId == NUM_ACTIONS) {
+            r.processCpuTime = cpuTime
+        }
+    }
+
+    fun printStats(actionId: Int) {
+
+        val output = mutableListOf("")
+
+        if (r.processCpuTime == 0L) {
+            // Init, or Shutdown -> TPS inaccurate, so set to 0.0
+            // r.aps = 0.0
+            // This is not a complete solution, breaks the report
+            // Disabled for now.
+        }
+
+        if (actionId != NUM_ACTIONS) {
+            output.add("  action_id = ${r.actionId}")
+        }
+
+        if (r.processCpuTime == 0L) {
+            // Init, or Shutdown
+            output.add("  duration    = ${r.durationSeconds} seconds")
+        } else {
+            // Benchmark
+            output.add("  duration    = ${r.durationSeconds} seconds")
+        }
+        output.add("  num_actions = ${r.numActions}")
+        output.add("  num_failed  = ${r.numActions - r.numSuccess}")
+        output.add("")
+        output.add("  avg_aps = ${"%.3f".format(Locale.US, r.aps)}")
+        output.add("  avg_rt  = ${"%.3f".format(Locale.US, r.art)} ms")
+        output.add("  std_dev = ${"%.3f".format(Locale.US, r.sdev)} ms")
+        output.add("  min_rt  = ${"%.3f".format(Locale.US, r.minRt)} ms")
+        output.add(
+            "  max_rt  = ${
+                "%.3f".format(
+                    Locale.US,
+                    r.maxRt,
+                )
+            } ms at $histogramMaxRtTs"
+        )
+
+        if (actionId == NUM_ACTIONS) {
+            val rt = Runtime.getRuntime()
+            val fm = rt.freeMemory()
+            val tm = rt.totalMemory()
+            val mm = rt.maxMemory()
+
+            // output.add("")
+            // output.add("  average cpu load (process) =
+            // ${"%.3f".format(Locale.US, r.avgCpuProcess)}")
+            // output.add("  average cpu load (system ) =
+            // ${"%.3f".format(Locale.US, r.avgCpuSystem)}")
+
+            // mg_cpu_tulip?.set(r.avgCpuProcess.toInt())
+            // mg_cpu_system?.set(r.avgCpuSystem.toInt())
+
+            output.add("")
+            val gb1 = 1073741824.0
+            output.add("  memory used (jvm)    = ${"%.3f".format(Locale.US, (tm - fm)/gb1)} GB")
+            output.add("  free memory (jvm)    = ${"%.3f".format(Locale.US, fm/gb1)} GB")
+            output.add("  total memory (jvm)   = ${"%.3f".format(Locale.US, tm/gb1)} GB")
+            output.add("  maximum memory (jvm) = ${"%.3f".format(Locale.US, mm/gb1)} GB")
+            output.add("")
+            val cpu_time_secs: Double = r.processCpuTime / 1000000000.0
+            output.add(
+                "  cpu time (process)   = ${"%.3f".format(Locale.US, cpu_time_secs)} seconds"
+            )
+            r.processCpuCores = cpu_time_secs / r.durationSeconds
+            output.add(
+                "  num cores used       = ${"%.3f".format(Locale.US, r.processCpuCores)} cores"
+            )
+            r.processCpuUtilization = 100.0 * r.processCpuCores
+            // if (r.processCpuUtilization > 100.0) r.processCpuUtilization =
+            // 100.0
+            // support > 100.0 utilization due to hyper-threading
+            output.add(
+                "  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}"
+            )
+            output.add("  avg process cpu load = ${"%.1f".format(Locale.US, getProcessCpuLoad())}")
+            output.add("  avg  system cpu load = ${"%.1f".format(Locale.US, getCpuLoad())}")
+
+            //            output.add("")
+            //            val awqs: Double = wthread_queue_stats.mean
+            //            val mwqs: Long = wthread_queue_stats.maxValue
+            //            output.add("  avg wkr thrd qsize =
+            // ${"%.3f".format(Locale.US, awqs)}")
+            //            output.add("  max wkr thrd qsize =
+            // ${"%,d".format(Locale.US, mwqs)}")
+            //            output.add("  average wait time  =
+            // ${"%.3f".format(Locale.US, r.awt)} ms")
+            //            output.add("  maximum wait time  =
+            // ${"%.3f".format(Locale.US, r.maxWt)} ms")
+
+            //            mg_rt_avg?.set(r.art.toInt())
+            //            mg_rt_max?.set(r.maxRt.toInt())
+            //            mg_rt_min?.set(r.minRt.toInt())
+            //
+            //            mg_num_actions?.set(r.numActions)
+            //            mg_num_failed?.set(r.numActions - r.numSuccess)
+            //
+            //            mg_benchmark_aps?.set(r.aps.toInt())
+            //            mg_benchmark_dur?.set(r.durationSeconds.toInt())
+            var phaseId = 0
+            if (r.testPhase == "PreWarmup") phaseId = 0
+            if (r.testPhase == "Warmup") phaseId = 1
+            if (r.testPhase == "Benchmark") phaseId = 2
+
+            //            mg_benchmark_phs?.set(phaseId)
+            //            mg_benchmark_run?.set(r.rowId)
+        }
+
+        Console.put(output)
+    }
+
+    @OptIn(ExperimentalEncodingApi::class)
+    fun toJson(actionId: Int): String {
+        var results = ""
+
+        // Skip actionId = -1
+        if (actionId >= 0) {
+            val name: String =
+                if (actionNames.containsKey(actionId)) actionNames[actionId]!!
+                else "action${actionId}"
+            results += "\"name\": \"${name}\""
+        }
+
+        results += ", \"num_actions\": ${numActions}, \"num_failed\": ${numActions - numSuccess}"
+        results +=
+            ", \"avg_aps\": ${r.aps}, \"aps_target_rate\": ${r.aps_target}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
+
+        results += ", \"percentiles_rt\": {"
+        var t = ""
+        r.pk.forEachIndexed { index, _ ->
+            val k = r.pk[index].toString()
+            val v = r.pv[index]
+            if (t != "") t += ", "
+            t += "\"${k}\": $v"
+        }
+        results += t
+        results += "}"
+
+        results += ", \"hdr_histogram_rt\": "
+
+        val b = ByteBuffer.allocate(hdr_histogram.neededByteBufferCapacity)
+        val numBytes = hdr_histogram.encodeIntoCompressedByteBuffer(b)
+        val b64s = Base64.encode(b.array(), 0, numBytes)
+        results += '\"' + b64s + '\"'
+
+        //        if (actionId == -1) {
+        //            val b =
+        // ByteBuffer.allocate(histogram.neededByteBufferCapacity)
+        //            val numBytes = histogram.encodeIntoCompressedByteBuffer(b)
+        //            val b64s = Base64.encode(b.array(), 0, numBytes)
+        //            results += '\"' + b64s + '\"'
+        //        } else {
+        //            results += "\"\""
+        //        }
+
+        results += ", \"llq_histogram_rt\": " + llq_histogram.toJsonString()
+
+        return results
+    }
+
+    fun updateStats(task: Task) {
+        val durationMicros = (task.serviceTimeNanos) / 1000
+        hdr_histogram.recordValue(durationMicros)
+        llq_histogram.recordValue(task.serviceTimeNanos)
+
+        if (durationMicros < histogramMinRt) {
+            histogramMinRt = durationMicros
+        }
+        if (durationMicros > histogramMaxRt) {
+            histogramMaxRt = durationMicros
+            histogramMaxRtTs = java.time.LocalDateTime.now().format(formatter)
+        }
+        numActions += 1
+        if (task.status == 1) {
+            numSuccess += 1
+        }
+        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos / 1000)
+    }
+
+    fun clearStats() {
+        hdr_histogram.reset()
+        histogramMinRt = Long.MAX_VALUE
+        histogramMaxRt = Long.MIN_VALUE
+        histogramMaxRtTs = ""
+        llq_histogram.reset()
+
+        numActions = 0
+        numSuccess = 0
+    }
+}
