@@ -18,10 +18,12 @@ object Console : Thread() {
         }
     }
 
+    @JvmStatic
     fun put(s: String) {
         put(mutableListOf(s))
     }
 
+    @JvmStatic
     fun put(list: MutableList<String>) {
         q.put(list)
     }
