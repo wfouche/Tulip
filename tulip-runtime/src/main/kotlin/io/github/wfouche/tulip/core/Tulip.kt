@@ -32,6 +32,7 @@ import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
+import org.apache.commons.lang3.SystemUtils
 
 /*-------------------------------------------------------------------------*/
 
@@ -779,9 +780,13 @@ private fun runTest(
 
 private fun initTulip() {
     Console.put(TulipApi.getVersionBanner())
-    val tulip = String(Character.toChars(0x0001F337))
+    var tulip = " " + String(Character.toChars(0x0001F337))
+    if (SystemUtils.IS_OS_WINDOWS) {
+        tulip = ""
+    }
     Console.put(
-        tulip + " Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})"
+        "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})" +
+            tulip
     )
 }
 
