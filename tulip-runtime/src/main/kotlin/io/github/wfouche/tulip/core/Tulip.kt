@@ -779,8 +779,9 @@ private fun runTest(
 
 private fun initTulip() {
     Console.put(TulipApi.getVersionBanner())
+    val tulip = String(Character.toChars(0x0001F337))
     Console.put(
-        "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})"
+        tulip + " Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})"
     )
 }
 
