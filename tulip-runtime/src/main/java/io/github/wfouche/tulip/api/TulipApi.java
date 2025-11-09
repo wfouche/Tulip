@@ -45,7 +45,7 @@ public class TulipApi {
     public static void runTulip(String text, TulipUserFactory userFactory) {
         // Record the start time in nanoseconds
         long startTime = System.nanoTime();
-
+        System.setProperty("python.console.encoding", "UTF-8");
         String outputFilename = TulipKt.initConfig(text);
         TulipKt.runBenchmarks(userFactory);
         createHtmlReport(outputFilename, text);
@@ -64,7 +64,7 @@ public class TulipApi {
     public static void runTulip(String text) {
         // Record the start time in nanoseconds
         long startTime = System.nanoTime();
-
+        System.setProperty("python.console.encoding", "UTF-8");
         String outputFilename = TulipKt.initConfig(text);
         TulipUserFactory userFactory = new TulipUserFactory();
         TulipKt.runBenchmarks(userFactory);
