@@ -113,6 +113,9 @@ dependencies {
 
     implementation("org.asciidoctor:asciidoctorj-diagram-plantuml:1.2025.3")
     // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj-diagram-plantuml
+
+    implementation("org.apache.commons:commons-lang3:3.19.0")
+    // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 }
 
 tasks.withType<JavaCompile>().configureEach {
