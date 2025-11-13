@@ -215,11 +215,12 @@ jreleaser {
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
-        googleJavaFormat("1.30.0").aosp()
+        // https://github.com/google/google-java-format
+        googleJavaFormat("1.32.0").aosp()
         toggleOffOn()
     }
     kotlin {
-        // version, style and all configurations here are optional
+        // https://github.com/facebook/ktfmt
         ktfmt("0.59").googleStyle().configure {
             it.setMaxWidth(100)
             it.setBlockIndent(4)
