@@ -91,13 +91,12 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
 
-    implementation("ch.qos.logback:logback-core:1.5.20")
+    implementation("ch.qos.logback:logback-core:1.5.21")
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
-    implementation("ch.qos.logback:logback-core:1.5.20")
+    implementation("ch.qos.logback:logback-core:1.5.21")
 
-    implementation("ch.qos.logback:logback-classic:1.5.20")
+    implementation("ch.qos.logback:logback-classic:1.5.21")
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation("ch.qos.logback:logback-classic:1.5.20")
 
     // - Apache HttpClient
 
@@ -106,7 +105,7 @@ dependencies {
 
     // - Asciidoctor
 
-    implementation("org.asciidoctor:asciidoctorj:3.0.0")
+    implementation("org.asciidoctor:asciidoctorj:3.0.1")
     // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj
 
     implementation("org.asciidoctor:asciidoctorj-diagram:3.0.1")
