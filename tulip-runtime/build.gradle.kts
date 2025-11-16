@@ -19,7 +19,7 @@ plugins {
     // Core Gradle plugin
     `maven-publish`
 
-    id("org.jreleaser") version "1.20.0"
+    id("org.jreleaser") version "1.21.0"
     // https://plugins.gradle.org/plugin/org.jreleaser
 
     id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
@@ -114,7 +114,7 @@ dependencies {
     implementation("org.asciidoctor:asciidoctorj-diagram-plantuml:1.2025.3")
     // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj-diagram-plantuml
 
-    implementation("org.apache.commons:commons-lang3:3.19.0")
+    implementation("org.apache.commons:commons-lang3:3.20.0")
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
 }
 
