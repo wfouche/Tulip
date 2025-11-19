@@ -27,13 +27,13 @@ class ActionStats {
 
     fun formatTime(timeNanos: Double): String {
         if (timeNanos < 1000.0) {
-            return String.format("%.1f ns", timeNanos)
+            return String.format(Locale.US, "%.1f ns", timeNanos)
         } else if (timeNanos < 1000000.0) {
-            return String.format("%.1f us", timeNanos / 1000.0)
+            return String.format(Locale.US, "%.1f us", timeNanos / 1000.0)
         } else if (timeNanos < 1000000000.0) {
-            return String.format("%.1f ms", timeNanos / 1000000.0)
+            return String.format(Locale.US, "%.1f ms", timeNanos / 1000000.0)
         } else {
-            return String.format("%.1f s", timeNanos / 1000000000.0)
+            return String.format(Locale.US, "%.1f s", timeNanos / 1000000000.0)
         }
     }
 
@@ -73,17 +73,17 @@ class ActionStats {
         r.aps = numActions / r.durationSeconds
         r.aps_target = aps_target
 
-        // average response time (art) in milliseconds
-        r.art = hdr_histogram.mean / 1000.0
+        // average response time (art) in nanoseconds
+        r.art = hdr_histogram.mean
 
         // standard deviation
-        r.sdev = hdr_histogram.stdDeviation / 1000.0
+        r.sdev = hdr_histogram.stdDeviation
 
         // min rt
-        r.minRt = histogramMinRt / 1000.0
+        r.minRt = histogramMinRt * 1.0
 
         // max rt
-        r.maxRt = histogramMaxRt / 1000.0
+        r.maxRt = histogramMaxRt * 1.0
 
         // max rt timestamp
         r.maxRtTs = histogramMaxRtTs
@@ -93,8 +93,10 @@ class ActionStats {
         r.pv =
             mutableListOf<Double>().apply {
                 r.pk.forEach {
-                    var px = hdr_histogram.getValueAtPercentile(it) / 1000.0
-                    if (px > r.maxRt) px = r.maxRt
+                    var px: Double = hdr_histogram.getValueAtPercentile(it) * 1.0
+                    if (px > r.maxRt) {
+                        px = r.maxRt
+                    }
                     this.add(px)
                 }
             }
@@ -144,16 +146,13 @@ class ActionStats {
         output.add("  num_failed  = ${r.numActions - r.numSuccess}")
         output.add("")
         output.add("  avg_aps = ${"%.3f".format(Locale.US, r.aps)}")
-        output.add("  avg_rt  = ${"%.3f".format(Locale.US, r.art)} ms")
-        output.add("  std_dev = ${"%.3f".format(Locale.US, r.sdev)} ms")
-        output.add("  min_rt  = ${"%.3f".format(Locale.US, r.minRt)} ms")
+        output.add("  avg_rt  = ${formatTime(r.art)}")
+        output.add("  std_dev = ${formatTime(r.sdev)}")
+        output.add("  min_rt  = ${formatTime(r.minRt)}")
         output.add(
             "  max_rt  = ${
-                "%.3f".format(
-                    Locale.US,
-                    r.maxRt,
-                )
-            } ms at $histogramMaxRtTs"
+                formatTime(r.maxRt)
+            } at $histogramMaxRtTs"
         )
 
         if (actionId == NUM_ACTIONS) {
@@ -279,15 +278,15 @@ class ActionStats {
     }
 
     fun updateStats(task: Task) {
-        val durationMicros = (task.serviceTimeNanos) / 1000
-        hdr_histogram.recordValue(durationMicros)
+        val durationNanos = task.serviceTimeNanos
+        hdr_histogram.recordValue(durationNanos)
         llq_histogram.recordValue(task.serviceTimeNanos)
 
-        if (durationMicros < histogramMinRt) {
-            histogramMinRt = durationMicros
+        if (durationNanos < histogramMinRt) {
+            histogramMinRt = durationNanos
         }
-        if (durationMicros > histogramMaxRt) {
-            histogramMaxRt = durationMicros
+        if (durationNanos > histogramMaxRt) {
+            histogramMaxRt = durationNanos
             histogramMaxRtTs = java.time.LocalDateTime.now().format(formatter)
         }
         numActions += 1

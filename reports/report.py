@@ -574,12 +574,12 @@ benchmark_detail_row = '''
     <td>%d</td>
     <td>%s</td>
     <td>%.3f</td>
-    <td>%.3f ms</td>
-    <td>%.1f ms</td>
-    <td>%.1f ms</td>
-    <td>%.1f ms</td>
-    <td>%.1f ms</td>
-    <td>%.1f ms</td>
+    <td>%s</td>
+    <td>%s</td>
+    <td>%s</td>
+    <td>%s</td>
+    <td>%s</td>
+    <td>%s</td>
     <td>%s</td>
     <td>%.1f</td>
     <td>%d</td>
@@ -599,12 +599,12 @@ benchmark_summary_row = '''
     <td><b><tag1>%d</tag1></b></td>
     <td><b>%s</b></td>
     <td><b><tag2>%.3f</tag2></b></td>
-    <td><b>%.3f ms</b></td>
-    <td><b>%.1f ms</b></td>
-    <td><b>%.1f ms</b></td>
-    <td><b>%.1f ms</b></td>
-    <td><b>%.1f ms</b></td>
-    <td><b>%.1f ms</b></td>
+    <td><b>%s</b></td>
+    <td><b>%s</b></td>
+    <td><b>%s</b></td>
+    <td><b>%s</b></td>
+    <td><b>%s</b></td>
+    <td><b>%s</b></td>
     <td><b>%s</b></td>
     <td><b>%.1f</b></td>
     <td><b>%d</b></td>
@@ -1016,11 +1016,11 @@ def createReport(filename, text):
             rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
             rd["aps"] = avg_aps
             rd["aps_target_rate"] = sm.aps_target_sum / sm.aps_count
-            rd["avg_rt"] = jh.getMean()/1000.0
-            rd["std_dev"] = jh.getStdDeviation()/1000.0
+            rd["avg_rt"] = jh.getMean()
+            rd["std_dev"] = jh.getStdDeviation()
             rd["min_rt"] = sm.min_rt
-            rd["p90_rt"] = jh.getValueAtPercentile(90.0)/1000.0
-            rd["p99_rt"] = jh.getValueAtPercentile(99.0)/1000.0
+            rd["p90_rt"] = jh.getValueAtPercentile(90.0)
+            rd["p99_rt"] = jh.getValueAtPercentile(99.0)
             rd["max_rt"] = sm.max_rt
             rd["max_rtt"] = sm.max_rt_ts.replace("_","T")
             rd["AQS"] = sm.avg_qs
@@ -1040,12 +1040,12 @@ def createReport(filename, text):
             sm.num_failed,
             str(datetime.timedelta(seconds=int(sm.duration))),
             avg_aps,
-            jh.getMean()/1000.0,
-            jh.getStdDeviation()/1000.0,
-            sm.min_rt,
-            jh.getValueAtPercentile(90.0)/1000.0,
-            jh.getValueAtPercentile(99.0)/1000.0,
-            sm.max_rt,
+            formatTime(jh.getMean()),
+            formatTime(jh.getStdDeviation()),
+            formatTime(sm.min_rt),
+            formatTime(jh.getValueAtPercentile(90.0)),
+            formatTime(jh.getValueAtPercentile(99.0)),
+            formatTime(sm.max_rt),
             sm.max_rt_ts[8:],
             sm.avg_qs,
             sm.max_qs,
@@ -1250,7 +1250,27 @@ def createReport(filename, text):
                 else:
                     report_json_fh.write('        ,"%s": %s\n'%(key,json.dumps(rd)))
 
-            html = benchmark_summary_row%(name2s,text,smx.num_actions,smx.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:],smx.avg_qs,smx.max_qs,formatTime(smx.max_awt),formatTime(smx.max_wt),cpu_t,smx.cpu,smx.mem)
+            html = benchmark_summary_row%(
+                name2s,
+                text,
+                smx.num_actions,
+                smx.num_failed,
+                str(datetime.timedelta(seconds=int(sm.duration))),
+                avg_aps,
+                formatTime(jhx.getMean()),
+                formatTime(jhx.getStdDeviation()),
+                formatTime(smx.min_rt),
+                formatTime(jhx.getValueAtPercentile(90.0)),
+                formatTime(jhx.getValueAtPercentile(99.0)),
+                formatTime(smx.max_rt),
+                smx.max_rt_ts[8:],
+                smx.avg_qs,
+                smx.max_qs,
+                formatTime(smx.max_awt),
+                formatTime(smx.max_wt),
+                cpu_t,
+                smx.cpu,
+                smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -1354,12 +1374,12 @@ def createReport(filename, text):
                 e["num_failed"],
                 str(datetime.timedelta(seconds=int(e["duration"]))),
                 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"],
-                e["avg_rt"],
-                ht.getStdDeviation()/1000.0,
-                e["min_rt"],
-                e["percentiles_rt"]["90.0"],
-                e["percentiles_rt"]["99.0"],
-                e["max_rt"],
+                formatTime(e["avg_rt"]),
+                formatTime(ht.getStdDeviation()),
+                formatTime(e["min_rt"]),
+                formatTime(e["percentiles_rt"]["90.0"]),
+                formatTime(e["percentiles_rt"]["99.0"]),
+                formatTime(e["max_rt"]),
                 e["max_rt_ts"][8:],
                 e["avg_wthread_qsize"],
                 e["max_wthread_qsize"],
