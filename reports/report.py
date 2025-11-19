@@ -583,8 +583,8 @@ benchmark_detail_row = '''
     <td>%s</td>
     <td>%.1f</td>
     <td>%d</td>
-    <td>%.1f</td>
-    <td>%.1f</td>
+    <td>%s</td>
+    <td>%s</td>
     <td>%s</td>
     <td>%.1f</td>
     <td>%.1f</td>
@@ -608,8 +608,8 @@ benchmark_summary_row = '''
     <td><b>%s</b></td>
     <td><b>%.1f</b></td>
     <td><b>%d</b></td>
-    <td><b>%.1f</b></td>
-    <td><b>%.1f</b></td>
+    <td><b>%s</b></td>
+    <td><b>%s</b></td>
     <td><b>%s</b></td>
     <td><b>%.1f</b></td>
     <td><b>%.1f</b></td>
@@ -778,6 +778,16 @@ class Summary:
         self.aps_target_sum = 0.0
 
 def createReport(filename, text):
+
+    def formatTime(timeNanos):
+        if timeNanos < 1000.0:
+            return "%.1f ns"%(timeNanos)
+        elif timeNanos < 1000000.0:
+            return "%.1f us"%(timeNanos/1000.0)
+        elif timeNanos < 1000000000.0:
+            return "%.1f ms"%(timeNanos/1000000.0)
+        else:
+            return "%.1f s"%(timeNanos/1000000000.0)
 
     cwd = os.getcwd()
     if os.path.isdir("build/reports/tulip"):
@@ -1039,8 +1049,8 @@ def createReport(filename, text):
             sm.max_rt_ts[8:],
             sm.avg_qs,
             sm.max_qs,
-            sm.max_awt,
-            sm.max_wt,
+            formatTime(sm.max_awt),
+            formatTime(sm.max_wt),
             cpu_t,
             sm.cpu,
             sm.mem)
@@ -1240,7 +1250,7 @@ def createReport(filename, text):
                 else:
                     report_json_fh.write('        ,"%s": %s\n'%(key,json.dumps(rd)))
 
-            html = benchmark_summary_row%(name2s,text,smx.num_actions,smx.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:],smx.avg_qs,smx.max_qs,smx.max_awt,smx.max_wt,cpu_t,smx.cpu,smx.mem)
+            html = benchmark_summary_row%(name2s,text,smx.num_actions,smx.num_failed,str(datetime.timedelta(seconds=int(sm.duration))),avg_aps,jhx.getMean()/1000.0,jhx.getStdDeviation()/1000.0,smx.min_rt,jhx.getValueAtPercentile(90.0)/1000.0,jhx.getValueAtPercentile(99.0)/1000.0,smx.max_rt,smx.max_rt_ts[8:],smx.avg_qs,smx.max_qs,formatTime(smx.max_awt),formatTime(smx.max_wt),cpu_t,smx.cpu,smx.mem)
             if not print_detail_rows:
                 html = html.replace("<b>","")
                 html = html.replace("</b>","")
@@ -1353,8 +1363,8 @@ def createReport(filename, text):
                 e["max_rt_ts"][8:],
                 e["avg_wthread_qsize"],
                 e["max_wthread_qsize"],
-                e["avg_wt"],
-                e["max_wt"],
+                formatTime(e["avg_wt"]),
+                formatTime(e["max_wt"]),
                 cpu_t,
                 p_cpu,
                 p_mem
