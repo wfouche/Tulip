@@ -2,10 +2,9 @@ package io.github.wfouche.tulip.core
 
 import io.github.wfouche.tulip.stats.LlqHistogram
 import java.nio.ByteBuffer
-import java.util.Locale
+import java.util.*
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
-import kotlin.text.plus
 import org.HdrHistogram.Histogram
 
 class ActionStats {
@@ -25,6 +24,18 @@ class ActionStats {
     private var numSuccess: Int = 0
 
     val r = ActionSummary()
+
+    fun formatTime(timeNanos: Double): String {
+        if (timeNanos < 1000.0) {
+            return String.format("%.1f ns", timeNanos)
+        } else if (timeNanos < 1000000.0) {
+            return String.format("%.1f us", timeNanos / 1000.0)
+        } else if (timeNanos < 1000000000.0) {
+            return String.format("%.1f ms", timeNanos / 1000000.0)
+        } else {
+            return String.format("%.1f s", timeNanos / 1000000000.0)
+        }
+    }
 
     fun createSummary(
         actionId: Int,
@@ -91,8 +102,8 @@ class ActionStats {
         r.hdr_histogram = hdr_histogram
         r.llq_histogram = llq_histogram
 
-        r.awt = waitTimeMicrosHistogram.mean / 1000.0
-        r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble / 1000.0
+        r.awt = waitTimeMicrosHistogram.mean
+        r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble
 
         // Summarize CPU usage for global stats only.
         // if (actionId == NUM_ACTIONS) {
@@ -283,7 +294,7 @@ class ActionStats {
         if (task.status == 1) {
             numSuccess += 1
         }
-        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos / 1000)
+        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos)
     }
 
     fun clearStats() {
