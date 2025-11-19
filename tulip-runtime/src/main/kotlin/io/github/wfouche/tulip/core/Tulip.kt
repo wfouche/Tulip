@@ -553,7 +553,7 @@ private fun runTest(
         statsThread = null
     }
 
-    fun startTask(uid: Int, aid: Int, rateGovernor: RateGovernor?) {
+    fun startTask(uid: Int, aid: Int) {
         // Limit the number of active users.
         val task: Task = rspQueue.take()
 
@@ -569,9 +569,6 @@ private fun runTest(
             this.rspQueue = rstQueue
         }
         assignTask(task)
-
-        // Limit the throughput rate, if required.
-        rateGovernor?.pace()
     }
 
     if (
@@ -595,7 +592,8 @@ private fun runTest(
         cpuTime = getProcessCpuTime()
         for (aid in actionList) {
             for (uid in userList) {
-                startTask(uid, aid, rateGovernor)
+                startTask(uid, aid)
+                rateGovernor?.pace()
             }
         }
         drainRspQueue()
@@ -664,7 +662,6 @@ private fun runTest(
         timeMillisStart = timeMillisEnd
         timeMillisEnd = timeMillisStart + durationMillis
 
-        val rateGovernor: RateGovernor? = null
         // New rate control logic - begin
         val nanosPerAction: Double
         val numActionsMax: Long
@@ -706,7 +703,7 @@ private fun runTest(
             // Pick the next task for the user object to execute.
             val aid: Int = userActions!![uid]!!.next()
 
-            startTask(uid, aid, rateGovernor)
+            startTask(uid, aid)
 
             vTime += nanosPerAction
             if (vTime > rTime) {
