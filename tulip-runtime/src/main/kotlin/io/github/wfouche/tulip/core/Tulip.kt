@@ -40,7 +40,7 @@ const val VERSION = TulipApi.VERSION
 
 const val NUM_ACTIONS = TulipApi.NUM_ACTIONS
 
-const val histogramNumberOfSignificantValueDigits = 4
+const val histogramNumberOfSignificantValueDigits = 3
 
 private val osBean: OperatingSystemMXBean =
     ManagementFactory.getPlatformMXBean(OperatingSystemMXBean::class.java)
