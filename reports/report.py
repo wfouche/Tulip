@@ -961,13 +961,13 @@ def createReport(filename, text):
             jhx = jhh[key]
             printStream.print('<div id="data_%d" class="histo">'%(idx))
             printStream.println()
-            jhx.outputPercentileDistribution(printStream, 1000.0)
+            jhx.outputPercentileDistribution(printStream, 1000000.0)
             printStream.print('</div>')
             printStream.println()
 
         printStream.print('<div id="data_0" class="histo">')
         printStream.println()
-        jh.outputPercentileDistribution(printStream, 1000.0)
+        jh.outputPercentileDistribution(printStream, 1000000.0)
         printStream.print('</div>')
         printStream.println()
 
@@ -1091,7 +1091,7 @@ def createReport(filename, text):
     def print_percentile_table(printStream, jhx):
         bos = ByteArrayOutputStream()
         ox = PrintStream(bos)
-        jhx.outputPercentileDistribution(ox, 1000.0)
+        jhx.outputPercentileDistribution(ox, 1000000.0)
         ox.flush()
         ox.close()
         ptext = bos.toString()
@@ -1154,11 +1154,11 @@ def createReport(filename, text):
         printStream.println('  </tr>')
 
         printStream.println('  <tr>')
-        printStream.println('    <td>avg: %.3f ms</td>'%(jhx.getMean()/1000.0))
-        printStream.println('    <td>sd: %.3f ms</td>'%(jhx.getStdDeviation()/1000.0))
-        printStream.println('    <td>p90: %.3f ms</td>'%(jhx.getValueAtPercentile(90)/1000.0))
-        printStream.println('    <td>p95: %.3f ms</td>'%(jhx.getValueAtPercentile(95)/1000.0))
-        printStream.println('    <td>p99: %.3f ms</td>'%(jhx.getValueAtPercentile(99)/1000.0))
+        printStream.println('    <td>avg: %s</td>'%(formatTime(jhx.getMean())))
+        printStream.println('    <td>sd: %s</td>'%(formatTime(jhx.getStdDeviation())))
+        printStream.println('    <td>p90: %s</td>'%(formatTime(jhx.getValueAtPercentile(90))))
+        printStream.println('    <td>p95: %s</td>'%(formatTime(jhx.getValueAtPercentile(95))))
+        printStream.println('    <td>p99: %s</td>'%(formatTime(jhx.getValueAtPercentile(99))))
         printStream.println('  </tr>')
 
         printStream.println("</table>")
