@@ -1236,11 +1236,11 @@ def createReport(filename, text):
                 rd["num_failed"] = smx.num_failed
                 rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
                 rd["aps"] = avg_aps
-                rd["avg_rt"] = jhx.getMean()/1000.0
-                rd["std_dev"] = jhx.getStdDeviation()/1000.0
+                rd["avg_rt"] = jhx.getMean()
+                rd["std_dev"] = jhx.getStdDeviation()
                 rd["min_rt"] = smx.min_rt
-                rd["p90_rt"] = jhx.getValueAtPercentile(90.0)/1000.0
-                rd["p99_rt"] = jhx.getValueAtPercentile(99.0)/1000.0
+                rd["p90_rt"] = jhx.getValueAtPercentile(90.0)
+                rd["p99_rt"] = jhx.getValueAtPercentile(99.0)
                 rd["max_rt"] = smx.max_rt
                 rd["max_rtt"] = smx.max_rt_ts.replace("_","T")
                 if page_id == 0:
@@ -1349,7 +1349,7 @@ def createReport(filename, text):
             rd["aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
             rd["aps_target_rate"] = e["aps_target_rate"]
             rd["avg_rt"] = e["avg_rt"]
-            rd["std_dev"] = ht.getStdDeviation()/1000.0
+            rd["std_dev"] = ht.getStdDeviation()
             rd["min_rt"] = e["min_rt"]
             rd["p90_rt"] = e["percentiles_rt"]["90.0"]
             rd["p99_rt"] = e["percentiles_rt"]["99.0"]
