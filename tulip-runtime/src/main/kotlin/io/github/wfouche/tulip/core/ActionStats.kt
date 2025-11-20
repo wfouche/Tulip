@@ -2,10 +2,19 @@ package io.github.wfouche.tulip.core
 
 import io.github.wfouche.tulip.stats.LlqHistogram
 import java.nio.ByteBuffer
+import java.text.NumberFormat
 import java.util.*
 import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import org.HdrHistogram.Histogram
+
+val doubleFormatter =
+    NumberFormat.getInstance(Locale.US).apply {
+        minimumFractionDigits = 1
+        maximumFractionDigits = 1
+    }
+
+val longFormatter = NumberFormat.getInstance(Locale.US)
 
 class ActionStats {
     // <numberOfSignificantValueDigits>
@@ -142,10 +151,12 @@ class ActionStats {
             // Benchmark
             output.add("  duration    = ${r.durationSeconds} seconds")
         }
-        output.add("  num_actions = ${r.numActions}")
-        output.add("  num_failed  = ${r.numActions - r.numSuccess}")
+        output.add("  num_actions = ${longFormatter.format(numActions.toLong())}")
+        output.add(
+            "  num_failed  = ${longFormatter.format((r.numActions - r.numSuccess).toLong())}"
+        )
         output.add("")
-        output.add("  avg_aps = ${"%.3f".format(Locale.US, r.aps)}")
+        output.add("  avg_aps = ${doubleFormatter.format(r.aps)}")
         output.add("  avg_rt  = ${formatTime(r.art)}")
         output.add("  std_dev = ${formatTime(r.sdev)}")
         output.add("  min_rt  = ${formatTime(r.minRt)}")
