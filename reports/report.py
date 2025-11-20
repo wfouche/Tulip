@@ -776,6 +776,8 @@ class Summary:
         self.chart_p_list = []   # ['2018-04-10T20:40:33Z', 1, 5, 10, 20, 25, 30]
         self.aps_count = 0.0
         self.aps_target_sum = 0.0
+        self.aps_min = None
+        self.aps_max = None
 
 def createReport(filename, text):
 
@@ -1014,8 +1016,10 @@ def createReport(filename, text):
             rd["num_actions"] = sm.num_actions
             rd["num_failed"] = sm.num_failed
             rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
-            rd["aps"] = avg_aps
+            rd["avg_aps"] = avg_aps
             rd["aps_target_rate"] = sm.aps_target_sum / sm.aps_count
+            rd["min_aps"] = sm.aps_min
+            rd["max_aps"] = sm.aps_max
             rd["avg_rt"] = jh.getMean()
             rd["std_dev"] = jh.getStdDeviation()
             rd["min_rt"] = sm.min_rt
@@ -1235,7 +1239,7 @@ def createReport(filename, text):
                 rd["num_actions"] = smx.num_actions
                 rd["num_failed"] = smx.num_failed
                 rd["duration"] = str(datetime.timedelta(seconds=int(sm.duration)))
-                rd["aps"] = avg_aps
+                rd["avg_aps"] = avg_aps
                 rd["avg_rt"] = jhx.getMean()
                 rd["std_dev"] = jhx.getStdDeviation()
                 rd["min_rt"] = smx.min_rt
@@ -1344,8 +1348,7 @@ def createReport(filename, text):
             rd["num_actions"] = e["num_actions"]
             rd["num_failed"] = e["num_failed"]
             rd["duration"] = str(datetime.timedelta(seconds=int(e["duration"])))
-            rd["aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
-            rd["aps_target_rate"] = e["aps_target_rate"]
+            rd["avg_aps"] = 0.0 if e["bm_name"] in ["onStart", "onStop"] else e["avg_aps"]
             rd["avg_rt"] = e["avg_rt"]
             rd["std_dev"] = ht.getStdDeviation()
             rd["min_rt"] = e["min_rt"]
@@ -1413,6 +1416,15 @@ def createReport(filename, text):
         sm.cpu_time_ns += e["process_cpu_time_ns"]
         sm.aps_count += 1.0
         sm.aps_target_sum += e["aps_target_rate"]
+
+        if sm.aps_min == None:
+            sm.aps_min = e["avg_aps"]
+        elif sm.aps_min > e["avg_aps"]:
+            sm.aps_min = e["avg_aps"]
+        if sm.aps_max == None:
+            sm.aps_max = e["avg_aps"]
+        elif sm.aps_max < e["avg_aps"]:
+            sm.aps_max = e["avg_aps"]
 
         if len(sm.chart_t_list) == -1:
             sm.chart_t_list.append(
