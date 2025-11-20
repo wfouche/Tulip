@@ -573,7 +573,7 @@ benchmark_detail_row = '''
     <td>%d</td>
     <td>%d</td>
     <td>%s</td>
-    <td>%.3f</td>
+    <td>%.1f</td>
     <td>%s</td>
     <td>%s</td>
     <td>%s</td>
@@ -598,7 +598,7 @@ benchmark_summary_row = '''
     <td><b>%d</b></td>
     <td><b><tag1>%d</tag1></b></td>
     <td><b>%s</b></td>
-    <td><b><tag2>%.3f</tag2></b></td>
+    <td><b><tag2>%.1f</tag2></b></td>
     <td><b>%s</b></td>
     <td><b>%s</b></td>
     <td><b>%s</b></td>
