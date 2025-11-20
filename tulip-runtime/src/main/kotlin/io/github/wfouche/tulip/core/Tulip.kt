@@ -385,7 +385,7 @@ fun initConfig(text: String): String {
 
 /*-------------------------------------------------------------------------*/
 
-val waitTimeMicrosHistogram = Histogram(histogramNumberOfSignificantValueDigits)
+val wthread_wait_stats = Histogram(histogramNumberOfSignificantValueDigits)
 
 /*-------------------------------------------------------------------------*/
 

@@ -1,6 +1,5 @@
 package io.github.wfouche.tulip.core
 
-import io.github.wfouche.tulip.stats.LlqHistogram
 import java.nio.ByteBuffer
 import java.text.NumberFormat
 import java.util.*
@@ -24,7 +23,6 @@ class ActionStats {
     // private val NUM_DIGITS=3  // Tested - great results, large results file,
     // histogram_rt
     private val hdr_histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits)
-    private val llq_histogram: LlqHistogram = LlqHistogram()
     private var histogramMinRt: Long = Long.MAX_VALUE
     private var histogramMaxRt: Long = Long.MIN_VALUE
     private var histogramMaxRtTs = ""
@@ -111,11 +109,9 @@ class ActionStats {
             }
 
         r.hdr_histogram = hdr_histogram
-        llq_histogram.add(hdr_histogram)
-        r.llq_histogram = llq_histogram
 
-        r.awt = waitTimeMicrosHistogram.mean
-        r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble
+        r.awt = wthread_wait_stats.mean
+        r.maxWt = wthread_wait_stats.maxValueAsDouble
 
         // Summarize CPU usage for global stats only.
         // if (actionId == NUM_ACTIONS) {
@@ -284,8 +280,6 @@ class ActionStats {
         //            results += "\"\""
         //        }
 
-        results += ", \"llq_histogram_rt\": " + llq_histogram.toJsonString()
-
         return results
     }
 
@@ -307,7 +301,7 @@ class ActionStats {
         if (task.status == 1) {
             numSuccess += 1
         }
-        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos)
+        wthread_wait_stats.recordValue(task.waitTimeNanos)
     }
 
     fun clearStats() {
@@ -315,8 +309,6 @@ class ActionStats {
         histogramMinRt = Long.MAX_VALUE
         histogramMaxRt = Long.MIN_VALUE
         histogramMaxRtTs = ""
-        llq_histogram.reset()
-
         numActions = 0
         numSuccess = 0
     }

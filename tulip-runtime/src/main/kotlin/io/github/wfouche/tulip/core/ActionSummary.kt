@@ -1,6 +1,5 @@
 package io.github.wfouche.tulip.core
 
-import io.github.wfouche.tulip.stats.LlqHistogram
 import org.HdrHistogram.Histogram
 
 data class ActionSummary(
@@ -16,7 +15,6 @@ data class ActionSummary(
     var numActions: Int = 0,
     var numSuccess: Int = 0,
     var hdr_histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
-    var llq_histogram: LlqHistogram = LlqHistogram(),
     var durationSeconds: Double = 0.0,
     var aps: Double = 0.0,
     var aps_target: Double = 0.0,

@@ -1317,9 +1317,7 @@ def createReport(filename, text):
             del name2s_list[0]
         ht = Histogram.fromString(e["hdr_histogram_rt"])
         jh.add(ht)
-        llq_ht = LlqHistogram()
-        llq_ht.fromJsonString(json.dumps(e["llq_histogram_rt"]))
-        llq_jh.add(llq_ht)
+        llq_jh.add(ht)
         p_mem = 100.0 * e["jvm_memory_used"] / e["jvm_memory_maximum"]
         p_cpu = e["process_cpu_utilization"]
         if e["bm_name"] in ["onStart", "onStop"]:
@@ -1462,7 +1460,7 @@ def createReport(filename, text):
             ar = e["user_actions"][key]
             htt = Histogram.fromString(ar["hdr_histogram_rt"])
             llq = LlqHistogram()
-            llq.fromJsonString(json.dumps(ar["llq_histogram_rt"]))
+            llq.add(htt)
             #print(ar["name"] + " - " + "%.3f"%(htt.getMean()/1000.0))
             if jhh.has_key(key):
                 jhh[key].add(htt)
