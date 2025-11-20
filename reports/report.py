@@ -1438,10 +1438,10 @@ def createReport(filename, text):
                     '%s'%(e["test_begin"].replace("_", "T")),
                     float("%.1f"%(e["min_rt"])),
                     float("%.1f"%(e["avg_rt"])),
-                    float("%.1f"%(ht.getValueAtPercentile(50.0)/1000.0)),
-                    float("%.1f"%(ht.getValueAtPercentile(90.0)/1000.0)),
-                    float("%.1f"%(ht.getValueAtPercentile(95.0)/1000.0)),
-                    float("%.1f"%(ht.getValueAtPercentile(99.0)/1000.0)),
+                    float("%.1f"%(ht.getValueAtPercentile(50.0))),
+                    float("%.1f"%(ht.getValueAtPercentile(90.0))),
+                    float("%.1f"%(ht.getValueAtPercentile(95.0))),
+                    float("%.1f"%(ht.getValueAtPercentile(99.0))),
                     float("%.1f"%(e["max_rt"]))
                 ])
 
@@ -1450,10 +1450,10 @@ def createReport(filename, text):
                 '%s'%(e["test_end"].replace("_", "T")),
                 float("%.1f"%(e["min_rt"])),
                 float("%.1f"%(e["avg_rt"])),
-                float("%.1f"%(ht.getValueAtPercentile(50.0)/1000.0)),
-                float("%.1f"%(ht.getValueAtPercentile(90.0)/1000.0)),
-                float("%.1f"%(ht.getValueAtPercentile(95.0)/1000.0)),
-                float("%.1f"%(ht.getValueAtPercentile(99.0)/1000.0)),
+                float("%.1f"%(ht.getValueAtPercentile(50.0))),
+                float("%.1f"%(ht.getValueAtPercentile(90.0))),
+                float("%.1f"%(ht.getValueAtPercentile(95.0))),
+                float("%.1f"%(ht.getValueAtPercentile(99.0))),
                 float("%.1f"%(e["max_rt"]))
             ])
 
