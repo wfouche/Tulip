@@ -110,8 +110,8 @@ class ActionStats {
 
         r.hdr_histogram = hdr_histogram
 
-        r.awt = waitTimeMicrosHistogram.mean
-        r.maxWt = waitTimeMicrosHistogram.maxValueAsDouble
+        r.awt = wthread_wait_stats.mean
+        r.maxWt = wthread_wait_stats.maxValueAsDouble
 
         // Summarize CPU usage for global stats only.
         // if (actionId == NUM_ACTIONS) {
@@ -301,7 +301,7 @@ class ActionStats {
         if (task.status == 1) {
             numSuccess += 1
         }
-        waitTimeMicrosHistogram.recordValue(task.waitTimeNanos)
+        wthread_wait_stats.recordValue(task.waitTimeNanos)
     }
 
     fun clearStats() {

@@ -240,7 +240,7 @@ object DataCollector {
     fun clearStats() {
         synchronized(lock) {
             actionStats.forEach { it.clearStats() }
-            waitTimeMicrosHistogram.reset()
+            wthread_wait_stats.reset()
             wthread_queue_stats.reset()
         }
     }
