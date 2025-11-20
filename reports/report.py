@@ -816,7 +816,7 @@ def createReport(filename, text):
     benchmark_id = 0
 
     sm = None
-    jh = Histogram(1, 3600*1000*1000, 3)
+    jh = Histogram(3)
     llq_jh = LlqHistogram()
     fileObj = open(filename)
     jb = json.load(fileObj, object_pairs_hook=OrderedDict)
@@ -1467,7 +1467,7 @@ def createReport(filename, text):
             if jhh.has_key(key):
                 jhh[key].add(htt)
             else:
-                jhh[key] = Histogram(1, 3600*1000*1000, 3)
+                jhh[key] = Histogram(3)
                 jhh[key].add(htt)
             if jhq.has_key(key):
                 jhq[key].add(llq)
