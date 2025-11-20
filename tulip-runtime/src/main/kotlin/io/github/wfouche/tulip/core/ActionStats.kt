@@ -111,6 +111,7 @@ class ActionStats {
             }
 
         r.hdr_histogram = hdr_histogram
+        llq_histogram.add(hdr_histogram)
         r.llq_histogram = llq_histogram
 
         r.awt = waitTimeMicrosHistogram.mean
@@ -293,7 +294,7 @@ class ActionStats {
         val durationNanos = task.serviceTimeNanos
         if (durationNanos > 0L) {
             hdr_histogram.recordValue(durationNanos)
-            llq_histogram.recordValue(durationNanos)
+            // llq_histogram.recordValue(durationNanos)
         }
         if (durationNanos < histogramMinRt) {
             histogramMinRt = durationNanos

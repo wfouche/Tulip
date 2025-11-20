@@ -124,11 +124,10 @@ public class LlqHistogram {
      * will be scaled by {@code scaleFactor} before recording.
      *
      * @param hdr the HdrHistogram source of recorded values
-     * @param scaleFactor multiplier applied to each iterated value before quantizing
      */
-    public void add(org.HdrHistogram.Histogram hdr, long scaleFactor) {
+    public void add(org.HdrHistogram.Histogram hdr) {
         for (HistogramIterationValue v : hdr.recordedValues()) {
-            recordValue(scaleFactor * v.getValueIteratedTo(), v.getCountAddedInThisIterationStep());
+            recordValue(v.getValueIteratedTo(), v.getCountAddedInThisIterationStep());
         }
     }
 
@@ -526,7 +525,7 @@ public class LlqHistogram {
         hist.display();
         System.out.println();
         LlqHistogram hist2 = new LlqHistogram();
-        hist2.add(hdr, 1);
+        hist2.add(hdr);
         hist2.display();
     }
 }
