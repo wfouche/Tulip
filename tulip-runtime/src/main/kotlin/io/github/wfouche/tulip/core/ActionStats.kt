@@ -289,10 +289,12 @@ class ActionStats {
     }
 
     fun updateStats(task: Task) {
+        // Workaround, as we cannot store 0 in the HdrHistogram
         val durationNanos = task.serviceTimeNanos
-        hdr_histogram.recordValue(durationNanos)
-        llq_histogram.recordValue(task.serviceTimeNanos)
-
+        if (durationNanos > 0L) {
+            hdr_histogram.recordValue(durationNanos)
+            llq_histogram.recordValue(durationNanos)
+        }
         if (durationNanos < histogramMinRt) {
             histogramMinRt = durationNanos
         }
