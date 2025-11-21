@@ -28,7 +28,7 @@ plugins {
     // id("org.jetbrains.dokka") version "2.0.0"
     // https://plugins.gradle.org/plugin/org.jetbrains.dokka
 
-    id("com.diffplug.spotless") version "8.0.0"
+    id("com.diffplug.spotless") version "8.1.0"
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
 }
 
