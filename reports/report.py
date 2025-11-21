@@ -473,7 +473,7 @@ td:nth-child(n+14) {
     <th>#N</th>
     <th>#F</th>
     <th>Duration</th>
-    <th>Aps</th>
+    <th>Throughput</th>
     <th>Avg_Rt</th>
     <th>Std_Dev</th>
     <th>Min_Rt</th>
@@ -498,7 +498,7 @@ benchmark_columns = '''
     <th>#N</th>
     <th>#F</th>
     <th>Duration</th>
-    <th>Aps</th>
+    <th>Throughput</th>
     <th>Avg_Rt</th>
     <th>Std_Dev</th>
     <th>Min_Rt</th>
