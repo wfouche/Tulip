@@ -1,1 +1,1 @@
-.\gradlew dependencyUpdates --no-parallel
+.\gradlew dependencyUpdates -Drevision=release --no-parallel
