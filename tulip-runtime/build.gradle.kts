@@ -108,7 +108,7 @@ dependencies {
     implementation("org.asciidoctor:asciidoctorj:3.0.1")
     // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj
 
-    implementation("org.asciidoctor:asciidoctorj-diagram:3.0.1")
+    implementation("org.asciidoctor:asciidoctorj-diagram:3.1.0")
     // https://mvnrepository.com/artifact/org.asciidoctor/asciidoctorj-diagram
 
     implementation("org.asciidoctor:asciidoctorj-diagram-plantuml:1.2025.3")
