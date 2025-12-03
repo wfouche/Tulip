@@ -221,7 +221,6 @@ private val g_tests = mutableListOf<TestProfile>()
 @Serializable
 data class ConfigContext(
     val enabled: Boolean = false,
-    val name: String = "",
     @SerialName("num_users") val numUsers: Int = 0,
     @SerialName("num_threads") val numThreads: Int = 0,
     @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
