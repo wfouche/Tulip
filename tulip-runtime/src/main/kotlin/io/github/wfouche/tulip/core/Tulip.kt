@@ -316,7 +316,7 @@ fun initConfig(text: String): String {
         // println("${k}")
         val e = entry.value
         if (e.enabled) {
-            val v = RuntimeContext(k, e.numUsers, e.numThreads)
+            val v = RuntimeContext(k, e.numUsers, e.numThreads, e.userParams)
             g_contexts.add(v)
         }
     }
