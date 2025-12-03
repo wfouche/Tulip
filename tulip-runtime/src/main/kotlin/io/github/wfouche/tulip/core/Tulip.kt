@@ -108,6 +108,7 @@ var newUser: TulipUserFactory? = null
 
 var actionNames: Map<Int, String> = emptyMap()
 var workflows: HashMap<String, MarkovChain> = HashMap<String, MarkovChain>()
+var userRuntimeContext: RuntimeContext = RuntimeContext()
 
 var g_outputDirname: String = ""
 
@@ -169,6 +170,7 @@ private fun runtimeInit(
     userActions = arrayOfNulls(MAX_NUM_USERS)
     userThreads = arrayOfNulls(MAX_NUM_THREADS)
     actionNames = actionDesc
+    userRuntimeContext = context
 
     //    mg_num_threads?.set(MAX_NUM_THREADS)
     //    mg_num_users?.set(MAX_NUM_USERS)
