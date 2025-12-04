@@ -108,6 +108,7 @@ var newUser: TulipUserFactory? = null
 
 var actionNames: Map<Int, String> = emptyMap()
 var workflows: HashMap<String, MarkovChain> = HashMap<String, MarkovChain>()
+var userRuntimeContext: RuntimeContext = RuntimeContext()
 
 var g_outputDirname: String = ""
 
@@ -169,6 +170,7 @@ private fun runtimeInit(
     userActions = arrayOfNulls(MAX_NUM_USERS)
     userThreads = arrayOfNulls(MAX_NUM_THREADS)
     actionNames = actionDesc
+    userRuntimeContext = context
 
     //    mg_num_threads?.set(MAX_NUM_THREADS)
     //    mg_num_users?.set(MAX_NUM_USERS)
@@ -223,6 +225,7 @@ data class ConfigContext(
     val enabled: Boolean = false,
     @SerialName("num_users") val numUsers: Int = 0,
     @SerialName("num_threads") val numThreads: Int = 0,
+    @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
 )
 
 @Serializable
@@ -315,7 +318,7 @@ fun initConfig(text: String): String {
         // println("${k}")
         val e = entry.value
         if (e.enabled) {
-            val v = RuntimeContext(k, e.numUsers, e.numThreads)
+            val v = RuntimeContext(k, e.numUsers, e.numThreads, e.userParams)
             g_contexts.add(v)
         }
     }
