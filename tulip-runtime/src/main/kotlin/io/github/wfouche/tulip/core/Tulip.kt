@@ -48,7 +48,7 @@ private val osBean: OperatingSystemMXBean =
 fun getProcessCpuTime(): Long {
     return osBean.processCpuTime
 }
-
+.
 fun getCpuLoad(): Double {
     return osBean.cpuLoad
 }
@@ -781,9 +781,9 @@ private fun runTest(
 private fun initTulip() {
     Console.put(TulipApi.getVersionBanner())
     var tulip = " " + String(Character.toChars(0x0001F337))
-    if (SystemUtils.IS_OS_WINDOWS) {
-        tulip = ""
-    }
+//    if (SystemUtils.IS_OS_WINDOWS) {
+//        tulip = ""
+//    }
     Console.put(
         "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})" +
             tulip
