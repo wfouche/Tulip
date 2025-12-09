@@ -1,127 +1,161 @@
 {
-    "actions": {
-        "description": "Demo Benchmark",
-        "output_filename": "benchmark_output.json",
-        "report_filename": "benchmark_report.html",
-        "user_class": "org.example.user.DemoUser",
-        "user_params": {
-            "url": "http://localhost:7070"
-        },
-        "user_actions": {
-            "0": "onStart",
-            "1": "DELAY-10ms",
-            "2": "DELAY-20ms",
-            "3": "NOP",
-            "8": "HDR",
-            "9": "LLQ",
-            "100": "onStop"
-        }
+  "actions": {
+    "description": "Demo Benchmark",
+    "output_filename": "benchmark_output.json",
+    "report_filename": "benchmark_report.html",
+    "user_class": "org.example.user.DemoUser",
+    "user_params": {
+      "url": "http://localhost:7070"
     },
-    "contexts": {
-        // Contexts
-        "Context-0": {
-            "enabled": true,
-            "num_users": 4,
-            "num_threads": 2
-        },
-        "Context-1": {
-            "enabled": false,
-            "num_users": 4,
-            "num_threads": 4
-        }
-    },
-    "benchmarks": {
-        "onStart": {
-            "scenario_actions": [
-                {"id": 0}
-            ]
-        },
-        "NOP": {
-          "enabled": true,
-          "time": {
-            "pre_warmup_duration": 5,
-            "warmup_duration": 10,
-            "benchmark_duration": 30,
-            "benchmark_iterations": 3
-          },
-          "aps_rate": 0.0,
-          "scenario_actions": [
-            {"id": 3}
-          ]
-        },
-        "Histogram1": {
-            "enabled": true,
-            "time": {
-                "pre_warmup_duration": 5,
-                "warmup_duration": 10,
-                "benchmark_duration": 30,
-                "benchmark_iterations": 3
-            },
-            "aps_rate": 100000.0,
-            "scenario_actions": [
-                {"id": 8}
-            ]
-        },
-        "Histogram2": {
-          "enabled": true,
-          "time": {
-            "pre_warmup_duration": 5,
-            "warmup_duration": 10,
-            "benchmark_duration": 30,
-            "benchmark_iterations": 3
-          },
-          "aps_rate": 100000.0,
-          "scenario_actions": [
-            {"id": 9}
-          ]
-        },
-        "Histogram3": {
-          "enabled": true,
-          "time": {
-            "pre_warmup_duration": 5,
-            "warmup_duration": 10,
-            "benchmark_duration": 30,
-            "benchmark_iterations": 3
-          },
-          "aps_rate": 100000.0,
-          "scenario_actions": [
-            {"id": 7},
-            {"id": 8},
-            {"id": 9}
-          ]
-        },
-        "Maximum Rate": {
-            "enabled": false,
-            "time": {
-                "pre_warmup_duration": 5,
-                "warmup_duration": 10,
-                "benchmark_duration": 30,
-                "benchmark_iterations": 3
-            },
-            "aps_rate": 0.0,
-            "scenario_actions": [
-                {"id": 1, "weight": 90},
-                {"id": 2, "weight": 10}
-            ]
-        },
-        "Fixed Rate": {
-            "enabled": false,
-            "time": {
-                "pre_warmup_duration": 5,
-                "warmup_duration": 10,
-                "benchmark_duration": 30,
-                "benchmark_iterations": 3
-            },
-            "aps_rate": 100.0,
-            "scenario_actions": [
-                {"id": 1, "weight": 90},
-                {"id": 2, "weight": 10}
-            ]
-        },
-        "onStop": {
-            "scenario_actions": [
-                {"id": 100}
-            ]
-        }
+    "user_actions": {
+      "0": "onStart",
+      "1": "DELAY-10ms",
+      "2": "DELAY-20ms",
+      "3": "NOP",
+      "8": "HDR",
+      "9": "LLQ",
+      "100": "onStop"
     }
+  },
+  "contexts": {
+    "Context-0": {
+      "enabled": true,
+      "num_users": 4,
+      "num_threads": 2,
+      "user_params": {
+        "id": 1
+      }
+    },
+    "Context-1": {
+      "enabled": false,
+      "num_users": 4,
+      "num_threads": 4,
+      "user_params": {
+        "id": 2,
+        "url": "http://localhost:8080"
+      }
+    }
+  },
+  "benchmarks": {
+    "onStart": {
+      "scenario_actions": [
+        {
+          "id": 0
+        }
+      ]
+    },
+    "NOP": {
+      "enabled": true,
+      "time": {
+        "pre_warmup_duration": 5,
+        "warmup_duration": 10,
+        "benchmark_duration": 30,
+        "benchmark_iterations": 3
+      },
+      "aps_rate": 0.0,
+      "scenario_actions": [
+        {
+          "id": 3
+        }
+      ]
+    },
+    "Histogram1": {
+      "enabled": true,
+      "time": {
+        "pre_warmup_duration": 5,
+        "warmup_duration": 10,
+        "benchmark_duration": 30,
+        "benchmark_iterations": 3
+      },
+      "aps_rate": 100000.0,
+      "scenario_actions": [
+        {
+          "id": 8
+        }
+      ]
+    },
+    "Histogram2": {
+      "enabled": true,
+      "time": {
+        "pre_warmup_duration": 5,
+        "warmup_duration": 10,
+        "benchmark_duration": 30,
+        "benchmark_iterations": 3
+      },
+      "aps_rate": 100000.0,
+      "scenario_actions": [
+        {
+          "id": 9
+        }
+      ]
+    },
+    "Histogram3": {
+      "enabled": true,
+      "time": {
+        "pre_warmup_duration": 5,
+        "warmup_duration": 10,
+        "benchmark_duration": 30,
+        "benchmark_iterations": 3
+      },
+      "aps_rate": 100000.0,
+      "scenario_actions": [
+        {
+          "id": 7
+        },
+        {
+          "id": 8
+        },
+        {
+          "id": 9
+        }
+      ]
+    },
+    "Maximum Rate": {
+      "enabled": false,
+      "time": {
+        "pre_warmup_duration": 5,
+        "warmup_duration": 10,
+        "benchmark_duration": 30,
+        "benchmark_iterations": 3
+      },
+      "aps_rate": 0.0,
+      "scenario_actions": [
+        {
+          "id": 1,
+          "weight": 90
+        },
+        {
+          "id": 2,
+          "weight": 10
+        }
+      ]
+    },
+    "Fixed Rate": {
+      "enabled": false,
+      "time": {
+        "pre_warmup_duration": 5,
+        "warmup_duration": 10,
+        "benchmark_duration": 30,
+        "benchmark_iterations": 3
+      },
+      "aps_rate": 100.0,
+      "scenario_actions": [
+        {
+          "id": 1,
+          "weight": 90
+        },
+        {
+          "id": 2,
+          "weight": 10
+        }
+      ]
+    },
+    "onStop": {
+      "scenario_actions": [
+        {
+          "id": 100
+        }
+      ]
+    }
+  }
 }

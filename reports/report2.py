@@ -201,6 +201,17 @@ def createReport(filename):
             printf('| *enabled* | True\n')
         printf('| *num_users*   | %d\n'%(c["num_users"]))
         printf('| *num_threads* | %d\n'%(c["num_threads"]))
+        e0 = "user_params"
+        if e0 in c.keys():
+            printf("| *" + e0 + "*\n")
+            printf("|\n")
+            printf('[%header,cols="1a,3a"]\n')
+            printf('!===\n')
+            printf('! id ! value \n')
+            for k0 in c[e0].keys():
+                printf('! *' + k0 + '* ')
+                printf('! ' + str(c[e0][k0]) + '\n')
+            printf('!===\n')
         printf("|===\n")
 
     # Benchmarks Data
