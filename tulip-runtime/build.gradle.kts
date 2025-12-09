@@ -85,7 +85,9 @@ dependencies {
 
     implementation("org.springframework.boot:spring-boot-starter-web:3.5.8")
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-restclient/4.0.0
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
 
     // - SLF4J and Logback
 
