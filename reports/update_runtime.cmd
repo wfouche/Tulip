@@ -1,7 +1,7 @@
 REM python3 jython/jython-cli.py report.py
-call jbang run python_jvm_tulip.java --keep-java report.py
+call jbang run --runtime-option -Dstdout.encoding=UTF-8 --runtime-option -Dpython.console.encoding=UTF-8 python_jvm_tulip.java --keep-java report.py
 REM python3 jython/jython-cli.py report2.py
-call jbang run python_jvm_tulip.java --keep-java report2.py
+call jbang run --runtime-option -Dstdout.encoding=UTF-8 --runtime-option -Dpython.console.encoding=UTF-8 python_jvm_tulip.java --keep-java report2.py
 
 REM copy package.txt+report_py.java report.txt
 REM copy report.txt report_py.java
