@@ -795,8 +795,9 @@ private fun initTulip() {
     if (jvmArgs.isEmpty()) {
         Console.put("  No explicit JVM Runtime Options found (default settings are in use).")
     } else {
-        for (i in jvmArgs.indices) {
-            Console.put("  Option " + (i + 1) + ": " + jvmArgs.get(i))
+        val dArgs = jvmArgs.distinct()
+        for (i in dArgs.indices) {
+            Console.put("  Option " + (i + 1) + ": " + dArgs.get(i))
         }
     }
 }
