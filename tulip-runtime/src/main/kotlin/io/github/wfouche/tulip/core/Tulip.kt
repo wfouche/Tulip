@@ -273,10 +273,10 @@ fun initConfig(text: String): String {
     initTulip()
     Console.put("")
     val wd = System.getProperty("user.dir")
+    Console.put("  --- Tulip Runtime Configuration ---")
     Console.put("  working directory = $wd")
-    Console.put("")
     if (!textIsJsonString) {
-        Console.put("  config filename = $text")
+        Console.put("  config filename   = $text")
     }
 
     // Read JSON file contents into memory
@@ -374,8 +374,8 @@ fun initConfig(text: String): String {
         // register workflow
         workflows[wn] = mc
     }
-    Console.put("  output filename = ${g_config.actions.jsonFilename}")
-    Console.put("  report filename = ${g_config.actions.htmlFilename}")
+    Console.put("  output filename   = ${g_config.actions.jsonFilename}")
+    Console.put("  report filename   = ${g_config.actions.htmlFilename}")
     if (!textIsJsonString) {
         val adocFilename = createConfigReport(configFilename)
         convertAdocToHtml(adocFilename)
@@ -788,7 +788,7 @@ private fun initTulip() {
     )
 
     Console.put("")
-    Console.put("  --- 🚀 JVM Runtime Options (VM Arguments) ---")
+    Console.put("  --- JVM Runtime Options (VM Arguments) ---")
 
     val jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments()
 
