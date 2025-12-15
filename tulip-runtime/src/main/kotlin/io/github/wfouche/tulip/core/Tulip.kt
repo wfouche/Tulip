@@ -18,20 +18,19 @@ import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
 import io.github.wfouche.tulip.report.convertAdocToHtml
 import io.github.wfouche.tulip.report.createConfigReport
-import java.lang.management.ManagementFactory
-import java.time.format.DateTimeFormatter
-import java.util.*
-import java.util.concurrent.LinkedBlockingQueue as BlockingQueue
-import java.util.concurrent.ThreadLocalRandom
-import java.util.concurrent.TimeUnit
-import kotlin.math.abs
-import kotlin.system.exitProcess
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import org.HdrHistogram.Histogram
 import org.HdrHistogram.IntCountsHistogram
+import java.lang.management.ManagementFactory
+import java.time.format.DateTimeFormatter
+import java.util.concurrent.ThreadLocalRandom
+import java.util.concurrent.TimeUnit
+import kotlin.math.abs
+import kotlin.system.exitProcess
+import java.util.concurrent.LinkedBlockingQueue as BlockingQueue
 
 /*-------------------------------------------------------------------------*/
 
@@ -787,6 +786,19 @@ private fun initTulip() {
         "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})" +
             tulip
     )
+
+    Console.put("")
+    Console.put("  --- 🚀 JVM Runtime Options (VM Arguments) ---")
+
+    val jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments()
+
+    if (jvmArgs.isEmpty()) {
+        Console.put("  No explicit JVM Runtime Options found (default settings are in use).")
+    } else {
+        for (i in jvmArgs.indices) {
+            Console.put("  Option " + (i + 1) + ": " + jvmArgs.get(i))
+        }
+    }
 }
 
 /*-------------------------------------------------------------------------*/
