@@ -1,7 +1,7 @@
 #python3 jython/jython-cli.py report.py
-jbang --runtime-option -Dstdout.encoding=UTF-8 --runtime-option -Dpython.console.encoding=UTF-8 run python_jvm_tulip.java --keep-java report.py
+jbang run --runtime-option -Dstdout.encoding=UTF-8 --runtime-option -Dpython.console.encoding=UTF-8 python_jvm_tulip.java --keep-java report.py
 #python3 jython/jython-cli.py report2.py
-jbang --runtime-option -Dstdout.encoding=UTF-8 --runtime-option -Dpython.console.encoding=UTF-8 run python_jvm_tulip.java --keep-java report2.py
+jbang run --runtime-option -Dstdout.encoding=UTF-8 --runtime-option -Dpython.console.encoding=UTF-8 python_jvm_tulip.java --keep-java report2.py
 
 # cat package.txt report_py.java > report.txt
 # cp   report.txt report_py.java
