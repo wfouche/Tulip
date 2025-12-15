@@ -49,7 +49,6 @@ public class TulipApi {
         String outputFilename = TulipKt.initConfig(text);
         TulipKt.runBenchmarks(userFactory);
         createHtmlReport(outputFilename, text);
-
         long durationNano = System.nanoTime() - startTime;
         displayElapsedTime(durationNano);
     }
