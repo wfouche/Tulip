@@ -19,7 +19,7 @@ except:
 # dependencies = [
 #   "com.google.code.gson:gson:2.13.1",
 #   "org.hdrhistogram:HdrHistogram:2.2.2",
-#   "io.github.wfouche.tulip:tulip-runtime:2.1.13"
+#   "io.github.wfouche.tulip:tulip-runtime:2.1.14"
 # ]
 # ///
 
