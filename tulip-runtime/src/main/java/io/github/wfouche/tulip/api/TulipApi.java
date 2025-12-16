@@ -63,12 +63,14 @@ public class TulipApi {
     public static void runTulip(String text) {
         // Record the start time in nanoseconds
         long startTime = System.nanoTime();
+
         System.setProperty("python.console.encoding", "UTF-8");
         String outputFilename = TulipKt.initConfig(text);
         TulipUserFactory userFactory = new TulipUserFactory();
         TulipKt.runBenchmarks(userFactory);
         createHtmlReport(outputFilename, text);
 
+        // Calculate and display the elapsed time
         long durationNano = System.nanoTime() - startTime;
         displayElapsedTime(durationNano);
     }
