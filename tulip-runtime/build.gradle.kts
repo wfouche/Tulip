@@ -7,7 +7,7 @@ import com.diffplug.spotless.kotlin.KtfmtStep
 import java.util.Locale
 
 group = "io.github.wfouche.tulip"
-version = "2.1.14"
+version = "2.1.15"
 
 plugins {
     id("com.github.ben-manes.versions") version "0.53.0"
