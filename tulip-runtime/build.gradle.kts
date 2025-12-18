@@ -22,7 +22,7 @@ plugins {
     // id("org.jreleaser") version "1.21.0"
     // https://plugins.gradle.org/plugin/org.jreleaser
 
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.1.21"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.0"
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
 
     // id("org.jetbrains.dokka") version "2.0.0"
@@ -55,7 +55,7 @@ dependencies {
 
     // - Kotlin JSON Serialization
 
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.8.1")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.9.0")
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
 
     // - Leego Banana
