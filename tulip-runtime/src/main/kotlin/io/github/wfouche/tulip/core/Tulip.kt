@@ -365,7 +365,7 @@ fun initConfig(text: String): String {
             var list = mutableListOf<Edge>()
             for (da in g_config.workflows[wn]!![an]!!.keys) {
                 val da_id = if (da == "-") 0 else da.toInt()
-                val weight = (g_config.workflows[wn]!![an]!![da]!!.toDouble() * 1000).toInt()
+                val weight = (g_config.workflows[wn]!![an]!![da]!! * 1000).toInt()
                 // Console.put("    did = $da, weight = $weight")
                 list.add(Edge(da_id, weight))
             }
@@ -547,7 +547,7 @@ private fun runTest(
             val task: Task = rspQueue.take()
         }
         rspQueueInitialized = false
-        statsThread!!.itq!!.put(Task(status = 999))
+        statsThread!!.itq.put(Task(status = 999))
         while (statsThread!!.running) {
             Thread.sleep(10)
         }
