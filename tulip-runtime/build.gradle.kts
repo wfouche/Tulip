@@ -81,15 +81,8 @@ dependencies {
     // implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
 
-    // - Spring Boot
-
-    // implementation("org.springframework.boot:spring-boot-starter-web:3.5.8")
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-restclient/4.0.0
-    implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.0")
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.1")
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-restclient/4.0.1
+    implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.1")
 
     // - SLF4J and Logback
 
@@ -120,6 +113,9 @@ dependencies {
 
     implementation("org.apache.commons:commons-lang3:3.20.0")
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
+
+    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
+    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.1")
 }
 
 tasks.withType<JavaCompile>().configureEach {
