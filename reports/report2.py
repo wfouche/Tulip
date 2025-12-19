@@ -6,6 +6,7 @@ import os
 from collections import OrderedDict
 import java.lang.management.ManagementFactory as ManagementFactory
 import java.util.stream.Collectors as Collectors
+import java.lang.System as System
 
 # /// jbang
 # requires-jython = "2.7.4"
@@ -293,6 +294,15 @@ def createReport(filename):
     printf(json.dumps(jb, indent=4))
     printf("\n")
     printf("----\n")
+
+    # JVM System Properties
+    printf("\n")
+    printf("== JVM System Properties\n")
+    printf("\n")
+    printf("* os.name: %s\n"%(System.getProperty("os.name")))
+    printf("* os.arch: %s\n"%(System.getProperty("os.arch")))
+    printf("* java.vendor: %s\n"%(System.getProperty("java.vendor")))
+    printf("* java.version: %s\n"%(System.getProperty("java.version")))
 
     # JVM Runtime Options
     printf("\n")
