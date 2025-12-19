@@ -4,6 +4,8 @@ import sys
 import com.google.gson.JsonParser as JsonParser
 import os
 from collections import OrderedDict
+import java.lang.management.ManagementFactory as ManagementFactory
+import java.util.stream.Collectors as Collectors
 
 # /// jbang
 # requires-jython = "2.7.4"
@@ -291,6 +293,17 @@ def createReport(filename):
     printf(json.dumps(jb, indent=4))
     printf("\n")
     printf("----\n")
+
+    # JVM Runtime Options
+    printf("\n")
+    printf("== JVM Runtime Options\n")
+    printf("\n")
+    jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments()
+    jvmArgs = jvmArgs.stream().distinct().collect(Collectors.toList())
+    idx = 0
+    for arg in jvmArgs:
+        idx += 1
+        printf("* Option %d: %s\n"%(idx, arg))
 
     report_fh.close()
     return report_fp
