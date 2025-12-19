@@ -295,15 +295,19 @@ def createReport(filename):
     printf("\n")
     printf("----\n")
 
-    # JVM Runtime Options
+    # JVM System Properties
     printf("\n")
-    printf("== JVM Runtime Options\n")
+    printf("== JVM System Properties\n")
     printf("\n")
     printf("* os.name: %s\n"%(System.getProperty("os.name")))
     printf("* os.arch: %s\n"%(System.getProperty("os.arch")))
     printf("* java.vendor: %s\n"%(System.getProperty("java.vendor")))
     printf("* java.version: %s\n"%(System.getProperty("java.version")))
 
+    # JVM Runtime Options
+    printf("\n")
+    printf("== JVM Runtime Options\n")
+    printf("\n")
     jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments()
     jvmArgs = jvmArgs.stream().distinct().collect(Collectors.toList())
     idx = 0
