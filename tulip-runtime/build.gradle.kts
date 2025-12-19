@@ -81,15 +81,8 @@ dependencies {
     // implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
 
-    // - Spring Boot
-
-    // implementation("org.springframework.boot:spring-boot-starter-web:3.5.8")
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-restclient/4.0.0
     implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.0")
-    // https://mvnrepository.com/artifact/com.fasterxml.jackson.core/jackson-databind
-    implementation("com.fasterxml.jackson.core:jackson-databind:2.20.1")
 
     // - SLF4J and Logback
 
