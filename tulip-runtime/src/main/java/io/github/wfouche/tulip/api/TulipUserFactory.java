@@ -17,7 +17,7 @@ public class TulipUserFactory {
      * reflection to dynamically instantiate a class that implements TulipUser.
      *
      * @param userId The unique identifier for the user.
-     * @param className The fully qualified name of the class to be instantiated. This class must
+     * @param userClass The fully qualified name of the class to be instantiated. This class must
      *     implement TulipUser.
      * @param threadId The identifier of the thread associated with this user.
      * @return A new instance of TulipUser created with the given userId and threadId.
@@ -25,9 +25,9 @@ public class TulipUserFactory {
      *     including ClassNotFoundException, NoSuchMethodException, IllegalAccessException,
      *     InvocationTargetException, or InstantiationException.
      */
-    public TulipUser getUser(int userId, String className, int threadId) {
+    public TulipUser getUser(String userClass, int userId, int threadId) {
         try {
-            Class<?> loadedClass = Class.forName(className);
+            Class<?> loadedClass = Class.forName(userClass);
             Constructor<?> ctor = loadedClass.getConstructor(int.class, int.class);
             return (TulipUser) ctor.newInstance(userId, threadId);
         } catch (ClassNotFoundException
