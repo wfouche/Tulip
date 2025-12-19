@@ -81,8 +81,8 @@ dependencies {
     // implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
     // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
 
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-restclient/4.0.0
-    implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.0")
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-restclient/4.0.1
+    implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.1")
 
     // - SLF4J and Logback
 
