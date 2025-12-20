@@ -15,7 +15,7 @@ class TulipLibHttpUserTest {
     init {
         config["url"] = "http://jsonplaceholder.typicode.com/posts/1"
         config["httpVersion"] = "HTTP_1_1"
-        config["connectTimeoutMillis"] = "5000"
+        config["connectTimeoutMillis"] = "10000"
         config["readTimeoutMillis"] = "10000"
         user = HttpUser(config)
         user.onStart()
