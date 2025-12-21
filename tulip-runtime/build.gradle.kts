@@ -125,6 +125,7 @@ tasks.withType<JavaCompile>().configureEach {
 tasks.jar {
     manifest {
         attributes["Main-Class"] = "io.github.wfouche.tulip.api.TulipApi"
+        attributes["Enable-Native-Access"] = "ALL-UNNAMED"
     }
 }
 
