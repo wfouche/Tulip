@@ -89,15 +89,15 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
 
-    implementation("ch.qos.logback:logback-core:1.5.22")
+    implementation("ch.qos.logback:logback-core:1.5.23")
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
 
-    implementation("ch.qos.logback:logback-classic:1.5.22")
+    implementation("ch.qos.logback:logback-classic:1.5.23")
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
 
     // - Apache HttpClient
 
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.5.1")
+    implementation("org.apache.httpcomponents.client5:httpclient5:5.5.2")
     // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
 
     // - Asciidoctor
