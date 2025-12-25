@@ -22,7 +22,7 @@ plugins {
     // id("org.jreleaser") version "1.21.0"
     // https://plugins.gradle.org/plugin/org.jreleaser
 
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.2.21"
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
 
     // id("org.jetbrains.dokka") version "2.0.0"
