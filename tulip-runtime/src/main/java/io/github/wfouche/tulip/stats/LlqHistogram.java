@@ -6,12 +6,12 @@ package io.github.wfouche.tulip.stats;
 //DEPS org.hdrhistogram:HdrHistogram:2.2.2
 // spotless:on
 
-import tools.jackson.core.type.TypeReference;
-import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.*;
 import org.HdrHistogram.Histogram;
 import org.HdrHistogram.HistogramIterationValue;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * LlqHistogram provides a lightweight quantized histogram optimized for recording time durations
@@ -417,8 +417,8 @@ public class LlqHistogram {
     public void fromJsonString(String jsonString) throws IOException {
         TypeReference<Map<Long, Long>> typeRef = new TypeReference<>() {};
         reset();
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<Long, Long> longMap = objectMapper.readValue(jsonString, typeRef);
+        JsonMapper jsonMapper = new JsonMapper();
+        Map<Long, Long> longMap = jsonMapper.readValue(jsonString, typeRef);
         longMap.forEach(this::recordValue);
     }
 
