@@ -2,12 +2,12 @@
 package io.github.wfouche.tulip.stats;
 
 // spotless:off
-//DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
+//DEPS tools.jackson.core:jackson-databind:3.0.3
 //DEPS org.hdrhistogram:HdrHistogram:2.2.2
 // spotless:on
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.*;
 import org.HdrHistogram.Histogram;
@@ -514,7 +514,7 @@ public class LlqHistogram {
      *
      * @param args command-line arguments (ignored)
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         LlqHistogram hist = new LlqHistogram();
         Histogram hdr = new Histogram(4);
 
@@ -526,6 +526,7 @@ public class LlqHistogram {
         System.out.println();
         LlqHistogram hist2 = new LlqHistogram();
         hist2.add(hdr);
+        hist2.fromJsonString(hist2.toJsonString());
         hist2.display();
     }
 }
