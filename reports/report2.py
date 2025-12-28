@@ -299,10 +299,10 @@ def createReport(filename):
     printf("\n")
     printf("== JVM System Properties\n")
     printf("\n")
-    printf("* os.name: %s\n"%(System.getProperty("os.name")))
-    printf("* os.arch: %s\n"%(System.getProperty("os.arch")))
     printf("* java.vendor: %s\n"%(System.getProperty("java.vendor")))
     printf("* java.version: %s\n"%(System.getProperty("java.version")))
+    printf("* os.name: %s\n"%(System.getProperty("os.name")))
+    printf("* os.arch: %s\n"%(System.getProperty("os.arch")))
 
     # JVM Runtime Options
     printf("\n")
