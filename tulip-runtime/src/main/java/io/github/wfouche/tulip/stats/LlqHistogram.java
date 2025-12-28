@@ -2,16 +2,16 @@
 package io.github.wfouche.tulip.stats;
 
 // spotless:off
-//DEPS com.fasterxml.jackson.core:jackson-databind:2.20.0
+//DEPS tools.jackson.core:jackson-databind:3.0.3
 //DEPS org.hdrhistogram:HdrHistogram:2.2.2
 // spotless:on
 
-import com.fasterxml.jackson.core.type.TypeReference;
-import com.fasterxml.jackson.databind.ObjectMapper;
 import java.io.IOException;
 import java.util.*;
 import org.HdrHistogram.Histogram;
 import org.HdrHistogram.HistogramIterationValue;
+import tools.jackson.core.type.TypeReference;
+import tools.jackson.databind.json.JsonMapper;
 
 /**
  * LlqHistogram provides a lightweight quantized histogram optimized for recording time durations
@@ -417,8 +417,8 @@ public class LlqHistogram {
     public void fromJsonString(String jsonString) throws IOException {
         TypeReference<Map<Long, Long>> typeRef = new TypeReference<>() {};
         reset();
-        ObjectMapper objectMapper = new ObjectMapper();
-        Map<Long, Long> longMap = objectMapper.readValue(jsonString, typeRef);
+        JsonMapper jsonMapper = new JsonMapper();
+        Map<Long, Long> longMap = jsonMapper.readValue(jsonString, typeRef);
         longMap.forEach(this::recordValue);
     }
 
@@ -513,8 +513,9 @@ public class LlqHistogram {
      * included for convenience when running the class directly.
      *
      * @param args command-line arguments (ignored)
+     * @throws IOException on JSON parsing errors
      */
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
         LlqHistogram hist = new LlqHistogram();
         Histogram hdr = new Histogram(4);
 
@@ -526,6 +527,7 @@ public class LlqHistogram {
         System.out.println();
         LlqHistogram hist2 = new LlqHistogram();
         hist2.add(hdr);
+        hist2.fromJsonString(hist2.toJsonString());
         hist2.display();
     }
 }
