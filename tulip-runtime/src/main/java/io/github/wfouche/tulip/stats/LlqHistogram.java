@@ -513,6 +513,7 @@ public class LlqHistogram {
      * included for convenience when running the class directly.
      *
      * @param args command-line arguments (ignored)
+     * @throws IOException on JSON parsing errors
      */
     public static void main(String[] args) throws IOException {
         LlqHistogram hist = new LlqHistogram();
