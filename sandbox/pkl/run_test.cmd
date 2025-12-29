@@ -1,1 +1,1 @@
-jbang org.pkl-lang:pkl-cli-java:0.27.1 eval -f json tulip.pkl
+jbang org.pkl-lang:pkl-cli-java:0.28.2 eval -f json tulip.pkl
