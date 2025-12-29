@@ -17,7 +17,7 @@ object DataCollector {
     // }
 
     fun createSummary(
-        durationMillis: Int,
+        durationMillis: Long,
         testCase: TestProfile,
         indexTestCase: Int,
         indexUserProfile: Int,

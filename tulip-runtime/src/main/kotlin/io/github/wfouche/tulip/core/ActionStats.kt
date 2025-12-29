@@ -46,7 +46,7 @@ class ActionStats {
 
     fun createSummary(
         actionId: Int,
-        durationMillis: Int,
+        durationMillis: Long,
         testCase: TestProfile,
         indexTestCase: Int,
         indexUserProfile: Int,
