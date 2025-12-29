@@ -669,11 +669,11 @@ private fun runTest(
         var numActions: Long = 0
         var apsRate: Double = 0.0
         if (arrivalRate > -1.0) {
-            // Warm-up duration at max speed, ungoverned.
+            // Pre-Warmup duration at max speed, ungoverned.
             nanosPerAction = 0.0
             numActionsMax = 0
         } else {
-            // Ramp-up or Main duration.
+            // Warmup or Main duration.
             if (testCase.arrivalRate > 0.0) {
                 val sprintId: Int = runId / testCase.arrivalRateStepCount
                 val _arrivalRate: Double =
@@ -753,7 +753,7 @@ private fun runTest(
         }
     }
 
-    // Start-up
+    // Pre-warmup
     //
     // Since we could have 1 or more population set sizes, only perform the
     // start-up phase
@@ -763,10 +763,12 @@ private fun runTest(
         assignTasks(testCase.duration.startupDurationMillis, "PreWarmup", 0, 0, 0.0)
     }
 
-    // Ramp-up
+    // Warmup
+    timeMillisEnd = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
     assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
 
     // Main run(s)
+    timeMillisEnd = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
     val runIdMax: Int =
         (testCase.duration.mainDurationRepeatCount * testCase.arrivalRateStepCount) - 1
     for (runId in 0..runIdMax) {
