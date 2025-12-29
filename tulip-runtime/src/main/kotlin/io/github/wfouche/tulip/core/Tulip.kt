@@ -702,7 +702,9 @@ private fun runTest(
             vTime += nanosPerAction
             if (vTime > rTime) {
                 val delayMillis: Long = ((vTime - rTime) / 1000000.0).toLong()
-                Thread.sleep(delayMillis)
+                if (delayMillis > 0) {
+                    Thread.sleep(delayMillis)
+                }
             }
             rTime = System.nanoTime().toDouble()
             if (numActionsMax != 0L) {
@@ -718,6 +720,7 @@ private fun runTest(
         Console.put(
             "$testPhase (${testCase.name}), run ${runId+1} of ${runIdMax+1}: end   (${tsEnd})"
         )
+        // Console.put("number of actions executed: $numActions, $numActionsMax, $apsTargetRate")
 
         elapsedTimeNanos {
             DataCollector.createSummary(
@@ -740,20 +743,21 @@ private fun runTest(
         }
     }
 
-    initRspQueue()
-
     // Pre-warmup
     //
     // Since we could have 1 or more population set sizes, only perform the
     // start-up phase
     // on the first set, i.e., with index 0.
     //
+    initRspQueue()
     timeNanosEnd = System.nanoTime()
     if (indexUserProfile == 0) {
         assignTasks(testCase.duration.startupDurationMillis, "PreWarmup", 0, 0, 0.0)
     }
+    drainRspQueue()
 
     // Warmup
+    initRspQueue()
     timeNanosEnd = System.nanoTime()
     assignTasks(testCase.duration.warmupDurationMillis, "Warmup", 0, 0)
 
@@ -764,7 +768,6 @@ private fun runTest(
     for (runId in 0..runIdMax) {
         assignTasks(testCase.duration.mainDurationMillis, "Benchmark", runId, runIdMax)
     }
-
     drainRspQueue()
 }
 
