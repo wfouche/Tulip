@@ -769,6 +769,7 @@ private fun runTest(
     // Main run(s)
     val runIdMax: Int =
         (testCase.duration.mainDurationRepeatCount * testCase.arrivalRateStepCount) - 1
+    timeMillisEnd = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
     for (runId in 0..runIdMax) {
         assignTasks(testCase.duration.mainDurationMillis, "Benchmark", runId, runIdMax)
     }
