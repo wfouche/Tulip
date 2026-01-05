@@ -1,7 +1,7 @@
 REM Use this script to create the ZIP file to be uploaded to Maven Central
 REM https://central.sonatype.com/
 REM
-set version=2.1.15
+set version=2.1.16
 
 REM Remove staging folder
 rd/q/s .\tulip-runtime\build\staging-deploy
