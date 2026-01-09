@@ -131,6 +131,8 @@ public class TulipApi {
      * @param args The command-line arguments variable.
      */
     public static void main(String[] args) {
-        runTulip(args[0]);
+        if (args.length > 0) {
+            runTulip(args[0]);
+        }
     }
 }
