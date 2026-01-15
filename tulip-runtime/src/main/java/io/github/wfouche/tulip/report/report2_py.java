@@ -49,7 +49,7 @@ public class report2_py {
         gzip.close();
         bis.close();
         bos.close();
-        return bos.toString(StandardCharsets.UTF_8.name());
+        return bos.toString(StandardCharsets.UTF_8);
     }
 
     /**
@@ -62,33 +62,33 @@ public class report2_py {
     public static void main(String... args) throws IOException {
         String mainScriptFilename = "report2.py";
         String mainScript = "";
-        String pythonArgsScript = "";
+        StringBuilder pythonArgsScript = new StringBuilder();
         for (String arg : args) {
-            if (pythonArgsScript.length() == 0) {
+            if (pythonArgsScript.isEmpty()) {
                 if (!arg.equals(mainScriptFilename)) {
-                    pythonArgsScript += "'" + mainScriptFilename + "', ";
+                    pythonArgsScript.append("'").append(mainScriptFilename).append("', ");
                 }
             } else {
-                pythonArgsScript += ", ";
+                pythonArgsScript.append(", ");
             }
-            pythonArgsScript += "'" + arg + "'";
+            pythonArgsScript.append("'").append(arg).append("'");
         }
-        if (pythonArgsScript.length() == 0) {
-            pythonArgsScript = "'" + mainScriptFilename + "'";
+        if (pythonArgsScript.isEmpty()) {
+            pythonArgsScript = new StringBuilder("'" + mainScriptFilename + "'");
         }
-        pythonArgsScript = "import sys; sys.argv = [" + pythonArgsScript + "]";
+        pythonArgsScript = new StringBuilder("import sys; sys.argv = [" + pythonArgsScript + "]");
         {
             byte[] decodedBytes = Base64.getDecoder().decode(mainScriptTextBase64);
-            String text = new String(decompress(decodedBytes));
-            mainScript = text;
+            mainScript = decompress(decodedBytes);
         }
         {
             // create Python interpreter object
-            PythonInterpreter pyInterp = new PythonInterpreter();
-            // initialize command-line args
-            pyInterp.exec(pythonArgsScript);
-            // run script
-            pyInterp.exec(mainScript);
+            try (PythonInterpreter pyInterp = new PythonInterpreter()) {
+                // initialize command-line args
+                pyInterp.exec(pythonArgsScript.toString());
+                // run script
+                pyInterp.exec(mainScript);
+            }
         }
     }
 }
