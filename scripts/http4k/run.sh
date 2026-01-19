@@ -1,0 +1,1 @@
+jbang run JavalinServer.kt
