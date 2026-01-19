@@ -34,10 +34,8 @@ java {
     }
 }
 
-tasks.withType<org.jetbrains.kotlin.gradle.tasks.KotlinCompile> {
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_17)
-    }
+kotlin {
+    jvmToolchain(17)
 }
 
 tasks.named<Test>("test") {
