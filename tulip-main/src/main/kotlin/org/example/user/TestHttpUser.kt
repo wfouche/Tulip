@@ -44,27 +44,27 @@ class TestHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
 
     override fun action3(): Boolean {
         val id: Int = ThreadLocalRandom.current().nextInt(100)+1
-        return !http_GET("/posts/{id}", id).isEmpty()
+        return http_GET("/posts/{id}", id).isSuccessful
     }
 
     override fun action4(): Boolean {
         val id: Int = ThreadLocalRandom.current().nextInt(500)+1
-        return !http_GET("/comments/{id}", id).isEmpty()
+        return http_GET("/comments/{id}", id).isSuccessful
     }
 
     override fun action5(): Boolean {
         val id: Int = ThreadLocalRandom.current().nextInt(100)+1
-        return !http_GET("/albums/{id}", id).isEmpty()
+        return http_GET("/albums/{id}", id).isSuccessful
     }
 
     override fun action6(): Boolean {
         val id: Int = ThreadLocalRandom.current().nextInt(5000)+1
-        return !http_GET("/photos/{id}", id).isEmpty()
+        return http_GET("/photos/{id}", id).isSuccessful
     }
 
     override fun action7(): Boolean {
         val id: Int = ThreadLocalRandom.current().nextInt(200)+1
-        return !http_GET("/todos/{id}", id).isEmpty()
+        return http_GET("/todos/{id}", id).isSuccessful
     }
 
     // ----------------------------------------------------------------- //

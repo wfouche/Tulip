@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
 /** The HttpUser class. */
@@ -30,6 +31,18 @@ public class HttpUser extends HttpUser_RestClient {
     }
 
     /**
+     * Response record
+     *
+     * @param statusCode - HTTP status code
+     * @param body - response body
+     */
+    public record Response(int statusCode, String body) {
+        public boolean isSuccessful() {
+            return statusCode >= 200 && statusCode < 300;
+        }
+    }
+
+    /**
      * http_GET() method
      *
      * @param uri - uri to invoke
@@ -38,18 +51,15 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_GET(String uri, Object... uriVariables) throws RestClientException {
-        String rsp =
+    public Response http_GET(String uri, Object... uriVariables) throws RestClientException {
+        ResponseEntity<String> entity =
                 restClient()
                         .get()
                         .uri(uri, uriVariables)
                         .header(http_header_key, http_header_val)
                         .retrieve()
-                        .body(String.class);
-        if (rsp != null && !rsp.isEmpty()) {
-            return rsp;
-        }
-        return "";
+                        .toEntity(String.class);
+        return new Response(entity.getStatusCode().value(), entity.getBody());
     }
 
     /**
@@ -62,9 +72,9 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_POST(String reqBodyJson, String uri, Object... uriVariables)
+    public Response http_POST(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
-        String rsp =
+        ResponseEntity<String> entity =
                 restClient()
                         .post()
                         .uri(uri, uriVariables)
@@ -72,11 +82,8 @@ public class HttpUser extends HttpUser_RestClient {
                         .contentType(APPLICATION_JSON)
                         .body(reqBodyJson)
                         .retrieve()
-                        .body(String.class);
-        if (rsp != null && !rsp.isEmpty()) {
-            return rsp;
-        }
-        return "";
+                        .toEntity(String.class);
+        return new Response(entity.getStatusCode().value(), entity.getBody());
     }
 
     /**
@@ -89,9 +96,9 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_PUT(String reqBodyJson, String uri, Object... uriVariables)
+    public Response http_PUT(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
-        String rsp =
+        ResponseEntity<String> entity =
                 restClient()
                         .put()
                         .uri(uri, uriVariables)
@@ -99,11 +106,8 @@ public class HttpUser extends HttpUser_RestClient {
                         .contentType(APPLICATION_JSON)
                         .body(reqBodyJson)
                         .retrieve()
-                        .body(String.class);
-        if (rsp != null && !rsp.isEmpty()) {
-            return rsp;
-        }
-        return "";
+                        .toEntity(String.class);
+        return new Response(entity.getStatusCode().value(), entity.getBody());
     }
 
     /**
@@ -116,9 +120,9 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_PATCH(String reqBodyJson, String uri, Object... uriVariables)
+    public Response http_PATCH(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
-        String rsp =
+        ResponseEntity<String> entity =
                 restClient()
                         .patch()
                         .uri(uri, uriVariables)
@@ -126,11 +130,8 @@ public class HttpUser extends HttpUser_RestClient {
                         .contentType(APPLICATION_JSON)
                         .body(reqBodyJson)
                         .retrieve()
-                        .body(String.class);
-        if (rsp != null && !rsp.isEmpty()) {
-            return rsp;
-        }
-        return "";
+                        .toEntity(String.class);
+        return new Response(entity.getStatusCode().value(), entity.getBody());
     }
 
     /**
@@ -142,18 +143,15 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public String http_DELETE(String uri, Object... uriVariables) throws RestClientException {
-        String rsp =
+    public Response http_DELETE(String uri, Object... uriVariables) throws RestClientException {
+        ResponseEntity<String> entity =
                 restClient()
                         .delete()
                         .uri(uri, uriVariables)
                         .header(http_header_key, http_header_val)
                         .retrieve()
-                        .body(String.class);
-        if (rsp != null && !rsp.isEmpty()) {
-            return rsp;
-        }
-        return "";
+                        .toEntity(String.class);
+        return new Response(entity.getStatusCode().value(), entity.getBody());
     }
 
     /**
