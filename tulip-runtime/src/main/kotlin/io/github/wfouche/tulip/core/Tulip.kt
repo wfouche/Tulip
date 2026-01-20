@@ -228,8 +228,8 @@ data class ConfigContext(
 
 @Serializable
 data class ConfigDuration(
-    @SerialName("pre_warmup_duration") val startupDuration: Long = 0,
-    @SerialName("warmup_duration") val warmupDuration: Long = 0,
+    @SerialName("warmup_duration1") val startupDuration: Long = 0,
+    @SerialName("warmup_duration2") val warmupDuration: Long = 0,
     @SerialName("benchmark_duration") val mainDuration: Long = 0,
     @SerialName("benchmark_iterations") val mainDurationRepeatCount: Int = 1,
 )
