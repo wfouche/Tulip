@@ -471,7 +471,7 @@ td:nth-child(n+14) {
     <th>Run Id</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Duration</th>
+    <th>Time</th>
     <th>Aps</th>
     <th>Avg_Rt</th>
     <th>Std_Dev</th>
@@ -496,7 +496,7 @@ benchmark_columns = '''
     <th>Run Id</th>
     <th>#N</th>
     <th>#F</th>
-    <th>Duration</th>
+    <th>Time</th>
     <th>Aps</th>
     <th>Avg_Rt</th>
     <th>Std_Dev</th>
