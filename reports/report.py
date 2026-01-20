@@ -1132,7 +1132,7 @@ def createReport(filename, text):
                 mark = True
             if e[1] == "0.900000000000":
                 mark = True
-            if e[1] == "0.800000000000":
+            if e[1] == "0.750000000000":
                 mark = True
             if e[1] == "0.500000000000":
                 mark = True

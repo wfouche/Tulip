@@ -32,7 +32,7 @@ data class TestProfile(
     val queueLengths: List<Int> = listOf(0),
 
     // List of percentile values to report on.
-    val percentiles: List<Double> = listOf(50.0, 90.0, 95.0, 99.0, 99.9),
+    val percentiles: List<Double> = listOf(50.0, 75.0, 90.0, 95.0, 99.0),
 
     // Json results filename.
     val filename: String = "",
