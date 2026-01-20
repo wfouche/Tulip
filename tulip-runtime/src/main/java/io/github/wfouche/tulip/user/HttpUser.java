@@ -37,6 +37,11 @@ public class HttpUser extends HttpUser_RestClient {
      * @param body - response body
      */
     public record Response(int statusCode, String body) {
+
+        /** isSuccessful() method
+         *
+         * @return True if status code is 2xx
+         */
         public boolean isSuccessful() {
             return statusCode >= 200 && statusCode < 300;
         }
