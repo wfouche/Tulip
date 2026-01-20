@@ -26,7 +26,7 @@ class TulipLibHttpUserTest {
     fun action1() {
         logger().info("action1: GET /posts/{id}")
         val id = ThreadLocalRandom.current().nextInt(100) + 1
-        val rsp: HttpUser.Response = user.http_GET("/posts/{id}", id)
+        val rsp: HttpUser.Response = user.get("/posts/{id}", id)
         if (!rsp.isSuccessful) {
             logger().error("Failed to GET /posts/{}", id)
             assertEquals(0, 1)
@@ -40,7 +40,7 @@ class TulipLibHttpUserTest {
     fun action2() {
         logger().info("action2: POST /posts")
         val body = "{\"title\": \"foo\", \"body\": \"bar\", \"userId\": 1}"
-        val rsp: HttpUser.Response = user.http_POST(body, "/posts")
+        val rsp: HttpUser.Response = user.post(body, "/posts")
         if (!rsp.isSuccessful) {
             logger().error("Failed to POST /posts")
             assertEquals(0, 1)
@@ -59,7 +59,7 @@ class TulipLibHttpUserTest {
                 id +
                 ", \"title\": \"updated title\"" +
                 ", \"body\": \"updated body\", \"userId\": 1}"
-        val rsp: HttpUser.Response = user.http_PUT(body, "/posts/{id}", id)
+        val rsp: HttpUser.Response = user.put(body, "/posts/{id}", id)
         if (!rsp.isSuccessful) {
             logger().error("Failed to PUT /posts/{}", id)
             assertEquals(0, 1)
@@ -74,7 +74,7 @@ class TulipLibHttpUserTest {
         logger().info("action4: PATCH /posts/{id}")
         val id = ThreadLocalRandom.current().nextInt(100) + 1
         val body = "{\"title\": \"patched title\"}"
-        val rsp: HttpUser.Response = user.http_PATCH(body, "/posts/{id}", id)
+        val rsp: HttpUser.Response = user.patch(body, "/posts/{id}", id)
         if (!rsp.isSuccessful) {
             logger().error("Failed to PATCH /posts/{}", id)
             assertEquals(0, 1)
@@ -88,7 +88,7 @@ class TulipLibHttpUserTest {
     fun action5() {
         logger().info("action5: DELETE /posts/{id}")
         val id = ThreadLocalRandom.current().nextInt(100) + 1
-        val rsp: HttpUser.Response = user.http_DELETE("/posts/{id}", id)
+        val rsp: HttpUser.Response = user.delete("/posts/{id}", id)
         if (!rsp.isSuccessful) {
             logger().error("Failed to DELETE /posts/{}", id)
             assertEquals(0, 1)

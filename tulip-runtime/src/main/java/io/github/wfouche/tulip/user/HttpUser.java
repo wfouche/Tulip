@@ -38,7 +38,8 @@ public class HttpUser extends HttpUser_RestClient {
      */
     public record Response(int statusCode, String body) {
 
-        /** isSuccessful() method
+        /**
+         * isSuccessful() method
          *
          * @return True if status code is 2xx
          */
@@ -56,7 +57,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response http_GET(String uri, Object... uriVariables) throws RestClientException {
+    public Response get(String uri, Object... uriVariables) throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
                         .get()
@@ -77,7 +78,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response http_POST(String reqBodyJson, String uri, Object... uriVariables)
+    public Response post(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
@@ -101,7 +102,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response http_PUT(String reqBodyJson, String uri, Object... uriVariables)
+    public Response put(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
@@ -125,7 +126,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response http_PATCH(String reqBodyJson, String uri, Object... uriVariables)
+    public Response patch(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
@@ -148,7 +149,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response http_DELETE(String uri, Object... uriVariables) throws RestClientException {
+    public Response delete(String uri, Object... uriVariables) throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
                         .delete()
