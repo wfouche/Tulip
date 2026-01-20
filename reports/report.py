@@ -477,7 +477,7 @@ td:nth-child(n+14) {
     <th>Std_Dev</th>
     <th>Min_Rt</th>
     <th>p50_Rt</th>
-    <th>p90_Rt</th>
+    <th>p95_Rt</th>
     <th>p99_Rt</th>
     <th>Max_Rt</th>
     <th>Max_Rtt</th>
@@ -503,7 +503,7 @@ benchmark_columns = '''
     <th>Std_Dev</th>
     <th>Min_Rt</th>
     <th>p50_Rt</th>
-    <th>p90_Rt</th>
+    <th>p95_Rt</th>
     <th>p99_Rt</th>
     <th>Max_Rt</th>
     <th>Max_Rtt</th>
@@ -530,7 +530,7 @@ benchmark_header = '''
     <td></td>
     <td></td>
     <td></td>
-    <td>>/td>
+    <td></td>
     <td></td>
     <td></td>
     <td></td>
@@ -1029,7 +1029,7 @@ def createReport(filename, text):
             rd["std_dev"] = jh.getStdDeviation()
             rd["min_rt"] = sm.min_rt
             rd["p50_rt"] = jh.getValueAtPercentile(50.0)
-            rd["p90_rt"] = jh.getValueAtPercentile(90.0)
+            rd["p95_rt"] = jh.getValueAtPercentile(95.0)
             rd["p99_rt"] = jh.getValueAtPercentile(99.0)
             rd["max_rt"] = sm.max_rt
             rd["max_rtt"] = sm.max_rt_ts.replace("_","T")
@@ -1054,7 +1054,7 @@ def createReport(filename, text):
             formatTime(jh.getStdDeviation()),
             formatTime(sm.min_rt),
             formatTime(jh.getValueAtPercentile(50.0)),
-            formatTime(jh.getValueAtPercentile(90.0)),
+            formatTime(jh.getValueAtPercentile(95.0)),
             formatTime(jh.getValueAtPercentile(99.0)),
             formatTime(sm.max_rt),
             sm.max_rt_ts[8:],
@@ -1251,7 +1251,7 @@ def createReport(filename, text):
                 rd["std_dev"] = jhx.getStdDeviation()
                 rd["min_rt"] = smx.min_rt
                 rd["p50_rt"] = jhx.getValueAtPercentile(50.0)
-                rd["p90_rt"] = jhx.getValueAtPercentile(90.0)
+                rd["p95_rt"] = jhx.getValueAtPercentile(95.0)
                 rd["p99_rt"] = jhx.getValueAtPercentile(99.0)
                 rd["max_rt"] = smx.max_rt
                 rd["max_rtt"] = smx.max_rt_ts.replace("_","T")
@@ -1273,7 +1273,7 @@ def createReport(filename, text):
                 formatTime(jhx.getStdDeviation()),
                 formatTime(smx.min_rt),
                 formatTime(jhx.getValueAtPercentile(50.0)),
-                formatTime(jhx.getValueAtPercentile(90.0)),
+                formatTime(jhx.getValueAtPercentile(95.0)),
                 formatTime(jhx.getValueAtPercentile(99.0)),
                 formatTime(smx.max_rt),
                 smx.max_rt_ts[8:],
@@ -1362,7 +1362,7 @@ def createReport(filename, text):
             rd["std_dev"] = ht.getStdDeviation()
             rd["min_rt"] = e["min_rt"]
             rd["p50_rt"] = e["percentiles_rt"]["50.0"]
-            rd["p90_rt"] = e["percentiles_rt"]["90.0"]
+            rd["p95_rt"] = e["percentiles_rt"]["95.0"]
             rd["p99_rt"] = e["percentiles_rt"]["99.0"]
             rd["max_rt"] = e["max_rt"]
             rd["max_rtt"] = e["max_rt_ts"].replace("_","T")
@@ -1389,7 +1389,7 @@ def createReport(filename, text):
                 formatTime(ht.getStdDeviation()),
                 formatTime(e["min_rt"]),
                 formatTime(e["percentiles_rt"]["50.0"]),
-                formatTime(e["percentiles_rt"]["90.0"]),
+                formatTime(e["percentiles_rt"]["95.0"]),
                 formatTime(e["percentiles_rt"]["99.0"]),
                 formatTime(e["max_rt"]),
                 e["max_rt_ts"][8:],
