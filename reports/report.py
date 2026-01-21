@@ -453,16 +453,11 @@ header = '''<!DOCTYPE html>
 table, th, td {
   border:1px solid black; font-size:16px; text-align: center;
 }
-th:nth-child(n+14) {
-    background-color: #E5E4E2;
-}
-td:nth-child(n+14) {
-    background-color: #E5E4E2;
-}
+
 /* Logic: Hide the last 8 columns by default */
 .extra-col {
     display: none;
-    background-color: #f9f9ff; /* Subtle tint for expanded columns */
+    background-color: #E5E4E2; /* Subtle tint for expanded columns */
 }
 
 /* Logic: Show them when the 'expanded' class is present */
