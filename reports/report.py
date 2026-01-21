@@ -459,13 +459,25 @@ th:nth-child(n+14) {
 td:nth-child(n+14) {
     background-color: #E5E4E2;
 }
+/* Logic: Hide the last 8 columns by default */
+.extra-col {
+    display: none;
+    background-color: #f9f9ff; /* Subtle tint for expanded columns */
+}
+
+/* Logic: Show them when the 'expanded' class is present */
+table.expanded .extra-col {
+    display: table-cell;
+}
 </style>
 
 <body>
 
 <h2><a href="https://wfouche.github.io/Tulip-docs">__DESC1__</a> / __DESC2__</h2>
 
-<table style="width:100%">
+<button id="toggleBtn">Show All Columns</button>
+
+<table style="width:100%" id="dataTable">
   <tr>
     <th>Benchmark</th>
     <th>Run Id</th>
@@ -480,14 +492,14 @@ td:nth-child(n+14) {
     <th>p95_Rt</th>
     <th>p99_Rt</th>
     <th>Max_Rt</th>
-    <th>Max_Rtt</th>
-    <th>AQS</th>
-    <th>MQS</th>
-    <th>AWT</th>
-    <th>MWT</th>
-    <th>CPU_T</th>
-    <th>CPU</th>
-    <th>MEM</th>
+    <th class="extra-col">Max_Rtt</th>
+    <th class="extra-col">AQS</th>
+    <th class="extra-col">MQS</th>
+    <th class="extra-col">AWT</th>
+    <th class="extra-col">MWT</th>
+    <th class="extra-col">CPU_T</th>
+    <th class="extra-col">CPU</th>
+    <th class="extra-col">MEM</th>
   </tr>
 '''
 
@@ -506,14 +518,14 @@ benchmark_columns = '''
     <th>p95_Rt</th>
     <th>p99_Rt</th>
     <th>Max_Rt</th>
-    <th>Max_Rtt</th>
-    <th>AQS</th>
-    <th>MQS</th>
-    <th>AWT</th>
-    <th>MWT</th>
-    <th>CPU_T</th>
-    <th>CPU</th>
-    <th>MEM</th>
+    <th class="extra-col">Max_Rtt</th>
+    <th class="extra-col">AQS</th>
+    <th class="extra-col">MQS</th>
+    <th class="extra-col">AWT</th>
+    <th class="extra-col">MWT</th>
+    <th class="extra-col">CPU_T</th>
+    <th class="extra-col">CPU</th>
+    <th class="extra-col">MEM</th>
   </tr>
 '''
 
@@ -532,14 +544,14 @@ benchmark_header = '''
     <td></td>
     <td></td>
     <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
-    <td></td>
+    <td class="extra-col"></td>
+    <td class="extra-col"></td>
+    <td class="extra-col"></td>
+    <td class="extra-col"></td>
+    <td class="extra-col"></td>
+    <td class="extra-col"></td>
+    <td class="extra-col"></td>
+    <td class="extra-col"></td>
   </tr>
 '''
 
@@ -558,14 +570,14 @@ benchmark_empty_row = '''
     <td>&nbsp;</td>
     <td>&nbsp;</td>
     <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
-    <td>&nbsp;</td>
+    <td class="extra-col">&nbsp;</td>
+    <td class="extra-col">&nbsp;</td>
+    <td class="extra-col">&nbsp;</td>
+    <td class="extra-col">&nbsp;</td>
+    <td class="extra-col">&nbsp;</td>
+    <td class="extra-col">&nbsp;</td>
+    <td class="extra-col">&nbsp;</td>
+    <td class="extra-col">&nbsp;</td>
   </tr>
 '''
 
@@ -584,14 +596,14 @@ benchmark_detail_row = '''
     <td>%s</td>
     <td>%s</td>
     <td>%s</td>
-    <td>%s</td>
-    <td>%.1f</td>
-    <td>%d</td>
-    <td>%s</td>
-    <td>%s</td>
-    <td>%s</td>
-    <td>%.1f</td>
-    <td>%.1f</td>
+    <td class="extra-col">%s</td>
+    <td class="extra-col">%.1f</td>
+    <td class="extra-col">%d</td>
+    <td class="extra-col">%s</td>
+    <td class="extra-col">%s</td>
+    <td class="extra-col">%s</td>
+    <td class="extra-col">%.1f</td>
+    <td class="extra-col">%.1f</td>
   </tr>
 '''
 
@@ -610,19 +622,37 @@ benchmark_summary_row = '''
     <td><b>%s</b></td>
     <td><b>%s</b></td>
     <td><b>%s</b></td>
-    <td><b>%s</b></td>
-    <td><b>%.1f</b></td>
-    <td><b>%d</b></td>
-    <td><b>%s</b></td>
-    <td><b>%s</b></td>
-    <td><b>%s</b></td>
-    <td><b>%.1f</b></td>
-    <td><b>%.1f</b></td>
+    <td class="extra-col"><b>%s</b></td>
+    <td class="extra-col"><b>%.1f</b></td>
+    <td class="extra-col"><b>%d</b></td>
+    <td class="extra-col"><b>%s</b></td>
+    <td class="extra-col"><b>%s</b></td>
+    <td class="extra-col"><b>%s</b></td>
+    <td class="extra-col"><b>%.1f</b></td>
+    <td class="extra-col"><b>%.1f</b></td>
   </tr>
 '''
 
 trailer = '''
 </table>
+
+    <script>
+        const btn = document.getElementById('toggleBtn');
+        const table = document.getElementById('dataTable');
+
+        btn.addEventListener('click', () => {
+            // Toggle the CSS class
+            table.classList.toggle('expanded');
+            
+            // Toggle the button text
+            if (table.classList.contains('expanded')) {
+                btn.textContent = 'Hide Detailed Columns';
+            } else {
+                btn.textContent = 'Show All Columns';
+            }
+        });
+    </script>
+    
 </body>
 </html>
 '''
