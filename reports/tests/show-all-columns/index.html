@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Expandable Table Columns</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            padding: 20px;
+            line-height: 1.6;
+        }
+
+        button {
+            margin-bottom: 20px;
+            padding: 10px 15px;
+            background-color: #007bff;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: bold;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f4f4f4;
+        }
+
+        /* Logic: Hide the last 4 columns by default */
+        .extra-col {
+            display: none;
+            background-color: #f9f9ff; /* Subtle tint for expanded columns */
+        }
+
+        /* Logic: Show them when the 'expanded' class is present */
+        table.expanded .extra-col {
+            display: table-cell;
+        }
+    </style>
+</head>
+<body>
+
+    <h2>Project Data Overview</h2>
+    <p>The first 6 columns show basic info. Click the button to see the final 4 detailed metrics.</p>
+    
+    <button id="toggleBtn">Show Detailed Columns</button>
+
+    <table id="dataTable">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <th>Status</th>
+                <th>Category</th>
+                <th>Owner</th>
+                <th>Date</th>
+                <th class="extra-col">Metric A</th>
+                <th class="extra-col">Metric B</th>
+                <th class="extra-col">Metric C</th>
+                <th class="extra-col">Metric D</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>001</td>
+                <td>Alpha Project</td>
+                <td>Active</td>
+                <td>Software</td>
+                <td>Jane Doe</td>
+                <td>2023-10-01</td>
+                <td class="extra-col">85%</td>
+                <td class="extra-col">$1.2k</td>
+                <td class="extra-col">High</td>
+                <td class="extra-col">Passed</td>
+            </tr>
+            <tr>
+                <td>002</td>
+                <td>Beta Launch</td>
+                <td>Pending</td>
+                <td>Marketing</td>
+                <td>John Smith</td>
+                <td>2023-10-05</td>
+                <td class="extra-col">42%</td>
+                <td class="extra-col">$0.8k</td>
+                <td class="extra-col">Med</td>
+                <td class="extra-col">Review</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <script>
+        const btn = document.getElementById('toggleBtn');
+        const table = document.getElementById('dataTable');
+
+        btn.addEventListener('click', () => {
+            // Toggle the CSS class
+            table.classList.toggle('expanded');
+            
+            // Toggle the button text
+            if (table.classList.contains('expanded')) {
+                btn.textContent = 'Hide Detailed Columns';
+            } else {
+                btn.textContent = 'Show Detailed Columns';
+            }
+        });
+    </script>
+
+</body>
+</html>
