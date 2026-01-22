@@ -28,8 +28,10 @@ public class TulipUserFactory {
     public TulipUser getUser(String userClass, int userId, int threadId) {
         try {
             Class<?> loadedClass = Class.forName(userClass);
-            Constructor<?> ctor = loadedClass.getConstructor(int.class, int.class);
-            return (TulipUser) ctor.newInstance(userId, threadId);
+            Constructor<?> ctor = loadedClass.getConstructor();
+            var obj = (TulipUser) ctor.newInstance();
+            obj.initRuntime(userId, threadId);
+            return obj;
         } catch (ClassNotFoundException
                 | NoSuchMethodException
                 | IllegalAccessException

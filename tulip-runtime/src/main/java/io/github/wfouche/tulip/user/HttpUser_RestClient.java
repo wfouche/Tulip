@@ -22,16 +22,6 @@ class HttpRecord {
 public class HttpUser_RestClient extends TulipUser {
 
     /**
-     * HttpUser() constructor
-     *
-     * @param userId - User object id
-     * @param threadId - Worker thread id
-     */
-    public HttpUser_RestClient(int userId, int threadId) {
-        super(userId, threadId);
-    }
-
-    /**
      * onStart() method
      *
      * @return boolean

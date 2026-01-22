@@ -17,7 +17,9 @@ class TulipLibHttpUserTest {
         config["httpVersion"] = "HTTP_1_1"
         config["connectTimeoutMillis"] = "10000"
         config["readTimeoutMillis"] = "10000"
-        user = HttpUser(config)
+        user = HttpUser()
+        user.initRuntime(0, 0)
+        user.initConfig(config)
         user.onStart()
     }
 

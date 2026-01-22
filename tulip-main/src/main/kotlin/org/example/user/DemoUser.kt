@@ -9,7 +9,7 @@ import java.util.concurrent.ThreadLocalRandom
 import io.github.wfouche.tulip.stats.LlqHistogram
 import org.HdrHistogram.Histogram as HdrHistogram
 
-class DemoUser(userId: Int, threadId: Int) : TulipUser(userId, threadId) {
+class DemoUser() : TulipUser() {
 
     val llqh = LlqHistogram()
     val hdrh = HdrHistogram(3)
