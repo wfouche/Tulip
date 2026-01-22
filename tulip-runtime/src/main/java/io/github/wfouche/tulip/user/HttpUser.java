@@ -11,22 +11,11 @@ import org.springframework.web.client.RestClientException;
 public class HttpUser extends HttpUser_RestClient {
 
     /**
-     * HttpUser() constructor
-     *
-     * @param userId - User object id
-     * @param threadId - Worker thread id
-     */
-    public HttpUser(int userId, int threadId) {
-        super(userId, threadId);
-    }
-
-    /**
-     * HttpUser() constructor
+     * initConfig() method
      *
      * @param config - test config
      */
-    public HttpUser(HashMap<String, String> config) {
-        super(0, 0);
+    public void initConfig(HashMap<String, String> config) {
         this.config = config;
     }
 

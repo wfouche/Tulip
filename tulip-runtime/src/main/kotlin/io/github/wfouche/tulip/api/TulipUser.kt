@@ -8,7 +8,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
+abstract class TulipUser() {
 
     //    constructor() : this(0, 0)
     //
@@ -21,6 +21,14 @@ abstract class TulipUser constructor(var userId: Int, var threadId: Int) {
     //
     // GraalPython 25.0 might improve Java/Python inheritance functionality
     //
+
+    var userId: Int = -1
+    var threadId: Int = -1
+
+    fun initRuntime(userId: Int, threadId: Int) {
+        this.userId = userId
+        this.threadId = threadId
+    }
 
     private var aid: Int = 0
 

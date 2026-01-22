@@ -10,7 +10,7 @@ import org.slf4j.LoggerFactory
 
 /*-------------------------------------------------------------------------*/
 
-class TestHttpUser(userId: Int, threadId: Int) : HttpUser(userId, threadId) {
+class TestHttpUser() : HttpUser() {
 
     // ----------------------------------------------------------------- //
 
