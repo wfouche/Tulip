@@ -10,18 +10,6 @@ import org.slf4j.LoggerFactory
 
 abstract class TulipUser() {
 
-    //    constructor() : this(0, 0)
-    //
-    //    fun init(userId_: Int, threadId_: Int) {
-    //        userId = userId_
-    //        threadId = threadId_
-    //    }
-    //
-    // https://github.com/oracle/graalpython/issues/470
-    //
-    // GraalPython 25.0 might improve Java/Python inheritance functionality
-    //
-
     var userId: Int = -1
     var threadId: Int = -1
 
