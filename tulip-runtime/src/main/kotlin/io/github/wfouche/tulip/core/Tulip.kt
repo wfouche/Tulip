@@ -46,13 +46,13 @@ fun getProcessCpuTime(): Long {
     return osBean.processCpuTime
 }
 
-fun getCpuLoad(): Double {
-    return osBean.cpuLoad
-}
-
-fun getProcessCpuLoad(): Double {
-    return osBean.processCpuLoad
-}
+// fun getCpuLoad(): Double {
+//    return osBean.cpuLoad
+// }
+//
+// fun getProcessCpuLoad(): Double {
+//    return osBean.processCpuLoad
+// }
 
 // private val isWindows: Boolean =
 // System.getProperty("os.name").lowercase().contains("windows")
@@ -173,9 +173,9 @@ private fun runtimeInit(
     //    mg_num_users?.set(MAX_NUM_USERS)
     //    mg_context_id?.set(contextId)
     for (i in 1..10) {
-        val l0 = getCpuLoad()
+        // val l0 = getCpuLoad()
         val l1 = getProcessCpuTime()
-        val l2 = getProcessCpuLoad()
+        // val l2 = getProcessCpuLoad()
     }
 }
 

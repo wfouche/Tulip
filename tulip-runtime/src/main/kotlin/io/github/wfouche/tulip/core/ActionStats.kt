@@ -200,8 +200,9 @@ class ActionStats {
             output.add(
                 "  avg cpu utilization  = ${"%.1f".format(Locale.US, r.processCpuUtilization)}"
             )
-            output.add("  avg process cpu load = ${"%.1f".format(Locale.US, getProcessCpuLoad())}")
-            output.add("  avg  system cpu load = ${"%.1f".format(Locale.US, getCpuLoad())}")
+            // output.add("  avg process cpu load = ${"%.1f".format(Locale.US,
+            // getProcessCpuLoad())}")
+            // output.add("  avg  system cpu load = ${"%.1f".format(Locale.US, getCpuLoad())}")
 
             //            output.add("")
             //            val awqs: Double = wthread_queue_stats.mean
