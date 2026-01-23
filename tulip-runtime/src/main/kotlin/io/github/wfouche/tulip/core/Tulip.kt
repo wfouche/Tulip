@@ -179,16 +179,6 @@ private fun runtimeInit(
     }
 }
 
-private fun runtimeDone() {
-    // Terminate all user threads.
-    userThreads!!.forEach { userThread -> userThread!!.tq.put(Task(status = 999)) }
-
-    // Wait for all user threads to exit.
-    while (userThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
-        Thread.sleep(500)
-    }
-}
-
 /*-------------------------------------------------------------------------*/
 
 inline fun elapsedTimeNanos(block: () -> Unit): Long {
