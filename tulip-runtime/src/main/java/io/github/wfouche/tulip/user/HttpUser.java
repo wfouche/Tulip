@@ -46,7 +46,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response get(String uri, Object... uriVariables) throws RestClientException {
+    public Response httpGet(String uri, Object... uriVariables) throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
                         .get()
@@ -67,7 +67,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response post(String reqBodyJson, String uri, Object... uriVariables)
+    public Response httpPost(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
@@ -91,7 +91,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response put(String reqBodyJson, String uri, Object... uriVariables)
+    public Response httpPut(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
@@ -115,7 +115,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response patch(String reqBodyJson, String uri, Object... uriVariables)
+    public Response httpPatch(String reqBodyJson, String uri, Object... uriVariables)
             throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
@@ -138,7 +138,7 @@ public class HttpUser extends HttpUser_RestClient {
      * @throws RestClientException - Spring exception
      */
     @NotNull
-    public Response delete(String uri, Object... uriVariables) throws RestClientException {
+    public Response httpDelete(String uri, Object... uriVariables) throws RestClientException {
         ResponseEntity<String> entity =
                 restClient()
                         .delete()
