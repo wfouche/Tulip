@@ -30,7 +30,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import org.HdrHistogram.Histogram
-import org.HdrHistogram.IntCountsHistogram
 
 /*-------------------------------------------------------------------------*/
 
@@ -177,16 +176,6 @@ private fun runtimeInit(
         val l0 = getCpuLoad()
         val l1 = getProcessCpuTime()
         val l2 = getProcessCpuLoad()
-    }
-}
-
-private fun runtimeDone() {
-    // Terminate all user threads.
-    userThreads!!.forEach { userThread -> userThread!!.tq.put(Task(status = 999)) }
-
-    // Wait for all user threads to exit.
-    while (userThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
-        Thread.sleep(500)
     }
 }
 
@@ -429,33 +418,6 @@ private fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
 
 /*-------------------------------------------------------------------------*/
 
-val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
-
-private fun assignTask(task: Task) {
-    val threadId = task.userId / (task.numUsers / task.numThreads)
-    var w = userThreads!![threadId]
-    if (w == null) {
-        w =
-            UserThread(threadId).apply {
-                isDaemon = true
-                start()
-            }
-        userThreads!![threadId] = w
-    }
-    task.beginQueueTimeNanos = System.nanoTime()
-    if (!w.tq.offer(task)) {
-        // We know the queue is full, so queue size = queue capacity
-        w.tq.put(task)
-        // No locking required, just reading of property capacity.
-        wthread_queue_stats.recordValue(w.tq.capacity.toLong())
-    } else {
-        // Grab a reentrant lock and read the size property.
-        wthread_queue_stats.recordValue(w.tq.size.toLong())
-    }
-}
-
-/*-------------------------------------------------------------------------*/
-
 private fun createActionGenerator(list: List<Int>): Iterator<Int> {
     val actions = iterator {
         while (true) {
@@ -569,7 +531,7 @@ private fun runTest(
             actionId = aid
             this.rspQueue = rstQueue
         }
-        assignTask(task)
+        assignTaskToUser(task)
     }
 
     if (
