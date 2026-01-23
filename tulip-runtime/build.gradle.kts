@@ -29,7 +29,7 @@ plugins {
     // id("org.jetbrains.dokka") version "2.0.0"
 
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
-    id("com.diffplug.spotless") version "8.1.0"
+    id("com.diffplug.spotless") version "8.2.0"
 }
 
 java {
@@ -56,7 +56,7 @@ dependencies {
     // - Kotlin JSON Serialization
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0-RC")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
 
     // - Leego Banana
 
@@ -115,7 +115,7 @@ dependencies {
     implementation("org.apache.commons:commons-lang3:3.20.0")
 
     // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
-    implementation("tools.jackson.core:jackson-databind:3.0.3")
+    implementation("tools.jackson.core:jackson-databind:3.0.4")
 }
 
 tasks.withType<JavaCompile>().configureEach {
