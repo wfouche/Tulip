@@ -65,7 +65,7 @@ class UserThread(private val threadId: Int) : Thread() {
 
 val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
 
-fun assignTask(task: Task) {
+fun assignTaskToUser(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
     var w = userThreads!![threadId]
     if (w == null) {

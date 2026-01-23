@@ -541,7 +541,7 @@ private fun runTest(
             actionId = aid
             this.rspQueue = rstQueue
         }
-        assignTask(task)
+        assignTaskToUser(task)
     }
 
     if (
