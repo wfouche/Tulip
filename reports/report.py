@@ -479,7 +479,7 @@ table.expanded .extra-col {
     <th>#N</th>
     <th>#F</th>
     <th>Time</th>
-    <th>Aps</th>
+    <th>APS</th>
     <th>Avg_Rt</th>
     <th>Std_Dev</th>
     <th>Min_Rt</th>
@@ -505,7 +505,7 @@ benchmark_columns = '''
     <th>#N</th>
     <th>#F</th>
     <th>Time</th>
-    <th>Aps</th>
+    <th>APS</th>
     <th>Avg_Rt</th>
     <th>Std_Dev</th>
     <th>Min_Rt</th>
