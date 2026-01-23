@@ -30,7 +30,6 @@ import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import org.HdrHistogram.Histogram
-import org.HdrHistogram.IntCountsHistogram
 
 /*-------------------------------------------------------------------------*/
 
@@ -425,33 +424,6 @@ private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<In
 
 private fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
     return test.copy(queueLengths = getQueueLengths(context, test))
-}
-
-/*-------------------------------------------------------------------------*/
-
-val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
-
-private fun assignTask(task: Task) {
-    val threadId = task.userId / (task.numUsers / task.numThreads)
-    var w = userThreads!![threadId]
-    if (w == null) {
-        w =
-            UserThread(threadId).apply {
-                isDaemon = true
-                start()
-            }
-        userThreads!![threadId] = w
-    }
-    task.beginQueueTimeNanos = System.nanoTime()
-    if (!w.tq.offer(task)) {
-        // We know the queue is full, so queue size = queue capacity
-        w.tq.put(task)
-        // No locking required, just reading of property capacity.
-        wthread_queue_stats.recordValue(w.tq.capacity.toLong())
-    } else {
-        // Grab a reentrant lock and read the size property.
-        wthread_queue_stats.recordValue(w.tq.size.toLong())
-    }
 }
 
 /*-------------------------------------------------------------------------*/

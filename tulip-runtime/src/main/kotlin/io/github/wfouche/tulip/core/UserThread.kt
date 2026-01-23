@@ -1,5 +1,7 @@
 package io.github.wfouche.tulip.core
 
+import org.HdrHistogram.IntCountsHistogram
+
 const val USER_THREAD_QSIZE = 11
 
 class UserThread(private val threadId: Int) : Thread() {
@@ -58,5 +60,30 @@ class UserThread(private val threadId: Int) : Thread() {
             }
         }
         userThreads!![threadId] = null
+    }
+}
+
+val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
+
+fun assignTask(task: Task) {
+    val threadId = task.userId / (task.numUsers / task.numThreads)
+    var w = userThreads!![threadId]
+    if (w == null) {
+        w =
+            UserThread(threadId).apply {
+                isDaemon = true
+                start()
+            }
+        userThreads!![threadId] = w
+    }
+    task.beginQueueTimeNanos = System.nanoTime()
+    if (!w.tq.offer(task)) {
+        // We know the queue is full, so queue size = queue capacity
+        w.tq.put(task)
+        // No locking required, just reading of property capacity.
+        wthread_queue_stats.recordValue(w.tq.capacity.toLong())
+    } else {
+        // Grab a reentrant lock and read the size property.
+        wthread_queue_stats.recordValue(w.tq.size.toLong())
     }
 }
