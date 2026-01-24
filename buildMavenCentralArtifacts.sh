@@ -12,18 +12,17 @@ rm -f -r tulip-runtime/build/staging-deploy
 ./gradlew publish
 
 # Sign the artifacts
-pushd ./tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/$version
+pushd ./tulip-runtime/build/staging-deploy/io/github/wfouche/tulip/tulip-runtime/$version || exit
 gpg -ab tulip-runtime-$version-javadoc.jar
 gpg -ab tulip-runtime-$version-sources.jar
 gpg -ab tulip-runtime-$version.jar
 gpg -ab tulip-runtime-$version.module
 gpg -ab tulip-runtime-$version.pom
-popd
+popd || exit
 
 # ZIP the files to be uploaded to Maven Central
-pushd ./tulip-runtime/build/staging-deploy
+pushd ./tulip-runtime/build/staging-deploy || exit
 zip -r tulip-runtime-$version.zip io
-popd
-
+popd || exit
 
 find tulip-runtime/build/staging-deploy -print | sort
