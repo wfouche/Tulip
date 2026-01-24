@@ -1,6 +1,8 @@
 package io.github.wfouche.tulip.api
 
+import io.github.wfouche.tulip.core.Task
 import io.github.wfouche.tulip.core.actionNames
+import io.github.wfouche.tulip.core.elapsedTimeNanos
 import io.github.wfouche.tulip.core.g_config
 import io.github.wfouche.tulip.core.g_workflow
 import io.github.wfouche.tulip.core.userRuntimeContext
@@ -366,6 +368,21 @@ abstract class TulipUser() {
                 0 -> "onStart"
                 TulipApi.NUM_ACTIONS - 1 -> "opStop"
                 else -> "action${actionId}"
+            }
+        }
+    }
+
+    open fun processTask(task: Task) {
+        task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
+        if (task.actionId < 0) {
+            // Use Markov Chain to determine next action to perform.
+            task.actionId = nextAction(task.actionId)
+        }
+        task.serviceTimeNanos = elapsedTimeNanos {
+            if (processAction(task.actionId)) {
+                task.status = 1
+            } else {
+                task.status = 0
             }
         }
     }

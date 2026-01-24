@@ -1,6 +1,8 @@
 package io.github.wfouche.tulip.core
 
 import io.github.wfouche.tulip.api.TulipUser
+import java.util.concurrent.ExecutorService
+import java.util.concurrent.Future
 import org.HdrHistogram.IntCountsHistogram
 
 var userPlatformThreads: Array<UserPlatformThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
@@ -48,18 +50,8 @@ class UserPlatformThread(private val threadId: Int) : Thread() {
                 // True or False, indicating that the task succeeded or failed.
                 // Also calculate the elapsed time in microseconds.
                 //
-                task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
-                if (task.actionId < 0) {
-                    // Use Markov Chain to determine next action to perform.
-                    task.actionId = u!!.nextAction(task.actionId)
-                }
-                task.serviceTimeNanos = elapsedTimeNanos {
-                    if (u.processAction(task.actionId)) {
-                        task.status = 1
-                    } else {
-                        task.status = 0
-                    }
-                }
+                u.processTask(task)
+
                 task.rspQueue!!.put(task)
             }
         }
@@ -104,3 +96,9 @@ fun runtimeDone() {
 
 // https://ericnormand.me/guide/clojure-virtual-threads
 // - Don't access synchronized blocks or methods
+
+fun newVirtualThread(executor: ExecutorService, user: TulipUser): Future<*> {
+    val future = executor.submit(Runnable { user.processAction(0) })
+
+    return future
+}
