@@ -3,7 +3,7 @@ package io.github.wfouche.tulip.core
 import io.github.wfouche.tulip.api.TulipUser
 import org.HdrHistogram.IntCountsHistogram
 
-var userThreads: Array<UserThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
+var userPlatformThreads: Array<UserThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
 var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 
 const val USER_THREAD_QSIZE = 11
@@ -63,7 +63,7 @@ class UserThread(private val threadId: Int) : Thread() {
                 task.rspQueue!!.put(task)
             }
         }
-        userThreads!![threadId] = null
+        userPlatformThreads!![threadId] = null
     }
 }
 
@@ -71,14 +71,14 @@ val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDi
 
 fun assignTaskToUser(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
-    var w = userThreads!![threadId]
+    var w = userPlatformThreads!![threadId]
     if (w == null) {
         w =
             UserThread(threadId).apply {
                 isDaemon = true
                 start()
             }
-        userThreads!![threadId] = w
+        userPlatformThreads!![threadId] = w
     }
     task.beginQueueTimeNanos = System.nanoTime()
     if (!w.tq.offer(task)) {
@@ -94,10 +94,13 @@ fun assignTaskToUser(task: Task) {
 
 fun runtimeDone() {
     // Terminate all user threads.
-    userThreads!!.forEach { userThread -> userThread!!.tq.put(Task(status = 999)) }
+    userPlatformThreads!!.forEach { userThread -> userThread!!.tq.put(Task(status = 999)) }
 
     // Wait for all user threads to exit.
-    while (userThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
+    while (userPlatformThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
         Thread.sleep(500)
     }
 }
+
+// https://ericnormand.me/guide/clojure-virtual-threads
+// - Don't access synchronized blocks or methods
