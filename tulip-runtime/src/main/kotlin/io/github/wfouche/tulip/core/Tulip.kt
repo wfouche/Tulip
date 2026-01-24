@@ -12,7 +12,6 @@ package io.github.wfouche.tulip.core
 import com.google.gson.JsonParser
 import com.sun.management.OperatingSystemMXBean
 import io.github.wfouche.tulip.api.TulipApi
-import io.github.wfouche.tulip.api.TulipUser
 import io.github.wfouche.tulip.api.TulipUserFactory
 import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
@@ -86,13 +85,7 @@ var TULIP_CONTEXT_ID: Int = 0
 var MAX_NUM_USERS = 0
 var MAX_NUM_THREADS = 0
 
-var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
-
-//
-// Array of Worker thread objects
-//
-var userThreads: Array<UserThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
 
 // ...
 private var testSuite: List<TestProfile>? = null

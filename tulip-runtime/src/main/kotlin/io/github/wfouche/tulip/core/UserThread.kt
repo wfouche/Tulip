@@ -1,6 +1,10 @@
 package io.github.wfouche.tulip.core
 
+import io.github.wfouche.tulip.api.TulipUser
 import org.HdrHistogram.IntCountsHistogram
+
+var userThreads: Array<UserThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
+var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 
 const val USER_THREAD_QSIZE = 11
 
