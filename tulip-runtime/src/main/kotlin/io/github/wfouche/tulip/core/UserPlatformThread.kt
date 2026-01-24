@@ -3,12 +3,12 @@ package io.github.wfouche.tulip.core
 import io.github.wfouche.tulip.api.TulipUser
 import org.HdrHistogram.IntCountsHistogram
 
-var userPlatformThreads: Array<UserThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
+var userPlatformThreads: Array<UserPlatformThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
 var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 
 const val USER_THREAD_QSIZE = 11
 
-class UserThread(private val threadId: Int) : Thread() {
+class UserPlatformThread(private val threadId: Int) : Thread() {
 
     init {
         name = "w$threadId"
@@ -74,7 +74,7 @@ fun assignTaskToUser(task: Task) {
     var w = userPlatformThreads!![threadId]
     if (w == null) {
         w =
-            UserThread(threadId).apply {
+            UserPlatformThread(threadId).apply {
                 isDaemon = true
                 start()
             }
