@@ -108,7 +108,7 @@ fun assignTaskToUser(task: Task) {
 
 fun runtimeDone0() {
     // Terminate all platform threads.
-    userPlatformThreads!!.forEach { userThread -> userThread!!.tq.put(Task(status = 999)) }
+    userPlatformThreads!!.forEach { thread -> thread!!.tq.put(Task(status = 999)) }
 
     // Wait for all platform threads to exit.
     while (userPlatformThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
