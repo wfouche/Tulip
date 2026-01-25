@@ -160,6 +160,9 @@ private fun runtimeInit(
     userActions = arrayOfNulls(MAX_NUM_USERS)
     if (MAX_NUM_THREADS > 0) {
         userPlatformThreads = arrayOfNulls(MAX_NUM_THREADS)
+        useVirtualThreads = false
+    } else {
+        useVirtualThreads = true
     }
     actionNames = actionDesc
     userRuntimeContext = context
@@ -396,8 +399,12 @@ private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<In
     test.queueLengths.forEach { queueLength ->
         list.add(
             when {
-                queueLength == 0 -> context.numThreads * USER_THREAD_QSIZE // 11
-                queueLength > 0 -> context.numThreads * queueLength // Actions per Thread
+                queueLength == 0 -> // context.numThreads * USER_THREAD_QSIZE // 11
+                if (context.numThreads == 0) context.numUsers * USER_THREAD_QSIZE
+                    else context.numThreads * USER_THREAD_QSIZE
+                queueLength > 0 ->
+                    if (context.numThreads == 0) context.numUsers * queueLength
+                    else context.numThreads * queueLength // Actions per Thread
                 else -> abs(queueLength) // Actions across all Threads
             }
         )
@@ -780,6 +787,9 @@ private fun runTulip(
     Console.put("======================================================================")
     Console.put("")
     Console.put("  NUM_USERS = $MAX_NUM_USERS")
+    if (MAX_NUM_THREADS == 0) {
+        MAX_NUM_THREADS = MAX_NUM_USERS
+    }
     Console.put("  NUM_THREADS = $MAX_NUM_THREADS")
     Console.put("  NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
     if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {

@@ -5,6 +5,7 @@ import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import org.HdrHistogram.IntCountsHistogram
 
+var useVirtualThreads = false
 val executor: ExecutorService = Executors.newVirtualThreadPerTaskExecutor()
 var userPlatformThreads: Array<UserPlatformThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
 var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
@@ -62,7 +63,7 @@ class UserPlatformThread(private val threadId: Int) : Thread() {
 
 val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
 
-fun assignTaskToUser0(task: Task) {
+fun assignTaskToUserPT(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
     var w = userPlatformThreads!![threadId]
     if (w == null) {
@@ -85,7 +86,7 @@ fun assignTaskToUser0(task: Task) {
     }
 }
 
-fun assignTaskToUser(task: Task) {
+fun assignTaskToUserVT(task: Task) {
     var u = userObjects!![task.userId]
     if (u == null) {
         u = newUser!!.getUser(g_config.actions.userClass, task.userId, 0)
@@ -106,7 +107,15 @@ fun assignTaskToUser(task: Task) {
     }
 }
 
-fun runtimeDone0() {
+fun assignTaskToUser(task: Task) {
+    if (useVirtualThreads) {
+        assignTaskToUserVT(task)
+    } else {
+        assignTaskToUserPT(task)
+    }
+}
+
+fun runtimeDonePT() {
     // Terminate all platform threads.
     userPlatformThreads!!.forEach { thread -> thread!!.tq.put(Task(status = 999)) }
 
@@ -116,12 +125,20 @@ fun runtimeDone0() {
     }
 }
 
-fun runtimeDone() {
+fun runtimeDoneVT() {
     // Terminate all virtual threads.
     userObjects!!.forEach { user -> user!!.tq.put(Task(status = 999)) }
 
     // Wait for all virtual threads to exit.
     userObjects!!.forEach { user -> user!!.future!!.get() }
+}
+
+fun runtimeDone() {
+    if (useVirtualThreads) {
+        runtimeDoneVT()
+    } else {
+        runtimeDonePT()
+    }
 }
 
 // https://ericnormand.me/guide/clojure-virtual-threads
