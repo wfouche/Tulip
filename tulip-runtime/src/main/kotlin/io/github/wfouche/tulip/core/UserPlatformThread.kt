@@ -2,9 +2,10 @@ package io.github.wfouche.tulip.core
 
 import io.github.wfouche.tulip.api.TulipUser
 import java.util.concurrent.ExecutorService
-import java.util.concurrent.Future
+import java.util.concurrent.Executors
 import org.HdrHistogram.IntCountsHistogram
 
+val executor: ExecutorService = Executors.newVirtualThreadPerTaskExecutor()
 var userPlatformThreads: Array<UserPlatformThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
 var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 
@@ -61,7 +62,7 @@ class UserPlatformThread(private val threadId: Int) : Thread() {
 
 val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
 
-fun assignTaskToUser(task: Task) {
+fun assignTaskToUser0(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
     var w = userPlatformThreads!![threadId]
     if (w == null) {
@@ -84,7 +85,28 @@ fun assignTaskToUser(task: Task) {
     }
 }
 
-fun runtimeDone() {
+fun assignTaskToUser(task: Task) {
+    var u = userObjects!![task.userId]
+    if (u == null) {
+        u = newUser!!.getUser(g_config.actions.userClass, task.userId, 0)
+        userObjects!![task.userId] = u
+        val user = u
+        user.future = executor.submit(Runnable { user.runVirtualThread() })
+    }
+    val tq = u.tq
+    task.beginQueueTimeNanos = System.nanoTime()
+    if (!tq.offer(task)) {
+        // We know the queue is full, so queue size = queue capacity
+        tq.put(task)
+        // No locking required, just reading of property capacity.
+        wthread_queue_stats.recordValue(tq.capacity.toLong())
+    } else {
+        // Grab a reentrant lock and read the size property.
+        wthread_queue_stats.recordValue(tq.size.toLong())
+    }
+}
+
+fun runtimeDone0() {
     // Terminate all user threads.
     userPlatformThreads!!.forEach { userThread -> userThread!!.tq.put(Task(status = 999)) }
 
@@ -94,11 +116,13 @@ fun runtimeDone() {
     }
 }
 
+fun runtimeDone() {
+    // Terminate all user threads.
+    userObjects!!.forEach { user -> user!!.tq.put(Task(status = 999)) }
+
+    // Wait for all user threads to exit.
+    userObjects!!.forEach { user -> user!!.future!!.get() }
+}
+
 // https://ericnormand.me/guide/clojure-virtual-threads
 // - Don't access synchronized blocks or methods
-
-fun newVirtualThread(executor: ExecutorService, user: TulipUser): Future<*> {
-    val future = executor.submit(Runnable { user.processAction(0) })
-
-    return future
-}
