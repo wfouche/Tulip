@@ -399,7 +399,7 @@ private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<In
     test.queueLengths.forEach { queueLength ->
         list.add(
             when {
-                queueLength == 0 -> // context.numThreads * USER_THREAD_QSIZE // 11
+                queueLength == 0 ->
                 if (context.numThreads == 0) context.numUsers * USER_THREAD_QSIZE
                     else context.numThreads * USER_THREAD_QSIZE
                 queueLength > 0 ->
