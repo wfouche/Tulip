@@ -158,7 +158,9 @@ private fun runtimeInit(
 
     userObjects = arrayOfNulls(MAX_NUM_USERS)
     userActions = arrayOfNulls(MAX_NUM_USERS)
-    userPlatformThreads = arrayOfNulls(MAX_NUM_THREADS)
+    if (MAX_NUM_THREADS > 0) {
+        userPlatformThreads = arrayOfNulls(MAX_NUM_THREADS)
+    }
     actionNames = actionDesc
     userRuntimeContext = context
 
