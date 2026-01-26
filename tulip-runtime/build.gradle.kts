@@ -90,10 +90,10 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
-    implementation("ch.qos.logback:logback-core:1.5.25")
+    implementation("ch.qos.logback:logback-core:1.5.26")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation("ch.qos.logback:logback-classic:1.5.25")
+    implementation("ch.qos.logback:logback-classic:1.5.26")
 
     // - Apache HttpClient
 
