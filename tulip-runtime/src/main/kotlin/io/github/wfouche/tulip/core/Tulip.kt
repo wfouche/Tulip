@@ -743,8 +743,7 @@ private fun runTest(
 /*-------------------------------------------------------------------------*/
 
 private fun initTulip() {
-    Console.put(TulipApi.getVersionBanner())
-    var tulip = " " + String(Character.toChars(0x0001F337))
+    val tulip = " " + String(Character.toChars(0x0001F337))
     //    if (SystemUtils.IS_OS_WINDOWS) {
     //        tulip = ""
     //    }

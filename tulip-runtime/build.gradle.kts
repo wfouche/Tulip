@@ -61,7 +61,7 @@ dependencies {
     // - Leego Banana
 
     // https://mvnrepository.com/artifact/io.leego/banana
-    implementation("io.leego:banana:2.1.0")
+    // implementation("io.leego:banana:2.1.0")
 
     // - Google
 
