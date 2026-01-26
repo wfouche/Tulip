@@ -3,14 +3,25 @@ package io.github.wfouche.tulip.api;
 import com.google.common.io.Resources;
 import io.github.wfouche.tulip.core.TulipKt;
 import io.github.wfouche.tulip.report.TulipReportKt;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Callable;
+import picocli.CommandLine;
+import picocli.CommandLine.ArgGroup;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 /**
  * The TulipApi class provides the main interface for running Tulip benchmarks and generating
  * reports.
  */
-public class TulipApi {
+@Command(
+        name = "tulip-runtime",
+        mixinStandardHelpOptions = true,
+        version = TulipApi.VERSION,
+        description = "Processes either a configuration file or a report file.")
+public class TulipApi implements Callable<Integer> {
 
     /** Private constructor */
     TulipApi() {}
@@ -112,14 +123,37 @@ public class TulipApi {
         System.out.println("\nElapsed time (hh:mm:ss): " + formattedTime);
     }
 
-    /**
-     * The JAR has a main method
-     *
-     * @param args The command-line arguments variable.
-     */
-    public static void main(String[] args) {
-        if (args.length > 0) {
-            runTulip(args[0]);
+    @ArgGroup(multiplicity = "1")
+    ExclusiveOptions exclusiveOptions;
+
+    static class ExclusiveOptions {
+        @Option(
+                names = {"-c", "--config"},
+                description = "Path to the config.json file.",
+                required = true)
+        File configFile;
+
+        @Option(
+                names = {"-r", "--report"},
+                description = "Path to the output.json file.",
+                required = true)
+        File reportFile;
+    }
+
+    @Override
+    public Integer call() throws Exception {
+        if (exclusiveOptions.configFile != null) {
+            runTulip(exclusiveOptions.configFile.getAbsolutePath());
+        } else {
+            System.out.println(
+                    "Generating report at: " + exclusiveOptions.reportFile.getAbsolutePath());
+            // Add your report logic here
         }
+        return 0;
+    }
+
+    public static void main(String... args) {
+        int exitCode = new CommandLine(new TulipApi()).execute(args);
+        System.exit(exitCode);
     }
 }

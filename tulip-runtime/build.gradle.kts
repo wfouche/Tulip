@@ -116,6 +116,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
     implementation("tools.jackson.core:jackson-databind:3.0.4")
+
+    // https://mvnrepository.com/artifact/info.picocli/picocli
+    implementation("info.picocli:picocli:4.7.7")
 }
 
 tasks.withType<JavaCompile>().configureEach {
