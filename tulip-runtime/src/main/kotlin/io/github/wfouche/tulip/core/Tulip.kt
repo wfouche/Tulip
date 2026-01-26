@@ -15,8 +15,6 @@ import io.github.wfouche.tulip.api.TulipApi
 import io.github.wfouche.tulip.api.TulipUserFactory
 import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
-import io.github.wfouche.tulip.report.convertAdocToHtml
-import io.github.wfouche.tulip.report.createConfigReport
 import java.lang.management.ManagementFactory
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.LinkedBlockingQueue as BlockingQueue
@@ -363,10 +361,10 @@ fun initConfig(text: String): String {
     }
     Console.put("  output filename   = ${g_config.actions.jsonFilename}")
     Console.put("  report filename   = ${g_config.actions.htmlFilename}")
-    if (!textIsJsonString) {
-        val adocFilename = createConfigReport(configFilename)
-        convertAdocToHtml(adocFilename)
-    }
+    //    if (!textIsJsonString) {
+    //        val adocFilename = createConfigReport(configFilename)
+    //        convertAdocToHtml(adocFilename)
+    //    }
 
     return g_config.actions.jsonFilename
 }

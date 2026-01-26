@@ -46,7 +46,9 @@ public class TulipApi implements Callable<Integer> {
         System.setProperty("python.console.encoding", "UTF-8");
         String outputFilename = TulipKt.initConfig(text);
         TulipKt.runBenchmarks(userFactory);
-        createHtmlReport(outputFilename, text);
+        // createHtmlReport(outputFilename, text);
+
+        // Calculate and display the elapsed time
         long durationNano = System.nanoTime() - startTime;
         displayElapsedTime(durationNano);
     }
@@ -59,18 +61,8 @@ public class TulipApi implements Callable<Integer> {
      *     with {.
      */
     public static void runTulip(String text) {
-        // Record the start time in nanoseconds
-        long startTime = System.nanoTime();
-
-        System.setProperty("python.console.encoding", "UTF-8");
-        String outputFilename = TulipKt.initConfig(text);
         TulipUserFactory userFactory = new TulipUserFactory();
-        TulipKt.runBenchmarks(userFactory);
-        createHtmlReport(outputFilename, text);
-
-        // Calculate and display the elapsed time
-        long durationNano = System.nanoTime() - startTime;
-        displayElapsedTime(durationNano);
+        runTulip(text, userFactory);
     }
 
     /**
@@ -152,6 +144,11 @@ public class TulipApi implements Callable<Integer> {
         return 0;
     }
 
+    /**
+     * The entry point of the application.
+     *
+     * @param args command-line options
+     */
     public static void main(String... args) {
         int exitCode = new CommandLine(new TulipApi()).execute(args);
         System.exit(exitCode);
