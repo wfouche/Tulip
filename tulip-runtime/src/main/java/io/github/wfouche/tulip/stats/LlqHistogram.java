@@ -35,9 +35,7 @@ import tools.jackson.databind.json.JsonMapper;
 public class LlqHistogram {
 
     /** Default constructor for LlqHistogram */
-    public LlqHistogram() {
-        // Explicitly defined to satisfy documentation requirements
-    }
+    public LlqHistogram() {}
 
     /**
      * Internal helper grouping a quantized bucket value and its count. Used for percentile

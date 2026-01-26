@@ -21,6 +21,9 @@ class HttpRecord {
 /** The HttpUser class. */
 public class HttpUser_RestClient extends TulipUser {
 
+    /** Default constructor for HttpUser_RestClient */
+    public HttpUser_RestClient() {}
+
     /**
      * onStart() method
      *
@@ -218,9 +221,9 @@ public class HttpUser_RestClient extends TulipUser {
         return https[getUserId() % https.length].urlPath;
     }
 
-    /** */
+    /** HTTP header key name */
     public static String http_header_key = "";
 
-    /** */
+    /** HTTP header key value */
     public static String http_header_val = "";
 }
