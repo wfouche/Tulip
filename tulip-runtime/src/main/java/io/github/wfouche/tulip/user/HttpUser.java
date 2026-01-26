@@ -10,6 +10,9 @@ import org.springframework.web.client.RestClientException;
 /** The HttpUser class. */
 public class HttpUser extends HttpUser_RestClient {
 
+    /** Default constructor for Histogram */
+    public HttpUser() {}
+
     /**
      * initConfig() method
      *
