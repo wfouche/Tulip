@@ -39,8 +39,9 @@ public class TulipApi implements Callable<Integer> {
      * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting
      *     with {.
      * @param userFactory A TulipUserFactory object responsible for creating Tulip users.
+     * @return The name of the output file containing the benchmarking results.
      */
-    public static void runTulip(String text, TulipUserFactory userFactory) {
+    public static String runTulip(String text, TulipUserFactory userFactory) {
         // Record the start time in nanoseconds
         long startTime = System.nanoTime();
         System.setProperty("python.console.encoding", "UTF-8");
@@ -51,18 +52,21 @@ public class TulipApi implements Callable<Integer> {
         // Calculate and display the elapsed time
         long durationNano = System.nanoTime() - startTime;
         displayElapsedTime(durationNano);
+
+        return outputFilename;
     }
 
     /**
      * Runs the Tulip benchmarking process. This method initializes the configuration, runs the
-     * benchmarks, and creates an HTML report.
+     * benchmarks, and returns the output filename.
      *
      * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting
      *     with {.
+     * @return The name of the output file containing the benchmarking results.
      */
-    public static void runTulip(String text) {
+    public static String runTulip(String text) {
         TulipUserFactory userFactory = new TulipUserFactory();
-        runTulip(text, userFactory);
+        return runTulip(text, userFactory);
     }
 
     /**
@@ -70,7 +74,7 @@ public class TulipApi implements Callable<Integer> {
      *
      * @param outputFilename The name of the output file containing the benchmarking results.
      */
-    public static void createHtmlReport(String outputFilename) {
+    public static void generateReport(String outputFilename) {
         TulipReportKt.createHtmlReport(outputFilename);
     }
 
@@ -127,7 +131,7 @@ public class TulipApi implements Callable<Integer> {
         } else {
             System.out.println(
                     "Generating report at: " + exclusiveOptions.reportFile.getAbsolutePath());
-            createHtmlReport(exclusiveOptions.reportFile.getAbsolutePath().replace("\\", "/"));
+            generateReport(exclusiveOptions.reportFile.getAbsolutePath().replace("\\", "/"));
         }
         return 0;
     }
