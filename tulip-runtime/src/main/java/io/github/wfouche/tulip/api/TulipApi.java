@@ -3,8 +3,10 @@ package io.github.wfouche.tulip.api;
 import com.google.common.io.Resources;
 import io.github.wfouche.tulip.core.TulipKt;
 import io.github.wfouche.tulip.report.TulipReportKt;
+import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 import picocli.CommandLine;
@@ -87,6 +89,31 @@ public class TulipApi implements Callable<Integer> {
      */
     public static String readResource(final String fileName) throws IOException {
         return Resources.toString(Resources.getResource(fileName), StandardCharsets.UTF_8);
+    }
+
+    public static boolean isUtf8Terminal() {
+        // Condition A: Check if the OS is Windows
+        String os = System.getProperty("os.name").toLowerCase();
+        if (!os.contains("win")) {
+            return true;
+        }
+
+        // Condition B: Check if Code Page 65001 (UTF-8) is active
+        try {
+            // We run 'chcp' to get the active console code page
+            Process process = new ProcessBuilder("cmd", "/c", "chcp").start();
+
+            try (BufferedReader reader =
+                    new BufferedReader(new InputStreamReader(process.getInputStream()))) {
+
+                String line = reader.readLine();
+                // 'chcp' output is usually: "Active code page: 65001"
+                return line != null && line.contains("65001");
+            }
+        } catch (Exception e) {
+            // If the command fails, we assume the condition isn't met
+            return false;
+        }
     }
 
     /**

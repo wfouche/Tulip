@@ -741,10 +741,7 @@ private fun runTest(
 /*-------------------------------------------------------------------------*/
 
 private fun initTulip() {
-    val tulip = " " + String(Character.toChars(0x0001F337))
-    //    if (SystemUtils.IS_OS_WINDOWS) {
-    //        tulip = ""
-    //    }
+    val tulip = if (TulipApi.isUtf8Terminal()) " " + String(Character.toChars(0x0001F337)) else ""
     Console.put(
         "Tulip $VERSION (Java: ${System.getProperty("java.vendor")} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})" +
             tulip
