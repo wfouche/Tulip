@@ -1565,7 +1565,6 @@ def createReport(filename):
     os.chdir(cwd)
 
 if __name__ == "__main__":
-    if len(sys.argv) >= 3:
+    if len(sys.argv) >= 2:
         filename = sys.argv[1]
-        configFilename = sys.argv[2]
-        createReport(filename, configFilename)
+        createReport(filename)
