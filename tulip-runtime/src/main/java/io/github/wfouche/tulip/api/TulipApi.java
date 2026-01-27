@@ -69,21 +69,9 @@ public class TulipApi implements Callable<Integer> {
      * Creates an HTML report from the benchmarking output.
      *
      * @param outputFilename The name of the output file containing the benchmarking results.
-     * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting
-     *     with {.
      */
-    public static void createHtmlReport(String outputFilename, String text) {
-        TulipReportKt.createHtmlReport(outputFilename, text);
-    }
-
-    /**
-     * Creates a Configuration report from the benchmark config.
-     *
-     * @param configFilename The name of the configuration file to generate a report for.
-     */
-    public static void createConfigReport(String configFilename) {
-        String adocFilename = TulipReportKt.createConfigReport(configFilename);
-        TulipReportKt.convertAdocToHtml(adocFilename);
+    public static void createHtmlReport(String outputFilename) {
+        TulipReportKt.createHtmlReport(outputFilename);
     }
 
     /**
@@ -139,7 +127,7 @@ public class TulipApi implements Callable<Integer> {
         } else {
             System.out.println(
                     "Generating report at: " + exclusiveOptions.reportFile.getAbsolutePath());
-            // Add your report logic here
+            createHtmlReport(exclusiveOptions.reportFile.getAbsolutePath().replace("\\", "/"));
         }
         return 0;
     }

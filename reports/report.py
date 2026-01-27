@@ -809,7 +809,7 @@ class Summary:
         self.aps_min = None
         self.aps_max = None
 
-def createReport(filename, text):
+def createReport(filename):
 
     def formatTime(timeNanos):
         if timeNanos < 1000.0:
@@ -827,12 +827,8 @@ def createReport(filename, text):
 
     print("\nOutput filename = " + filename)
 
-    if text[0] == '{':
-        config_filename = ""
-        config_filename2 = ""
-    else:
-        config_filename = text
-        config_filename2 = os.path.basename(config_filename)
+    config_filename = ""
+    config_filename2 = ""
 
     jhh = {}
     jhq = {}
