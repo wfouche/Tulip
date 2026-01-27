@@ -33,7 +33,8 @@ private class TulipCli00 : CliktCommand() {
     val logger: Logger = LoggerFactory.getLogger(TulipCli00::class.java)
     private val configOpt by option("--config").default("benchmark_config.jsonc")
     override fun run() {
-        TulipApi.runTulip(configOpt)
+        val outputFilename = TulipApi.runTulip(configOpt)
+        TulipApi.generateReport(outputFilename)
     }
 }
 
