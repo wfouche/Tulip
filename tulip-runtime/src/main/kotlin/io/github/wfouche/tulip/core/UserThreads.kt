@@ -92,7 +92,7 @@ fun assignTaskToUserVT(task: Task) {
         u = newUser!!.getUser(g_config.actions.userClass, task.userId, 0)
         userObjects!![task.userId] = u
         val user = u
-        user.future = executor.submit(Runnable { user.runVirtualThread() })
+        user.future = executor.submit(Runnable { user.run() })
     }
     val tq = u.tq
     task.beginQueueTimeNanos = System.nanoTime()

@@ -386,7 +386,7 @@ abstract class TulipUser() {
         }
     }
 
-    open fun runVirtualThread() {
+    open fun run() {
         var running = true
         while (running) {
             val task: Task = tq.take()
