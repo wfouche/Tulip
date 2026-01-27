@@ -1,9 +1,7 @@
 package io.github.wfouche.tulip.api
 
-import io.github.wfouche.tulip.core.actionNames
-import io.github.wfouche.tulip.core.g_config
-import io.github.wfouche.tulip.core.g_workflow
-import io.github.wfouche.tulip.core.userRuntimeContext
+import io.github.wfouche.tulip.core.*
+import java.util.concurrent.Future
 import kotlinx.serialization.json.JsonPrimitive
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
@@ -17,6 +15,9 @@ abstract class TulipUser() {
         this.userId = userId
         this.threadId = threadId
     }
+
+    val tq = SPSC_Queue<Task>(USER_THREAD_QSIZE)
+    var future: Future<*>? = null
 
     private var aid: Int = 0
 
@@ -366,6 +367,34 @@ abstract class TulipUser() {
                 0 -> "onStart"
                 TulipApi.NUM_ACTIONS - 1 -> "opStop"
                 else -> "action${actionId}"
+            }
+        }
+    }
+
+    open fun processTask(task: Task) {
+        task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
+        if (task.actionId < 0) {
+            // Use Markov Chain to determine next action to perform.
+            task.actionId = nextAction(task.actionId)
+        }
+        task.serviceTimeNanos = elapsedTimeNanos {
+            if (processAction(task.actionId)) {
+                task.status = 1
+            } else {
+                task.status = 0
+            }
+        }
+    }
+
+    open fun runVirtualThread() {
+        var running = true
+        while (running) {
+            val task: Task = tq.take()
+            if (task.status == 999) {
+                running = false
+            } else {
+                processTask(task)
+                task.rspQueue!!.put(task)
             }
         }
     }

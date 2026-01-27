@@ -203,6 +203,8 @@ def createReport(filename):
         else:
             printf('| *enabled* | True\n')
         printf('| *num_users*   | %d\n'%(c["num_users"]))
+        if not c.has_key("num_threads"):
+            c["num_threads"] = 0
         printf('| *num_threads* | %d\n'%(c["num_threads"]))
         e0 = "user_params"
         if e0 in c.keys():

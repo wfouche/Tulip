@@ -12,12 +12,9 @@ package io.github.wfouche.tulip.core
 import com.google.gson.JsonParser
 import com.sun.management.OperatingSystemMXBean
 import io.github.wfouche.tulip.api.TulipApi
-import io.github.wfouche.tulip.api.TulipUser
 import io.github.wfouche.tulip.api.TulipUserFactory
 import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
-import io.github.wfouche.tulip.report.convertAdocToHtml
-import io.github.wfouche.tulip.report.createConfigReport
 import java.lang.management.ManagementFactory
 import java.time.format.DateTimeFormatter
 import java.util.concurrent.LinkedBlockingQueue as BlockingQueue
@@ -86,13 +83,7 @@ var TULIP_CONTEXT_ID: Int = 0
 var MAX_NUM_USERS = 0
 var MAX_NUM_THREADS = 0
 
-var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
-
-//
-// Array of Worker thread objects
-//
-var userThreads: Array<UserThread?>? = null // arrayOfNulls<UserThread>(NUM_THREADS)
 
 // ...
 private var testSuite: List<TestProfile>? = null
@@ -165,7 +156,12 @@ private fun runtimeInit(
 
     userObjects = arrayOfNulls(MAX_NUM_USERS)
     userActions = arrayOfNulls(MAX_NUM_USERS)
-    userThreads = arrayOfNulls(MAX_NUM_THREADS)
+    if (MAX_NUM_THREADS > 0) {
+        userPlatformThreads = arrayOfNulls(MAX_NUM_THREADS)
+        useVirtualThreads = false
+    } else {
+        useVirtualThreads = true
+    }
     actionNames = actionDesc
     userRuntimeContext = context
 
@@ -365,10 +361,10 @@ fun initConfig(text: String): String {
     }
     Console.put("  output filename   = ${g_config.actions.jsonFilename}")
     Console.put("  report filename   = ${g_config.actions.htmlFilename}")
-    if (!textIsJsonString) {
-        val adocFilename = createConfigReport(configFilename)
-        convertAdocToHtml(adocFilename)
-    }
+    //    if (!textIsJsonString) {
+    //        val adocFilename = createConfigReport(configFilename)
+    //        convertAdocToHtml(adocFilename)
+    //    }
 
     return g_config.actions.jsonFilename
 }
@@ -401,8 +397,12 @@ private fun getQueueLengths(context: RuntimeContext, test: TestProfile): List<In
     test.queueLengths.forEach { queueLength ->
         list.add(
             when {
-                queueLength == 0 -> context.numThreads * USER_THREAD_QSIZE // 11
-                queueLength > 0 -> context.numThreads * queueLength // Actions per Thread
+                queueLength == 0 ->
+                    if (context.numThreads == 0) context.numUsers * USER_THREAD_QSIZE
+                    else context.numThreads * USER_THREAD_QSIZE
+                queueLength > 0 ->
+                    if (context.numThreads == 0) context.numUsers * queueLength
+                    else context.numThreads * queueLength // Actions per Thread
                 else -> abs(queueLength) // Actions across all Threads
             }
         )
@@ -741,8 +741,7 @@ private fun runTest(
 /*-------------------------------------------------------------------------*/
 
 private fun initTulip() {
-    Console.put(TulipApi.getVersionBanner())
-    var tulip = " " + String(Character.toChars(0x0001F337))
+    val tulip = " " + String(Character.toChars(0x0001F337))
     //    if (SystemUtils.IS_OS_WINDOWS) {
     //        tulip = ""
     //    }
@@ -785,6 +784,9 @@ private fun runTulip(
     Console.put("======================================================================")
     Console.put("")
     Console.put("  NUM_USERS = $MAX_NUM_USERS")
+    if (MAX_NUM_THREADS == 0) {
+        MAX_NUM_THREADS = MAX_NUM_USERS
+    }
     Console.put("  NUM_THREADS = $MAX_NUM_THREADS")
     Console.put("  NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
     if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {

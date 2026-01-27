@@ -3,33 +3,31 @@ package io.github.wfouche.tulip.api;
 import com.google.common.io.Resources;
 import io.github.wfouche.tulip.core.TulipKt;
 import io.github.wfouche.tulip.report.TulipReportKt;
-import io.leego.banana.BananaUtils;
-import io.leego.banana.Font;
+import java.io.File;
 import java.io.IOException;
 import java.nio.charset.StandardCharsets;
+import java.util.concurrent.Callable;
+import picocli.CommandLine;
+import picocli.CommandLine.ArgGroup;
+import picocli.CommandLine.Command;
+import picocli.CommandLine.Option;
 
 /**
  * The TulipApi class provides the main interface for running Tulip benchmarks and generating
  * reports.
  */
-public class TulipApi {
+@Command(
+        name = "tulip-runtime",
+        mixinStandardHelpOptions = true,
+        version = TulipApi.VERSION,
+        description = "Processes either a configuration file or a report file.")
+public class TulipApi implements Callable<Integer> {
 
     /** Private constructor */
     TulipApi() {}
 
     /** The version string of the Tulip API. */
-    public static final String VERSION = "2.1.17";
-
-    /**
-     * A banner displaying the Tulip logo in ASCII art.
-     *
-     * @return The multi-line banner string
-     */
-    public static String getVersionBanner() {
-        int idx = VERSION.lastIndexOf(".");
-        String text = "Tulip " + VERSION.substring(0, idx);
-        return BananaUtils.bananaify(text, Font.STANDARD);
-    }
+    public static final String VERSION = "2.2.0";
 
     /** The number of unique actions available in the benchmarking process. */
     public static final int NUM_ACTIONS = 101;
@@ -41,59 +39,43 @@ public class TulipApi {
      * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting
      *     with {.
      * @param userFactory A TulipUserFactory object responsible for creating Tulip users.
+     * @return The name of the output file containing the benchmarking results.
      */
-    public static void runTulip(String text, TulipUserFactory userFactory) {
+    public static String runTulip(String text, TulipUserFactory userFactory) {
         // Record the start time in nanoseconds
         long startTime = System.nanoTime();
         System.setProperty("python.console.encoding", "UTF-8");
         String outputFilename = TulipKt.initConfig(text);
         TulipKt.runBenchmarks(userFactory);
-        createHtmlReport(outputFilename, text);
-        long durationNano = System.nanoTime() - startTime;
-        displayElapsedTime(durationNano);
-    }
-
-    /**
-     * Runs the Tulip benchmarking process. This method initializes the configuration, runs the
-     * benchmarks, and creates an HTML report.
-     *
-     * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting
-     *     with {.
-     */
-    public static void runTulip(String text) {
-        // Record the start time in nanoseconds
-        long startTime = System.nanoTime();
-
-        System.setProperty("python.console.encoding", "UTF-8");
-        String outputFilename = TulipKt.initConfig(text);
-        TulipUserFactory userFactory = new TulipUserFactory();
-        TulipKt.runBenchmarks(userFactory);
-        createHtmlReport(outputFilename, text);
+        // createHtmlReport(outputFilename, text);
 
         // Calculate and display the elapsed time
         long durationNano = System.nanoTime() - startTime;
         displayElapsedTime(durationNano);
+
+        return outputFilename;
+    }
+
+    /**
+     * Runs the Tulip benchmarking process. This method initializes the configuration, runs the
+     * benchmarks, and returns the output filename.
+     *
+     * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting
+     *     with {.
+     * @return The name of the output file containing the benchmarking results.
+     */
+    public static String runTulip(String text) {
+        TulipUserFactory userFactory = new TulipUserFactory();
+        return runTulip(text, userFactory);
     }
 
     /**
      * Creates an HTML report from the benchmarking output.
      *
      * @param outputFilename The name of the output file containing the benchmarking results.
-     * @param text The name of the JSONC benchmark configuration file, or a JSONC string starting
-     *     with {.
      */
-    public static void createHtmlReport(String outputFilename, String text) {
-        TulipReportKt.createHtmlReport(outputFilename, text);
-    }
-
-    /**
-     * Creates a Configuration report from the benchmark config.
-     *
-     * @param configFilename The name of the configuration file to generate a report for.
-     */
-    public static void createConfigReport(String configFilename) {
-        String adocFilename = TulipReportKt.createConfigReport(configFilename);
-        TulipReportKt.convertAdocToHtml(adocFilename);
+    public static void generateReport(String outputFilename) {
+        TulipReportKt.createHtmlReport(outputFilename);
     }
 
     /**
@@ -125,14 +107,42 @@ public class TulipApi {
         System.out.println("\nElapsed time (hh:mm:ss): " + formattedTime);
     }
 
-    /**
-     * The JAR has a main method
-     *
-     * @param args The command-line arguments variable.
-     */
-    public static void main(String[] args) {
-        if (args.length > 0) {
-            runTulip(args[0]);
+    @ArgGroup(multiplicity = "1")
+    ExclusiveOptions exclusiveOptions;
+
+    static class ExclusiveOptions {
+        @Option(
+                names = {"-c", "--config"},
+                description = "Path to the config.json file.",
+                required = true)
+        File configFile;
+
+        @Option(
+                names = {"-r", "--report"},
+                description = "Path to the output.json file.",
+                required = true)
+        File reportFile;
+    }
+
+    @Override
+    public Integer call() throws Exception {
+        if (exclusiveOptions.configFile != null) {
+            runTulip(exclusiveOptions.configFile.getAbsolutePath());
+        } else {
+            System.out.println(
+                    "Generating report at: " + exclusiveOptions.reportFile.getAbsolutePath());
+            generateReport(exclusiveOptions.reportFile.getAbsolutePath().replace("\\", "/"));
         }
+        return 0;
+    }
+
+    /**
+     * The entry point of the application.
+     *
+     * @param args command-line options
+     */
+    public static void main(String... args) {
+        int exitCode = new CommandLine(new TulipApi()).execute(args);
+        System.exit(exitCode);
     }
 }

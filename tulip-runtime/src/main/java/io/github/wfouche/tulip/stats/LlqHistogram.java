@@ -34,24 +34,21 @@ import tools.jackson.databind.json.JsonMapper;
  */
 public class LlqHistogram {
 
+    /** Default constructor for LlqHistogram */
+    public LlqHistogram() {}
+
     /**
      * Internal helper grouping a quantized bucket value and its count. Used for percentile
      * computation.
      */
-    private static class Bin implements Comparable<Bin> {
-        final long value;
-        final long count;
-
+    private record Bin(long value, long count) implements Comparable<Bin> {
         /**
          * Create a Bin for a quantized value and its observed count.
          *
          * @param value quantized bucket value
          * @param count number of observations in the bucket
          */
-        public Bin(long value, long count) {
-            this.value = value;
-            this.count = count;
-        }
+        private Bin {}
 
         /**
          * Compare bins by their quantized value (ascending).
@@ -70,7 +67,7 @@ public class LlqHistogram {
      * quantized using {@link #llq(long)}. This value is used for display formatting of
      * sub-nanosecond buckets.
      */
-    private static long minNanos;
+    private static final long minNanos;
 
     /**
      * Precomputed quantized values used as bucket keys. Length is 210 to cover the range needed by

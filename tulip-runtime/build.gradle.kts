@@ -7,7 +7,7 @@ import com.diffplug.spotless.kotlin.KtfmtStep
 import java.util.Locale
 
 group = "io.github.wfouche.tulip"
-version = "2.1.17"
+version = "2.2.0"
 
 plugins {
     // https://plugins.gradle.org/plugin/com.github.ben-manes.versions
@@ -61,7 +61,7 @@ dependencies {
     // - Leego Banana
 
     // https://mvnrepository.com/artifact/io.leego/banana
-    implementation("io.leego:banana:2.1.0")
+    // implementation("io.leego:banana:2.1.0")
 
     // - Google
 
@@ -116,6 +116,9 @@ dependencies {
 
     // https://mvnrepository.com/artifact/tools.jackson.core/jackson-databind
     implementation("tools.jackson.core:jackson-databind:3.0.4")
+
+    // https://mvnrepository.com/artifact/info.picocli/picocli
+    implementation("info.picocli:picocli:4.7.7")
 }
 
 tasks.withType<JavaCompile>().configureEach {
@@ -216,12 +219,12 @@ publishing {
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
         // https://github.com/google/google-java-format
-        googleJavaFormat("1.32.0").aosp()
+        googleJavaFormat("1.33.0").aosp()
         toggleOffOn()
     }
     kotlin {
         // https://github.com/facebook/ktfmt
-        ktfmt("0.59").googleStyle().configure {
+        ktfmt("0.61").googleStyle().configure {
             it.setMaxWidth(100)
             it.setBlockIndent(4)
             it.setContinuationIndent(4)
