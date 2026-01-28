@@ -7,8 +7,10 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.lang.management.ManagementFactory;
 import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
+import java.util.stream.Collectors;
 import picocli.CommandLine;
 import picocli.CommandLine.ArgGroup;
 import picocli.CommandLine.Command;
@@ -119,6 +121,30 @@ public class TulipApi implements Callable<Integer> {
             // If the command fails, we assume the condition isn't met
             return false;
         }
+    }
+
+    public static String getJavaInformation() {
+        var s = "{ \"jvm.system.properties\": {";
+        s += "\"java.vendor\"" + ":\"" + System.getProperty("java.vendor") + "\", ";
+        s += "\"java.version\"" + ":\"" + System.getProperty("java.version") + "\", ";
+        s +=
+                "\"java.runtime.version\""
+                        + ":\""
+                        + System.getProperty("java.runtime.version")
+                        + "\", ";
+        s += "\"os.name\"" + ":\"" + System.getProperty("os.name") + "\", ";
+        s += "\"os.arch\"" + ":\"" + System.getProperty("os.arch") + "\"}, ";
+        s += " \"jvm.runtime.options\": ";
+        var jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
+        if (!jvmArgs.isEmpty()) {
+            s +=
+                    jvmArgs.stream()
+                            .distinct()
+                            .map(arg -> "\"" + arg.replace("\"", "\\\"") + "\"")
+                            .collect(Collectors.joining(", ", "[", "]"));
+        }
+        s += " }";
+        return s;
     }
 
     /**
