@@ -91,6 +91,11 @@ public class TulipApi implements Callable<Integer> {
         return Resources.toString(Resources.getResource(fileName), StandardCharsets.UTF_8);
     }
 
+    /**
+     * isUtf8Terminal
+     *
+     * @return true if the terminal supports UTF-8 encoding
+     */
     public static boolean isUtf8Terminal() {
         // Condition A: Check if the OS is Windows
         String os = System.getProperty("os.name").toLowerCase();
