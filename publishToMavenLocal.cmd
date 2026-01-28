@@ -11,7 +11,6 @@ REM -------------------------------------------------------------
 pushd .\reports
 call .\update_runtime.cmd
 del report_py.java
-del report2_py.java
 popd
 
 call .\gradlew spotlessApply

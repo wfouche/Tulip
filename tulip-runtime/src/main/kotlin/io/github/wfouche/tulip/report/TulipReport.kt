@@ -2,16 +2,10 @@ package io.github.wfouche.tulip.report
 
 import java.io.ByteArrayInputStream
 import java.io.ByteArrayOutputStream
-import java.io.File
 import java.io.IOException
 import java.nio.charset.StandardCharsets
 import java.util.*
 import java.util.zip.GZIPInputStream
-import org.asciidoctor.Asciidoctor
-import org.asciidoctor.Attributes
-import org.asciidoctor.Options
-import org.asciidoctor.SafeMode
-import org.python.core.PyObject
 import org.python.util.PythonInterpreter
 
 fun createHtmlReport(outputFilename: String) {
@@ -22,48 +16,6 @@ fun createHtmlReport(outputFilename: String) {
         pyInterp.exec(jythonCode)
         pyInterp.eval("createReport(\"${outputFilename}\")")
     }
-}
-
-fun createConfigReport(configFilename: String): String {
-    val decodedBytes = Base64.getDecoder().decode(report2_py.mainScriptTextBase64)
-    val jythonCode = decompress(decodedBytes)
-    PythonInterpreter().use { pyInterp ->
-        // Ensure that check for main in Jython script is not executed
-        pyInterp.exec("__name__=\"\"")
-        // Compile Jython code
-        pyInterp.exec(jythonCode)
-        // Run Jython function createReport()
-        val result: PyObject = pyInterp.eval("createReport(\"${configFilename}\")")
-        val adocFilename: String = result.__tojava__(String::class.java) as String
-        return adocFilename
-    }
-}
-
-fun convertAdocToHtml(adocFilename: String) {
-    // println()
-    // println("debug: begin adoc to html")
-    //    if (!PlantUmlServer.running) {
-    //        PlantUmlServer.start()
-    //        Thread.sleep(1000)
-    //    }
-    val asciidoctor = Asciidoctor.Factory.create()
-    val stylesheetUrl =
-        "https://raw.githubusercontent.com/wfouche/Tulip/refs/heads/main/docs/css/adoc-foundation.css"
-    val attributes: Attributes =
-        Attributes.builder()
-            .attribute("linkcss", false)
-            .attribute("data-uri", true)
-            .attribute("allow-uri-read", true) // Use external CSS file
-            .attribute("stylesheet", stylesheetUrl) // Path to your custom CSS file
-            .build()
-
-    asciidoctor.requireLibrary("asciidoctor-diagram")
-    asciidoctor.convertFile(
-        File(adocFilename),
-        Options.builder().toFile(true).attributes(attributes).safe(SafeMode.UNSAFE).build(),
-    )
-    asciidoctor.shutdown()
-    // println("debug: end adoc to html")
 }
 
 @Throws(IOException::class)
