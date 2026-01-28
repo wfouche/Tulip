@@ -1565,7 +1565,15 @@ def createReport(filename):
     report_json_fh.write("}\n")
     report_json_fh.close()
 
+    config_json = jb["config"]
+    createConfigReport(config_json, config_filename)
+
     os.chdir(cwd)
+
+def createConfigReport(config_json, config_filename):
+    #print(config_filename)
+    #print(config_json)
+    pass
 
 if __name__ == "__main__":
     if len(sys.argv) >= 2:
