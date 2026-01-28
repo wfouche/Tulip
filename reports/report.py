@@ -23,6 +23,11 @@ import java.io.File as File
 # /// jbang
 # requires-jython = "2.7.4"
 # requires-java = "21"
+# runtime-options = [
+#   "-XX:+IgnoreUnrecognizedVMOptions",
+#   "--enable-native-access=ALL-UNNAMED",
+#   "--sun-misc-unsafe-memory-access=allow"
+# ],
 # dependencies = [
 #   "com.google.code.gson:gson:2.13.1",
 #   "org.hdrhistogram:HdrHistogram:2.2.2",
