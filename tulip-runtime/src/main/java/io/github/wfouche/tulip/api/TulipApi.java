@@ -136,13 +136,13 @@ public class TulipApi implements Callable<Integer> {
         s += "\"os.arch\"" + ":\"" + System.getProperty("os.arch") + "\"}, ";
         s += " \"jvm.runtime.options\": ";
         var jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments();
-        if (!jvmArgs.isEmpty()) {
-            s +=
-                    jvmArgs.stream()
-                            .distinct()
-                            .map(arg -> "\"" + arg.replace("\"", "\\\"") + "\"")
-                            .collect(Collectors.joining(", ", "[", "]"));
-        }
+        s +=
+                "["
+                        + jvmArgs.stream()
+                                .distinct()
+                                .map(arg -> "\"" + arg.replace("\"", "\\\"") + "\"")
+                                .collect(Collectors.joining(", "))
+                        + "]";
         s += " }";
         return s;
     }
