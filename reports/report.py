@@ -1581,7 +1581,8 @@ def createReport(filename):
     report_json_fh.close()
 
     config_json = jb["config"]
-    createConfigReport(config_json, config_filename)
+    java_json = jb["java"]
+    createConfigReport(config_json, java_json, config_filename)
 
     os.chdir(cwd)
 
@@ -1607,9 +1608,8 @@ adoc_header = '''= __DESCRIPTION__
 | id | value
 '''
 
-def createConfigReport(config_json, config_filename):
+def createConfigReport(config_json, java_json, config_filename):
     #print(config_filename)
-    #print(config_json)
 
     def printf(s):
         report_fh.write(s)
@@ -1851,19 +1851,18 @@ def createConfigReport(config_json, config_filename):
     printf("\n")
     printf("== JVM System Properties\n")
     printf("\n")
-    printf("* java.vendor: %s\n"%(System.getProperty("java.vendor")))
-    printf("* java.version: %s\n"%(System.getProperty("java.version")))
-    printf("* os.name: %s\n"%(System.getProperty("os.name")))
-    printf("* os.arch: %s\n"%(System.getProperty("os.arch")))
+    printf("* java.vendor: %s\n"%(java_json["jvm.system.properties"]["java.vendor"]))
+    printf("* java.version: %s\n"%(java_json["jvm.system.properties"]["java.version"]))
+    printf("* java.runtime.version: %s\n"%(java_json["jvm.system.properties"]["java.runtime.version"]))
+    printf("* os.name: %s\n"%(java_json["jvm.system.properties"]["os.name"]))
+    printf("* os.arch: %s\n"%(java_json["jvm.system.properties"]["os.arch"]))
 
     # JVM Runtime Options
     printf("\n")
     printf("== JVM Runtime Options\n")
     printf("\n")
-    jvmArgs = ManagementFactory.getRuntimeMXBean().getInputArguments()
-    jvmArgs = jvmArgs.stream().distinct().collect(Collectors.toList())
     idx = 0
-    for arg in jvmArgs:
+    for arg in java_json["jvm.runtime.options"]:
         idx += 1
         printf("* Option %d: %s\n"%(idx, arg))
 

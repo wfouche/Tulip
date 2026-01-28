@@ -1,5 +1,6 @@
 package io.github.wfouche.tulip.core
 
+import io.github.wfouche.tulip.api.TulipApi
 import java.io.BufferedWriter
 import java.io.FileWriter
 import kotlinx.serialization.json.Json
@@ -109,14 +110,6 @@ object DataCollector {
                 json += "\"test_begin\": \"${r.testBegin}\", "
                 json += "\"test_end\": \"${r.testEnd}\", "
 
-                json += "\"java\": { "
-                json += "\"java.vendor\": \"${System.getProperty("java.vendor")}\", "
-                json +=
-                    "\"java.runtime.version\": \"${System.getProperty("java.runtime.version")}\", "
-                json += "\"kotlin.version\": \"${KotlinVersion.CURRENT}\""
-
-                json += "}, "
-
                 json += "\"duration\": ${r.durationSeconds}, "
 
                 // json += "\"avg_cpu_process\": ${r.avgCpuProcess},
@@ -176,9 +169,11 @@ object DataCollector {
                                     ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\""
                                 )
                                 newLine()
+                                write(", \"java\": ${TulipApi.getJavaInformation()}")
+                                newLine()
                                 write(", \"config\": ${jsonString}")
                                 newLine()
-                                write(", \"results\":[")
+                                write(", \"results\": [")
                                 newLine()
                                 write(" ${json}")
                             }
