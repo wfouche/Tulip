@@ -868,6 +868,9 @@ def createReport(filename):
     except:
         pass
 
+    config_filename = os.path.join(report_dn, report_dn + '_c.html')
+    config_filename2 = os.path.basename(config_filename)
+
     def odir(filename):
         global report_dn
         return os.path.join(os.getcwd(), report_dn, filename)
