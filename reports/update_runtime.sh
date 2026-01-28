@@ -1,17 +1,10 @@
 #python3 jython/jython-cli.py report.py
 jbang run --runtime-option -Dstdout.encoding=UTF-8 --runtime-option -Dpython.console.encoding=UTF-8 python_jvm_tulip.java --keep-java report.py
-#python3 jython/jython-cli.py report2.py
-jbang run --runtime-option -Dstdout.encoding=UTF-8 --runtime-option -Dpython.console.encoding=UTF-8 python_jvm_tulip.java --keep-java report2.py
 
 # cat package.txt report_py.java > report.txt
 # cp   report.txt report_py.java
 jbang run FileModifier.java report_py.java
 
-# cat package.txt report2_py.java > report.txt
-# cp   report.txt report2_py.java
-jbang run FileModifier.java report2_py.java
-
 # rm report.txt
 
 cp report_py.java  ../tulip-runtime/src/main/java/io/github/wfouche/tulip/report/
-cp report2_py.java ../tulip-runtime/src/main/java/io/github/wfouche/tulip/report/
