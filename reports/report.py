@@ -1867,12 +1867,16 @@ def createConfigReport(config_json, config_filename):
     return
 
 def convertAdocToHtml(adocFilename):
+    #print("Converting %s to HTML..."%(adocFilename))
+    #print("Current working directory: %s"%(os.getcwd()))
+    filename = os.path.join(os.getcwd(), adocFilename)
+    #print("Adoc file: %s"%(filename))
     asciidoctor = Asciidoctor.Factory.create()
     stylesheetUrl = "https://raw.githubusercontent.com/wfouche/Tulip/refs/heads/main/docs/css/adoc-foundation.css"
     attributes = Attributes.builder().attribute("linkcss", False).attribute("data-uri", True).attribute("allow-uri-read", True).attribute("stylesheet", stylesheetUrl).build()
     asciidoctor.requireLibrary("asciidoctor-diagram")
     asciidoctor.convertFile(
-        File(adocFilename),
+        File(filename),
         Options.builder().toFile(True).attributes(attributes).safe(SafeMode.UNSAFE).build()
     )
     asciidoctor.shutdown()
