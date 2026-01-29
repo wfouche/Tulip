@@ -29,7 +29,7 @@ plugins {
     // id("org.jetbrains.dokka") version "2.0.0"
 
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
-    id("com.diffplug.spotless") version "8.2.0"
+    id("com.diffplug.spotless") version "8.2.1"
 }
 
 java {
@@ -82,7 +82,7 @@ dependencies {
     // implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-restclient
-    implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.1")
+    implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.2")
 
     // - SLF4J and Logback
 
@@ -90,10 +90,10 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
-    implementation("ch.qos.logback:logback-core:1.5.25")
+    implementation("ch.qos.logback:logback-core:1.5.26")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation("ch.qos.logback:logback-classic:1.5.25")
+    implementation("ch.qos.logback:logback-classic:1.5.26")
 
     // - Apache HttpClient
 
