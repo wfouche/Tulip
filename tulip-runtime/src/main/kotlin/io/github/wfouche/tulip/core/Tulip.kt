@@ -206,7 +206,7 @@ private val g_tests = mutableListOf<TestProfile>()
 data class ConfigContext(
     val enabled: Boolean = false,
     @SerialName("num_users") val numUsers: Int = 0,
-    @SerialName("num_users_active") val numUsersActive: Int = USER_THREAD_QSIZE,
+    @SerialName("num_tasks") val numTasks: Int = USER_THREAD_QSIZE,
     @SerialName("num_threads") val numThreads: Int = 0,
     @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
 )
@@ -229,7 +229,7 @@ data class ConfigTest(
     @SerialName("aps_rate") val throughputRate: Double = 0.0,
     @SerialName("aps_rate_step_change") val throughputRateStepChange: Double = 0.0,
     @SerialName("aps_rate_step_count") val throughputRateStepCount: Int = 1,
-    @SerialName("num_users_active") val numUsersActive: Int = 0,
+    @SerialName("num_tasks") val numTasks: Int = 0,
     @SerialName("scenario_actions") val actions: List<ConfigAction> = listOf(),
     @SerialName("scenario_workflow") val workflow: String = "",
 )
@@ -301,7 +301,7 @@ fun initConfig(text: String): String {
         // println("${k}")
         val e = entry.value
         if (e.enabled) {
-            val v = RuntimeContext(k, e.numUsers, e.numUsersActive, e.numThreads, e.userParams)
+            val v = RuntimeContext(k, e.numUsers, e.numTasks, e.numThreads, e.userParams)
             g_contexts.add(v)
         }
     }
@@ -323,7 +323,7 @@ fun initConfig(text: String): String {
                 arrivalRate = e.throughputRate,
                 arrivalRateStepChange = e.throughputRateStepChange,
                 arrivalRateStepCount = e.throughputRateStepCount,
-                numUsersActive = e.numUsersActive,
+                numTasks = e.numTasks,
                 actions =
                     mutableListOf<Action>().apply {
                         if (e.workflow.isEmpty()) {
@@ -393,17 +393,17 @@ val wthread_wait_stats = Histogram(histogramNumberOfSignificantValueDigits)
 /*-------------------------------------------------------------------------*/
 
 private fun getQueueLengths(context: RuntimeContext, test: TestProfile): Int {
-    return if (test.numUsersActive != 0) {
-        test.numUsersActive
+    return if (test.numTasks != 0) {
+        test.numTasks
     } else {
-        context.numUsersActive
+        context.numTasks
     }
 }
 
 /*-------------------------------------------------------------------------*/
 
 private fun getTest(context: RuntimeContext, test: TestProfile): TestProfile {
-    return test.copy(numUsersActive = getQueueLengths(context, test))
+    return test.copy(numTasks = getQueueLengths(context, test))
 }
 
 /*-------------------------------------------------------------------------*/
@@ -613,7 +613,7 @@ private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, q
         var numActions: Long = 0
         var apsRate: Double = 0.0
         if (arrivalRate > -1.0) {
-            // Pre-Warmup duration at max speed, ungoverned.
+            // Pre-Warmup duration at max speed, ungov
             nanosPerAction = 0.0
             numActionsMax = 0
         } else {
@@ -757,7 +757,7 @@ private fun runTulip(
     Console.put("======================================================================")
     Console.put("")
     Console.put("  NUM_USERS = $MAX_NUM_USERS")
-    Console.put("  NUM_USERS_ACTIVE = ${context.numUsersActive}")
+    Console.put("  NUM_TASKS = ${context.numTasks}")
     if (MAX_NUM_THREADS == 0) {
         MAX_NUM_THREADS = MAX_NUM_USERS
         Console.put("  NUM_VIRTUAL_THREADS = $MAX_NUM_THREADS")
@@ -778,9 +778,9 @@ private fun runTulip(
             } else {
                 g_workflow = workflows[x.workflow]
             }
-            val numUsersActive = x.numUsersActive
+            val numTasks = x.numTasks
             // Thread.sleep(5000)
-            runTest(x, contextId, indexTestCase, numUsersActive)
+            runTest(x, contextId, indexTestCase, numTasks)
             g_workflow = null
         }
     }
