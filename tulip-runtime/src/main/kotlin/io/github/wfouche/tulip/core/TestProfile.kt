@@ -29,7 +29,7 @@ data class TestProfile(
     //
     // This value represents the "L" in Little's Law (equation)
     //
-    val queueLengths: List<Int> = listOf(0),
+    val numUsersActive: Int = 0,
 
     // List of percentile values to report on.
     val percentiles: List<Double> = listOf(50.0, 75.0, 90.0, 95.0, 99.0),

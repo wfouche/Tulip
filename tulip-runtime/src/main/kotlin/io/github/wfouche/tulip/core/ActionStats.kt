@@ -49,7 +49,6 @@ class ActionStats {
         durationMillis: Int,
         testCase: TestProfile,
         indexTestCase: Int,
-        indexUserProfile: Int,
         queueLength: Int,
         tsBegin: String,
         tsEnd: String,
@@ -68,7 +67,6 @@ class ActionStats {
         r.testPhase = testPhase
 
         r.testId = indexTestCase
-        r.indexUserProfile = indexUserProfile
         r.queueLength = queueLength
 
         r.numActions = numActions

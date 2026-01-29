@@ -123,6 +123,11 @@ public class TulipApi implements Callable<Integer> {
         }
     }
 
+    /**
+     * Create a JSON string containing JVM runtime information
+     *
+     * @return JSON String
+     */
     public static String getJavaInformation() {
         var s = "{ \"jvm.system.properties\": {";
         s += "\"java.vendor\"" + ":\"" + System.getProperty("java.vendor") + "\", ";
