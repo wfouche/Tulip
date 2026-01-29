@@ -1753,9 +1753,10 @@ def createConfigReport(config_json, java_json, config_filename):
         else:
             printf('| *enabled* | True\n')
         printf('| *num_users*   | %d\n'%(c["num_users"]))
-        if not c.has_key("num_threads"):
-            c["num_threads"] = 0
-        printf('| *num_threads* | %d\n'%(c["num_threads"]))
+        if c.has_key("num_tasks"):
+            printf('| *num_tasks* | %d\n'%(c["num_tasks"]))
+        if c.has_key("num_threads"):
+            printf('| *num_threads* | %d\n'%(c["num_threads"]))
         e0 = "user_params"
         if e0 in c.keys():
             printf("| *" + e0 + "*\n")
@@ -1795,11 +1796,9 @@ def createConfigReport(config_json, java_json, config_filename):
         if "aps_rate_step_count" in b.keys():
             printf('| *aps_rate_step_count* | %d\n'%(b["aps_rate_step_count"]))
 
-        # worker_thread_queue_size
-        if "worker_thread_queue_size" in b.keys():
-            printf('| *worker_thread_queue_size* | %d\n'%(b["worker_thread_queue_size"]))
-        else:
-            printf('| *worker_thread_queue_size* | 0\n')
+        # num_tasks
+        if "num_tasks" in b.keys():
+            printf('| *num_tasks* | %d\n'%(b["num_tasks"]))
         # workflow
         if "scenario_workflow" in b.keys():
             workflow_is_defined = b["scenario_workflow"] in jb["workflows"].keys()
