@@ -10,7 +10,6 @@ data class ActionSummary(
     var testName: String = "",
     var testPhase: String = "",
     var testId: Int = 0,
-    var indexUserProfile: Int = 0,
     var queueLength: Int = 0,
     var numActions: Int = 0,
     var numSuccess: Int = 0,
