@@ -10,7 +10,6 @@ data class ActionSummary(
     var testName: String = "",
     var testPhase: String = "",
     var testId: Int = 0,
-    var indexUserProfile: Int = 0,
     var queueLength: Int = 0,
     var numActions: Int = 0,
     var numSuccess: Int = 0,
@@ -27,9 +26,6 @@ data class ActionSummary(
     var maxWt: Double = 0.0,
     var pk: List<Double> = mutableListOf(),
     var pv: List<Double> = mutableListOf(),
-
-    // var avgCpuSystem: Double = 0.0,
-    // var avgCpuProcess: Double = 0.0
     var processCpuTime: Long = 0,
     var processCpuCores: Double = 0.0,
     var processCpuUtilization: Double = 0.0,

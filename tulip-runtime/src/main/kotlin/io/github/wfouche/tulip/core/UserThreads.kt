@@ -3,6 +3,8 @@ package io.github.wfouche.tulip.core
 import io.github.wfouche.tulip.api.TulipUser
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
+import kotlin.time.Clock
+import kotlin.time.Instant
 import org.HdrHistogram.IntCountsHistogram
 
 var useVirtualThreads = false
@@ -117,7 +119,10 @@ fun assignTaskToUser(task: Task) {
 
 fun runtimeDonePT() {
     // Terminate all platform threads.
-    userPlatformThreads!!.forEach { thread -> thread!!.tq.put(Task(status = 999)) }
+    userPlatformThreads!!.forEach { thread ->
+        thread!!.tq.clear()
+        thread.tq.put(Task(status = 999))
+    }
 
     // Wait for all platform threads to exit.
     while (userPlatformThreads!!.map { if (it == null) 0 else 1 }.sum() > 0) {
@@ -125,10 +130,17 @@ fun runtimeDonePT() {
     }
 }
 
+fun displayTimestamp() {
+    val now: Instant = Clock.System.now()
+    println("Current Instant: $now")
+}
+
 fun runtimeDoneVT() {
     // Terminate all virtual threads.
-    userObjects!!.forEach { user -> user!!.tq.put(Task(status = 999)) }
-
+    userObjects!!.forEach { user ->
+        user!!.tq.clear()
+        user.tq.put(Task(status = 999))
+    }
     // Wait for all virtual threads to exit.
     userObjects!!.forEach { user -> user!!.future!!.get() }
 }
