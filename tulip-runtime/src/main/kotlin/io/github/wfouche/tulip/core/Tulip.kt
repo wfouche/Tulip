@@ -757,11 +757,14 @@ private fun runTulip(
     Console.put("======================================================================")
     Console.put("")
     Console.put("  NUM_USERS = $MAX_NUM_USERS")
+    Console.put("  NUM_USERS_ACTIVE = ${context.numUsersActive}")
     if (MAX_NUM_THREADS == 0) {
         MAX_NUM_THREADS = MAX_NUM_USERS
+        Console.put("  NUM_VIRTUAL_THREADS = $MAX_NUM_THREADS")
+    } else {
+        Console.put("  NUM_THREADS = $MAX_NUM_THREADS")
+        Console.put("  NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
     }
-    Console.put("  NUM_THREADS = $MAX_NUM_THREADS")
-    Console.put("  NUM_USERS_PER_THREAD = ${MAX_NUM_USERS / MAX_NUM_THREADS}")
     if ((MAX_NUM_USERS / MAX_NUM_THREADS) * MAX_NUM_THREADS != MAX_NUM_USERS) {
         Console.put("")
         Console.put("NUM_USERS should equal n*NUM_THREADS, where n >= 1")
