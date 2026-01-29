@@ -80,6 +80,7 @@ var TULIP_CONTEXT_NAME: String = ""
 var TULIP_CONTEXT_ID: Int = 0
 
 var MAX_NUM_USERS = 0
+var MAX_NUM_TASKS = 0
 var MAX_NUM_THREADS = 0
 
 var userActions: Array<Iterator<Int>?>? = null // arrayOfNulls<Iterator<Int>>(NUM_USERS)
@@ -149,6 +150,7 @@ private fun runtimeInit(
     TULIP_CONTEXT_NAME = context.name
 
     MAX_NUM_USERS = context.numUsers
+    MAX_NUM_TASKS = context.numTasks
     MAX_NUM_THREADS = context.numThreads
     testSuite = tests
     newUser = userFactory

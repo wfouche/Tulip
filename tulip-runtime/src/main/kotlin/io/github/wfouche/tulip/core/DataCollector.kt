@@ -100,6 +100,7 @@ object DataCollector {
                 json += "\"row_id\": ${r.rowId}, "
 
                 json += "\"num_users\": $MAX_NUM_USERS, "
+                json += "\"num_tasks\": $MAX_NUM_TASKS, "
                 json += "\"num_threads\": $MAX_NUM_THREADS, "
                 json += "\"queue_length\": ${r.queueLength}, "
 
