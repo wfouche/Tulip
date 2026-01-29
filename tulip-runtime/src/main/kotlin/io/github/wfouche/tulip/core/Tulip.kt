@@ -55,7 +55,7 @@ fun getProcessCpuTime(): Long {
 
 /*-------------------------------------------------------------------------*/
 
-class InformativeBlockingQueue<E>(val capacity: Int) : BlockingQueue<E>(capacity) {}
+class InformativeBlockingQueue<E>(val capacity: Int) : BlockingQueue<E & Any>(capacity) {}
 
 typealias Java_Queue<E> = InformativeBlockingQueue<E>
 
