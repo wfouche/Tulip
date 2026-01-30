@@ -1,6 +1,6 @@
 #!/bin/bash
 source "$HOME/.sdkman/bin/sdkman-init.sh"
-sdk env
+sdk env install
 
 # Clean
 mkdir -p ~/.m2
