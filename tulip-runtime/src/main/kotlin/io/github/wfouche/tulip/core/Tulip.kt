@@ -224,7 +224,7 @@ data class ConfigDuration(
 @Serializable data class ConfigAction(val id: Int, val weight: Int = 0)
 
 @Serializable
-data class ConfigTest(
+data class ConfigBenchmark(
     val enabled: Boolean = true,
     @SerialName("save_stats") val logStats: Boolean = true,
     val time: ConfigDuration = ConfigDuration(),
@@ -237,7 +237,7 @@ data class ConfigTest(
 )
 
 @Serializable
-data class ActionsConfig(
+data class ConfigActions(
     @SerialName("description") val description: String = "",
     @SerialName("output_filename") val jsonFilename: String = "",
     @SerialName("report_filename") val htmlFilename: String = "",
@@ -248,9 +248,9 @@ data class ActionsConfig(
 
 @Serializable
 data class TulipConfig(
-    val actions: ActionsConfig = ActionsConfig(),
+    val actions: ConfigActions = ConfigActions(),
     val contexts: Map<String, ConfigContext> = mapOf(),
-    val benchmarks: Map<String, ConfigTest> = mapOf(),
+    val benchmarks: Map<String, ConfigBenchmark> = mapOf(),
     val workflows: Map<String, Map<String, Map<String, Double>>> = mapOf(),
 )
 
