@@ -30,12 +30,14 @@
         "Context-0": {
             "enabled": true,
             "num_users": 16,
-            "num_threads": 2
+            "num_threads": 2,
+            "workload_model": "closed"
         },
         "Context-1": {
             "enabled": false,
             "num_users": 32,
-            "num_threads": 4
+            "num_threads": 4,
+            "workload_model": "closed"
         }
     },
     "benchmarks": {

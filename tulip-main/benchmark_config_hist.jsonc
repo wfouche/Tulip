@@ -24,7 +24,8 @@
       "num_threads": 2,
       "user_params": {
         "id": 1
-      }
+      },
+      "workload_model": "closed"
     },
     "Context-1": {
       "enabled": false,
@@ -33,7 +34,8 @@
       "user_params": {
         "id": 2,
         "url": "http://localhost:8080"
-      }
+      },
+      "workload_model": "closed"
     }
   },
   "benchmarks": {
