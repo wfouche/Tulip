@@ -211,6 +211,7 @@ data class ConfigContext(
     @SerialName("num_tasks") val numTasks: Int = USER_THREAD_QSIZE,
     @SerialName("num_threads") val numThreads: Int = 0,
     @SerialName("user_params") val userParams: Map<String, JsonPrimitive> = mapOf(),
+    @SerialName("workload_model") val workloadModel: String = "closed",
 )
 
 @Serializable

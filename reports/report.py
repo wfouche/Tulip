@@ -1768,6 +1768,10 @@ def createConfigReport(config_json, java_json, config_filename):
                 printf('! *' + k0 + '* ')
                 printf('! ' + str(c[e0][k0]) + '\n')
             printf('!===\n')
+        if c.has_key("workload_model"):
+            printf('| *workload_model* | %s\n'%(c["workload_model"]))
+        else:
+            printf('| *workload_model* | %s\n' % "closed")
         printf("|===\n")
 
     # Benchmarks Data
