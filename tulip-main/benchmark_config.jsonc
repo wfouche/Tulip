@@ -50,7 +50,6 @@
         "Max TPS": {
             "enabled": true,
             "aps_rate": 0.0,
-            "worker_thread_queue_size": 0,
             "time": {
                 "warmup_duration1": 15,
                 "warmup_duration2": 30,
@@ -62,7 +61,6 @@
         "100k TPS": {
             "enabled": true,
             "aps_rate": 100000.0,
-            "worker_thread_queue_size": 0,
             "time": {
                 "warmup_duration1": 15,
                 "warmup_duration2": 30,
@@ -74,7 +72,6 @@
         "100 TPS": {
             "enabled": true,
             "aps_rate": 100.0,
-            "worker_thread_queue_size": 1,
             "time": {
                 "warmup_duration1": 15,
                 "warmup_duration2": 15,
@@ -86,7 +83,6 @@
         "50 TPS": {
             "enabled": true,
             "aps_rate": 50.0,
-            "worker_thread_queue_size": 1,
             "time": {
                 "warmup_duration1": 15,
                 "warmup_duration2": 15,
@@ -100,7 +96,6 @@
         "HTTP Max TPS": {
             "enabled": true,
             "aps_rate": 0.0,
-            "worker_thread_queue_size": 0,
             "time": {
                 "warmup_duration1": 15,
                 "warmup_duration2": 15,
@@ -112,7 +107,6 @@
         "HTTP 1250 TPS": {
             "enabled": true,
             "aps_rate": 1250.0,
-            "worker_thread_queue_size": 0,
             "time": {
                 "warmup_duration1": 15,
                 "warmup_duration2": 15,
