@@ -24,7 +24,7 @@ data class User(val status: String = "OK")
 val user: User = User("OK")
 
 fun main() {
-    embeddedServer(Netty, port = 8080) {
+    embeddedServer(Netty, port = 7070) {
         install(ContentNegotiation) {
             json()
         }
