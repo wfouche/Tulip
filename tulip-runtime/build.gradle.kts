@@ -5,6 +5,7 @@
 import com.diffplug.spotless.kotlin.KtfmtStep
 //import org.jreleaser.model.Active
 import java.util.Locale
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 group = "io.github.wfouche.tulip"
 version = "2.2.1"
@@ -270,4 +271,25 @@ tasks.register("fixJbangMarker") {
             }
         }
     }
+}
+
+tasks.withType<DependencyUpdatesTask> {
+    // 1. Define what "unstable" looks like (optional but recommended)
+    // This prevents being notified about alpha/beta versions if you're on a stable version.
+    fun isNonStable(version: String): Boolean {
+        val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
+        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+        val isStable = stableKeyword || regex.matches(version)
+        return isStable.not()
+    }
+
+    rejectVersionIf {
+        // Example: Reject upgrading to a non-stable version if current version is stable
+        isNonStable(candidate.version) && !isNonStable(currentVersion)
+    }
+
+    // 2. Output Formatting
+    // Setting this to "plain" or "json" helps see the full breakdown
+    outputFormatter = "plain"
+    checkForGradleUpdate = true
 }
