@@ -7,13 +7,13 @@ import kotlin.io.encoding.Base64
 import kotlin.io.encoding.ExperimentalEncodingApi
 import org.HdrHistogram.Histogram
 
-val doubleFormatter =
+val doubleFormatter: NumberFormat =
     NumberFormat.getInstance(Locale.US).apply {
         minimumFractionDigits = 1
         maximumFractionDigits = 1
     }
 
-val longFormatter = NumberFormat.getInstance(Locale.US)
+val longFormatter: NumberFormat = NumberFormat.getInstance(Locale.US)
 
 class ActionStats {
     // <numberOfSignificantValueDigits>
@@ -223,10 +223,10 @@ class ActionStats {
             //
             //            mg_benchmark_aps?.set(r.aps.toInt())
             //            mg_benchmark_dur?.set(r.durationSeconds.toInt())
-            var phaseId = 0
-            if (r.testPhase == "PreWarmup") phaseId = 0
-            if (r.testPhase == "Warmup") phaseId = 1
-            if (r.testPhase == "Benchmark") phaseId = 2
+            //            var phaseId = 0
+            //            if (r.testPhase == "PreWarmup") phaseId = 0
+            //            if (r.testPhase == "Warmup") phaseId = 1
+            //            if (r.testPhase == "Benchmark") phaseId = 2
 
             //            mg_benchmark_phs?.set(phaseId)
             //            mg_benchmark_run?.set(r.rowId)

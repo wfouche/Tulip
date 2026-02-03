@@ -13,7 +13,7 @@ class DemoUser() : TulipUser() {
 
     val llqh = LlqHistogram()
     val hdrh = HdrHistogram(3)
-    val rnd = ThreadLocalRandom.current()
+    val rnd: ThreadLocalRandom = ThreadLocalRandom.current()
     var num = 1450312123L
 
     override fun onStart(): Boolean {
