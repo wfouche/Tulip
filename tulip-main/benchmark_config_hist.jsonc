@@ -22,6 +22,7 @@
       "enabled": true,
       "num_users": 4,
       "num_threads": 2,
+      "num_tasks": 100,
       "user_params": {
         "id": 1
       },
