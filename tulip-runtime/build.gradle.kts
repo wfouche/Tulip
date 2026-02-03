@@ -5,6 +5,7 @@
 import com.diffplug.spotless.kotlin.KtfmtStep
 //import org.jreleaser.model.Active
 import java.util.Locale
+import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 group = "io.github.wfouche.tulip"
 version = "2.2.1"
@@ -23,7 +24,7 @@ plugins {
     // id("org.jreleaser") version "1.21.0"
 
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.0"
+    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.10-RC2"
 
     // https://plugins.gradle.org/plugin/org.jetbrains.dokka
     // id("org.jetbrains.dokka") version "2.0.0"
@@ -90,10 +91,10 @@ dependencies {
     implementation("org.slf4j:slf4j-api:2.0.17")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
-    implementation("ch.qos.logback:logback-core:1.5.26")
+    implementation("ch.qos.logback:logback-core:1.5.27")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation("ch.qos.logback:logback-classic:1.5.26")
+    implementation("ch.qos.logback:logback-classic:1.5.27")
 
     // - Apache HttpClient
 
@@ -270,4 +271,25 @@ tasks.register("fixJbangMarker") {
             }
         }
     }
+}
+
+tasks.withType<DependencyUpdatesTask> {
+    // 1. Define what "unstable" looks like (optional but recommended)
+    // This prevents being notified about alpha/beta versions if you're on a stable version.
+    fun isNonStable(version: String): Boolean {
+        val stableKeyword = listOf("RELEASE", "FINAL", "GA").any { version.uppercase().contains(it) }
+        val regex = "^[0-9,.v-]+(-r)?$".toRegex()
+        val isStable = stableKeyword || regex.matches(version)
+        return isStable.not()
+    }
+
+    rejectVersionIf {
+        // Example: Reject upgrading to a non-stable version if current version is stable
+        isNonStable(candidate.version) && !isNonStable(currentVersion)
+    }
+
+    // 2. Output Formatting
+    // Setting this to "plain" or "json" helps see the full breakdown
+    outputFormatter = "plain"
+    checkForGradleUpdate = true
 }
