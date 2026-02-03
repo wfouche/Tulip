@@ -156,7 +156,7 @@ public class python_jvm_tulip {
                  */
                 public static void main(String... args) throws IOException {
                     String mainScriptFilename = "__MAIN_SCRIPT_FILENAME__";
-                    String mainScript = "";
+                    String mainScript;
                     StringBuilder pythonArgsScript = new StringBuilder();
                     for (String arg: args) {
                         if (pythonArgsScript.isEmpty()) {
@@ -199,7 +199,7 @@ public class python_jvm_tulip {
             
                 public static void main(String... args) {
                     String mainScriptFilename = "__MAIN_SCRIPT_FILENAME__";
-                    String mainScript = "";
+                    String mainScript;
                     String pythonArgsScript = "";
                     for (String arg: args) {
                         if (pythonArgsScript.length() == 0) {

@@ -64,7 +64,7 @@ public class report_py {
      */
     public static void main(String... args) throws IOException {
         String mainScriptFilename = "report.py";
-        String mainScript = "";
+        String mainScript;
         StringBuilder pythonArgsScript = new StringBuilder();
         for (String arg : args) {
             if (pythonArgsScript.isEmpty()) {
