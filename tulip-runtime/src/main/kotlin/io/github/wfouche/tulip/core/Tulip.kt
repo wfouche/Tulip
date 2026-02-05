@@ -275,7 +275,7 @@ fun initConfig(text: String): String {
             // read config from local folder (JBang) or from src/main/resources (Gradle or Maven)
             configFilename = text
             if (java.io.File(configFilename).exists()) {
-                // JBang project
+                java.io.File(configFilename).readText()
             } else {
                 // Gradle or Maven project
                 val file2: String = "src/main/resources/$configFilename"
@@ -285,11 +285,11 @@ fun initConfig(text: String): String {
                     // Console.put("file2: is a file")
                     java.io.File("build/reports/tulip").mkdirs()
                     g_outputDirname = "build/reports/tulip"
+                    java.io.File(configFilename).readText()
                 } else {
-                    // Console.put("file2: is not a file")
+                    TulipApi.readResource(configFilename)
                 }
             }
-            java.io.File(configFilename).readText()
         }
 
     // Remove all JSONC comments from the JSON
@@ -364,10 +364,6 @@ fun initConfig(text: String): String {
     }
     Console.put("  output filename   = ${g_config.actions.jsonFilename}")
     Console.put("  report filename   = ${g_config.actions.htmlFilename}")
-    //    if (!textIsJsonString) {
-    //        val adocFilename = createConfigReport(configFilename)
-    //        convertAdocToHtml(adocFilename)
-    //    }
 
     return g_config.actions.jsonFilename
 }
