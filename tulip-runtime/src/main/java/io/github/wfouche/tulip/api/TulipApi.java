@@ -145,7 +145,7 @@ public class TulipApi implements Callable<Integer> {
                 "["
                         + jvmArgs.stream()
                                 .distinct()
-                                .map(arg -> "\"" + arg.replace("\"", "\\\"") + "\"")
+                                .map(arg -> "\"" + arg.replace("\\", "/") + "\"")
                                 .collect(Collectors.joining(", "))
                         + "]";
         s += " }";
