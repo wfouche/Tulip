@@ -4,6 +4,7 @@ import static org.springframework.http.MediaType.APPLICATION_JSON;
 
 import java.util.HashMap;
 import org.jetbrains.annotations.NotNull;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.client.RestClientException;
 
@@ -41,7 +42,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
 
     /**
-     * http_GET() method
+     * httpGet() method
      *
      * @param uri - uri to invoke
      * @param uriVariables - sequence of variables to replace in uri
@@ -61,7 +62,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
 
     /**
-     * http_POST() method
+     * httpPost() method
      *
      * @param reqBodyJson - JSON string
      * @param uri - uri to invoke
@@ -85,7 +86,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
 
     /**
-     * http_PUT() method
+     * httpPut() method
      *
      * @param reqBodyJson - JSON string
      * @param uri - uri to invoke
@@ -109,7 +110,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
 
     /**
-     * http_PATCH() method
+     * httpPatch() method
      *
      * @param reqBodyJson - JSON string
      * @param uri - uri to invoke
@@ -133,7 +134,7 @@ public class HttpUser extends HttpUser_RestClient {
     }
 
     /**
-     * http_DELETE() method
+     * httpDelete() method
      *
      * @param uri - uri to invoke
      * @param uriVariables - sequence of variables to replace in uri
@@ -147,6 +148,30 @@ public class HttpUser extends HttpUser_RestClient {
                         .delete()
                         .uri(uri, uriVariables)
                         .header(http_header_key, http_header_val)
+                        .retrieve()
+                        .toEntity(String.class);
+        return new Response(entity.getStatusCode().value(), entity.getBody());
+    }
+
+    /**
+     * httpQuery() method
+     *
+     * @param reqBodyJson - JSON string
+     * @param uri - uri to invoke
+     * @param uriVariables - sequence of variables to replace in uri
+     * @return boolean
+     * @throws RestClientException - Spring exception
+     */
+    @NotNull
+    public Response httpQuery(String reqBodyJson, String uri, Object... uriVariables)
+            throws RestClientException {
+        ResponseEntity<String> entity =
+                restClient()
+                        .method(HttpMethod.valueOf("QUERY"))
+                        .uri(uri, uriVariables)
+                        .header(http_header_key, http_header_val)
+                        .contentType(APPLICATION_JSON)
+                        .body(reqBodyJson)
                         .retrieve()
                         .toEntity(String.class);
         return new Response(entity.getStatusCode().value(), entity.getBody());
