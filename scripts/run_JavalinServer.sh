@@ -11,17 +11,17 @@
 # "-XX:+UseLargePages",
 
 # Java 17
-export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m -XX:G1GC    -XX:+UseDynamicNumberOfGCThreads"
+#export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m -XX:G1GC    -XX:+UseDynamicNumberOfGCThreads"
 
 # Java 21
-export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m -XX:+UseZGC -XX:+ZGenerational -XX:+UseLargePages"
+#export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m -XX:+UseZGC -XX:+ZGenerational -XX:+UseLargePages"
 
 # Java 25
-export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m -XX:+UseZGC -XX:+ZGenerational"
+#export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m -XX:+UseZGC -XX:+ZGenerational"
 
 # Other
-export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m             -XX:+UseParallelGC -XX:+UseLargePages"
-export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m             -XX:+UseParallelGC"
+#export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m             -XX:+UseParallelGC -XX:+UseLargePages"
+#export JBANG_JAVA_OPTIONS="-server -Xms512m -Xmx512m             -XX:+UseParallelGC"
 
 jbang run JavalinServer.java
 
