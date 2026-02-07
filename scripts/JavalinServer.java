@@ -2,7 +2,7 @@
 //DEPS io.javalin:javalin:6.7.0
 //DEPS org.slf4j:slf4j-simple:2.0.17
 //JAVA 21
-//RUNTIME_OPTIONS -Xmx2g -Xms2g -XX:+UseShenandoahGC -XX:ShenandoahGCMode=generational
+//RUNTIME_OPTIONS -Xmx2g -Xms2g -XX:+UseG1GC
 
 // https://javalin.io/
 import io.javalin.Javalin;
