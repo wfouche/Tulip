@@ -16,7 +16,7 @@ gradle=9.3.1
 jbang=0.136.0
 
 # Kotlin
-kotlin=2.3.0
+kotlin=2.3.10
 
 # Scala
 scalacli=1.12.1
