@@ -82,13 +82,13 @@ dependencies {
     // https://mvnrepository.com/artifact/io.github.oshai/kotlin-logging-jvm
     // implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
-    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-restclient
-    implementation("org.springframework.boot:spring-boot-starter-restclient:4.0.2")
+    // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
+    api("org.springframework.boot:spring-boot-starter-web:3.5.10")
 
     // - SLF4J and Logback
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    implementation("org.slf4j:slf4j-api:2.0.17")
+    api("org.slf4j:slf4j-api:2.0.17")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
     implementation("ch.qos.logback:logback-core:1.5.28")
