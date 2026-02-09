@@ -193,7 +193,7 @@ public class TulipApi implements Callable<Integer> {
             runTulip(exclusiveOptions.configFile.getAbsolutePath());
         } else {
             System.out.println(
-                    "Generating report at: " + exclusiveOptions.reportFile.getAbsolutePath());
+                    "Generating report from: " + exclusiveOptions.reportFile.getAbsolutePath());
             generateReport(exclusiveOptions.reportFile.getAbsolutePath().replace("\\", "/"));
         }
         return 0;
