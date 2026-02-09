@@ -346,8 +346,20 @@ fun initConfig(text: String): String {
     }
     // Ensure that the first and last test cases are "onStart" and "onStop" respectively,
     // if they are not already defined in the config.
-    val onStart = TestProfile(saveStats = false, name = "onStart", actions = listOf(Action(0)))
-    val onStop = TestProfile(saveStats = false, name = "onStop", actions = listOf(Action(100)))
+    val onStart =
+        TestProfile(
+            saveStats = false,
+            name = "onStart",
+            actions = listOf(Action(0)),
+            filename = g_config.actions.jsonFilename,
+        )
+    val onStop =
+        TestProfile(
+            saveStats = false,
+            name = "onStop",
+            actions = listOf(Action(100)),
+            filename = g_config.actions.jsonFilename,
+        )
     if (g_tests.isEmpty()) {
         g_tests.add(onStart)
         g_tests.add(onStop)
