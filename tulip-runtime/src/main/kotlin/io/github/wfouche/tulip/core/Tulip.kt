@@ -344,6 +344,23 @@ fun initConfig(text: String): String {
             )
         g_tests.add(v)
     }
+    // Ensure that the first and last test cases are "onStart" and "onStop" respectively,
+    // if they are not already defined in the config.
+    val onStart = TestProfile(saveStats = false, name = "onStart", actions = listOf(Action(0)))
+    val onStop = TestProfile(saveStats = false, name = "onStop", actions = listOf(Action(100)))
+    if (g_tests.isEmpty()) {
+        g_tests.add(onStart)
+        g_tests.add(onStop)
+    } else {
+        val first = g_tests.first()
+        if (first.name != "onStart") {
+            g_tests.add(0, onStart)
+        }
+        val last = g_tests.last()
+        if (last.name != "onStop") {
+            g_tests.add(onStop)
+        }
+    }
     for (wn in g_config.workflows.keys) {
         // Console.put("workflow = $wn")
         val mc = MarkovChain(wn)
