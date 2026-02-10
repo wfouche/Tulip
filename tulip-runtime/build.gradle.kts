@@ -8,7 +8,7 @@ import java.util.Locale
 import com.github.benmanes.gradle.versions.updates.DependencyUpdatesTask
 
 group = "io.github.wfouche.tulip"
-version = "2.2.3"
+version = "2.2.4"
 
 plugins {
     // https://plugins.gradle.org/plugin/com.github.ben-manes.versions
