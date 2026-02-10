@@ -357,7 +357,7 @@ fun initConfig(text: String): String {
         TestProfile(
             saveStats = false,
             name = "onStop",
-            actions = listOf(Action(100)),
+            actions = listOf(Action(TulipApi.NUM_ACTIONS - 1)),
             filename = g_config.actions.jsonFilename,
         )
     if (g_tests.isEmpty()) {
@@ -367,10 +367,16 @@ fun initConfig(text: String): String {
         val first = g_tests.first()
         if (first.name != "onStart") {
             g_tests.add(0, onStart)
+        } else {
+            // Ensure actionId is set to 0
+            first.actions = onStart.actions
         }
         val last = g_tests.last()
         if (last.name != "onStop") {
             g_tests.add(onStop)
+        } else {
+            // Ensure actionId is set to (TulipApi.NUM_ACTIONS - 1)
+            last.actions = onStop.actions
         }
     }
     for (wn in g_config.workflows.keys) {

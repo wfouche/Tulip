@@ -13,7 +13,7 @@ data class TestProfile(
     // List of actions to be performed.
     // If the weights of all the actions are zero (0), then treat the action
     // list as a workflow to be executed per user object.
-    val actions: List<Action>,
+    var actions: List<Action>,
 
     // https://en.wikipedia.org/wiki/Queueing_theory
     //
