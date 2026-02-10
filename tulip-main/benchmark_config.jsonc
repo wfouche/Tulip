@@ -42,12 +42,6 @@
         }
     },
     "benchmarks": {
-        "onStart": {
-            "enabled": true,
-            "scenario_actions": [
-                { "id": 0 }
-            ]
-        },
         "Max TPS": {
             "enabled": true,
             "aps_rate": 0.0,
@@ -106,21 +100,15 @@
             "scenario_workflow": "http"
         },
         "HTTP 1250 TPS": {
-            "enabled": true,
-            "aps_rate": 1250.0,
-            "time": {
-                "warmup_duration1": 15,
-                "warmup_duration2": 15,
-                "benchmark_duration": 30,
-                "benchmark_iterations": 3
-            },
-            "scenario_workflow": "http"
-        },
-        "onStop": {
-            "enabled":true,
-            "scenario_actions": [
-                {"id": 100 }
-            ]
+          "enabled": true,
+          "aps_rate": 1250.0,
+          "time": {
+            "warmup_duration1": 15,
+            "warmup_duration2": 15,
+            "benchmark_duration": 30,
+            "benchmark_iterations": 3
+          },
+          "scenario_workflow": "http"
         }
     },
     "workflows": {

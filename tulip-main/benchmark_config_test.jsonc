@@ -34,11 +34,6 @@
         }
     },
     "benchmarks": {
-        "onStart": {
-            "scenario_actions": [
-                {"id": 0}
-            ]
-        },
         "NOP": {
             "enabled": true,
             "time": {
@@ -78,11 +73,6 @@
             "scenario_actions": [
                 {"id": 1, "weight": 90},
                 {"id": 2, "weight": 10}
-            ]
-        },
-        "onStop": {
-            "scenario_actions": [
-                {"id": 100}
             ]
         }
     }
