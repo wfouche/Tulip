@@ -2,7 +2,8 @@ import subprocess
 from mcp.server.fastmcp import FastMCP
 
 # Initialize the MCP server
-mcp = FastMCP("Kwrk Load Tester")
+name = "Kwrk Load Tester"
+mcp = FastMCP(name)
 
 @mcp.tool()
 def run_load_test(url: str, rate: float = 10.0) -> str:
@@ -36,4 +37,5 @@ def run_load_test(url: str, rate: float = 10.0) -> str:
         return f"An unexpected error occurred: {str(e)}"
 
 if __name__ == "__main__":
+    print(name)
     mcp.run()
