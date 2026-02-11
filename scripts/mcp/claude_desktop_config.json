@@ -1,0 +1,8 @@
+{
+  "mcpServers": {
+    "tulip-bench": {
+      "command": "jbang",
+      "args": ["/absolute/path/to/TulipMcpServer.kt"]
+    }
+  }
+}
