@@ -1,4 +1,6 @@
 {
+  // HDR and LLQ histogram benchmarks with a demo user class that simulates some work
+  // with delays and no-op actions. The configuration includes two contexts models.
   "actions": {
     "description": "Demo Benchmark",
     "output_filename": "benchmark_output.json",
