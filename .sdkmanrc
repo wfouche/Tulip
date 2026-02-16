@@ -21,7 +21,7 @@ kotlin=2.3.10
 scalacli=1.12.2
 
 # MCS
-mcs=0.9.4
+mcs=0.9.5
 
 # Maven
 maven=3.9.12
