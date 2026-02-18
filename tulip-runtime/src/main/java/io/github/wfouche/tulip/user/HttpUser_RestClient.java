@@ -110,50 +110,22 @@ public class HttpUser_RestClient extends TulipUser {
 
         // HTTP 1.1 or HTTP/2 or HTTP/3
         HttpClient httpClient = null;
-        if (httpVersion_.equalsIgnoreCase("HTTP_1_1")) {
-            // HTTP 1.1
+        HttpClient.Version httpVersion = HttpClient.Version.HTTP_1_1;
+        try {
+            httpVersion = HttpClient.Version.valueOf(httpVersion_.toUpperCase());
             if (!connectTimeout_.isEmpty()) {
                 logger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
                 httpClient =
                         HttpClient.newBuilder()
-                                .version(HttpClient.Version.HTTP_1_1)
+                                .version(httpVersion)
                                 .connectTimeout(
                                         Duration.ofMillis(Integer.parseInt(connectTimeout_)))
                                 .build();
             } else {
-                httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
+                httpClient = HttpClient.newBuilder().version(httpVersion).build();
             }
-        } else if (httpVersion_.equalsIgnoreCase("HTTP_2")) {
-            // HTTP/2
-            if (!connectTimeout_.isEmpty()) {
-                logger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
-                httpClient =
-                        HttpClient.newBuilder()
-                                .version(HttpClient.Version.HTTP_2)
-                                .connectTimeout(
-                                        Duration.ofMillis(Integer.parseInt(connectTimeout_)))
-                                .build();
-            } else {
-                httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
-            }
-        } else if (httpVersion_.equalsIgnoreCase("HTTP_3")) {
-            // HTTP/3
-            HttpClient.Version httpVersion = HttpClient.Version.HTTP_1_1;
-            try {
-                httpVersion = HttpClient.Version.valueOf("HTTP_3");
-            } catch (IllegalArgumentException e) {
-                logger().warn(
-                                "[{}]HTTP/3 is not supported in this Java version. Falling back to HTTP/1.1",
-                                idx);
-            }
-            httpClient =
-                    HttpClient.newBuilder()
-                            .version(httpVersion)
-                            .connectTimeout(Duration.ofMillis(Integer.parseInt(connectTimeout_)))
-                            .build();
-        } else {
-            // HTTP version is not specified
-            // Neither HTTP 1.1 nor HTTP/2
+        } catch (IllegalArgumentException e) {
+            // HTTP version not supported
             // Use SimpleClientHttpRequestFactory()
             var factory = new SimpleClientHttpRequestFactory();
 
