@@ -201,12 +201,12 @@ publishing {
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
         // https://github.com/google/google-java-format
-        googleJavaFormat("1.33.0").aosp()
+        googleJavaFormat().aosp()
         toggleOffOn()
     }
     kotlin {
         // https://github.com/facebook/ktfmt
-        ktfmt("0.61").googleStyle().configure {
+        ktfmt().googleStyle().configure {
             it.setMaxWidth(100)
             it.setBlockIndent(4)
             it.setContinuationIndent(4)
