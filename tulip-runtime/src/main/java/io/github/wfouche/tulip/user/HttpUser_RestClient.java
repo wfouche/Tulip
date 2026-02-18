@@ -108,7 +108,7 @@ public class HttpUser_RestClient extends TulipUser {
         }
         logger().info("[{}]httpVersion={}", idx, httpVersion_);
 
-        // HTTP 1.1 or HTTP/2
+        // HTTP 1.1 or HTTP/2 or HTTP/3
         HttpClient httpClient = null;
         if (httpVersion_.equalsIgnoreCase("HTTP_1_1")) {
             // HTTP 1.1
