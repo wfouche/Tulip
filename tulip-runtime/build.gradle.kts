@@ -38,6 +38,11 @@ java {
     withSourcesJar()
 }
 
+val slf4jVersion = "2.0.17"
+val logbackVersion = "1.5.32"
+val springBootVersion = "3.5.10"
+val picocliVersion = "4.7.7"
+
 dependencies {
     // - Micrometer
 
@@ -83,18 +88,18 @@ dependencies {
     // implementation("io.github.oshai:kotlin-logging-jvm:7.0.3")
 
     // https://mvnrepository.com/artifact/org.springframework.boot/spring-boot-starter-web
-    api("org.springframework.boot:spring-boot-starter-web:3.5.10")
+    api("org.springframework.boot:spring-boot-starter-web:${springBootVersion}")
 
     // - SLF4J and Logback
 
     // https://mvnrepository.com/artifact/org.slf4j/slf4j-api
-    api("org.slf4j:slf4j-api:2.0.17")
+    api("org.slf4j:slf4j-api:${slf4jVersion}")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-core
-    implementation("ch.qos.logback:logback-core:1.5.31")
+    implementation("ch.qos.logback:logback-core:${logbackVersion}")
 
     // https://mvnrepository.com/artifact/ch.qos.logback/logback-classic
-    implementation("ch.qos.logback:logback-classic:1.5.31")
+    implementation("ch.qos.logback:logback-classic:${logbackVersion}")
 
     // - Apache HttpClient
 
@@ -119,7 +124,7 @@ dependencies {
     implementation("tools.jackson.core:jackson-databind:3.0.4")
 
     // https://mvnrepository.com/artifact/info.picocli/picocli
-    implementation("info.picocli:picocli:4.7.7")
+    implementation("info.picocli:picocli:${picocliVersion}")
 }
 
 tasks.withType<JavaCompile>().configureEach {
