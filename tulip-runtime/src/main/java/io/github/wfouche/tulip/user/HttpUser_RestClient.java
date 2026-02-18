@@ -136,6 +136,21 @@ public class HttpUser_RestClient extends TulipUser {
             } else {
                 httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
             }
+        } else if (httpVersion_.equalsIgnoreCase("HTTP_3")) {
+            // HTTP/3
+            HttpClient.Version httpVersion = HttpClient.Version.HTTP_1_1;
+            try {
+                httpVersion = HttpClient.Version.valueOf("HTTP_3");
+            } catch (IllegalArgumentException e) {
+                logger().warn(
+                                "[{}]HTTP/3 is not supported in this Java version. Falling back to HTTP/1.1",
+                                idx);
+            }
+            httpClient =
+                    HttpClient.newBuilder()
+                            .version(httpVersion)
+                            .connectTimeout(Duration.ofMillis(Integer.parseInt(connectTimeout_)))
+                            .build();
         } else {
             // HTTP version is not specified
             // Neither HTTP 1.1 nor HTTP/2
