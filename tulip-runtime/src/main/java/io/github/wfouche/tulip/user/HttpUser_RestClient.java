@@ -6,7 +6,6 @@ import java.net.URL;
 import java.net.http.HttpClient;
 import java.time.Duration;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
-import org.springframework.http.client.SimpleClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
 class HttpRecord {
@@ -108,59 +107,32 @@ public class HttpUser_RestClient extends TulipUser {
         }
         logger().info("[{}]httpVersion={}", idx, httpVersion_);
 
-        // HTTP 1.1 or HTTP/2
+        // HTTP 1.1 or HTTP/2 or HTTP/3
         HttpClient httpClient = null;
-        if (httpVersion_.equalsIgnoreCase("HTTP_1_1")) {
-            // HTTP 1.1
-            if (!connectTimeout_.isEmpty()) {
-                logger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
-                httpClient =
-                        HttpClient.newBuilder()
-                                .version(HttpClient.Version.HTTP_1_1)
-                                .connectTimeout(
-                                        Duration.ofMillis(Integer.parseInt(connectTimeout_)))
-                                .build();
-            } else {
-                httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_1_1).build();
-            }
-        } else if (httpVersion_.equalsIgnoreCase("HTTP_2")) {
-            // HTTP/2
-            if (!connectTimeout_.isEmpty()) {
-                logger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
-                httpClient =
-                        HttpClient.newBuilder()
-                                .version(HttpClient.Version.HTTP_2)
-                                .connectTimeout(
-                                        Duration.ofMillis(Integer.parseInt(connectTimeout_)))
-                                .build();
-            } else {
-                httpClient = HttpClient.newBuilder().version(HttpClient.Version.HTTP_2).build();
-            }
+        HttpClient.Version httpVersion;
+        try {
+            httpVersion = HttpClient.Version.valueOf(httpVersion_.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            logger().error("[{}]Unsupported HTTP version: {}", idx, httpVersion_);
+            logger().error("[{}]Falling back to HTTP 1.1", idx);
+            httpVersion = HttpClient.Version.HTTP_1_1;
+        }
+        if (!connectTimeout_.isEmpty()) {
+            logger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
+            httpClient =
+                    HttpClient.newBuilder()
+                            .version(httpVersion)
+                            .connectTimeout(Duration.ofMillis(Integer.parseInt(connectTimeout_)))
+                            .build();
         } else {
-            // HTTP version is not specified
-            // Neither HTTP 1.1 nor HTTP/2
-            // Use SimpleClientHttpRequestFactory()
-            var factory = new SimpleClientHttpRequestFactory();
-
-            if (!connectTimeout_.isEmpty()) {
-                factory.setConnectTimeout(Integer.parseInt(connectTimeout_));
-                logger().info("[{}]connectTimeoutMillis={}", idx, connectTimeout_);
-            }
-
-            if (!readTimeout_.isEmpty()) {
-                factory.setReadTimeout(Integer.parseInt(readTimeout_));
-                logger().info("[{}]readTimeoutMillis={}", idx, readTimeout_);
-            }
-            restClient = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
+            httpClient = HttpClient.newBuilder().version(httpVersion).build();
         }
-        if (restClient == null) {
-            var factory = new JdkClientHttpRequestFactory(httpClient);
-            if (!readTimeout_.isEmpty()) {
-                factory.setReadTimeout(Integer.parseInt(readTimeout_));
-                logger().info("[{}]readTimeoutMillis={}", idx, readTimeout_);
-            }
-            restClient = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
+        var factory = new JdkClientHttpRequestFactory(httpClient);
+        if (!readTimeout_.isEmpty()) {
+            factory.setReadTimeout(Integer.parseInt(readTimeout_));
+            logger().info("[{}]readTimeoutMillis={}", idx, readTimeout_);
         }
+        restClient = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
         return restClient;
     }
 
