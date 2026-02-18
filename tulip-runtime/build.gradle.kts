@@ -104,7 +104,7 @@ dependencies {
     // - Apache HttpClient
 
     // https://mvnrepository.com/artifact/org.apache.httpcomponents.client5/httpclient5
-    implementation("org.apache.httpcomponents.client5:httpclient5:5.6")
+    // implementation("org.apache.httpcomponents.client5:httpclient5:5.6")
 
     // - Asciidoctor
 
