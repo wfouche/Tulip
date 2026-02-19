@@ -40,7 +40,7 @@ java {
 
 val slf4jVersion = "2.0.17"
 val logbackVersion = "1.5.32"
-val springBootVersion = "3.5.10"
+val springBootVersion = "3.5.11"
 val picocliVersion = "4.7.7"
 
 dependencies {
