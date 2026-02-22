@@ -31,10 +31,12 @@ java {
     withSourcesJar()
 }
 
+val gsonVersion = "2.13.2"
 val slf4jVersion = "2.0.17"
 val logbackVersion = "1.5.32"
 val springBootVersion = "3.5.11"
 val picocliVersion = "4.7.7"
+val kxsJsonVersion = "1.10.0"
 
 dependencies {
     // https://mvnrepository.com/artifact/io.micrometer/micrometer-registry-jmx
@@ -47,10 +49,10 @@ dependencies {
     implementation("org.python:jython-slim:2.7.4")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:1.10.0")
+    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kxsJsonVersion")
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
-    implementation("com.google.code.gson:gson:2.13.2")
+    implementation("com.google.code.gson:gson:$gsonVersion")
 
     // https://mvnrepository.com/artifact/com.google.guava/guava
     implementation("com.google.guava:guava:33.5.0-jre")
