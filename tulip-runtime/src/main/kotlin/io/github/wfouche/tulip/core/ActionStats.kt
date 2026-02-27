@@ -22,7 +22,7 @@ class ActionStats {
     // (default, optimal)
     // private val NUM_DIGITS=3  // Tested - great results, large results file,
     // histogram_rt
-    private val hdr_histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits)
+    private val hdr_histogram: Histogram = Histogram(HDR_NUM_SIGNIFICANT_VALUE_DIGITS)
     private var histogramMinRt: Long = Long.MAX_VALUE
     private var histogramMaxRt: Long = Long.MIN_VALUE
     private var histogramMaxRtTs = ""
@@ -125,7 +125,6 @@ class ActionStats {
     }
 
     fun printStats(actionId: Int) {
-
         val output = mutableListOf("")
 
         if (r.processCpuTime == 0L) {
@@ -178,10 +177,10 @@ class ActionStats {
 
             output.add("")
             val gb1 = 1073741824.0
-            output.add("  memory used (jvm)    = ${"%.3f".format(Locale.US, (tm - fm)/gb1)} GB")
-            output.add("  free memory (jvm)    = ${"%.3f".format(Locale.US, fm/gb1)} GB")
-            output.add("  total memory (jvm)   = ${"%.3f".format(Locale.US, tm/gb1)} GB")
-            output.add("  maximum memory (jvm) = ${"%.3f".format(Locale.US, mm/gb1)} GB")
+            output.add("  memory used (jvm)    = ${"%.3f".format(Locale.US, (tm - fm) / gb1)} GB")
+            output.add("  free memory (jvm)    = ${"%.3f".format(Locale.US, fm / gb1)} GB")
+            output.add("  total memory (jvm)   = ${"%.3f".format(Locale.US, tm / gb1)} GB")
+            output.add("  maximum memory (jvm) = ${"%.3f".format(Locale.US, mm / gb1)} GB")
             output.add("")
             val cpu_time_secs: Double = r.processCpuTime / 1000000000.0
             output.add(
@@ -242,12 +241,15 @@ class ActionStats {
         // Skip actionId = -1
         if (actionId >= 0) {
             val name: String =
-                if (actionNames.containsKey(actionId)) actionNames[actionId]!!
-                else "action${actionId}"
+                if (actionNames.containsKey(actionId)) {
+                    actionNames[actionId]!!
+                } else {
+                    "action$actionId"
+                }
             results += "\"name\": \"${name}\""
         }
 
-        results += ", \"num_actions\": ${numActions}, \"num_failed\": ${numActions - numSuccess}"
+        results += ", \"num_actions\": $numActions, \"num_failed\": ${numActions - numSuccess}"
         results +=
             ", \"avg_aps\": ${r.aps}, \"aps_target_rate\": ${r.aps_target}, \"avg_rt\": ${r.art}, \"sdev_rt\": ${r.sdev}, \"min_rt\": ${r.minRt}, \"max_rt\": ${r.maxRt}, \"max_rt_ts\": \"${r.maxRtTs}\""
 

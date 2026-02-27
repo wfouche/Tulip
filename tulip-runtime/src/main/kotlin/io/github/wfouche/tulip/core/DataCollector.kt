@@ -72,7 +72,7 @@ object DataCollector {
 
     fun saveStatsJson(filename: String) {
         synchronized(lock) {
-            fun outputFilename(): String = if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
+            fun outputFilename(): String = if (gOutputDirname == "") filename else "$gOutputDirname/$filename"
 
             if (filename != "") {
                 val rt = Runtime.getRuntime()
@@ -85,21 +85,21 @@ object DataCollector {
                 var json = "{"
 
                 val workflowName: String
-                if (g_workflow == null) {
+                if (gWorkflow == null) {
                     workflowName = ""
                 } else {
-                    workflowName = g_workflow!!.name
+                    workflowName = gWorkflow!!.name
                 }
 
-                json += "\"context_name\": \"$TULIP_CONTEXT_NAME\", "
-                json += "\"context_id\": $TULIP_CONTEXT_ID, "
+                json += "\"context_name\": \"$gTulipContextName\", "
+                json += "\"context_id\": $gTulipContextId, "
                 json += "\"bm_name\": \"${r.testName}\", "
                 json += "\"bm_id\": ${r.testId}, "
                 json += "\"row_id\": ${r.rowId}, "
 
-                json += "\"num_users\": $MAX_NUM_USERS, "
-                json += "\"num_tasks\": $MAX_NUM_TASKS, "
-                json += "\"num_threads\": $MAX_NUM_THREADS, "
+                json += "\"num_users\": $gMaxNumUsers, "
+                json += "\"num_tasks\": $gMaxNumTasks, "
+                json += "\"num_threads\": $gMaxNumThreads, "
                 json += "\"queue_length\": ${r.queueLength}, "
 
                 json += "\"workflow_name\": \"$workflowName\", "
@@ -156,7 +156,7 @@ object DataCollector {
                                 // val gson =
                                 // GsonBuilder().setPrettyPrinting().create()
                                 // val jsonString = gson.toJson(g_config)
-                                val jsonString = Json.encodeToString(g_config)
+                                val jsonString = Json.encodeToString(gConfig)
                                 // val jsonString = "${g_config}"
                                 write("{  ")
                                 newLine()
@@ -190,7 +190,7 @@ object DataCollector {
 
     fun closeStatsJson(filename: String) {
         synchronized(lock) {
-            fun outputFilename(): String = if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
+            fun outputFilename(): String = if (gOutputDirname == "") filename else "$gOutputDirname/$filename"
 
             val fw = FileWriter(outputFilename(), true)
             val bw =

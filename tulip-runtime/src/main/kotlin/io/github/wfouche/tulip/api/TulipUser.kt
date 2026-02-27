@@ -6,8 +6,7 @@ import kotlinx.serialization.json.JsonPrimitive
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
 
-abstract class TulipUser() {
-
+abstract class TulipUser {
     var userId: Int = -1
     var threadId: Int = -1
 
@@ -328,20 +327,19 @@ abstract class TulipUser() {
 
     abstract fun onStop(): Boolean
 
-    open fun processAction(actionId: Int): Boolean {
-        return try {
+    open fun processAction(actionId: Int): Boolean =
+        try {
             map[actionId]()
         } catch (e: Exception) {
-            val msg = "userId: ${userId}, actionId: ${actionId}"
+            val msg = "userId: $userId, actionId: $actionId"
             logger().error(msg, e)
             false
         }
-    }
 
     open fun nextAction(workflowId: Int): Int {
-        aid = g_workflow!!.next(aid)
+        aid = gWorkflow!!.next(aid)
         if (aid == 0) {
-            aid = g_workflow!!.next(aid)
+            aid = gWorkflow!!.next(aid)
         }
         return aid
     }
@@ -349,7 +347,7 @@ abstract class TulipUser() {
     open fun getUserParamValue(paramName: String): String {
         val o: JsonPrimitive =
             userRuntimeContext.userParams[paramName]
-                ?: g_config.actions.userParams[paramName]
+                ?: gConfig.actions.userParams[paramName]
                 ?: return ""
         var s = o.toString() // s = '"value"', the double quotes must be removed
         if (o.isString) {
@@ -359,17 +357,16 @@ abstract class TulipUser() {
         return s
     }
 
-    open fun getActionName(actionId: Int): String {
-        return if (actionNames.containsKey(actionId)) {
+    open fun getActionName(actionId: Int): String =
+        if (actionNames.containsKey(actionId)) {
             actionNames[actionId]!!
         } else {
             when (actionId) {
                 0 -> "onStart"
                 TulipApi.NUM_ACTIONS - 1 -> "opStop"
-                else -> "action${actionId}"
+                else -> "action$actionId"
             }
         }
-    }
 
     open fun processTask(task: Task) {
         task.waitTimeNanos = System.nanoTime() - task.beginQueueTimeNanos
@@ -399,9 +396,7 @@ abstract class TulipUser() {
         }
     }
 
-    open fun logger(): Logger {
-        return logger
-    }
+    open fun logger(): Logger = logger
 
     companion object {
         private val logger: Logger = LoggerFactory.getLogger(TulipUser::class.java)

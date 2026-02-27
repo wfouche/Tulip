@@ -164,6 +164,10 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
         ktlint()
         trimTrailingWhitespace()
         endWithNewline()
+        suppressLintsFor {
+            step = "ktlint"
+            shortCode = "standard:no-wildcard-imports"
+        }
     }
     kotlinGradle {
         target("**/*.gradle.kts")

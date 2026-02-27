@@ -13,7 +13,7 @@ data class ActionSummary(
     var queueLength: Int = 0,
     var numActions: Int = 0,
     var numSuccess: Int = 0,
-    var hdr_histogram: Histogram = Histogram(histogramNumberOfSignificantValueDigits),
+    var hdr_histogram: Histogram = Histogram(HDR_NUM_SIGNIFICANT_VALUE_DIGITS),
     var durationSeconds: Double = 0.0,
     var aps: Double = 0.0,
     var aps_target: Double = 0.0,

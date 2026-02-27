@@ -45,7 +45,7 @@ class UserPlatformThread(
                 //
                 var u = userObjects!![task.userId]
                 if (u == null) {
-                    u = newUser!!.getUser(g_config.actions.userClass, task.userId, threadId)
+                    u = newUser!!.getUser(gConfig.actions.userClass, task.userId, threadId)
                     userObjects!![task.userId] = u
                 }
 
@@ -63,7 +63,7 @@ class UserPlatformThread(
     }
 }
 
-val wthread_queue_stats = IntCountsHistogram(histogramNumberOfSignificantValueDigits)
+val wthread_queue_stats = IntCountsHistogram(HDR_NUM_SIGNIFICANT_VALUE_DIGITS)
 
 fun assignTaskToUserPT(task: Task) {
     val threadId = task.userId / (task.numUsers / task.numThreads)
@@ -91,7 +91,7 @@ fun assignTaskToUserPT(task: Task) {
 fun assignTaskToUserVT(task: Task) {
     var u = userObjects!![task.userId]
     if (u == null) {
-        u = newUser!!.getUser(g_config.actions.userClass, task.userId, 0)
+        u = newUser!!.getUser(gConfig.actions.userClass, task.userId, 0)
         userObjects!![task.userId] = u
         val user = u
         user.future = executor.submit(Runnable { user.run() })
