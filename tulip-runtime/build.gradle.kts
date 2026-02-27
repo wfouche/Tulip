@@ -147,7 +147,6 @@ publishing {
 
 configure<com.diffplug.gradle.spotless.SpotlessExtension> {
     java {
-        // https://github.com/google/google-java-format
         googleJavaFormat().aosp()
         toggleOffOn()
     }
@@ -162,7 +161,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
                 KtfmtStep.TrailingCommaManagementStrategy.COMPLETE,
             )
         }
-        // ktlint()
+        ktlint()
         trimTrailingWhitespace()
         endWithNewline()
     }
