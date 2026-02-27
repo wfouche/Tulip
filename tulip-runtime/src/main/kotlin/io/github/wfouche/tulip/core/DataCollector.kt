@@ -1,9 +1,9 @@
 package io.github.wfouche.tulip.core
 
 import io.github.wfouche.tulip.api.TulipApi
+import kotlinx.serialization.json.Json
 import java.io.BufferedWriter
 import java.io.FileWriter
-import kotlinx.serialization.json.Json
 
 object DataCollector {
     private var lock: String = "lock"
@@ -72,9 +72,7 @@ object DataCollector {
 
     fun saveStatsJson(filename: String) {
         synchronized(lock) {
-            fun outputFilename(): String {
-                return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
-            }
+            fun outputFilename(): String = if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
 
             if (filename != "") {
                 val rt = Runtime.getRuntime()
@@ -125,8 +123,8 @@ object DataCollector {
 
                 val awqs: Double = wthread_queue_stats.mean
                 val mwqs: Long = wthread_queue_stats.maxValue
-                json += ", \"avg_wthread_qsize\": ${awqs}"
-                json += ", \"max_wthread_qsize\": ${mwqs}"
+                json += ", \"avg_wthread_qsize\": $awqs"
+                json += ", \"max_wthread_qsize\": $mwqs"
 
                 json += ", \"avg_wt\": ${r.awt}, \"max_wt\": ${r.maxWt}"
 
@@ -165,20 +163,20 @@ object DataCollector {
                                 write("  \"version\": \"${VERSION}\"")
                                 newLine()
                                 write(
-                                    ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\""
+                                    ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"",
                                 )
                                 newLine()
                                 write(", \"java\": ${TulipApi.getJavaInformation()}")
                                 newLine()
-                                write(", \"config\": ${jsonString}")
+                                write(", \"config\": $jsonString")
                                 newLine()
                                 write(", \"results\": [")
                                 newLine()
-                                write(" ${json}")
+                                write(" $json")
                             }
 
                             else -> {
-                                write(",${json}")
+                                write(",$json")
                             }
                         }
                         newLine()
@@ -192,9 +190,7 @@ object DataCollector {
 
     fun closeStatsJson(filename: String) {
         synchronized(lock) {
-            fun outputFilename(): String {
-                return if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
-            }
+            fun outputFilename(): String = if (g_outputDirname == "") filename else "$g_outputDirname/$filename"
 
             val fw = FileWriter(outputFilename(), true)
             val bw =

@@ -1,7 +1,6 @@
 package io.github.wfouche.tulip.core
 
 object Console : Thread() {
-
     init {
         // priority = Thread.MAX_PRIORITY
         isDaemon = true
