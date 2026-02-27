@@ -163,9 +163,12 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
             )
         }
         // ktlint()
+        trimTrailingWhitespace()
+        endWithNewline()
     }
     kotlinGradle {
-        target("*.gradle.kts")
+        target("**/*.gradle.kts")
+        // ktlint()
         trimTrailingWhitespace()
         endWithNewline()
     }
