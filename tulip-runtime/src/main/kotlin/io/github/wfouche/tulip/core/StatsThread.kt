@@ -1,9 +1,6 @@
 package io.github.wfouche.tulip.core
 
-class StatsThread(
-    val itq: MPSC_Queue<Task>,
-    val otq: MPSC_Queue<Task>,
-) : Thread() {
+class StatsThread(val itq: MPSC_Queue<Task>, val otq: MPSC_Queue<Task>) : Thread() {
     init {
         name = "stats-thread"
     }

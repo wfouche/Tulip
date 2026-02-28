@@ -1,9 +1,9 @@
 package io.github.wfouche.tulip.core
 
 import io.github.wfouche.tulip.api.TulipApi
-import kotlinx.serialization.json.Json
 import java.io.BufferedWriter
 import java.io.FileWriter
+import kotlinx.serialization.json.Json
 
 object DataCollector {
     private var lock: String = "lock"
@@ -72,7 +72,8 @@ object DataCollector {
 
     fun saveStatsJson(filename: String) {
         synchronized(lock) {
-            fun outputFilename(): String = if (gOutputDirname == "") filename else "$gOutputDirname/$filename"
+            fun outputFilename(): String =
+                if (gOutputDirname == "") filename else "$gOutputDirname/$filename"
 
             if (filename != "") {
                 val rt = Runtime.getRuntime()
@@ -163,7 +164,7 @@ object DataCollector {
                                 write("  \"version\": \"${VERSION}\"")
                                 newLine()
                                 write(
-                                    ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\"",
+                                    ", \"timestamp\": \"${java.time.LocalDateTime.now().format(formatter)}\""
                                 )
                                 newLine()
                                 write(", \"java\": ${TulipApi.getJavaInformation()}")
@@ -190,7 +191,8 @@ object DataCollector {
 
     fun closeStatsJson(filename: String) {
         synchronized(lock) {
-            fun outputFilename(): String = if (gOutputDirname == "") filename else "$gOutputDirname/$filename"
+            fun outputFilename(): String =
+                if (gOutputDirname == "") filename else "$gOutputDirname/$filename"
 
             val fw = FileWriter(outputFilename(), true)
             val bw =

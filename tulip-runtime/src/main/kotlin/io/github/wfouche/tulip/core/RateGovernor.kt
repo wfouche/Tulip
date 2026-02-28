@@ -11,10 +11,9 @@ class RateGovernor(
     fun pace() {
         count += 1
         val deltaMs: Long =
-            (
-                timeMillisStart + count * (1000 / averageRate) -
-                    TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
-            ).toLong()
+            (timeMillisStart + count * (1000 / averageRate) -
+                    TimeUnit.NANOSECONDS.toMillis(System.nanoTime()))
+                .toLong()
         if (deltaMs > 0) Thread.sleep(deltaMs)
     }
 }

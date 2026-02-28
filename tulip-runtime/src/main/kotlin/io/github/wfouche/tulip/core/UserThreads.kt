@@ -1,11 +1,11 @@
 package io.github.wfouche.tulip.core
 
 import io.github.wfouche.tulip.api.TulipUser
-import org.HdrHistogram.IntCountsHistogram
 import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 import kotlin.time.Clock
 import kotlin.time.Instant
+import org.HdrHistogram.IntCountsHistogram
 
 var useVirtualThreads = false
 val executor: ExecutorService = Executors.newVirtualThreadPerTaskExecutor()
@@ -14,9 +14,7 @@ var userObjects: Array<TulipUser?>? = null // arrayOfNulls<User>(NUM_USERS)
 
 const val USER_THREAD_QSIZE = 11
 
-class UserPlatformThread(
-    private val threadId: Int,
-) : Thread() {
+class UserPlatformThread(private val threadId: Int) : Thread() {
     init {
         name = "w$threadId"
     }

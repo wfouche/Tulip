@@ -4,20 +4,12 @@ import io.github.wfouche.tulip.core.Console
 import java.util.concurrent.ThreadLocalRandom
 import kotlin.system.exitProcess
 
-data class Edge(
-    val actionId: Int,
-    val weight: Int,
-)
+data class Edge(val actionId: Int, val weight: Int)
 
-class MarkovChain(
-    val name: String,
-) {
+class MarkovChain(val name: String) {
     private val matrix = Array(100, { i -> Array(1000, { j -> 0 }) })
 
-    fun add(
-        actionId: Int,
-        eList: List<Edge>,
-    ) {
+    fun add(actionId: Int, eList: List<Edge>) {
         val pList = mutableListOf<Int>()
         for (e in eList) {
             for (i in 1..e.weight) {

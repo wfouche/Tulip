@@ -164,7 +164,7 @@ configure<com.diffplug.gradle.spotless.SpotlessExtension> {
                 KtfmtStep.TrailingCommaManagementStrategy.COMPLETE,
             )
         }
-        ktlint()
+        // ktlint()
         trimTrailingWhitespace()
         endWithNewline()
         suppressLintsFor {

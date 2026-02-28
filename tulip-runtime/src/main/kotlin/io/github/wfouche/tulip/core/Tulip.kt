@@ -15,17 +15,17 @@ import io.github.wfouche.tulip.api.TulipApi
 import io.github.wfouche.tulip.api.TulipUserFactory
 import io.github.wfouche.tulip.pfsm.Edge
 import io.github.wfouche.tulip.pfsm.MarkovChain
+import java.lang.management.ManagementFactory
+import java.time.format.DateTimeFormatter
+import java.util.concurrent.LinkedBlockingQueue as BlockingQueue
+import java.util.concurrent.ThreadLocalRandom
+import java.util.concurrent.TimeUnit
+import kotlin.system.exitProcess
 import kotlinx.serialization.SerialName
 import kotlinx.serialization.Serializable
 import kotlinx.serialization.json.Json
 import kotlinx.serialization.json.JsonPrimitive
 import org.HdrHistogram.Histogram
-import java.lang.management.ManagementFactory
-import java.time.format.DateTimeFormatter
-import java.util.concurrent.ThreadLocalRandom
-import java.util.concurrent.TimeUnit
-import kotlin.system.exitProcess
-import java.util.concurrent.LinkedBlockingQueue as BlockingQueue
 
 // -------------------------------------------------------------------------
 
@@ -53,9 +53,7 @@ fun getProcessCpuTime(): Long = osBean.processCpuTime
 
 // -------------------------------------------------------------------------
 
-class InformativeBlockingQueue<E>(
-    val capacity: Int,
-) : BlockingQueue<E & Any>(capacity)
+class InformativeBlockingQueue<E>(val capacity: Int) : BlockingQueue<E & Any>(capacity)
 
 typealias Java_Queue<E> = InformativeBlockingQueue<E>
 
@@ -184,10 +182,7 @@ inline fun elapsedTimeNanos(block: () -> Unit): Long {
     return System.nanoTime() - start
 }
 
-fun delayMillisRandom(
-    delayFrom: Long,
-    delayTo: Long,
-) {
+fun delayMillisRandom(delayFrom: Long, delayTo: Long) {
     require(delayFrom >= 0) { "delayFrom must be non-negative, is $delayFrom" }
     require(delayTo >= 0) { "delayTo must be non-negative, is $delayTo" }
     require(delayFrom < delayTo) {
@@ -225,10 +220,7 @@ data class ConfigDuration(
     @SerialName("benchmark_iterations") val mainDurationRepeatCount: Int = 1,
 )
 
-@Serializable data class ConfigAction(
-    val id: Int,
-    val weight: Int = 0,
-)
+@Serializable data class ConfigAction(val id: Int, val weight: Int = 0)
 
 @Serializable
 data class ConfigBenchmark(
@@ -432,10 +424,7 @@ val wthread_wait_stats = Histogram(HDR_NUM_SIGNIFICANT_VALUE_DIGITS)
 
 // -------------------------------------------------------------------------
 
-private fun getQueueLengths(
-    context: RuntimeContext,
-    test: TestProfile,
-): Int =
+private fun getQueueLengths(context: RuntimeContext, test: TestProfile): Int =
     if (test.numTasks != 0) {
         test.numTasks
     } else {
@@ -444,38 +433,27 @@ private fun getQueueLengths(
 
 // -------------------------------------------------------------------------
 
-private fun getTest(
-    context: RuntimeContext,
-    test: TestProfile,
-): TestProfile = test.copy(numTasks = getQueueLengths(context, test))
+private fun getTest(context: RuntimeContext, test: TestProfile): TestProfile =
+    test.copy(numTasks = getQueueLengths(context, test))
 
 // -------------------------------------------------------------------------
 
 private fun createActionGenerator(list: List<Int>): Iterator<Int> {
-    val actions =
-        iterator {
-            while (true) {
-                for (e in list) {
-                    yield(e)
-                }
+    val actions = iterator {
+        while (true) {
+            for (e in list) {
+                yield(e)
             }
         }
+    }
     return actions
 }
 
 // -------------------------------------------------------------------------
 
-private fun runTest(
-    testCase: TestProfile,
-    contextId: Int,
-    indexTestCase: Int,
-    queueLength: Int,
-) {
+private fun runTest(testCase: TestProfile, contextId: Int, indexTestCase: Int, queueLength: Int) {
     var cpuTime: Long = 0
-    var tsBegin =
-        java.time.LocalDateTime
-            .now()
-            .format(formatter)
+    var tsBegin = java.time.LocalDateTime.now().format(formatter)
     val output = mutableListOf("")
     output.add("======================================================================")
     output.add("= [$contextId][$indexTestCase][$queueLength] ${testCase.name} - $tsBegin")
@@ -512,7 +490,7 @@ private fun runTest(
     repeat(gMaxNumUsers) { idx ->
         if (
             (testCase.duration.warmupDurationUnits == 0L) &&
-            (testCase.duration.mainDurationUnits == 0L)
+                (testCase.duration.mainDurationUnits == 0L)
         ) {
             userActions!![idx] = null
         } else {
@@ -550,10 +528,7 @@ private fun runTest(
         statsThread = null
     }
 
-    fun startTask(
-        uid: Int,
-        aid: Int,
-    ) {
+    fun startTask(uid: Int, aid: Int) {
         // Limit the number of active users.
         val task: Task = rspQueue.take()
 
@@ -598,10 +573,7 @@ private fun runTest(
         drainRspQueue()
         val timeMillisEnd: Long = TimeUnit.NANOSECONDS.toMillis(System.nanoTime())
         var durationMillis: Int = (timeMillisEnd - timeMillisStart).toInt()
-        val tsEnd =
-            java.time.LocalDateTime
-                .now()
-                .format(formatter)
+        val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
         if (durationMillis == 0) {
             durationMillis = 1
@@ -650,20 +622,14 @@ private fun runTest(
         }
 
         DataCollector.clearStats()
-        tsBegin =
-            java.time.LocalDateTime
-                .now()
-                .format(formatter)
+        tsBegin = java.time.LocalDateTime.now().format(formatter)
         val tsEndPredicted =
-            java.time.LocalDateTime
-                .now()
-                .plusSeconds(durationMillis / 1000)
-                .format(formatter)
+            java.time.LocalDateTime.now().plusSeconds(durationMillis / 1000).format(formatter)
         Console.put(
-            "\n$testPhase (${testCase.name}), run ${runId + 1} of ${runIdMax + 1}: begin ($tsBegin)",
+            "\n$testPhase (${testCase.name}), run ${runId + 1} of ${runIdMax + 1}: begin ($tsBegin)"
         )
         Console.put(
-            "$testPhase (${testCase.name}), run ${runId + 1} of ${runIdMax + 1}:       ($tsEndPredicted)",
+            "$testPhase (${testCase.name}), run ${runId + 1} of ${runIdMax + 1}:       ($tsEndPredicted)"
         )
 
         timeMillisStart = timeMillisEnd
@@ -726,13 +692,10 @@ private fun runTest(
             }
         }
         cpuTime = getProcessCpuTime() - cpuTime
-        val tsEnd =
-            java.time.LocalDateTime
-                .now()
-                .format(formatter)
+        val tsEnd = java.time.LocalDateTime.now().format(formatter)
 
         Console.put(
-            "$testPhase (${testCase.name}), run ${runId + 1} of ${runIdMax + 1}: end   ($tsEnd)",
+            "$testPhase (${testCase.name}), run ${runId + 1} of ${runIdMax + 1}: end   ($tsEnd)"
         )
 
         elapsedTimeNanos {
@@ -785,9 +748,9 @@ private fun initTulip() {
     val tulip = if (TulipApi.isUtf8Terminal()) " " + String(Character.toChars(0x0001F337)) else ""
     Console.put(
         "Tulip $VERSION (Java: ${System.getProperty(
-            "java.vendor",
+            "java.vendor"
         )} ${System.getProperty("java.runtime.version")}, Kotlin: ${KotlinVersion.CURRENT})" +
-            tulip,
+            tulip
     )
 
     Console.put("")
@@ -861,7 +824,8 @@ private fun runBenchmarks(
     userFactory: TulipUserFactory,
     getTest: (RuntimeContext, TestProfile) -> TestProfile,
 ) {
-    fun outputFilename(filename: String): String = if (gOutputDirname == "") filename else "$gOutputDirname/$filename"
+    fun outputFilename(filename: String): String =
+        if (gOutputDirname == "") filename else "$gOutputDirname/$filename"
 
     val contexts = g_contexts
     val tests = g_tests
