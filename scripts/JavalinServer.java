@@ -21,6 +21,10 @@ public class JavalinServer {
                 ctx.status(200);
                 ctx.result("{\"code\": \"OK\"}").contentType("application/json");
             });
+            config.routes.query("/posts", ctx -> {
+                ctx.status(200);
+                ctx.result("{\"code\": \"OK\"}").contentType("application/json");
+            });
             config.routes.get("/posts/{id}", ctx -> {
                 ctx.status(200);
                 ctx.result("{\"code\": \"OK\"}").contentType("application/json");
