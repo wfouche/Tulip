@@ -1,14 +1,15 @@
 package org.example.lib
 
 import io.github.wfouche.tulip.user.HttpUser
-import java.util.concurrent.ThreadLocalRandom
-import org.junit.jupiter.api.Assertions.*
+import org.junit.jupiter.api.AfterEach
+import org.junit.jupiter.api.Assertions.assertEquals
+import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
+import java.util.concurrent.ThreadLocalRandom
 
 class TulipLibHttpUserTest {
-
     val config = HashMap<String, String>()
     val user: HttpUser
 
@@ -21,6 +22,16 @@ class TulipLibHttpUserTest {
         user.initRuntime(0, 0)
         user.initConfig(config)
         user.onStart()
+    }
+
+    @BeforeEach
+    fun setup() {
+        logger().info("Setup before each test")
+    }
+
+    @AfterEach
+    fun teardown() {
+        logger().info("Teardown after each test")
     }
 
     // Action 1: GET /posts/{id}
@@ -99,9 +110,7 @@ class TulipLibHttpUserTest {
         assertEquals(0, 0)
     }
 
-    fun logger(): Logger {
-        return logger
-    }
+    fun logger(): Logger = logger
 
     // RestClient object
     companion object {
