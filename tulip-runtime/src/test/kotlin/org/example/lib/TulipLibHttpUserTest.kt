@@ -5,14 +5,14 @@ import io.javalin.Javalin
 import io.javalin.config.JavalinConfig
 import io.javalin.http.Context
 import io.javalin.http.Handler
+import java.util.concurrent.ThreadLocalRandom
+import java.util.function.Consumer
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import org.slf4j.Logger
 import org.slf4j.LoggerFactory
-import java.util.concurrent.ThreadLocalRandom
-import java.util.function.Consumer
 
 class TulipLibHttpUserTest {
     val config = HashMap<String, String>()
@@ -35,8 +35,7 @@ class TulipLibHttpUserTest {
     fun setup() {
         logger().info("Setup before each test")
         app =
-            Javalin
-                .create(
+            Javalin.create(
                     Consumer { config: JavalinConfig? ->
                         config!!
                             .routes
@@ -88,8 +87,9 @@ class TulipLibHttpUserTest {
                                     ctx.result("{\"code\": \"OK\"}").contentType("application/json")
                                 },
                             )
-                    },
-                ).start(7777)
+                    }
+                )
+                .start(7777)
     }
 
     @AfterEach
