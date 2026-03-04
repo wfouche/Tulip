@@ -103,7 +103,7 @@ public class HttpUser_RestClient extends TulipUser {
         logger().info("[{}]baseUrl={}", idx, baseUrl);
 
         if (httpVersion_.isEmpty()) {
-            httpVersion_ = "*";
+            httpVersion_ = "HTTP_1_1";
         }
         logger().info("[{}]httpVersion={}", idx, httpVersion_);
 
