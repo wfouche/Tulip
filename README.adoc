@@ -14,7 +14,7 @@ Tulip is a Kotlin SDK to create load testing, stress testing, and performance re
 
 See https://tulipltt.github.io/Tulip-docs for more information.
 
-See also https://deepwiki.com/wfouche/Tulip.
+See also https://deepwiki.com/tulipltt/Tulip
 
 == Kwrk
 
