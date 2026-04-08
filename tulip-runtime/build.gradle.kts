@@ -17,7 +17,7 @@ plugins {
     `maven-publish`
 
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
-    id("org.jetbrains.kotlin.plugin.serialization") version "2.3.20"
+    alias(libs.plugins.kotlin.serialization.plugin)
 
     // https://plugins.gradle.org/plugin/org.jetbrains.dokka
     // id("org.jetbrains.dokka") version "2.0.0"
@@ -53,7 +53,7 @@ dependencies {
     implementation("org.python:jython-slim:2.7.4")
 
     // https://mvnrepository.com/artifact/org.jetbrains.kotlinx/kotlinx-serialization-json
-    implementation("org.jetbrains.kotlinx:kotlinx-serialization-json:$kxsJsonVersion")
+    implementation(libs.kotlin.serialization.json)
 
     // https://mvnrepository.com/artifact/com.google.code.gson/gson
     implementation("com.google.code.gson:gson:$gsonVersion")
