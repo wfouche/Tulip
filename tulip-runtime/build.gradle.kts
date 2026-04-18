@@ -19,9 +19,6 @@ plugins {
     // https://plugins.gradle.org/plugin/org.jetbrains.kotlin.plugin.serialization
     alias(libs.plugins.kotlin.serialization.plugin)
 
-    // https://plugins.gradle.org/plugin/org.jetbrains.dokka
-    // id("org.jetbrains.dokka") version "2.0.0"
-
     // https://plugins.gradle.org/plugin/com.diffplug.spotless
     id("com.diffplug.spotless") version "8.4.0"
 
@@ -30,6 +27,9 @@ plugins {
 
     // https://plugins.gradle.org/plugin/com.gradleup.shadow
     id("com.gradleup.shadow") version "9.4.1"
+
+    // https://plugins.gradle.org/plugin/org.jetbrains.dokka
+    id("org.jetbrains.dokka") version "2.2.0"
 }
 
 java {
