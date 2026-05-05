@@ -16,6 +16,7 @@ class HttpRecord {
     public String urlHost = "";
     public int urlPort = -1;
     public String urlPath = "";
+    public String urlQuery = "";
 }
 
 /** The HttpUser class. */
@@ -92,6 +93,7 @@ public class HttpUser_RestClient extends TulipUser {
             https[idx].urlHost = url.getHost();
             https[idx].urlPort = url.getPort();
             https[idx].urlPath = url.getPath();
+            https[idx].urlQuery = url.getQuery();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
@@ -192,6 +194,15 @@ public class HttpUser_RestClient extends TulipUser {
      */
     public String getUrlPath() {
         return https[getUserId() % https.length].urlPath;
+    }
+
+    /**
+     * getUrlQuery() method
+     *
+     * @return String
+     */
+    public String getUrlQuery() {
+        return https[getUserId() % https.length].urlQuery;
     }
 
     /** HTTP header key name */
