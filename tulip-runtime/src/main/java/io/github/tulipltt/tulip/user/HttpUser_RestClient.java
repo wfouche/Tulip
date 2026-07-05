@@ -1,23 +1,27 @@
 package io.github.tulipltt.tulip.user;
 
+import static io.github.tulipltt.tulip.core.TulipKt.gMaxNumUsers;
+
 import io.github.tulipltt.tulip.api.*;
 import io.github.tulipltt.tulip.api.TulipUser;
 import java.net.URI;
 import java.net.URL;
 import java.net.http.HttpClient;
 import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Arrays;
 import org.springframework.http.client.JdkClientHttpRequestFactory;
 import org.springframework.web.client.RestClient;
 
-class HttpRecord {
-    public RestClient restClient = null;
-    public String url = "";
-    public String urlProtocol = "";
-    public String urlHost = "";
-    public int urlPort = -1;
-    public String urlPath = "";
-    public String urlQuery = "";
-}
+record HttpRecord(
+        RestClient restClient,
+        HttpClient httpClient,
+        String url,
+        String urlProtocol,
+        String urlHost,
+        int urlPort,
+        String urlPath,
+        String urlQuery) {}
 
 /** The HttpUser class. */
 public class HttpUser_RestClient extends TulipUser {
@@ -42,19 +46,50 @@ public class HttpUser_RestClient extends TulipUser {
         var readTimeout_ = getUserParamValue("readTimeoutMillis");
         var httpVersion_ = getUserParamValue("httpVersion").toUpperCase();
 
+        var shareConnections_ = getUserParamValue("shareConnections");
+        if (!shareConnections_.isEmpty()) {
+            if (!shareConnections_.equalsIgnoreCase("true")
+                    && !shareConnections_.equalsIgnoreCase("false")) {
+                logger().warn(
+                                "Unrecognized shareConnections value '{}', defaulting to false",
+                                shareConnections_);
+            }
+            shareConnections = Boolean.parseBoolean(shareConnections_);
+        }
+
         if (url_.isEmpty()) {
             logger().error("\"url\" property is empty");
             return false;
         }
 
+        int N;
         String[] urls = url_.split(",");
-        https = new HttpRecord[urls.length];
+        if (shareConnections) {
+            https = new ArrayList<>(urls.length);
+            N = 1;
+        } else {
+            https = new ArrayList<>(gMaxNumUsers);
+            N = gMaxNumUsers;
+            if (urls.length > 1) {
+                logger().warn(
+                                "Multiple URLs are specified, but shareConnections is false. Only the first URL will be used.");
+                urls = Arrays.copyOf(urls, 1);
+            }
+        }
+        int n = 0;
         int idx = 0;
-        for (String url : urls) {
-            https[idx] = new HttpRecord();
-            https[idx].restClient =
-                    createRestClient(idx, url.trim(), connectTimeout_, readTimeout_, httpVersion_);
-            idx += 1;
+        while (n < N) {
+            for (String url : urls) {
+                HttpRecord record =
+                        createRestClient(
+                                idx, url.trim(), connectTimeout_, readTimeout_, httpVersion_);
+                if (record == null) {
+                    return false;
+                }
+                https.add(record);
+                idx += 1;
+            }
+            n += 1;
         }
 
         var httpHeader_ = getUserParamValue("httpHeader");
@@ -77,7 +112,7 @@ public class HttpUser_RestClient extends TulipUser {
      * @param httpVersion_
      * @return
      */
-    RestClient createRestClient(
+    HttpRecord createRestClient(
             int idx,
             String url_,
             String connectTimeout_,
@@ -86,22 +121,26 @@ public class HttpUser_RestClient extends TulipUser {
 
         RestClient restClient = null;
 
-        https[idx].url = url_;
+        String urlProtocol;
+        String urlHost;
+        int urlPort;
+        String urlPath;
+        String urlQuery;
         try {
             URL url = new URI(url_).toURL();
-            https[idx].urlProtocol = url.getProtocol();
-            https[idx].urlHost = url.getHost();
-            https[idx].urlPort = url.getPort();
-            https[idx].urlPath = url.getPath();
-            https[idx].urlQuery = url.getQuery();
+            urlProtocol = url.getProtocol();
+            urlHost = url.getHost();
+            urlPort = url.getPort();
+            urlPath = url.getPath();
+            urlQuery = url.getQuery();
         } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
 
-        String baseUrl = https[idx].urlProtocol + "://" + https[idx].urlHost;
-        if (https[idx].urlPort != -1) {
-            baseUrl += ":" + https[idx].urlPort;
+        String baseUrl = urlProtocol + "://" + urlHost;
+        if (urlPort != -1) {
+            baseUrl += ":" + urlPort;
         }
         logger().info("[{}]baseUrl={}", idx, baseUrl);
 
@@ -136,7 +175,15 @@ public class HttpUser_RestClient extends TulipUser {
             logger().info("[{}]readTimeoutMillis={}", idx, readTimeout_);
         }
         restClient = RestClient.builder().requestFactory(factory).baseUrl(baseUrl).build();
-        return restClient;
+        return new HttpRecord(
+                restClient,
+                httpClient,
+                url_,
+                urlProtocol,
+                urlHost,
+                urlPort,
+                urlPath == null ? "" : urlPath,
+                urlQuery == null ? "" : urlQuery);
     }
 
     /**
@@ -145,6 +192,16 @@ public class HttpUser_RestClient extends TulipUser {
      * @return boolean
      */
     public boolean onStop() {
+        if (getUserId() != 0) {
+            return true;
+        }
+        for (HttpRecord hr : https) {
+            if (hr.httpClient() != null) {
+                hr.httpClient().close();
+            }
+        }
+        https.clear();
+        https = null;
         return true;
     }
 
@@ -154,11 +211,16 @@ public class HttpUser_RestClient extends TulipUser {
      * @return RestClient
      */
     public RestClient restClient() {
-        return https[getUserId() % https.length].restClient;
+        if (shareConnections) {
+            return https.get(getUserId() % https.size()).restClient();
+        } else {
+            throw new RuntimeException(
+                    "RestClient is not shared, please create a new RestClient for each request.");
+        }
     }
 
     // RestClient objects
-    private static HttpRecord[] https = null;
+    private static ArrayList<HttpRecord> https = null;
 
     /**
      * getUrlProtocol() method
@@ -166,7 +228,7 @@ public class HttpUser_RestClient extends TulipUser {
      * @return String
      */
     public String getUrlProtocol() {
-        return https[getUserId() % https.length].urlProtocol;
+        return https.get(getUserId() % https.size()).urlProtocol();
     }
 
     /**
@@ -175,7 +237,7 @@ public class HttpUser_RestClient extends TulipUser {
      * @return String
      */
     public String getUrlHost() {
-        return https[getUserId() % https.length].urlHost;
+        return https.get(getUserId() % https.size()).urlHost();
     }
 
     /**
@@ -184,7 +246,7 @@ public class HttpUser_RestClient extends TulipUser {
      * @return int
      */
     public int getUrlPort() {
-        return https[getUserId() % https.length].urlPort;
+        return https.get(getUserId() % https.size()).urlPort();
     }
 
     /**
@@ -193,7 +255,7 @@ public class HttpUser_RestClient extends TulipUser {
      * @return String
      */
     public String getUrlPath() {
-        return https[getUserId() % https.length].urlPath;
+        return https.get(getUserId() % https.size()).urlPath();
     }
 
     /**
@@ -202,7 +264,7 @@ public class HttpUser_RestClient extends TulipUser {
      * @return String
      */
     public String getUrlQuery() {
-        return https[getUserId() % https.length].urlQuery;
+        return https.get(getUserId() % https.size()).urlQuery();
     }
 
     /** HTTP header key name */
@@ -210,4 +272,10 @@ public class HttpUser_RestClient extends TulipUser {
 
     /** HTTP header key value */
     public static String http_header_val = "";
+
+    /**
+     * Whether to share connections If false, then each user will be allocated its own restClient
+     * object. This is required when using httpOnly cookies to user JWTs that contain the userId.
+     */
+    public static boolean shareConnections = true;
 }
