@@ -30,4 +30,4 @@ gradle.rootProject {
 }
 
 rootProject.name = "Tulip"
-include("tulip-main", "tulip-runtime")
+include("tulip-main", "tulip-runtime", "tulip-report")
